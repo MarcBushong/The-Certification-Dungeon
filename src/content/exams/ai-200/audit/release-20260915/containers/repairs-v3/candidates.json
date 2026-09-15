@@ -1,0 +1,56 @@
+[
+  {
+    "id": "ai200-r-c-013",
+    "conceptId": "aks.configmap-refresh-consumption-and-subpath",
+    "question": "Three AKS Deployments consume one mutable ConfigMap that has just been updated. A reads its value from an environment variable at process startup. B reads a file mounted with subPath. The current Pods for A and B started before the update. C uses an ordinary ConfigMap volume and rereads the file per request; that file already shows the new value. Which focused rollout plan makes the updated configuration available to all three applications while keeping C running?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Roll out new Pods for A; leave B and C running."
+      },
+      {
+        "id": "b",
+        "text": "Roll out new Pods for B; leave A and C running."
+      },
+      {
+        "id": "c",
+        "text": "Roll out new Pods for A and B; leave C running."
+      },
+      {
+        "id": "d",
+        "text": "Roll out new Pods for A, B, and C."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Roll out new Pods for A and B. Their startup environment and subPath mount do not automatically receive this ConfigMap update. C already has the updated file and rereads it per request.",
+    "deepExplanation": "A new Pod reads the current ConfigMap when it initializes its environment or mounts its configuration. Updating the ConfigMap object does not refresh an existing process environment or an existing subPath projection. An ordinary ConfigMap volume can receive file updates, but application consumption remains separate: the stem establishes that C both has the updated file and rereads it. Replacing C is unnecessary and conflicts with the required selective rollout.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Rolling out A is the documented way to refresh A’s startup-consumed environment, but leaving B unchanged does not refresh its pre-update subPath mount. This exact selective action is appropriate when A alone still needs refreshing and B has already received the current ConfigMap in a replacement Pod, while C is already current. It makes no claim that B’s existing subPath file can update automatically.",
+      "b": "Rolling out B recreates its Pod and configuration mount, but leaving A unchanged preserves A’s pre-update process environment. This exact selective action is appropriate when B alone remains outdated and A has already started replacement Pods with the current ConfigMap, while C is already current. It does not claim that A’s running process environment refreshes itself.",
+      "d": "A rollout of every Deployment is a valid way to refresh all startup-consumed configuration when every application requires new Pods and no keep-running constraint excludes one. Here C already has and consumes the updated file, and replacing C violates the explicit requirement to keep it running. The action is valid, but its scope is unnecessarily broad for this task."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy and manage applications to Azure Kubernetes Service (AKS) by using manifest files",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/configure-apps-azure-kubernetes-service/2-define-configmaps"
+    ],
+    "documentationTitles": ["Define ConfigMaps for application settings"],
+    "generatedAt": "2026-09-15T20:43:55.477Z",
+    "lastValidatedAt": "2026-09-15T20:43:55.477Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "New pass-1 same-fact repair following the coordinator-reported pass-3 option-context finding. V1 and v2 remain untouched. No independent context has reviewed this new authored fingerprint.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:47.812Z",
+    "confidenceReason": "Grounded author repair only. Alternatives are literal selective/full Pod rollout actions, not promises of impossible environment or subPath auto-refresh. All options require fresh independent technical and adversarial review."
+  }
+]

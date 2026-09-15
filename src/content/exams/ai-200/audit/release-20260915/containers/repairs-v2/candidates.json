@@ -1,0 +1,161 @@
+[
+  {
+    "id": "ai200-c-005",
+    "conceptId": "acr.manifest-layer-content-addressing",
+    "question": "An engineer must explain an individual ACR container image’s internal composition and how stored layer content is reused across images. Which two statements directly address those representation topics? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "A manifest lists an image’s layers and configuration."
+      },
+      {
+        "id": "b",
+        "text": "A repository groups differently tagged images under one image name."
+      },
+      {
+        "id": "c",
+        "text": "Images can share identical content-addressed layers."
+      },
+      {
+        "id": "d",
+        "text": "A tag supplies a human-readable reference that can move to another image."
+      }
+    ],
+    "correctAnswer": ["a", "c"],
+    "explanation": "Manifests describe an image’s component layers and configuration, while identical content-addressed layers can be shared across images.",
+    "deepExplanation": "The repository and tag statements are also documented facts, but they answer different questions: how image versions are organized and how an image is named or referenced. The requested explanation concerns internal composition and stored content reuse, so select the manifest and shared-layer statements.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The frozen unit describes a repository as a collection of same-name images with different tags. This literal statement is correct for explaining image-family organization, but it does not describe one image’s components or sharing of stored layer content.",
+      "d": "The frozen unit documents human-readable mutable tags that can move to a new image. This literal statement is appropriate when explaining reference naming or update-following aliases; it does not explain internal image composition or shared layer storage."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Build, store, version, and manage container images by using Azure Container Registry",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-2-image-storage"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/2-image-storage"
+    ],
+    "documentationTitles": ["Registries, repositories, and artifacts"],
+    "generatedAt": "2026-09-15T20:21:14.454Z",
+    "lastValidatedAt": "2026-09-15T20:21:14.454Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh pass-1 same-fact repair only. The v1 technical record remains preserved at its original hash; neither independent review stage has evaluated this v2 candidate.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.966Z",
+    "confidenceReason": "Grounded author repair, not independent approval. Reauthored the two literal distractors as true repository and tag statements, and narrowed the task to internal image composition and stored layer reuse. The options themselves, not merely their explanations, now describe the actual objects. The a+c manifest/layer key, concept identity and Beginner classification remain unchanged."
+  },
+  {
+    "id": "ai200-r-c-011",
+    "conceptId": "containerapps.eventhubs-partition-concurrency-ceiling",
+    "question": "A single-revision Container Apps worker uses an Event Hubs scaler and one consumer group over four partitions. Four replicas are already processing all four partitions, one assigned consumer per partition, but lag grows. The partition count and consumer group must remain unchanged. An operator proposes scale-setting changes to add useful simultaneous partition readers. Which response fits these conditions?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Treat useful reader concurrency as capped at four for this consumer group."
+      },
+      {
+        "id": "b",
+        "text": "Raise maxReplicas from four to twelve to allow more replicas."
+      },
+      {
+        "id": "c",
+        "text": "Lower unprocessedEventThreshold to request replicas at a smaller lag."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "The fixed four-partition consumer group already has four readers, so scale-setting changes cannot add useful simultaneous partition-reader assignments.",
+    "deepExplanation": "A higher replica cap and a lower lag threshold are valid ways to change allowed or requested replica counts. They help when replica availability or scaling demand is the constraint and unassigned partitions remain. Here every partition already has a reader, so neither control changes the useful-reader topology. The threshold does not create partitions.",
+    "whyOtherAnswersAreWrong": {
+      "b": "maxReplicas is a real replica limit. Raising it is appropriate when the cap blocks demanded replicas and sufficient unassigned partitions are available. Allowing more replicas cannot add useful partition readers when every partition in this fixed group already has a reader.",
+      "c": "The frozen KEDA unit identifies unprocessedEventThreshold as the lag threshold used to request Event Hubs scaling. Lowering it is an appropriate demand adjustment when threshold-delayed scale-out, available replica headroom and unassigned partitions permit additional useful readers. It does not create partitions or add reader assignments beyond the four already occupied here."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Implement event-driven scaling by using Kubernetes Event‑driven Autoscaling (KEDA) in Container Apps",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-unit-scale-containers-azure-container-apps-3-event-driven-scaling-keda"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/scale-containers-azure-container-apps/3-event-driven-scaling-keda"
+    ],
+    "documentationTitles": ["Implement event-driven scaling with KEDA"],
+    "generatedAt": "2026-09-15T20:21:14.457Z",
+    "lastValidatedAt": "2026-09-15T20:21:14.457Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh pass-1 same-fact repair only. The v1 technical record remains preserved at its original hash; neither independent review stage has evaluated this v2 candidate.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.494Z",
+    "confidenceReason": "Grounded author repair, not independent approval. Replaced the impossible partition-creation claim with the documented unprocessedEventThreshold action. Framed all choices as responses to a proposal for more useful simultaneous readers; the cap and threshold actions are real scale controls whose valid contexts require spare partition assignments. The fixed-group topology fact remains unchanged."
+  },
+  {
+    "id": "ai200-c-036",
+    "conceptId": "aks.service-selector-endpoint-connectivity",
+    "question": "An AKS Service in namespace ai-workloads selects app=text-service. Its intended Ready Pods are also in ai-workloads and have app=text-api; no Pod in that namespace has the selected label. The Service resolves in DNS but its EndpointSlices have no backing Pod addresses. Ports are correct, and the Deployment labels must remain unchanged. Which focused repair and validation fit?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Retain the selector, change the Service port and check DNS again."
+      },
+      {
+        "id": "b",
+        "text": "Set the Service selector to app=text-api, inspect EndpointSlices and send a request through the Service."
+      },
+      {
+        "id": "c",
+        "text": "Change the Deployment Pod labels to app=text-service and replace the Pods."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Repair the Service selector, then verify backing addresses and a Service request.",
+    "deepExplanation": "The Service and intended Ready Pods are explicitly in the same namespace, ai-workloads. Successful DNS resolution proves the Service name resolves, not that it selects any Pods. Correct ports cannot route traffic to an empty selected set. Correcting the Service selector preserves the required Deployment labels; EndpointSlices and a request through the Service validate the repair.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A Service port change is appropriate for a confirmed forwarding mismatch when selector membership is correct. Here the ports already match and the selector chooses no Pods in ai-workloads, so a port change and another DNS check cannot establish backing membership.",
+      "c": "Changing the Deployment’s Pod template labels is a documented alternative when the Service and Pods share a namespace and changing those labels is permitted. The shared namespace now holds, but this stem explicitly requires Deployment labels to remain unchanged."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Monitor and troubleshoot solutions on AKS and Container Apps by inspecting logs, events, and end-to-end connectivity",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-apps-azure-kubernetes-service-3-expose-applications",
+      "ai200-20260915-unit-monitor-apps-azure-kubernetes-service-3-troubleshoot-pods-services",
+      "ai200-20260915-unit-monitor-apps-azure-kubernetes-service-4-verify-connectivity"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-apps-azure-kubernetes-service/3-expose-applications",
+      "https://learn.microsoft.com/en-us/training/modules/monitor-apps-azure-kubernetes-service/3-troubleshoot-pods-services",
+      "https://learn.microsoft.com/en-us/training/modules/monitor-apps-azure-kubernetes-service/4-verify-connectivity"
+    ],
+    "documentationTitles": [
+      "Expose applications in Azure Kubernetes Services",
+      "Troubleshoot pods and services",
+      "Verify service connectivity and endpoints"
+    ],
+    "generatedAt": "2026-09-15T20:21:14.457Z",
+    "lastValidatedAt": "2026-09-15T20:21:14.457Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh pass-1 same-fact repair only. The v1 technical record remains preserved at its original hash; neither independent review stage has evaluated this v2 candidate.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.231Z",
+    "confidenceReason": "Grounded author repair, not independent approval. Restored the explicit shared namespace ai-workloads for Service and intended Ready Pods, and scoped the absence of matching labels to that namespace. The Service-side label repair remains the same fact and Intermediate diagnostic task."
+  }
+]

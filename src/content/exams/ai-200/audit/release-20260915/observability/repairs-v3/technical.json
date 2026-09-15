@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "ai200-r-s-005": {
+      "generation": {
+        "questionFingerprint": "322133f4e429dde96d92e90a068e294e7f5da45e84c10a465ac8449f22d1a822",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-observability",
+        "generatedAt": "2026-09-15T20:35:34.264Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-observe-config-2-connect-app-configuration",
+              "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+            ],
+            "summary": "At t=240 the ordinary 60-second check interval is clear, but only 240 seconds have elapsed from the expressly stated secret retrieval at t=0. A shorter secret interval could permit this call; the configured secret interval is 300 seconds."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-observe-config-2-connect-app-configuration",
+              "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+            ],
+            "summary": "t=360 is the first listed call beyond the 300-second secret interval. Calls separated by 120 seconds and completed within one second leave at least 119 seconds since the previous ordinary check, beyond its 60-second gate. The original reference unit permits secret refresh without a sentinel change. No internal check-order claim is needed."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-observe-config-2-connect-app-configuration",
+              "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+            ],
+            "summary": "A watched sentinel change is the documented signal for ordinary-setting reload. The independently configured secret refresh interval is specifically intended to pick up rotated secret values even when the App Configuration reference and sentinel remain unchanged."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "review": {
+          "questionId": "ai200-r-s-005",
+          "authorId": "ai200-release-author-observability",
+          "reviewerId": "ai200-release-technical-observability",
+          "questionFingerprint": "322133f4e429dde96d92e90a068e294e7f5da45e84c10a465ac8449f22d1a822",
+          "reviewedAt": "2026-09-15T20:47:13.717Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "ai200-20260915-observe-config-2-connect-app-configuration",
+              "url": "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration",
+              "evidencePath": ".grounding\\ai200-release\\observability\\raw\\config-2-connect-app-configuration.json",
+              "retrievedAt": "2026-09-15T19:24:01.276Z",
+              "lastReviewedAt": "2026-09-15T19:30:13.919Z",
+              "supportingSummary": "Independently re-read the complete original MCP unit. The dynamic refresh section requires explicit refresh() and says a call before refresh_interval elapses since the previous check returns immediately. It also assigns sentinel changes to ordinary-setting reloads. The v3 schedule makes every possible preceding ordinary check at least 119 seconds before a later invocation, eliminating the former 45-versus-60-second early-return ambiguity without inventing SDK ordering. Production provider configuration guidance supports these scoped baseline mechanics, not an all-features release assertion."
+            },
+            {
+              "sourceId": "ai200-20260915-observe-config-4-reference-key-vault-secrets",
+              "url": "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/4-reference-key-vault-secrets",
+              "evidencePath": ".grounding\\ai200-release\\observability\\raw\\config-4-reference-key-vault-secrets.json",
+              "retrievedAt": "2026-09-15T19:24:02.870Z",
+              "lastReviewedAt": "2026-09-15T19:30:13.919Z",
+              "supportingSummary": "Independently re-read the complete original MCP reference unit. It documents versionless references, keyvault_credential and separate resource access, then explicitly describes secret_refresh_interval in seconds and retrieval during refresh() after that interval even without changes in the App Configuration store. A successful initial retrieval and successful bounded later calls are scenario premises, not Azure latency promises. Those rules support B and contradict sentinel-only C; no blanket HSM protection, automatic arbitrary-secret rotation policy or unconditional refresh claim from the broader article is adopted."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "A",
+              "assessment": "contradicted",
+              "rationale": "At t=240, the secret age is still 240 seconds from its last retrieval at t=0, below the documented 300-second secret interval. The ordinary gate is clear because the preceding call completed by t=121, but clearing that separate 60-second gate does not make the secret interval due. This time could qualify with a shorter secret interval, not the specified one.",
+              "sourceIds": [
+                "ai200-20260915-observe-config-2-connect-app-configuration",
+                "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+              ]
+            },
+            {
+              "choiceId": "B",
+              "assessment": "supported",
+              "rationale": "The first listed invocation after the secret interval is t=360; calls at t=120 and t=240 occur before 300 seconds. The previous ordinary check must have completed by t=241, so even the shortest possible gap at t=360 is 119 seconds, greater than 60. Both gates are therefore clear regardless of their internal check order. The reference unit permits independent secret refresh despite an unchanged sentinel, and the question asks timing eligibility rather than an unconditional delivery guarantee.",
+              "sourceIds": [
+                "ai200-20260915-observe-config-2-connect-app-configuration",
+                "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+              ]
+            },
+            {
+              "choiceId": "C",
+              "assessment": "contradicted",
+              "rationale": "A changed watched sentinel signals ordinary-setting reloads in the connection unit. The reference unit separately says secret_refresh_interval can retrieve updated Key Vault values even when the App Configuration reference/store does not change. Requiring a sentinel change would be appropriate for the ordinary-setting path, but it is not a necessary precondition for this independently configured secret refresh.",
+              "sourceIds": [
+                "ai200-20260915-observe-config-2-connect-app-configuration",
+                "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+              ]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Fresh independent pass 2 for v3 hash 322133f4e429dde96d92e90a068e294e7f5da45e84c10a465ac8449f22d1a822. B is now defensible: t240 is before the 300-second secret deadline, while t360 is after it and at least 119 seconds after the previous ordinary check. The 120-second schedule with one-second completion bounds removes the old collision under either gate ordering; it does not prove or assert an internal SDK check order. The two exact original MCP units separately establish the ordinary gate and independent secret refresh without a sentinel change. All three options, explanations, explicit timing/permission premises and the current objective binding were reread. Original source records remain unchanged; identical later v2 fetches are audit-only and renew no other question. Technical verified is pass 2 only.",
+          "confidenceReason": "High confidence in the bounded timing conclusion: both documented intervals are strictly elapsed at t360 under the supplied completion bound, so the former unestablished SDK ordering is irrelevant."
+        }
+      }
+    }
+  }
+}

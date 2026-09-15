@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "role": "metadata-clarification-of-existing-independent-pass2-semantic-finding",
+  "reviewerId": "ai200-release-technical-data",
+  "ownerSessionId": "0ac2d228-eb15-4957-a8b8-e3afbec9b046",
+  "subject": {
+    "questionId": "ai200-d-003",
+    "questionFingerprint": "221941088146e90a947e551bd01ea87fda2f6926021fba108a2bfc1abf15d91a",
+    "conceptId": "cosmos.parameterized-json-query",
+    "existingVerdict": "manual-review-required",
+    "existingReviewedAt": "2026-09-15T20:07:59.117Z",
+    "existingFailedChecks": ["duplicatesReviewed"],
+    "immutableCandidatePath": ".grounding\\ai200-release\\data\\immutable\\pass1-20260915\\cosmos-1.json"
+  },
+  "counterparts": [
+    {
+      "questionId": "ai200-d-017",
+      "questionFingerprint": "60f17e39a7d381104a0cf5d75aacd5d8e693cba0bf9bd35c0790b4d02e4b668e",
+      "conceptId": "postgres.psycopg-parameterized-query",
+      "existingVerdict": "verified",
+      "existingReviewedAt": "2026-09-15T20:07:59.120Z",
+      "immutableCandidatePath": ".grounding\\ai200-release\\data\\immutable\\pass1-20260915\\postgres-1.json",
+      "scopeOfVerdict": "Pass2 only. The existing review selected this as the stronger concrete parameter-binding representative for parent consideration, not permission to count both."
+    }
+  ],
+  "additionalCounterpartsAsserted": [],
+  "existingFindingLocations": [
+    {
+      "path": ".grounding\\ai200-release\\data\\technical-review-notes.json",
+      "locations": [
+        "semanticPairs entry with ids ai200-d-003 and ai200-d-017",
+        "encounters.ai200-d-003.semanticAssessment",
+        "encounters.ai200-d-003.checkJustifications.duplicatesReviewed",
+        "encounters.ai200-d-017.semanticAssessment"
+      ]
+    },
+    {
+      "path": ".grounding\\ai200-release\\data\\technical\\published\\ai200-data-pass2-20260915-v1\\technical-review-notes.json",
+      "locations": [
+        "semanticPairs entry with ids ai200-d-003 and ai200-d-017",
+        "encounters.ai200-d-003.optionReviews",
+        "encounters.ai200-d-017.optionReviews"
+      ]
+    },
+    {
+      "path": ".grounding\\ai200-release\\data\\technical\\published\\ai200-data-pass2-20260915-v1\\technical.json",
+      "locations": [
+        "encounters.ai200-d-003.technical.review",
+        "encounters.ai200-d-017.technical.review"
+      ]
+    }
+  ],
+  "sharedDecision": "For caller-provided text that can contain quotes, send the value separately through the database driver's parameter-binding argument rather than incorporating it into query text before execution.",
+  "completeOptionComparison": {
+    "ai200-d-003": {
+      "stemConditions": "Caller category can contain quotation marks; the question expressly requires keeping that value separate from SQL-like query text.",
+      "completeKey": ["A"],
+      "options": [
+        {
+          "choiceId": "A",
+          "text": "Use WHERE c.category = @category and pass a parameters entry with name @category and value category.",
+          "existingAssessment": "supported",
+          "reasoningRole": "Only this choice passes the category through a separate parameters entry. The Cosmos-specific @name and name/value array spelling instantiates the shared separation rule.",
+          "sourceIds": ["ai200-20260915-data-cosmos-query"]
+        },
+        {
+          "choiceId": "B",
+          "text": "Construct the complete WHERE clause by concatenating the caller category into the query string.",
+          "existingAssessment": "contradicted",
+          "reasoningRole": "Produces literal SQL before query execution instead of a driver parameter. Fixed developer-authored literal SQL is a documented different context; the supplied external caller value is not that context.",
+          "sourceIds": ["ai200-20260915-data-cosmos-query"]
+        },
+        {
+          "choiceId": "C",
+          "text": "Replace @category in the query string with the caller category before calling query_items.",
+          "existingAssessment": "contradicted",
+          "reasoningRole": "The visible marker does not create a binding when replaced before query_items. This is another literal-text construction path, not the separate argument channel.",
+          "sourceIds": ["ai200-20260915-data-cosmos-query"]
+        }
+      ],
+      "explanationComparison": "The explanation and deep explanation emphasize separate name/value parameters versus pre-call text replacement. They do not introduce an independent Cosmos-specific eligibility, partition, JSON-value typing or query-operation requirement."
+    },
+    "ai200-d-017": {
+      "stemConditions": "Caller title can contain an apostrophe; the cursor and title are supplied and the question expressly asks which call sends the value separately from SQL.",
+      "completeKey": ["C"],
+      "options": [
+        {
+          "choiceId": "A",
+          "text": "cur.execute(\"SELECT id FROM documents WHERE title = '\" + title + \"'\")",
+          "existingAssessment": "contradicted",
+          "reasoningRole": "The concrete Python concatenation inserts title into SQL text before execute; this is the same erroneous value path as Cosmos B.",
+          "sourceIds": ["ai200-20260915-data-pg-sdk"]
+        },
+        {
+          "choiceId": "B",
+          "text": "cur.execute(\"SELECT id FROM documents WHERE title = '%s'\" % title)",
+          "existingAssessment": "contradicted",
+          "reasoningRole": "Python percent formatting resolves the string before execute sees it. It parallels Cosmos C's marker substitution: placeholder-looking text is not driver binding when consumed by host-language formatting.",
+          "sourceIds": ["ai200-20260915-data-pg-sdk"]
+        },
+        {
+          "choiceId": "C",
+          "text": "cur.execute('SELECT id FROM documents WHERE title = %s', (title,))",
+          "existingAssessment": "supported",
+          "reasoningRole": "Leaves the driver placeholder in SQL and passes the one-element tuple as execute's separate argument. It concretely implements the same value-channel separation as Cosmos A.",
+          "sourceIds": ["ai200-20260915-data-pg-sdk"]
+        }
+      ],
+      "explanationComparison": "The explanation emphasizes the tuple, trailing comma and driver-versus-Python percent processing. Its Cosmos comparison identifies the different API representation but does not itself establish an independent factual decision."
+    }
+  },
+  "strongestPotentialDistinctionForCoordinatorToAssess": "Cosmos uses an @name plus a name/value parameters array; psycopg uses an unquoted %s plus a separate positional tuple, and its wrong formatting option is executable Python. Those are real interfaces, not incorrect claims. d-017 requires more concrete Python syntax interpretation, which is why the existing review preferred it as the representative.",
+  "whyTheExistingReviewHeldD003": "Despite those true interface differences, both complete option sets make the same external-input/separate-value-channel invariant sufficient to select the only option that sends values separately. Both compare that choice against concatenation and pre-call marker substitution. The Cosmos item is chiefly conceptual prose and does not make another Cosmos-specific rule independently necessary. This is a question-specific semantic judgment, not a rule that all parameterized-query questions in different SDKs must be duplicates.",
+  "priorRecommendationForCoordinator": {
+    "currentPreference": "ai200-d-017",
+    "reason": "It is the stronger concrete Python formatting/driver-binding exercise at these exact hashes. Both IDs retain existing historical identities, so the preference is about the authored reasoning task rather than simply choosing an older ID.",
+    "selectionStatus": "Coordinator assessment requested; this clarification neither changes d-003's manual verdict nor creates a final rejection or new selected-representative attestation.",
+    "countsDoNotChange": {
+      "pass2Verified": 37,
+      "manualReviewRequired": 11,
+      "rejected": 0
+    }
+  },
+  "independentlyReviewedEvidenceAlreadyRecorded": [
+    {
+      "sourceId": "ai200-20260915-data-cosmos-query",
+      "rawPath": ".grounding\\ai200-release\\data\\raw\\unit-build-query-azure-cosmos-db-4-query-cosmos-db-nosql.json",
+      "claim": "Use parameterized queries: @parameterName with separately supplied name/value entries; fixed literal SELECT examples are a different input context."
+    },
+    {
+      "sourceId": "ai200-20260915-data-pg-sdk",
+      "rawPath": ".grounding\\ai200-release\\data\\raw\\unit-build-query-azure-database-postgresql-6-integrate-sdks-apps.json",
+      "claim": "psycopg execute uses a separate tuple for %s values; host-language formatting and concatenation are not that binding path."
+    }
+  ],
+  "preservation": {
+    "existingVerdictsChanged": false,
+    "existingReviewTimestampsRenewed": false,
+    "candidateSourceGenerationObjectiveOrIndexEdits": false,
+    "publishedV1SnapshotEdits": false,
+    "newAuthoringOrPass3Review": false,
+    "d001SoleSDKRepresentativePreserved": true,
+    "d025MaintenanceOnlyHoldPreserved": true,
+    "v2AuthoredRepairsNotReviewedByThisClarification": true
+  }
+}

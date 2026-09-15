@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "reviewerId": "ai200-release-technical-observability",
+  "authorId": "ai200-release-author-observability",
+  "scope": "Fresh independent pass 2 for only ai200-r-s-005 repairs-v3; no v1/v2, other question, adversarial or final ledger modification.",
+  "reviewedAt": "2026-09-15T20:47:13.717Z",
+  "counts": {
+    "verified": 1,
+    "manual-review-required": 0,
+    "rejected": 0
+  },
+  "records": {
+    "ai200-r-s-005": {
+      "verdict": "verified",
+      "questionFingerprint": "322133f4e429dde96d92e90a068e294e7f5da45e84c10a465ac8449f22d1a822",
+      "generatedAt": "2026-09-15T20:35:34.264Z",
+      "reviewedAt": "2026-09-15T20:47:13.717Z",
+      "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+      "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+      "taxonomyRetrievedAt": "2026-09-15T19:16:48.603Z",
+      "verificationNotes": "Fresh independent pass 2 for v3 hash 322133f4e429dde96d92e90a068e294e7f5da45e84c10a465ac8449f22d1a822. B is now defensible: t240 is before the 300-second secret deadline, while t360 is after it and at least 119 seconds after the previous ordinary check. The 120-second schedule with one-second completion bounds removes the old collision under either gate ordering; it does not prove or assert an internal SDK check order. The two exact original MCP units separately establish the ordinary gate and independent secret refresh without a sentinel change. All three options, explanations, explicit timing/permission premises and the current objective binding were reread. Original source records remain unchanged; identical later v2 fetches are audit-only and renew no other question. Technical verified is pass 2 only.",
+      "confidenceReason": "High confidence in the bounded timing conclusion: both documented intervals are strictly elapsed at t360 under the supplied completion bound, so the former unestablished SDK ordering is irrelevant.",
+      "perOptionReview": [
+        {
+          "choiceId": "A",
+          "assessment": "contradicted",
+          "rationale": "At t=240, the secret age is still 240 seconds from its last retrieval at t=0, below the documented 300-second secret interval. The ordinary gate is clear because the preceding call completed by t=121, but clearing that separate 60-second gate does not make the secret interval due. This time could qualify with a shorter secret interval, not the specified one.",
+          "sourceIds": [
+            "ai200-20260915-observe-config-2-connect-app-configuration",
+            "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+          ]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "supported",
+          "rationale": "The first listed invocation after the secret interval is t=360; calls at t=120 and t=240 occur before 300 seconds. The previous ordinary check must have completed by t=241, so even the shortest possible gap at t=360 is 119 seconds, greater than 60. Both gates are therefore clear regardless of their internal check order. The reference unit permits independent secret refresh despite an unchanged sentinel, and the question asks timing eligibility rather than an unconditional delivery guarantee.",
+          "sourceIds": [
+            "ai200-20260915-observe-config-2-connect-app-configuration",
+            "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+          ]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "contradicted",
+          "rationale": "A changed watched sentinel signals ordinary-setting reloads in the connection unit. The reference unit separately says secret_refresh_interval can retrieve updated Key Vault values even when the App Configuration reference/store does not change. Requiring a sentinel change would be appropriate for the ordinary-setting path, but it is not a necessary precondition for this independently configured secret refresh.",
+          "sourceIds": [
+            "ai200-20260915-observe-config-2-connect-app-configuration",
+            "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+          ]
+        }
+      ],
+      "repairBlockers": [],
+      "formerBoundaryResolution": "The old 45-second call cadence could make a secret-due call ineligible at the ordinary 60-second gate. The fresh 120-second cadence and <=1-second completion bound make that collision impossible: the minimum later gap is 119 seconds. No unsupported SDK check order or exact equality-at-deadline assumption remains.",
+      "prerequisitesAndScope": "Initial secret retrieval and ordinary check complete at t0, the reference is versionless, a new enabled version exists at t200, and calls succeed within one second. These are explicit hypothetical premises. The question asks timing eligibility, not latency SLA, automatic scheduling, immediate distribution, secret rotation automation, secret-revocation behavior or an unconditional retry guarantee.",
+      "featureAssessment": "Scoped baseline App Configuration provider polling and Key Vault-reference refresh, expressly documented for ordinary production application configuration. No new version, Preview extension, HSM property or all-features-GA assertion is introduced. This does not resolve the separate s025/r-s007 sampler-maturity questions.",
+      "sourceAssessment": "Both actual original MCP bodies were re-read in full. Byte identity with the later v2 text was independently recomputed without normalization. All three selected source records and six registry nodes are exact original objects, with identical headers, dates and provenance. V2 envelopes and review IDs remain audit-only.",
+      "quality": {
+        "recordedDifficulty": "intermediate",
+        "assessment": "Modest two-interval reasoning under explicit call cadence; not Advanced. Numeric choices are parallel. The one-second completion condition has a genuine purpose because elapsed time is measured since the previous ordinary check.",
+        "warnings": [
+          {
+            "code": "pronoun-review",
+            "independentAssessment": "It refers to the single Python provider; both last-completion clocks are explicitly at t0. The secret, reference and sentinel are separately named, so no ambiguous antecedent changes the timing result."
+          }
+        ],
+        "noRubricScoreAssigned": true
+      },
+      "semanticReview": {
+        "unchangedFactIdentity": "Same ai200-r-s-005 / appconfig.secret-refresh-independent-interval; a repair supersedes no old immutable snapshot in place.",
+        "comparedRecords": [
+          {
+            "questionId": "ai200-s-014",
+            "questionFingerprint": "10742a9fa4cb7069786d44a8ee3558c68b2f97f5d3b143caaec33148c9522371",
+            "fullRecordRead": true
+          },
+          {
+            "questionId": "ai200-s-016",
+            "questionFingerprint": "c0b228b2658b1c47da9f3c52a3bf5817a9496931740f32cfc01a60d0df2da243",
+            "fullRecordRead": true
+          },
+          {
+            "questionId": "ai200-r-s-006",
+            "questionFingerprint": "3e74c7a9d9e12bf18e8a4f6b7c150ce1d07afeba265f6022cc625319ad6dcdf2",
+            "fullRecordRead": true
+          }
+        ],
+        "conclusions": [
+          "s014 changes publisher write/sentinel ordering. It does not calculate when an already configured independent secret interval permits a call.",
+          "r-s006 introduces a missing explicit refresh invocation; v3 already has successful calls and asks which deadline is first satisfied.",
+          "s016 enables a separate feature-flag refresh switch, not the interval eligibility of an already configured secret reference."
+        ],
+        "historicalSameIdNotCountedAsAdditionalContent": true,
+        "pendingFutureAi103HashesNotCleared": true
+      }
+    }
+  },
+  "freshnessBoundary": {
+    "originalSourceFreezeRetained": true,
+    "zeroNewCurationsOrV2Promotions": true,
+    "otherAffectedV1QuestionUrlCount": 10,
+    "otherQuestionReviewsRenewed": 0,
+    "statement": "Retaining exact pre-existing selected source authority for unchanged bodies does not create a later canonical source-review event. The research equality receipt is not an approval or freshness waiver. If later v2 reviews are ever promoted as canonical authority for these same URLs, the full affected-question freshness policy still applies; no old IDs can conceal that change."
+  },
+  "protectedOtherDispositions": {
+    "ai200-s-025": "manual, not re-reviewed or repaired here",
+    "ai200-r-s-007": "manual, not re-reviewed or repaired here",
+    "ai200-r-s-003": "excluded duplicate, not re-reviewed here",
+    "ai200-r-s-008": "excluded duplicate, not re-reviewed here"
+  },
+  "evidenceAuditPath": ".grounding\\ai200-release\\observability\\repairs-v3\\technical\\evidence-and-timer-audit.json",
+  "validation": {
+    "checkedAt": "2026-09-15T20:47:13.935Z",
+    "candidateCount": 1,
+    "verdict": "verified",
+    "metadataSchemaPassed": true,
+    "exactGenerationRecordUnchanged": true,
+    "exactQuestionFingerprint": "322133f4e429dde96d92e90a068e294e7f5da45e84c10a465ac8449f22d1a822",
+    "exactObjectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+    "strictActualChronologyPassed": true,
+    "exactAttestationFindings": [],
+    "allThreeChoiceBindingsPassed": true,
+    "allTwelveReviewChecksPresent": true,
+    "statusCopyUsedOnlyInMemory": true,
+    "originalQuestionRemainsCandidate": true,
+    "noPass3RubricOrFinalAttestation": true,
+    "sourceSelectionExactRecords": 3,
+    "sourceSelectionExactRegistryNodes": 6,
+    "exactBodyIdentityPairs": 2,
+    "timerProofFirstEligibleCall": 360,
+    "noSdkOrAzureServiceExecutionClaimed": true
+  },
+  "nextStage": "Only the same distinct adversarial context 2525e4f3-4055-4009-a434-9b0ccb19b988 may later independently assess this new hash, its actual evidence, and any required final attestation/rubric. This pass creates neither."
+}

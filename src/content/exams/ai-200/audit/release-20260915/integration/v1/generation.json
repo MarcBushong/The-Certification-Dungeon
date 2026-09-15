@@ -1,0 +1,1061 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "ai200-i-001": {
+      "generation": {
+        "questionFingerprint": "f867596f8ed9c6c3e98f336d95463f97d78a9ed20024b57051c93de57ad12474",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "ai200-20260915-integration-sb-patterns",
+              "ai200-20260915-integration-sb-reliability"
+            ],
+            "summary": "Receivers on the same queue compete for available work. This fits interchangeable workers; PeekLock redelivery can still occur after lock expiry, so allocation is not an exactly-once guarantee."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-sb-patterns"],
+            "summary": "Separate subscriptions distribute independent copies and fit distinct services that each need an event. That fan-out is different from allocating the backlog among interchangeable workers."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "A longer TTL suits requests that remain useful through a longer backlog. It adds time for processing, not worker capacity."
+          }
+        ]
+      }
+    },
+    "ai200-i-003": {
+      "generation": {
+        "questionFingerprint": "3c762610aff131118b0cfb0f030b5446d0f098f975254139d0f68c587d964bf8",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:40:55.508Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-sb-patterns"],
+            "summary": "SQL filters are appropriate for SQL-like property predicates. They can express equality but correlation filters are documented as more efficient for exact property-value matches."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-sb-patterns"],
+            "summary": "TrueFilter is the real accept-all rule, useful for a subscriber that needs every publication. It does not select specified property values."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-sb-patterns"],
+            "summary": "Correlation filters match specified property values and are the documented efficient choice for exact matches. A need for a SQL-like expression would instead favor SQL filtering."
+          }
+        ]
+      }
+    },
+    "ai200-i-004": {
+      "generation": {
+        "questionFingerprint": "d6c8b09ec543872104422384673374ae5f56777f8e099061287dc382e0e3a52d",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "PeekLock retains a locked message until settlement and permits redelivery after lock expiry. It is appropriate when losing the work is unacceptable, but requires the acknowledgement path excluded here."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "Receive-and-delete removes the delivered message immediately, avoiding a later settlement call. Its loss window is acceptable for the stipulated disposable samples, not for durable inference work."
+          }
+        ]
+      }
+    },
+    "ai200-i-005": {
+      "generation": {
+        "questionFingerprint": "582c36f2dc9d945bae067e992098bd2db48708cb83d98460568e4afdd5b4dbae",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:40:55.508Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "Complete fits S. DeadLetter would fit a permanent T failure, while Abandon would fit a transient P failure; the given failure classifications are the reverse."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "Complete removes the successfully persisted S job, Abandon releases T for retry within its remaining budget, and DeadLetter preserves permanently invalid P for investigation rather than futile retries."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "Defer is valid for prerequisite-blocked work needing later sequence-number retrieval; Complete is valid for successful work. S is already successful and P is not, so these two assignments misclassify the outcomes."
+          }
+        ]
+      }
+    },
+    "ai200-i-006": {
+      "generation": {
+        "questionFingerprint": "62abd7e137a10c13320d6cbbece7444ef36c7ea3574da18755d38bcbcdcfe1da",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "ai200-20260915-integration-sb-reliability",
+              "ai200-20260915-integration-sb-structure"
+            ],
+            "summary": "Abandon releases work for ordinary redelivery after transient failure, and correlation ID supports tracing. Neither provides deferred sequence-number retrieval or suppresses ordinary receives."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "Dead-lettering and its reason are appropriate for invalid work requiring investigation and possible replacement submission. This valid waiting message instead needs explicit deferred retrieval."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "Deferral removes a message from regular delivery, and receive_deferred_messages uses its sequence number to retrieve it. The application must retain that number; this does not extend TTL indefinitely."
+          }
+        ]
+      }
+    },
+    "ai200-i-009": {
+      "generation": {
+        "questionFingerprint": "b2e6011ccd2adcfdb0781dd5c963100347eb61fd0e162a29c1430c45f2c90c8b",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "Expiration dead-lettering routes expired work to the DLQ while preserving its original short validity period. It addresses retention without making stale requests eligible longer."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "A longer TTL is useful when delayed work remains valuable. Here it changes the required five-minute validity window and does not enable the requested expiry-retention path."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "ai200-20260915-integration-sb-reliability",
+              "ai200-20260915-integration-sb-structure"
+            ],
+            "summary": "A larger delivery budget is useful for repeated transient processing failures. It is independent of retaining ordinary messages that expire before processing."
+          }
+        ]
+      }
+    },
+    "ai200-i-010": {
+      "generation": {
+        "questionFingerprint": "13444a58121e57801827dbe5ec6a8df8773ca4dbabbad1c6295f0507a9aed92f",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "Claim-check keeps the large document in storage and sends only a small reference with correlation metadata. Existing worker storage access satisfies the retrieval prerequisite."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "Shorter TTL is appropriate for time-sensitive work but does not shrink an oversized body. An inline document is suitable when it fits the deployed size limit."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "Batching reduces round trips for multiple individually suitable messages. It does not remove the excessive document body or bypass the batch size boundary."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-001": {
+      "generation": {
+        "questionFingerprint": "a79f972f226aaedcf462650f1736f63431ef27498e8cf6d5c17cf553cab3f0c1",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "ai200-20260915-integration-sb-patterns",
+              "ai200-20260915-integration-sb-structure"
+            ],
+            "summary": "Distinct session IDs suit independent session groups; correlation IDs trace related work. Here they split each document’s ordered steps across different sessions, which correlation metadata cannot repair."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-integration-sb-patterns",
+              "ai200-20260915-integration-sb-structure"
+            ],
+            "summary": "A shared session ID groups related messages for ordered single-receiver session processing. Separate document IDs preserve separate groups; distinct messages may still have unique message IDs."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "ai200-20260915-integration-sb-patterns",
+              "ai200-20260915-integration-sb-structure"
+            ],
+            "summary": "One session fits a single ordered group and unique message IDs distinguish messages. It incorrectly combines the two document groups requested here."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-002": {
+      "generation": {
+        "questionFingerprint": "c5c31d84249b4a30699089da4b78bbdaaa82068bd2dc9adec881fd64d064dacd",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "New message IDs fit genuinely distinct requests; correlation ID traces a wider request. Changing the message ID for the retry prevents the configured message-ID detection from recognizing that repeated submission."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "Reusing an ID fits repeated submissions of the same work within the detection window. It risks suppressing the genuinely distinct second item when both share that ID."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "Duplicate detection uses message_id within its configured window. The retry preserves that logical message identity, while the distinct work item gets a new ID; correlation can remain shared for tracing."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-003": {
+      "generation": {
+        "questionFingerprint": "203df3174c32512168f8f2d8466c2482a238a628272becb320d976c27cabe855",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "add_message raised before the current message entered the full batch. After sending that batch and creating another, adding the same current message preserves the request; each message is stipulated to fit an empty batch."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "Claim-check is appropriate for a body too large to fit the deployed broker configuration. Every current message fits an empty batch, so shrinking the body does not repair this exception path’s missing addition."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-sb-structure"],
+            "summary": "Longer TTL helps accepted requests survive a backlog. It cannot restore a request never added to any batch."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-004": {
+      "generation": {
+        "questionFingerprint": "9a40780d82b0ef2bdfa83bf722be2abc3863983a5033cc336f869ee89be092e8",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "Renewal is documented for work that should remain under a queue lock while the receiving processor runs. It conflicts with promptly releasing that lock and using the available separate long-running processor."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "The documented two-phase approach records the request durably, completes queue intake quickly, and moves long-running inference to a processor of the tracking store. It matches both the resource boundary and prompt lock release."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "A higher delivery count gives transient failures more attempts. It does not change the lock lifetime or separate intake from long-running work."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-005": {
+      "generation": {
+        "questionFingerprint": "d410dd4f3d1dfd8f9b2b887b155cc003f464a83e316bd5afbee034bca20914e8",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "Receiving and completing a DLQ entry is the documented discard/cleanup path. It is appropriate when no replacement work should run, but does not submit recovered work to the original queue."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "A higher delivery count permits more attempts for work still in ordinary delivery. It does not explicitly resubmit messages already held in the dead-letter subqueue."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+            "summary": "The documented resubmission workflow creates a new message from the DLQ body/properties, sends it to the original queue, and completes the old DLQ message after the send succeeds."
+          }
+        ]
+      }
+    },
+    "ai200-i-011": {
+      "generation": {
+        "questionFingerprint": "1076af2ece8228834a9dd9af81eee680fd82851015382923a4a9b8a21e227649",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "ai200-20260915-integration-eg-concepts",
+              "ai200-20260915-integration-eg-schema"
+            ],
+            "summary": "A custom topic is the publication endpoint and holds its input schema. It is appropriate when configuring what the producer can submit, not one consumer’s selection and destination."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-integration-eg-concepts",
+              "ai200-20260915-integration-eg-schema"
+            ],
+            "summary": "An event subscription selects events from a topic and names its destination. Separate subscriptions permit different consumers to keep independent routing choices."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-eg-concepts"],
+            "summary": "A handler receives and processes delivered events. It is the appropriate place for processing logic, not the Event Grid resource that selects events before delivery."
+          }
+        ]
+      }
+    },
+    "ai200-i-012": {
+      "generation": {
+        "questionFingerprint": "f0e81b6a56ee405a547d29a3db1879c9f23da63e94b9b7112f6bd4927e4174ac",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "ai200-20260915-integration-eg-concepts",
+              "ai200-20260915-integration-eg-publish"
+            ],
+            "summary": "Custom topics are application-publishable endpoints with an input schema. They fit the stipulated business event emitted by the evaluation service."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-eg-concepts"],
+            "summary": "System topics carry events emitted by supported Azure services themselves. They are appropriate for provider events, such as resource changes, not direct application publication."
+          }
+        ]
+      }
+    },
+    "ai200-i-013": {
+      "generation": {
+        "questionFingerprint": "444630fa0dcc477e9a34b7ece86bccc5fb4b14a526be7f58881d230544be097c",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+            "summary": "Both topic/output pairs are supported by Event Grid, but E would still deliver Event Grid envelopes to a CloudEvents-only handler. This pair fits a handler that separately understands both formats."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+            "summary": "Event Grid output is supported for Event Grid input. It would fit two Event Grid-input publishers and an Event Grid handler, but C’s fixed CloudEvents input cannot use that output schema."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+            "summary": "The documented compatibility table permits Event Grid-to-CloudEvents and CloudEvents-to-CloudEvents. This pair matches the handler while retaining C’s extensible envelope."
+          }
+        ]
+      }
+    },
+    "ai200-i-014": {
+      "generation": {
+        "questionFingerprint": "3409aedce46a2c67e3ce37f2cbf5a8a330625344a7fd648d6b41eb44ec7c6177",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:40:55.508Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "E1 matches the selected operation type. E1 alone would fit an additional invoices subject restriction, but no subject filter is configured, so the other creation event also matches."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "Both events carry the selected BlobCreated operation type. Their different container subjects do not exclude either because this subscription has no subject filter."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "E2 would match a BlobDeleted-only subscription. Its resource path cannot substitute for the BlobCreated type required by the current filter."
+          }
+        ]
+      }
+    },
+    "ai200-i-015": {
+      "generation": {
+        "questionFingerprint": "d8432654a0e856c06e441a6fe325a44d409321866cddddbcd0aa582abf2a2159",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:40:55.508Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "This subject begins with the full invoices/approved folder boundary and ends with .pdf, satisfying both configured predicates."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "This is a valid blob subject for a different container. It would match a broader invoices prefix but does not match the exact invoices/blobs/approved/ prefix used here."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "This is a valid PDF subject within invoices. It would match a container-level prefix, but its rejected folder does not match the configured approved folder."
+          }
+        ]
+      }
+    },
+    "ai200-i-016": {
+      "generation": {
+        "questionFingerprint": "9d9cd693ba29b7bd27b4e8a4371cece4d4851f6cb3733ea43b70a595e7a7af7a",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:40:55.508Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "West is one permitted StringIn value, but false does not satisfy BoolEquals true. This event would fit a subscription for unreleased western work instead."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "West satisfies the allowed StringIn alternatives and Boolean true satisfies the second filter. AND between filter entries requires both conditions."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "The Boolean condition matches but east is outside the permitted StringIn values. This event would fit a subscription whose allowed regions include east."
+          }
+        ]
+      }
+    },
+    "ai200-i-017": {
+      "generation": {
+        "questionFingerprint": "b46df69ebd52dea054d8f9389e6ee88b9e016c0ccb16cde9aef5625f490f30a4",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:40:55.508Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "A success response such as 202 is a valid acknowledgement after accepting the event. A 401 authentication rejection is not one of those successful responses."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "Transient failures such as 503 retry, and the unit separately describes retry for 401 from Azure resource endpoints. This endpoint is a webhook, for which 401 is not retried."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "The documented webhook-specific rule does not retry 401. Remaining attempt and age budgets do not override the endpoint-specific error classification."
+          }
+        ]
+      }
+    },
+    "ai200-i-018": {
+      "generation": {
+        "questionFingerprint": "1bee918af9b176e05ae6f3f86529893aa1f8262aeb748ed51f3532bc9e201e88",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "Event Grid stops when either configured bound is reached first. The event exceeds its 30-minute TTL even though attempts remain; the available dead-letter path handles exhausted delivery eligibility."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "The attempt bound would stop an event that consumed eight attempts while still within TTL. Four attempts do not reach that bound in the supplied observation."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "The default TTL is relevant when a custom TTL was not supplied. This subscription explicitly replaces it with 30 minutes, so the default does not extend this event’s eligibility."
+          }
+        ]
+      }
+    },
+    "ai200-i-019": {
+      "generation": {
+        "questionFingerprint": "d51b34dafa0df4d708037fb6609cce90328ea32874ccdb136ccb7debb9069019",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:40:55.508Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "More attempts are useful when transient failures may resolve within the eligible window. They change the retry policy rather than add post-exhaustion payload retention."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "A configured Blob dead-letter destination retains undeliverable events after delivery limits are reached. The stated existing container and access satisfy the external-storage prerequisite."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "A longer TTL is useful when older events remain worth delivering after a longer outage. It changes the required delivery window and does not itself configure a retention destination."
+          }
+        ]
+      }
+    },
+    "ai200-i-020": {
+      "generation": {
+        "questionFingerprint": "abd91c6c52c542992287cb00bea274ab2398d632bd23b0848b92d5c2b7cf975a",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-egauth"],
+            "summary": "Subscription scope is a documented assignment scope and fits a principal intended to publish across that subscription. It grants a broader target set than this single-topic requirement."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-egauth"],
+            "summary": "Resource-group scope fits a publisher needing the group’s topics. The group explicitly contains unrelated topics, so it is broader than required."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-egauth"],
+            "summary": "The topic scope grants the send permission at the requested boundary. Event Grid validates authorization separately from the token, so token possession alone is insufficient."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-006": {
+      "generation": {
+        "questionFingerprint": "3e7b23e5c07fa1d556bd049b247a387dca3fb500f3dade49ab3d5534199e6bcd",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "Synchronous completion suits a batch whose full processing finishes within the 30-second response window. The remaining minute would exceed that bound despite the first two successes."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-integration-eg-delivery",
+              "ai200-20260915-integration-sb-concepts",
+              "ai200-20260915-integration-sb-reliability"
+            ],
+            "summary": "Event Grid accepts 202 as successful delivery, including asynchronous acceptance. Persisting the unfinished work before acknowledging moves its reliability to Service Bus and fits the stated remaining response time without requesting whole-batch retry."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "503 and all-or-none batch retry are valid when the handler cannot accept the batch and retry should occur. That explicitly requests replay of the batch, contrary to the required handoff contract."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-007": {
+      "generation": {
+        "questionFingerprint": "8ed1ae661fbbb8ae1a3463e9fea3579dad14b81946e68d7dd9141f66e6761ee6",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "StringNotIn matches a missing key, whereas IsNotNull requires a defined, nonnull value. AND between the existing and added filters enforces presence while retaining the draft exclusion."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "This operator intentionally selects missing or null values and fits a data-quality handler for incomplete events. It selects precisely the missing-field population this handler must exclude."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+            "summary": "StringIn draft is useful for a draft-only subscriber. Combined with the existing StringNotIn draft through AND, it cannot produce the requested present non-draft set."
+          }
+        ]
+      }
+    },
+    "ai200-i-021": {
+      "generation": {
+        "questionFingerprint": "93b32cd7faf91e3161bbc26dcd666fd7d4fc3d80b129fec433be54c3495dc47c",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:40:55.508Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-triggers"],
+            "summary": "A Blob trigger is suitable when a blob event should invoke the function. Reading a reference blob during scheduled work is instead an input-binding role."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-triggers"],
+            "summary": "A Cosmos DB trigger is suitable when database changes invoke processing. Writing the result is an output-binding role, not the schedule’s invocation event."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-triggers"],
+            "summary": "The timer supplies the schedule that invokes the function. One trigger can coexist with the Blob input and Cosmos DB output bindings."
+          }
+        ]
+      }
+    },
+    "ai200-i-022": {
+      "generation": {
+        "questionFingerprint": "6ef4ac24471226a8d870e4e009e46fd0c37d0db6a26bb716797448b17a8bcce3",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "The route template captures J42 as job_id and exposes it through route_params. This matches the actual path without requiring a query or JSON body."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "params reads query-string values and is correct for a request such as ?job_id=J42. The supplied request has no query string, so it does not read the route value."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "ai200-20260915-integration-fn-triggers",
+              "ai200-20260915-integration-doc-python"
+            ],
+            "summary": "get_json reads a JSON request body and is useful when a client sends the identifier there. This GET request supplies no body, so that collection does not contain the route identifier."
+          }
+        ]
+      }
+    },
+    "ai200-i-025": {
+      "generation": {
+        "questionFingerprint": "2e1a07ea5c2084872110e4a30bc58c0dd5831646d2dd2b8337dc6ce517958b04",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:40:55.508Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "Separate function.json binding definitions are the Python v1 programming-model mechanism. They are a valid legacy-model approach, not the v2 decorator mechanism requested."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "Python v2 defines triggers and bindings using decorators in function_app.py or registered blueprint modules. This is the requested programming-model mechanism."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "ai200-20260915-integration-fn-local",
+              "ai200-20260915-integration-doc-python"
+            ],
+            "summary": "host.json sets shared runtime behavior such as timeout and extension configuration. It is valid for those app-level concerns, not for declaring Python v2 handler triggers and bindings."
+          }
+        ]
+      }
+    },
+    "ai200-i-026": {
+      "generation": {
+        "questionFingerprint": "806f42105f0e4414bb37f639916e29dc00c98c05da82c84a06c7d518ef7bf00b",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "Defining handlers directly in function_app.py is supported and would fit a small single-file app. It does not preserve the required separate jobs module."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-integration-doc-python",
+              "ai200-20260915-integration-doc-reference"
+            ],
+            "summary": "A separate function app is appropriate for an independent deployment/runtime boundary. It changes the required one-app design and requires its own complete entry-point project."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "A Blueprint’s decorated handlers become part of the main FunctionApp through app.register_functions(bp). Importing the module alone is not the documented registration step; this keeps both routes in one modular app."
+          }
+        ]
+      }
+    },
+    "ai200-i-027": {
+      "generation": {
+        "questionFingerprint": "6879fbb1001b154993ed4c2edee58b0bd514b784fd5dd49131c24bdc66eb1949",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-triggers"],
+            "summary": "The runtime 4.x matrix gives Blob Storage trigger, standalone input and output support. Its input direction supplies additional data without replacing the HTTP trigger."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-triggers"],
+            "summary": "Service Bus has trigger and output directions in the matrix. A queue-triggered processor or outgoing message suits those directions, but not an additional standalone input binding on this HTTP handler."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-triggers"],
+            "summary": "Event Grid has trigger and output directions in the matrix. It can invoke event processing or publish an event, but does not provide the standalone input direction requested here."
+          }
+        ]
+      }
+    },
+    "ai200-i-028": {
+      "generation": {
+        "questionFingerprint": "6baca304f53f22601dec13aca6ddcd3ce3a6caae3cfa76eacaa5b8cfc7d72b02",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "ai200-20260915-integration-doc-reference",
+              "ai200-20260915-integration-doc-python"
+            ],
+            "summary": "Blueprints organize related code within an app and suit groups sharing deployment/runtime management. They do not separate those app-wide boundaries, so one app does not meet the independence requirement."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-reference"],
+            "summary": "The function app is the deployment and runtime-management unit. Two apps isolate the two required groups without splitting functions that already share a release lifecycle."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-reference"],
+            "summary": "One app per function supports independent lifecycle management for all four. That is appropriate if each function needs it, but exceeds the fewest-app requirement for the two stated groups."
+          }
+        ]
+      }
+    },
+    "ai200-i-030": {
+      "generation": {
+        "questionFingerprint": "c06ba7d5b27b1101f1ba81dc1e136d629ccffd9df3109eb84d815c733690a0af",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:40:55.508Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "Remote build installs the external packages declared in requirements.txt. The build log’s package set omits requests, so declaring it repairs the missing deployed distribution."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "Renaming a conflicting directory is documented for names such as json or email that shadow standard libraries. The supplied missing external distribution and project name do not indicate that problem."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "Blueprint registration addresses missing function discovery after a module import succeeds. It does not install the requests distribution missing from this deployment."
+          }
+        ]
+      }
+    },
+    "ai200-i-031": {
+      "generation": {
+        "questionFingerprint": "8ac76698f9a296ac83d4b518aa45d359bc0b3a453b2657ec0efaf45dbfd17438",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "ai200-20260915-integration-fn-local",
+              "ai200-20260915-integration-doc-reference"
+            ],
+            "summary": "A Cosmos connection supports the application’s own database operations and would be relevant if those operations failed. Its successful test does not supply the Functions host’s separate storage connection."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-fn-local"],
+            "summary": "Core Tools provides the local Functions host and is needed when the runtime cannot start. It is already running and reporting the storage error, so reinstalling it is not the indicated dependency repair."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "ai200-20260915-integration-fn-local",
+              "ai200-20260915-integration-doc-reference"
+            ],
+            "summary": "UseDevelopmentStorage=true directs host storage to Azurite. Timer coordination needs that host dependency even when business data uses Cosmos DB, and the observed local storage endpoint is refusing connections."
+          }
+        ]
+      }
+    },
+    "ai200-i-032": {
+      "generation": {
+        "questionFingerprint": "f6743aa3b2ad5f6effe1d0fcb49a788d6d8bbb6e57cec59bdd8d9b2385056dc3",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-fn-identity"],
+            "summary": "The binding’s Jobs prefix must resolve to the Service Bus fullyQualifiedNamespace endpoint setting. That supplies the secret-free target connection but does not by itself grant receive authorization."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-fn-identity"],
+            "summary": "Data Sender is documented for outgoing Service Bus bindings. The requested queue trigger receives work, so send authorization does not provide the required operation."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "ai200-20260915-integration-fn-identity",
+              "ai200-20260915-integration-doc-reference"
+            ],
+            "summary": "That setting belongs to identity-based host storage. It is appropriate when converting the host connection, but host storage is already working and it does not configure the named Jobs connection."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["ai200-20260915-integration-fn-identity"],
+            "summary": "Data Receiver authorizes the trigger’s consumption operation. Alongside the named namespace setting, it completes the endpoint-plus-permission configuration for the enabled system identity."
+          }
+        ]
+      }
+    },
+    "ai200-i-034": {
+      "generation": {
+        "questionFingerprint": "89b3dcdbb640a11d0d19e39e6b351718f7769b86e1ee042adfdf1d1c8b32e3f7",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-fn-hosting"],
+            "summary": "Cold start is relevant when allocating an instance and initializing dependencies delays the first request. The warm instance begins immediately, so it does not explain the later response loss."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-integration-fn-hosting",
+              "ai200-20260915-integration-fn-triggers"
+            ],
+            "summary": "HTTP-triggered Functions have a roughly 230-second response boundary independent of functionTimeout and hosting plan. Backend execution can continue while the direct response no longer reaches the client."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-fn-hosting"],
+            "summary": "The execution timeout would matter if work exceeded its configured duration. Six minutes is shorter than ten, while the observed client boundary is earlier."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-008": {
+      "generation": {
+        "questionFingerprint": "faa40465852751f713b4edb8152011261e02134f81233c4fd08992848e8c78f8",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "ai200-20260915-integration-fn-triggers",
+              "ai200-20260915-integration-fn-identity"
+            ],
+            "summary": "The training recommends creating the credential and client outside the handler so subsequent invocations on the same instance reuse their initialization. This addresses the observed per-invocation setup path."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-fn-hosting"],
+            "summary": "Always-ready instances mitigate startup delay for latency-sensitive traffic. These calls already run on a warm instance, so the handler would still recreate its client on every invocation."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-fn-hosting"],
+            "summary": "Reducing imports can lower cold-start initialization cost. It does not remove the explicit credential/client construction performed on every warm handler call."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-009": {
+      "generation": {
+        "questionFingerprint": "91ebbeb5f7ef369cc8957056a2886efe7db86d78fe14c1d57f2acb08186a959b",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:40:55.508Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "ai200-20260915-integration-fn-local",
+              "ai200-20260915-integration-doc-python"
+            ],
+            "summary": "func start launches the local Functions host from the project. It is appropriate for local trigger testing, not publishing the project to an Azure app."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-integration-fn-local",
+              "ai200-20260915-integration-fn-configuration"
+            ],
+            "summary": "fetch-app-settings downloads the app’s settings into local development configuration. It is appropriate for reproducing configuration, not sending code to the app."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "ai200-20260915-integration-doc-python",
+              "ai200-20260915-integration-doc-reference"
+            ],
+            "summary": "The documented Core Tools publish command deploys the project to the named existing function app. App creation and production setting management remain separate concerns."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-010": {
+      "generation": {
+        "questionFingerprint": "055bd43fe8b25239c4f4d70b0a0458c42a379816729ab456c60c71a89ee67c0a",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "requirements.txt installs external distributions during remote build. It is appropriate for a missing third-party package, not an application helper directory deliberately excluded from the artifact."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-integration-doc-python",
+              "ai200-20260915-integration-fn-local"
+            ],
+            "summary": ".funcignore controls files omitted from deployment. Including the application’s needed helper directory repairs the documented packaging cause while leaving development-only exclusions intact."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "Blueprint registration exposes decorated functions in imported modules. Ordinary helper code has no functions to register, and registration cannot restore a directory missing from the deployed artifact."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-011": {
+      "generation": {
+        "questionFingerprint": "7285cbd8e89ba90ec543d074d8519f0b70cca8b430231f993486f266535fcfd0",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T19:37:49.697Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "The Python reference explicitly requires rebuild and redeployment after a Python version change. Existing artifacts and dependencies are not automatically rebuilt by changing the app’s interpreter setting."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-integration-fn-configuration",
+              "ai200-20260915-integration-doc-python"
+            ],
+            "summary": "Downloading settings helps reproduce configuration locally. It does not rebuild dependencies for the new interpreter or replace deployed artifacts."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "Blueprints provide modular organization and function discovery. They are appropriate for organizing a larger app, not for rebuilding artifacts after an interpreter change."
+          }
+        ]
+      }
+    }
+  }
+}

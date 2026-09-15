@@ -1,0 +1,1535 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "ai200-d-001": {
+      "generation": {
+        "questionFingerprint": "c2f4cab787dde4ca4516d8e775255e1b04eba5c0d3b9dc9ad5622a30da05d18d",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.728Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-sdk",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "The SDK unit says the root client owns connection pools and routing caches, so retaining that object targets repeated connection setup. This does not guarantee that subsequent query execution is fast."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-sdk",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "The query unit documents projection for reducing response payload. That is useful when data transfer is the bottleneck, but it does not retain the client-owned connections identified here."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-sdk",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "The query unit documents page-size control for per-page memory and round-trip tradeoffs. It is a genuine paging option, not a way to retain a newly discarded root client pool."
+          }
+        ]
+      }
+    },
+    "ai200-d-002": {
+      "generation": {
+        "questionFingerprint": "a72d1e58e6ea77cfee40e20e238fa7b78314e4eef06d7a9e6af73541b5c32deb",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.728Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-sdk",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "This valid single-partition query can retrieve the matching document and is useful when retrieval needs predicates or projections. It still uses the query execution path, unlike a point read."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-sdk",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "The SDK documents read_item with the item ID and partition key as a point read. It routes directly to the item without SQL query parsing; that is the requested distinction."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-sdk",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "This valid tenant-scoped query retrieves that tenant’s documents and is useful for a tenant listing. It is neither an item-specific point read nor free of query execution."
+          }
+        ]
+      }
+    },
+    "ai200-d-003": {
+      "generation": {
+        "questionFingerprint": "221941088146e90a947e551bd01ea87fda2f6926021fba108a2bfc1abf15d91a",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.728Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-cosmos-query"],
+            "summary": "The actual query unit uses @ parameters with a separate array of name/value entries. The SDK receives caller data separately from query structure, including quoted string values."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-cosmos-query"],
+            "summary": "The unit distinguishes fixed literal SQL examples from its parameterized external-input pattern. Literal construction can express a fixed developer-authored category query, but putting this caller value into SQL text does not use the required separate value channel."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-cosmos-query"],
+            "summary": "The unit’s literal and parameterized examples show the distinction: replacing text produces a literal query rather than binding data. Such fixed query text can represent known authored constants, but substitution of this external value loses the documented binding separation."
+          }
+        ]
+      }
+    },
+    "ai200-d-004": {
+      "generation": {
+        "questionFingerprint": "188d0c3115511d2c8ea863f5cb950b58d4cdca0038ec79384dca6beea9151518",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.728Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-cosmos-query"],
+            "summary": "A smaller max_item_count controls page size and memory/round trips. It does not add the missing tenant condition, so it cannot repair a tenant eligibility defect."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-cosmos-query"],
+            "summary": "Projection limits returned properties and is useful for reducing payload. It does not change which tenants’ cases qualify."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-cosmos-query"],
+            "summary": "The query unit documents both WHERE eligibility and explicit partition routing. Combining the tenant equality with the existing status condition expresses the requested corpus and targets its known logical partition."
+          }
+        ]
+      }
+    },
+    "ai200-d-006": {
+      "generation": {
+        "questionFingerprint": "2eedaa259e4a37809a04f6dfe57967db73a7cd8d2246e48a1d1fbccfa272515f",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.728Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-cosmos-index"],
+            "summary": "This is the exact index property sequence and directions documented for composite multi-property sorting."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-cosmos-index"],
+            "summary": "This orders priority before category and could use a separately defined composite in that sequence. The existing index begins with category, so it does not provide that sequence."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-cosmos-index"],
+            "summary": "This is a valid ordering requirement that needs a composite matching these directions or their full reversal. Reversing only one direction does not match the supplied mixed-direction index."
+          },
+          {
+            "choiceId": "D",
+            "sourceIds": ["ai200-20260915-data-cosmos-index"],
+            "summary": "The index unit explicitly permits reversing every direction while retaining property sequence. Both supplied directions are reversed here."
+          }
+        ]
+      }
+    },
+    "ai200-d-007": {
+      "generation": {
+        "questionFingerprint": "9b30f028e85fb3790c563b85b3d4e00b365f642515f645ab37b84515c5ff5353",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.728Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-cost",
+              "ai200-20260915-data-cosmos-index"
+            ],
+            "summary": "A composite can improve a frequently used filter/sort combination. It adds maintenance work rather than removing the unnecessary rawTrace indexing identified by this workload."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-cost",
+              "ai200-20260915-data-cosmos-index"
+            ],
+            "summary": "The cost unit recommends excluding properties used only for display or retrieval, while retaining actual query paths. The index unit explains that each maintained index adds write cost."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-cost",
+              "ai200-20260915-data-cosmos-index"
+            ],
+            "summary": "Broader coverage is useful when frequent new predicates need support. Here it does not stop rawTrace maintenance and the stated query workload has no such missing metadata requirement."
+          }
+        ]
+      }
+    },
+    "ai200-d-008": {
+      "generation": {
+        "questionFingerprint": "759b6f1948cace12dbab8930fa5963f2dde449bcc2b8368701e377a99c9b3b16",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.728Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-cosmos-consistency"],
+            "summary": "The unit explains partition-bound tokens, automatic tracking within one SDK client, and explicit token passing across distributed services. The relevant write’s token establishes the needed session position on B."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-cosmos-consistency"],
+            "summary": "A tokenless separate client may be sufficient for an unrelated session that tolerates stale data. It does not carry A’s observed write position for this caller."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-cosmos-consistency"],
+            "summary": "A session token tracks the partition from which it was obtained and is useful for related reads there. An unrelated partition token does not represent the position needed for this item."
+          }
+        ]
+      }
+    },
+    "ai200-d-009": {
+      "generation": {
+        "questionFingerprint": "ea9183989e874cdd77b52c29a32b22bae85676a99aee0a27d0b69f25a8341b81",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.728Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-cosmos-store"],
+            "summary": "A 768-dimensional policy is appropriate for a model producing 768 components. The stated array contains 384, so its dimension does not match."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-cosmos-store"],
+            "summary": "The current unit genuinely supports float16; it is not an unavailable feature. That policy describes half-precision storage, whereas this design explicitly chooses float32."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-cosmos-store"],
+            "summary": "Path, declared element representation, dimension count and required metric all match the stated array. The unit documents these four policy fields."
+          }
+        ]
+      }
+    },
+    "ai200-d-010": {
+      "generation": {
+        "questionFingerprint": "4b7a64b8ec0efb92cec113bbd2c3ed10d0afc8cbc69461d0e6c9ebefa16ab896",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.734Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-store",
+              "ai200-20260915-data-cosmos-vector-index"
+            ],
+            "summary": "The documented quantizedFlat index performs brute-force search over compressed vectors and is useful when reduced precision is acceptable. The stated reference requires original-vector exhaustive comparison; the population is above the minimum effective-index threshold."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-store",
+              "ai200-20260915-data-cosmos-vector-index"
+            ],
+            "summary": "Flat performs exhaustive search without quantization and supports up to 505 dimensions. The fixed 384-dimensional collection fits that documented constraint."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-store",
+              "ai200-20260915-data-cosmos-vector-index"
+            ],
+            "summary": "DiskANN is useful for fast approximate search on large datasets. Its graph search is not the exhaustive original-vector algorithm required by this reference, and the 2500-vector population removes the below-1000 fallback ambiguity."
+          }
+        ]
+      }
+    },
+    "ai200-d-012": {
+      "generation": {
+        "questionFingerprint": "2314cbbf54ef945664544b0868508a85740fed01c3c3520705b4195e3fbdcc39",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.734Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-filter",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "A larger result cap can be useful when the application genuinely needs more global candidates. It does not express the tenant/published scope and cannot establish that those extra candidates contain the eligible documents."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-filter",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "Partition targeting is useful for tenant-only retrieval. Leaving status outside the retrieval predicate preserves the possibility that drafts occupy the bounded returned candidates."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-filter",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "The metadata unit documents combined WHERE filters and explicit partition targeting. This expresses both eligibility conditions within the retrieval request rather than discarding global bounded results afterward."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-001": {
+      "generation": {
+        "questionFingerprint": "00636b9b377c2131b1feacbc7fc662f9fb125421fbb408334efd9769d782f876",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.734Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-index",
+              "ai200-20260915-data-cosmos-cost"
+            ],
+            "summary": "The units document asynchronous additions, immediate loss of removed-index use, and add-before-remove replacement. Waiting before deploying the dependent ordering and retaining the old index while old queries run combines those constraints."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-index",
+              "ai200-20260915-data-cosmos-cost"
+            ],
+            "summary": "Keeping both completed patterns is appropriate during mixed-version traffic. Definition presence alone does not make the incomplete new composite usable, so switching now is premature."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-index",
+              "ai200-20260915-data-cosmos-cost"
+            ],
+            "summary": "Removing a genuinely unused index reduces maintenance overhead. Old instances still rely on this one, so removing it before they drain violates the live-support requirement."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-002": {
+      "generation": {
+        "questionFingerprint": "e371f91effc26f51f7e2535fa3ef4d39c9340229f4154404275efd57eaa92b63",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.734Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "The unit documents batching for high-volume API efficiency. It reduces per-call overhead but still regenerates unchanged semantic inputs, so it does not address the two triggering causes."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "The actual feed unit recommends hashing embedding inputs and updating the hash in the same operation. Metadata-only and embedding/hash-only writes leave those inputs unchanged, while title/content edits change the comparison."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "Queue-based processing is documented for buffering and independent scaling. Without input-change detection it moves the unnecessary work but does not eliminate it."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-003": {
+      "generation": {
+        "questionFingerprint": "b8a4070d1038cc0f952d349a03f8bd75cc5a0101df4edd7dfb9f3d1eae4d2601",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.734Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "Content hashes support selective embedding refresh by comparing semantic inputs. They do not represent the processor’s partition ownership and saved feed checkpoints."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "A queue can decouple change detection from a downstream embedding worker. It serves a different workload-buffering purpose from processor lease/checkpoint coordination."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "The unit describes leases storing partition ownership and checkpoints, enabling resumed processing, distributed coordination and failover. This is the state the scenario requires."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-004": {
+      "generation": {
+        "questionFingerprint": "ad3bfaf33b19e9dc1140285d5e8a7f0bf64794495d8619d2775554c6768dcd85",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.734Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "The unit identifies pull consumption for batch/infrequent processing with application-controlled timing and shows persistent continuation tracking. These responsibilities are intentionally owned by the existing orchestrator."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "The trigger is documented for automatic push delivery, partition management and checkpointing. It is appropriate when those continuous managed-trigger responsibilities are desired, unlike this explicitly orchestrated batch."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "A push processor is appropriate for continuous delivery with built-in partition coordination. This scenario asks the scheduled job to determine when reading occurs instead."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-005": {
+      "generation": {
+        "questionFingerprint": "29d05d1bfc9e1d5fa8803ed493f78dea40e82dff8d227ca6e9a3f2e7546b787a",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.734Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-store",
+              "ai200-20260915-data-cosmos-vector-index"
+            ],
+            "summary": "Index search/build settings tune accuracy and work for vectors described by the existing policy. They do not change the immutable dimension declaration to 768."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-store",
+              "ai200-20260915-data-cosmos-vector-index"
+            ],
+            "summary": "The units explicitly require a new container when vector-policy dimensions change. Keeping the original container during backfill preserves the existing path while the new policy and model-consistent vectors are prepared."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-store",
+              "ai200-20260915-data-cosmos-vector-index"
+            ],
+            "summary": "Float16 is a documented precision/storage choice for a suitably configured policy. A narrower element representation does not change the number of components, and the existing policy itself remains immutable."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-006": {
+      "generation": {
+        "questionFingerprint": "6b17fef80030afd00ebe3b8f215d5e9690d72f9fe3df1d55982606c8c816bfe4",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.734Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-cost",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "The cost unit explicitly notes that processing results triggers query execution and the response_hook. The query unit documents iterator-driven retrieval; constructing the iterator is not the same as consuming its response."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-cost",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "A composite is useful for a supported filter/sort workload. It changes query execution support, not whether the lazy iterator has executed and called the response hook."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-cost",
+              "ai200-20260915-data-cosmos-query"
+            ],
+            "summary": "Projection can reduce response payload once the query runs. It does not cause an unconsumed iterator to deliver a response or populate its hook output."
+          }
+        ]
+      }
+    },
+    "ai200-d-017": {
+      "generation": {
+        "questionFingerprint": "60f17e39a7d381104a0cf5d75aacd5d8e693cba0bf9bd35c0790b4d02e4b668e",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.737Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-pg-sdk"],
+            "summary": "The SDK unit contrasts concatenated SQL with driver binding. Literal SQL is suitable for a fixed developer-authored query, but inserting the caller’s title into its text does not retain a separate parameter value."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-pg-sdk"],
+            "summary": "Python percent formatting produces query text before execute sees it. The %s characters only act as driver placeholders when the value is passed separately; this formatted literal construction is not the external-input pattern documented by the unit."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-pg-sdk"],
+            "summary": "The unit documents psycopg %s placeholders with a separate parameter tuple. The trailing comma constructs the one-element tuple used for the caller’s single title value."
+          }
+        ]
+      }
+    },
+    "ai200-d-018": {
+      "generation": {
+        "questionFingerprint": "927ccb3c64574da605ee945e0277d69640462b35ae6ef7d5bd8c05b46e640603",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.737Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-pg-connect"],
+            "summary": "The connection unit explicitly uses the issued access token’s token string as the PostgreSQL password for Entra authentication. Identity configuration and token acquisition are already satisfied."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-pg-connect"],
+            "summary": "Native authentication legitimately uses a database username and password. It is a different configured authentication flow from the specified Entra database identity."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-pg-connect"],
+            "summary": "This exact string is the documented resource scope passed when requesting the access token. It identifies the token audience request, not the issued token string used in the password field."
+          }
+        ]
+      }
+    },
+    "ai200-d-019": {
+      "generation": {
+        "questionFingerprint": "1d6ca00241fb5df491d9695c9f7400aa95cfc34ae3c0e63c04bf24908aff614b",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.737Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-pg-connect"],
+            "summary": "The unit documents encryption and CA validation for verify-ca. It fits a policy that stops at issuer trust, but it does not add the required hostname check."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-pg-connect"],
+            "summary": "The unit documents all three checks for verify-full: encryption, CA trust and matching the certificate hostname to the server. The required roots are supplied."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-pg-connect"],
+            "summary": "The documented require mode enforces encrypted transport without the complete certificate-validation contract requested here. It is appropriate only for a narrower encryption requirement, not this three-part policy."
+          }
+        ]
+      }
+    },
+    "ai200-d-020": {
+      "generation": {
+        "questionFingerprint": "c6b055bf66581e9fa9c7274220fa0ec8395270e904477f8329c39a6f0deaa843",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.737Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-schema",
+              "ai200-20260915-data-pg-rag"
+            ],
+            "summary": "Foreign keys and NOT NULL enforce parent validity and presence. Global UNIQUE(position) is valid for a globally unique sequence, but it prevents different documents from sharing position 1 here."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-schema",
+              "ai200-20260915-data-pg-rag"
+            ],
+            "summary": "These real constraints enforce the parent and non-null fields and are suitable when repeated positions are allowed. They leave duplicate positions possible within a document, which this requirement forbids."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-schema",
+              "ai200-20260915-data-pg-rag"
+            ],
+            "summary": "The schema unit supports required foreign keys and compound uniqueness; the RAG unit uses document_id/chunk_index uniqueness. This combines parent existence, required values and document-scoped position uniqueness."
+          }
+        ]
+      }
+    },
+    "ai200-d-021": {
+      "generation": {
+        "questionFingerprint": "69f1c065516440ba01a4da5fd96911da6832a02883f21424e5a9730315f51ecb",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.737Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-pg-schema"],
+            "summary": "The schema unit identifies JSONB for variable nested JSON objects/arrays with JSON-operator querying and indexing. It fits the requested flexible metadata while typed fields remain separate."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-pg-schema"],
+            "summary": "BYTEA is the documented binary-data type and is appropriate for small binary objects. It does not represent this metadata as a JSONB object available to the requested JSON operators."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-pg-schema"],
+            "summary": "VARCHAR stores character strings and optionally enforces a maximum length. It fits a text value, not the requested directly queryable nested JSON object."
+          }
+        ]
+      }
+    },
+    "ai200-d-022": {
+      "generation": {
+        "questionFingerprint": "2edd0be8d682d3d23031df7af69662f782550a93f083daf0c271fd1e57f72b4d",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.737Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-store",
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-index"
+            ],
+            "summary": "ef_search controls the runtime search candidate list for an existing HNSW index. It is a recall/latency control, not a declaration of the column’s dimensions."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-store",
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-index"
+            ],
+            "summary": "The direct product article identifies the exact no-dimensions indexing error; the storage unit documents vector(n). Declaring 768 matches the incoming model and is within the standard vector index limit."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-store",
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-index"
+            ],
+            "summary": "IVFFlat is a legitimate alternative ANN algorithm with different build/memory tradeoffs. The product article’s dimension-declaration prerequisite applies to indexing the column, so an algorithm swap does not cure the schema defect."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-007": {
+      "generation": {
+        "questionFingerprint": "8d4958620409a07075699f45f2f13d16ac416f139ca0e51450252b508958d8a1",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.737Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-index"
+            ],
+            "summary": "The product article documents missing dimensions as an index-creation failure. That diagnosis fits a failed build, not this established working index whose only change is probing every list."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-index"
+            ],
+            "summary": "An operator/index metric mismatch is a genuine reason an index is ineligible. The scenario explicitly preserves cosine and its matching class, so an L2 rebuild would change the required comparison."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-index"
+            ],
+            "summary": "The product article explicitly says probes equal to lists searches every list and the planner does not use the index for that exact-search boundary. Lower probes restore an approximate search-effort tradeoff that must be measured."
+          }
+        ]
+      }
+    },
+    "ai200-d-024": {
+      "generation": {
+        "questionFingerprint": "8849d3b8a3c3e01569bb1dc7adbcb0c7a81d696abd68a00595c67042b321d032",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.737Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "The actual training and product reference explain that HNSW has no IVFFlat-style training step and can be created on an empty table, at higher build/memory cost."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "IVFFlat is a real lower-memory/faster-build option when representative data exists for k-means clustering. The required empty-table provisioning order removes that prerequisite."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "Exact unindexed search is legitimate for small corpora or exhaustive results. It does not create the ANN index expressly required by this provisioning contract."
+          }
+        ]
+      }
+    },
+    "ai200-d-025": {
+      "generation": {
+        "questionFingerprint": "2cffd9cdf3cc65c62d2cbf9b1f56e2b7591eaa52fc16f8ca819735f786ad4175",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.739Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "Probes increases the lists searched when IVFFlat is eligible. It adjusts recall/latency, not the mismatch between an L2 operator and a cosine index."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "The sources pair cosine distance <=> with vector_cosine_ops. This restores metric compatibility without changing the required similarity definition."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "This is a documented valid L2 query/index pairing. It would implement Euclidean rather than the required cosine comparison, so it does not preserve the application contract."
+          }
+        ]
+      }
+    },
+    "ai200-d-026": {
+      "generation": {
+        "questionFingerprint": "ac065c91f14ef2e81b9e0c050144f8cebadef08ec922f33bd1c922890b425a85",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.739Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-lifecycle"
+            ],
+            "summary": "The lifecycle unit documents cumulative index usage statistics. They help identify whether an index is used over time, but do not provide this query’s measured operator timings and buffers."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-lifecycle"
+            ],
+            "summary": "The product reference recommends omitting ANALYZE when execution would take too long. An estimated plan is useful in that situation; this manageable staging query instead requires measured execution details."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-lifecycle"
+            ],
+            "summary": "The product reference recommends this measured plan when the query terminates reasonably fast. ANALYZE executes it and supplies actual timing, while BUFFERS provides buffer activity."
+          }
+        ]
+      }
+    },
+    "ai200-d-027": {
+      "generation": {
+        "questionFingerprint": "ba7e03b5846fcc8124c53f2d2092508e7e3474220a614e36d03d14422a26fc6a",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.739Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-tune",
+              "ai200-20260915-data-pg-scale"
+            ],
+            "summary": "The tuning unit identifies shared_buffers as actual shared page cache and effective_cache_size as an estimate; the scale unit recommends memory capacity for large vector working sets. The observed I/O and known working-set excess make actual memory the relevant experiment."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-tune",
+              "ai200-20260915-data-pg-scale"
+            ],
+            "summary": "This setting can correct a planner estimate and influence index-versus-scan costing when the estimate is wrong. It allocates no memory, and the scenario already establishes an accurate estimate and a physical working-set shortfall."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-tune",
+              "ai200-20260915-data-pg-scale"
+            ],
+            "summary": "work_mem is useful for sort/hash operations that need more working memory. The scenario has no spills and attributes I/O to hot index pages, not those per-operation workspaces."
+          }
+        ]
+      }
+    },
+    "ai200-d-028": {
+      "generation": {
+        "questionFingerprint": "e2dd6467d79cd4ff47d9d72aad23f8be4223da0723744b060071ecc80503b0d4",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.739Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-pg-scale"],
+            "summary": "Read-only replicas can offload read traffic, so this fits a wholly staleness-tolerant read workload. The source explicitly warns that asynchronous lag does not meet immediate read-after-write requirements."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-pg-scale"],
+            "summary": "The scale unit separates primary reads/writes from asynchronous read-only replica endpoints and routes immediate confirmation to the primary. The measured primary capacity supports that subset while recommendations use spare replica capacity."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-pg-scale"],
+            "summary": "The primary legitimately serves both reads and writes and supplies immediate freshness. The given load test excludes using it for the added recommendation traffic, so this plan fails the throughput requirement."
+          }
+        ]
+      }
+    },
+    "ai200-d-029": {
+      "generation": {
+        "questionFingerprint": "d1ec277f5fd7facd1aa2cf0977408e45fdb1792ebdf81c9295318484dd4bb2b0",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.739Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-lifecycle",
+              "ai200-20260915-data-pg-scale"
+            ],
+            "summary": "The source gives dimensions times element size times rows as a useful vector-payload estimate. It fits a payload-only scope, not live indexes, growth or replacement-related old row versions."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-lifecycle",
+              "ai200-20260915-data-pg-scale"
+            ],
+            "summary": "The documented relation-size functions measure the current table/index footprint and are useful for current usage reporting. A future live-release budget also needs growth and update/maintenance headroom."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-lifecycle",
+              "ai200-20260915-data-pg-scale"
+            ],
+            "summary": "The lifecycle unit documents separate table/index storage and MVCC old versions; the scale unit calls for growth projections. Combining those measurements avoids both payload-only accounting and a universal index multiplier."
+          }
+        ]
+      }
+    },
+    "ai200-d-030": {
+      "generation": {
+        "questionFingerprint": "864fd939d29ebdce6b652019f94b95b7f4f0262df100ce37ce5cbfc6f7f9aaa6",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.739Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-retrieval",
+              "ai200-20260915-data-pg-layout",
+              "ai200-20260915-data-pg-tune"
+            ],
+            "summary": "The retrieval unit says the planner may prefer metadata filtering and distance calculation on a small eligible set instead of a vector index. It is not inherently a failure; measured cost and preserved eligibility are decisive here."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-retrieval",
+              "ai200-20260915-data-pg-layout",
+              "ai200-20260915-data-pg-tune"
+            ],
+            "summary": "ef_search is useful for improving candidate exploration and recall when an HNSW path is used. It does not directly improve a plan that already uses a small metadata-selected set and meets the latency target."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-retrieval",
+              "ai200-20260915-data-pg-layout",
+              "ai200-20260915-data-pg-tune"
+            ],
+            "summary": "The scale/tuning units recommend compute scaling for measured CPU pressure or insufficient query capacity. Those conditions are not established by the absence of an HNSW operator alone."
+          }
+        ]
+      }
+    },
+    "ai200-d-031": {
+      "generation": {
+        "questionFingerprint": "01395bcb0e1d03c1750ff11a8c0d22050357e64c786a2d168e067abcf09e3ea4",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.739Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-retrieval",
+              "ai200-20260915-data-pg-rag"
+            ],
+            "summary": "The sources use count limits for token/resource control. Reducing the cap limits quantity, but the closest remaining result can still fall outside the evaluated relevance boundary."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-retrieval",
+              "ai200-20260915-data-pg-rag"
+            ],
+            "summary": "The retrieval unit combines a distance threshold for quality with LIMIT for quantity and permits empty results. This directly expresses the independently evaluated acceptance boundary."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-retrieval",
+              "ai200-20260915-data-pg-rag"
+            ],
+            "summary": "Increasing retrieved count is a documented way to improve recall when relevant material is being missed. It does not reject low-quality matches when this corpus has no acceptable one."
+          }
+        ]
+      }
+    },
+    "ai200-d-032": {
+      "generation": {
+        "questionFingerprint": "84c999522cfe4206dfbcefeaf7ecd3f0ceb610b9fe5b20cab1165885b9d23ef3",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.739Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-rag",
+              "ai200-20260915-data-pg-store"
+            ],
+            "summary": "The storage unit documents colocating a document’s content, metadata and vector. It fits whole-document retrieval, but not independently ranked sections with adjacency in a chunk sequence."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-rag",
+              "ai200-20260915-data-pg-store"
+            ],
+            "summary": "Multiple vector columns are documented for different representations of a document. They support title-versus-content search, not the required per-section sequence and neighbor retrieval."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-rag",
+              "ai200-20260915-data-pg-store"
+            ],
+            "summary": "The RAG unit separates source metadata from chunks, links each chunk to its parent and stores chunk_index for reconstruction/adjacency. This meets independent section retrieval and single-copy source metadata together."
+          }
+        ]
+      }
+    },
+    "ai200-d-033": {
+      "generation": {
+        "questionFingerprint": "0e030ca4e4ec1b17b584b62eacd808bdad806c8e98c4639f9f8ed4b5dd1c45a4",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.742Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-rag",
+              "ai200-20260915-data-pg-retrieval"
+            ],
+            "summary": "The RAG unit explicitly calls for title, source URL/document ID and section/page metadata in retrieved results so a consumer can follow a citation back to the source."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-rag",
+              "ai200-20260915-data-pg-retrieval"
+            ],
+            "summary": "Distance thresholds are documented for improving minimum relevance. They do not add the missing source locator or passage location to a result."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-rag",
+              "ai200-20260915-data-pg-retrieval"
+            ],
+            "summary": "Context-window retrieval is documented for passages whose meaning depends on neighbors. Additional content does not supply the omitted provenance columns by itself."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-008": {
+      "generation": {
+        "questionFingerprint": "a46154a1575bd3a673014bc629b47b94ca55c8be6447276c15510409b824fa04",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.742Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-pg-lifecycle"],
+            "summary": "The lifecycle unit documents synchronous content/embedding updates for occasional changes requiring immediate consistency. It couples edit latency and availability to the embedding service, contrary to this outage requirement."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-pg-lifecycle"],
+            "summary": "The lifecycle unit documents a stale flag and asynchronous batches to decouple frequent content edits from embedding generation. The flag tracks pending work during outages while the scenario explicitly permits retrieval lag."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-pg-lifecycle"],
+            "summary": "A scheduled full refresh is documented for periodic reevaluation and catching other changes. It does not identify precisely which edited rows are waiting, and does unnecessary full-corpus work for the stated requirement."
+          }
+        ]
+      }
+    },
+    "ai200-d-035": {
+      "generation": {
+        "questionFingerprint": "245e592a747667b2936eb5f243c4dc10606d1fb1c57168aceb538e15884685d0",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.742Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-connect",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "The connection unit documents 5432 for direct PostgreSQL connections. That endpoint remains appropriate for intentional direct access, not for selecting the enabled built-in pooler."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-connect",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "The SDK/pooling guidance uses connect_timeout to bound connection establishment. It changes waiting behavior, not which server endpoint handles the connection."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-connect",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "Both units explicitly distinguish PgBouncer port 6432 from direct port 5432. Supported tier and enabled configuration are established before the endpoint change."
+          }
+        ]
+      }
+    },
+    "ai200-d-036": {
+      "generation": {
+        "questionFingerprint": "f7fc0e23aa75b26cb34c5e6a500d5c56904b7662a93e937ead0d941b7f152d29",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.742Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-pool",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "The product article explicitly scopes probes with SET LOCAL inside a transaction. The pooling unit documents backend ownership for that transaction, avoiding an assumption about later backend reuse."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-pool",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "Session settings are useful when a client intentionally owns a persistent backend session. Transaction pooling does not guarantee that startup and later search transactions share that backend."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-pool",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "The pooling unit allows server-side defaults for a uniform desired setting. Here the change is required for one transaction, so a global default changes the scope of the requirement."
+          }
+        ]
+      }
+    },
+    "ai200-d-037": {
+      "generation": {
+        "questionFingerprint": "2e2ec6a0ad977306c439c8324df80f19c1f39d9c56a854712cfa3949cdc87a98",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.742Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-pool",
+              "ai200-20260915-data-pg-sdk"
+            ],
+            "summary": "The SDK unit documents this context manager for constructing and closing a standalone connection. It is a valid lifecycle when direct ownership is intended, but bypasses the existing application pool."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-pool",
+              "ai200-20260915-data-pg-sdk"
+            ],
+            "summary": "The pooling unit explicitly states that this context manager returns the borrowed connection on exit, including exceptions. It matches the existing process pool and request-scoped borrowing requirement."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-pool",
+              "ai200-20260915-data-pg-sdk"
+            ],
+            "summary": "The SDK unit documents cursor context managers for cursor cleanup inside a connection lifetime. Managing a cursor is not the same as borrowing and returning the connection from the application pool."
+          }
+        ]
+      }
+    },
+    "ai200-d-038": {
+      "generation": {
+        "questionFingerprint": "a1ca692261d4f181dd985b2be4ee6cdb5f171a3de6f3a1ef2ae8a62b6193eef3",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.742Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-sdk",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "The SDK guidance identifies syntax errors as faults that need code correction rather than transient retry. The scenario instead establishes previously valid SQL and a connection reset."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-sdk",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "The SDK unit documents handling constraint violations with meaningful data feedback. No write or uniqueness violation occurred in this read-only connection failure."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-sdk",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "The SDK and pool units document transient connection failures after restarts and bounded exponential-backoff recovery. The operation is read-only, avoiding a claim about replaying a write with an unknown commit outcome."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-009": {
+      "generation": {
+        "questionFingerprint": "9fada8e55d04ee72c65a326089ab49b4b500d3c38e77bf83967998862a3371d0",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.742Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-tune",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "The tuning unit states work_mem applies per operation per connection, and the pooling unit supports controlling concurrent borrowed resources and SET LOCAL. Five × three × 64 = 960 MiB fits the 1024-MiB workspace budget while meeting the measured 64-MiB minimum."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-tune",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "Eight × three × 32 = 768 MiB is a valid lower-memory policy when 32-MiB operations meet the workload target. The supplied staging measurement requires at least 64 MiB per workspace, so this plan violates the latency condition."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-tune",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "Four × three × 128 = 1536 MiB is a meaningful higher-workspace policy when the memory budget permits it. It satisfies the per-workspace minimum but exceeds the specified 1024-MiB allowance."
+          }
+        ]
+      }
+    },
+    "ai200-d-039": {
+      "generation": {
+        "questionFingerprint": "13667a74cf33c23914d7d1966ff9ee5f1f8559337211321fa14cfd2e8b9583bc",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.743Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-redis-data"],
+            "summary": "The data unit documents time-based invalidation for tolerated cache age. Waiting leaves the old value available during its remaining lifetime, so it does not meet immediate invalidation."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-redis-data"],
+            "summary": "PERSIST legitimately removes key expiration when indefinite retention is desired. It preserves the old value rather than invalidating it."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-redis-data"],
+            "summary": "The unit documents manual invalidation after a source update and cache-aside reload on a miss. Deleting the key removes the old cached value under the supplied no-refill-race condition."
+          }
+        ]
+      }
+    },
+    "ai200-d-040": {
+      "generation": {
+        "questionFingerprint": "9e621e4912fbd626420e04464b023c4c1eb67f4252ae5b1b423ae28679763b40",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.743Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-redis-client",
+              "ai200-20260915-data-redis-data"
+            ],
+            "summary": "The client unit states that OSS-cluster multi-key operations require the keys to map to the same slot. This preserves the OSS policy and the single-MGET interface. No unadmitted hash-tag syntax is assumed."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-redis-client",
+              "ai200-20260915-data-redis-data"
+            ],
+            "summary": "The unit explicitly permits MGET across slots under Enterprise clustering. It is a legitimate alternative architecture, but it violates the requirement to retain OSS."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-redis-client",
+              "ai200-20260915-data-redis-data"
+            ],
+            "summary": "GET and pipelining are documented for single-key retrieval and reduced network overhead. This avoids a multi-key command by changing the interface, whereas the scenario requires one MGET."
+          }
+        ]
+      }
+    },
+    "ai200-d-041": {
+      "generation": {
+        "questionFingerprint": "39ba60c523f0c6c38655f2c9f4d686bd4bc304e6918a3e7427476555c0101d42",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.743Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-redis-data",
+              "ai200-20260915-data-redis-client"
+            ],
+            "summary": "KEYS performs pattern enumeration, but the unit warns it blocks the server. Application-side batching after the call does not make that traversal incremental. It is only a coherent choice where that blocking cost is acceptable."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-redis-data",
+              "ai200-20260915-data-redis-client"
+            ],
+            "summary": "The data unit shows pattern-based invalidation using SCAN, MATCH and a cursor until completion. The client unit recommends SCAN over KEYS for production iteration."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-redis-data",
+              "ai200-20260915-data-redis-client"
+            ],
+            "summary": "MGET is documented for efficient value retrieval when key names are known. It is not prefix-based key discovery and cannot supply the unknown complete list in this scenario."
+          }
+        ]
+      }
+    },
+    "ai200-d-043": {
+      "generation": {
+        "questionFingerprint": "c076282b90708f61c24fdfee4beeedc6bb9ac003f3fba027aef5bca57fa2080b",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.743Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-redis-structure",
+              "ai200-20260915-data-redis-data"
+            ],
+            "summary": "The structure unit documents this valid compact pairing for flat metadata. It does not provide the required nested JSON structure and JSON-path field indexing."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-redis-structure",
+              "ai200-20260915-data-redis-data"
+            ],
+            "summary": "The data unit documents strings for serialized data and cache values. That representation is not the JSON-document numeric-array/index pairing needed for these JSON-path vector fields."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-redis-structure",
+              "ai200-20260915-data-redis-data"
+            ],
+            "summary": "The structure unit documents JSON numeric-array embeddings, nested objects and JSON indexes whose fields use JSONPath. These are the required representation and index-type relationships."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-010": {
+      "generation": {
+        "questionFingerprint": "db5d84b4346ae0d8acf686727b6a2ba8e3ccc8c49fa142eda05284cb488a88de",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.743Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-redis-data"],
+            "summary": "The data unit documents EXPIRE as a key-level expiration operation that applies to hashes and other types without replacing their values."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-redis-data"],
+            "summary": "SETEX legitimately creates a string value with expiration atomically. It does not preserve the existing HASH field representation required here."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-redis-data"],
+            "summary": "PERSIST is a documented key-level operation that removes expiration. It is appropriate for indefinite retention, not for adding a five-minute lifetime."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-011": {
+      "generation": {
+        "questionFingerprint": "e419934758b852b743158821b22a30052fc1a445f6b13b85d8c0764f07a0e066",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.743Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-redis-index",
+              "ai200-20260915-data-redis-types"
+            ],
+            "summary": "VECTOR_RANGE is documented for threshold-based retrieval rather than a fixed nearest-neighbor request. It changes result-selection semantics and does not preserve the required KNN 10 contract."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-redis-index",
+              "ai200-20260915-data-redis-types"
+            ],
+            "summary": "The vector units document query-level EF_RUNTIME controlling HNSW search exploration. Increasing it is the targeted accuracy/latency experiment while retaining the shared index and KNN count."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-redis-index",
+              "ai200-20260915-data-redis-types"
+            ],
+            "summary": "FLAT is documented for exhaustive retrieval and can be appropriate for a different collection requirement. Rebuilding changes the common index and normal-route behavior rather than tuning only this evaluation request."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-012": {
+      "generation": {
+        "questionFingerprint": "f218a152c31770a82885c05cc531b56256c211795c64239afbfebe173e4d35a0",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.743Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-redis-types",
+              "ai200-20260915-data-redis-structure"
+            ],
+            "summary": "The unit documents eight bytes per FLOAT64 component: 1000000 × 384 × 8 is 3072000000. It is appropriate when the extra precision is required, but the stated evaluation accepts the smaller FLOAT32 representation."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-redis-types",
+              "ai200-20260915-data-redis-structure"
+            ],
+            "summary": "The unit documents four bytes per FLOAT32 component and the HASH unit stores packed binary vectors. The fixture therefore needs 1000000 × 384 × 4 = 1536000000 raw vector bytes, excluding other structures."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-013": {
+      "generation": {
+        "questionFingerprint": "1c30cc2e3a96202d609729f641e0ff7c0d950625b98930c2d6382231eebce759",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.743Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-redis-index",
+              "ai200-20260915-data-redis-structure"
+            ],
+            "summary": "The indexing unit states that Redis monitors and indexes keys with the configured prefix. The field/type/dimension prerequisites are satisfied, leaving the article: versus note: membership boundary."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-redis-index",
+              "ai200-20260915-data-redis-structure"
+            ],
+            "summary": "Dimension matching is a genuine ingestion/query prerequisite documented by the units. It would explain a dimension defect, but the scenario explicitly verifies matching dimensions for both sets."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-redis-index",
+              "ai200-20260915-data-redis-structure"
+            ],
+            "summary": "HASH versus JSON index type is a genuine structure boundary documented by the structure unit. Both old and new records are already HASH documents under a HASH index, so it is not the observed difference."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-014": {
+      "generation": {
+        "questionFingerprint": "1cfbca56e87f1ffa95087e0db6d4f5bed2171644ccd1d4171c8cf59264b01f14",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T19:44:00.745Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-redis-data"],
+            "summary": "SET is documented for assigning a string/cache value. It is appropriate when replacing that value is intended, but a client-computed read/modify/write replacement does not provide the atomic addition required by concurrent workers."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-redis-data"],
+            "summary": "The data unit documents atomic INCRBY on numeric-string values for counters and distributed counting. It performs the addition at the server rather than overwriting another worker’s concurrent increment."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-redis-data"],
+            "summary": "Lists and RPUSH are documented for ordered collections/queue patterns. A list of batch records is a legitimate different data model, but it does not atomically add into the existing numeric-string counter."
+          }
+        ]
+      }
+    }
+  }
+}

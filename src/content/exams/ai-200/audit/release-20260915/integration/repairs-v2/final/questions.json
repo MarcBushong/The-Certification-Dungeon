@@ -1,0 +1,169 @@
+[
+  {
+    "id": "ai200-i-013",
+    "question": "Two existing Basic Event Grid custom topics feed a handler that accepts only CloudEvents and does not parse Event Grid envelopes. Topic E accepts the Event Grid schema; topic C accepts CloudEvents with extension attributes. Publishers cannot change. Which pair of subscription output schemas supports the handler without losing C’s extension contract?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "E: Event Grid schema; C: CloudEvents schema."
+      },
+      {
+        "id": "b",
+        "text": "E: Event Grid schema; C: Event Grid schema."
+      },
+      {
+        "id": "c",
+        "text": "E: CloudEvents schema; C: CloudEvents schema."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The documented compatibility table permits Event Grid-to-CloudEvents and CloudEvents-to-CloudEvents. This pair matches the handler while retaining C’s extensible envelope.",
+    "deepExplanation": "The two publisher contracts must each be checked against the compatibility table. Changing output format on an Event Grid-input subscription is supported; the reverse transformation from CloudEvents input is not.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Both topic/output pairs are supported by Event Grid, but E would still deliver Event Grid envelopes to a CloudEvents-only handler. This pair fits a handler that separately understands both formats.",
+      "b": "Event Grid output is supported for Event Grid input. It would fit two Event Grid-input publishers and an Event Grid handler, but C’s fixed CloudEvents input cannot use that output schema."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/event-grid/cloud-event-schema"
+    ],
+    "documentationTitles": ["CloudEvents v1.0 schema with Azure Event Grid"],
+    "generatedAt": "2026-09-15T20:14:59.544Z",
+    "lastValidatedAt": "2026-09-15T20:14:59.544Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.cloudevents-input-output-schema",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh independent adversarial review of the exact v2 i-013 snapshot. The new exclusive handler condition repairs the v1 ambiguity: a remains a service-supported row but fails this consumer, b is unsupported for C, and c alone satisfies both contracts. However, the actual option set now selects c solely from the only-CloudEvents output wording; neither distractor requires evaluating input-to-output compatibility to reject it. Intermediate/technical-implementation remains unsupported. The explicit criterion scores total 43/48, below threshold, in addition to the separate classification failure. Keep manual-review-required despite pass-2 verification. Original author may honestly reclassify as foundational recall or author options requiring a real compatibility decision, followed by all three fresh passes. No v1 verdict, score or time is inherited or overwritten.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "The exact conversion table and explicit new consumer condition establish a unique technical key. The adverse decision is separately grounded in the actual elimination-only task and authored classification, not an invented remaining ambiguity."
+  },
+  {
+    "id": "ai200-r-i-006",
+    "question": "A Basic Event Grid webhook receives a batch of three jobs. After 12 seconds it has durably finished two; the third needs another minute. A Service Bus queue can durably accept the remaining job in two seconds, and a worker will process it. The endpoint must finish within Event Grid’s response window without asking Event Grid to replay the whole batch. Which plan meets that contract?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Finish the third job synchronously, then return a success response."
+      },
+      {
+        "id": "b",
+        "text": "Successfully enqueue the remaining job, then return 202 for the batch."
+      },
+      {
+        "id": "c",
+        "text": "Return 503 for the batch and let the next delivery retry its work."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Event Grid accepts 202 as successful delivery, including asynchronous acceptance. Persisting the unfinished work before acknowledging moves its reliability to Service Bus and fits the stated remaining response time without requesting whole-batch retry.",
+    "deepExplanation": "Output batching acknowledges the whole HTTP request, not individual elements. The decision combines the 30-second response boundary, completed versus unfinished work, and a successful durable handoff. If queue acceptance fails, the premise supporting 202 no longer holds.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Synchronous completion suits a batch whose full processing finishes within the 30-second response window. The remaining minute would exceed that bound despite the first two successes.",
+      "c": "503 and all-or-none batch retry are valid when the handler cannot accept the batch and retry should occur. That explicitly requests replay of the batch, contrary to the required handoff contract."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-integration-eg-delivery",
+      "ai200-20260915-integration-sb-concepts",
+      "ai200-20260915-integration-sb-reliability"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/event-driven-workflows-event-grid/4-delivery-retry-policies",
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/2-explore-service-bus-concepts",
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/5-process-messages-reliably"
+    ],
+    "documentationTitles": [
+      "Configure delivery and retry policies for reliable event processing",
+      "Explore Azure Service Bus concepts and messaging in AI architectures",
+      "Process messages reliably"
+    ],
+    "generatedAt": "2026-09-15T20:14:59.544Z",
+    "lastValidatedAt": "2026-09-15T20:14:59.544Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.batch-acknowledgement-durable-handoff",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T21:02:03.662Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-eg-delivery",
+      "ai200-20260915-integration-sb-concepts",
+      "ai200-20260915-integration-sb-reliability"
+    ],
+    "verificationNotes": "Fresh independent adversarial review of the new r-i-006 v2 hash, all three plans and all three full cited documents. Recomputed the complete response timelines: synchronous work reaches about 72 seconds, successful enqueue about 14, and 503 requests whole-batch retry. Only b meets the durable-acceptance and response requirements. The Intermediate architecture-design classification is now proportionate, with explicit deductions for simple supplied arithmetic, strong feasibility clues and a conventional async pattern. Independent 45/48. The old Advanced-label hold remains in immutable v1 history; it is not relabeled or renewed. No guarantee of never receiving duplicates, atomic publication or runtime uninterrupted execution is inferred.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "The 202/503 distinction, whole-batch acknowledgement and durable queue ownership are directly sourced and each alternative has a concrete documented context. Confidence is bounded to the supplied successful handoff, not a live Azure test or a copied pass-2 approval."
+  },
+  {
+    "id": "ai200-r-i-011",
+    "question": "A Python function app is being moved to another supported Python interpreter version. Its third-party dependencies were built for the previous interpreter. The application files, declared package list and blueprint registration are otherwise correct. What must the deployment workflow do for the version change?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Rebuild and redeploy the app and dependencies using the new Python version."
+      },
+      {
+        "id": "b",
+        "text": "Download the app’s current settings into local.settings.json."
+      },
+      {
+        "id": "c",
+        "text": "Move related handlers into a registered Blueprint."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "The Python reference explicitly requires rebuild and redeployment after a Python version change. Existing artifacts and dependencies are not automatically rebuilt by changing the app’s interpreter setting.",
+    "deepExplanation": "A version-setting change and an artifact build are separate lifecycle actions. The required rebuild does not mandate new package versions where the declared versions support the target interpreter.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Downloading settings helps reproduce configuration locally. It does not rebuild dependencies for the new interpreter or replace deployed artifacts.",
+      "c": "Blueprints provide modular organization and function discovery. They are appropriate for organizing a larger app, not for rebuilding artifacts after an interpreter change."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Configure and deploy function apps",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-fn-configuration"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python",
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/5-manage-secrets-configuration"
+    ],
+    "documentationTitles": [
+      "Azure Functions developer reference guide for Python apps",
+      "Manage secrets and configuration in Functions"
+    ],
+    "generatedAt": "2026-09-15T20:14:59.544Z",
+    "lastValidatedAt": "2026-09-15T20:14:59.544Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "deployment-configuration"],
+    "conceptId": "functions.python-version-change-rebuild-artifacts",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T21:02:03.662Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-fn-configuration"
+    ],
+    "verificationNotes": "Fresh independent adversarial review of the exact v2 r-i-011 snapshot, all three options and the complete current cited source bodies. Rebuilding/redeploying is explicitly required after the supported interpreter change; settings download and Blueprint organization are different documented tasks. Beginner/concept-recall and single-select now accurately describe this direct prescription, with no applied coverage. Independently scored 44/48 with real deductions for weak alternatives, repetitive explanation and conventional framing. This is a narrow foundational pass, not an inherited numerical uplift or a renewal of the old Intermediate technical-implementation record. All v1 attestations remain intact.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "Two explicit source passages establish the artifact obligation and independently read configuration/blueprint sections establish both alternate contexts. The new classification is honest, while limited distractor strength and explanation depth remain visible in the fresh rubric."
+  }
+]

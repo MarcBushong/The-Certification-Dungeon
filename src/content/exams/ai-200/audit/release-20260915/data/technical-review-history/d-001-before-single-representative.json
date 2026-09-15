@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "preservedAt": "2026-09-15T20:21:27.024Z",
+  "questionId": "ai200-d-001",
+  "reason": "Preserve the initial full technical manual hold before the same reviewer selects the coordinator-authorized single stable representative.",
+  "previousTechnicalFileSha256": "747a82a491e8ef639181d17a38bb822db4f83cca46701be70e37e577415d8e81",
+  "previousEncounter": {
+    "generation": {
+      "questionFingerprint": "c2f4cab787dde4ca4516d8e775255e1b04eba5c0d3b9dc9ad5622a30da05d18d",
+      "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+      "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+      "authorId": "ai200-release-author-data",
+      "generatedAt": "2026-09-15T19:44:00.728Z",
+      "claims": [
+        {
+          "choiceId": "A",
+          "sourceIds": [
+            "ai200-20260915-data-cosmos-sdk",
+            "ai200-20260915-data-cosmos-query"
+          ],
+          "summary": "The SDK unit says the root client owns connection pools and routing caches, so retaining that object targets repeated connection setup. This does not guarantee that subsequent query execution is fast."
+        },
+        {
+          "choiceId": "B",
+          "sourceIds": [
+            "ai200-20260915-data-cosmos-sdk",
+            "ai200-20260915-data-cosmos-query"
+          ],
+          "summary": "The query unit documents projection for reducing response payload. That is useful when data transfer is the bottleneck, but it does not retain the client-owned connections identified here."
+        },
+        {
+          "choiceId": "C",
+          "sourceIds": [
+            "ai200-20260915-data-cosmos-sdk",
+            "ai200-20260915-data-cosmos-query"
+          ],
+          "summary": "The query unit documents page-size control for per-page memory and round-trip tradeoffs. It is a genuine paging option, not a way to retain a newly discarded root client pool."
+        }
+      ]
+    },
+    "technical": {
+      "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+      "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+      "review": {
+        "questionId": "ai200-d-001",
+        "authorId": "ai200-release-author-data",
+        "reviewerId": "ai200-release-technical-data",
+        "questionFingerprint": "c2f4cab787dde4ca4516d8e775255e1b04eba5c0d3b9dc9ad5622a30da05d18d",
+        "reviewedAt": "2026-09-15T20:07:59.113Z",
+        "verdict": "manual-review-required",
+        "sourceReviews": [
+          {
+            "sourceId": "ai200-20260915-data-cosmos-sdk",
+            "url": "https://learn.microsoft.com/en-us/training/modules/build-query-azure-cosmos-db/3-implement-cosmos-db-sdk",
+            "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-build-query-azure-cosmos-db-3-implement-cosmos-db-sdk.json",
+            "retrievedAt": "2026-09-15T19:24:39.305Z",
+            "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+            "supportingSummary": "Client entry point and best-practices sections explicitly assign connections/routing cache to CosmosClient, recommend application lifetime, and distinguish lightweight handles from read_item and query operations. Do not adopt the overbroad account-key privileges, conditional-access language or incorrect if_match example."
+          },
+          {
+            "sourceId": "ai200-20260915-data-cosmos-query",
+            "url": "https://learn.microsoft.com/en-us/training/modules/build-query-azure-cosmos-db/4-query-cosmos-db-nosql",
+            "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-build-query-azure-cosmos-db-4-query-cosmos-db-nosql.json",
+            "retrievedAt": "2026-09-15T19:24:40.521Z",
+            "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+            "supportingSummary": "Read SELECT/projection, WHERE, @name/value arrays, explicit partition_key, max_item_count and iterator execution sections. These establish value binding, eligibility versus shape, and paging; no fixed RU saving, automatic global query-plan cache or universal continuation guarantee is inferred."
+          }
+        ],
+        "choiceReviews": [
+          {
+            "choiceId": "A",
+            "assessment": "supported",
+            "rationale": "The SDK connection-best-practices section assigns pooling and routing caches to CosmosClient and explicitly recommends startup/application scope. This addresses the measured setup delay; a per-request client is reasonable only for separately bounded application lifetimes, not this repeated same-account path.",
+            "sourceIds": ["ai200-20260915-data-cosmos-sdk"]
+          },
+          {
+            "choiceId": "B",
+            "assessment": "contradicted",
+            "rationale": "Projection reduces returned fields and response transfer, so it is useful for a payload bottleneck. It leaves the root-client creation that profiling identifies untouched.",
+            "sourceIds": ["ai200-20260915-data-cosmos-query"]
+          },
+          {
+            "choiceId": "C",
+            "assessment": "contradicted",
+            "rationale": "max_item_count trades page memory against round trips after query execution begins. It is useful for oversized result pages, not retaining a pool discarded before each request.",
+            "sourceIds": ["ai200-20260915-data-cosmos-query"]
+          }
+        ],
+        "checks": {
+          "answerDefensible": true,
+          "correctOptionsSupported": true,
+          "distractorsIncorrect": true,
+          "explanationsSupported": true,
+          "directSources": true,
+          "featureStatus": true,
+          "currentTerminology": true,
+          "prerequisitesComplete": true,
+          "codeReviewed": true,
+          "originalContent": true,
+          "duplicatesReviewed": false,
+          "qualityReviewed": true
+        },
+        "verificationNotes": "A alone changes the object lifetime responsible for connection setup; neither response-shaping alternative removes initialization. Explanation review: The distinction between root-client ownership and lightweight container handles is accurate; no fixed performance gain or authorization grant is claimed. Scope: Same account and a running application are specified. Existing access is implicit in successful requests; no service tier or new role is needed for client reuse. Quality: Beginner troubleshooting is honest: a measured setup bottleneck distinguishes three real optimization targets. No machine warning, answer-length trap, or unclear referent found. Semantic review: Hold for collision with frozen integration ai200-r-i-008: both move an SDK client out of each request to amortize initialization on an existing instance. Cosmos pool/routing ownership versus Functions warm-instance wording does not require a different corrective invariant. d-037 is distinct because its root pool is already long-lived and it must return a borrowed connection. Required action: Parent must retain one representative of d-001/r-i-008 or obtain a genuinely different authored decision. Do not clear both by changing product names or concept IDs. This is independent technical pass 2 only, not a final rubric, ledger approval or gameplay admission.",
+        "confidenceReason": "The option-by-option evidence is recorded, but approval is withheld for these exact reasons: duplicatesReviewed. Parent must retain one representative of d-001/r-i-008 or obtain a genuinely different authored decision. Do not clear both by changing product names or concept IDs."
+      }
+    }
+  },
+  "previousNotes": {
+    "questionFingerprint": "c2f4cab787dde4ca4516d8e775255e1b04eba5c0d3b9dc9ad5622a30da05d18d",
+    "verdict": "manual-review-required",
+    "reviewedAt": "2026-09-15T20:07:59.113Z",
+    "failedChecks": ["duplicatesReviewed"],
+    "requiredFix": "Parent must retain one representative of d-001/r-i-008 or obtain a genuinely different authored decision. Do not clear both by changing product names or concept IDs.",
+    "answerSetReview": "A alone changes the object lifetime responsible for connection setup; neither response-shaping alternative removes initialization.",
+    "optionReviews": [
+      {
+        "choiceId": "A",
+        "assessment": "supported",
+        "rationale": "The SDK connection-best-practices section assigns pooling and routing caches to CosmosClient and explicitly recommends startup/application scope. This addresses the measured setup delay; a per-request client is reasonable only for separately bounded application lifetimes, not this repeated same-account path.",
+        "sourceIds": ["ai200-20260915-data-cosmos-sdk"]
+      },
+      {
+        "choiceId": "B",
+        "assessment": "contradicted",
+        "rationale": "Projection reduces returned fields and response transfer, so it is useful for a payload bottleneck. It leaves the root-client creation that profiling identifies untouched.",
+        "sourceIds": ["ai200-20260915-data-cosmos-query"]
+      },
+      {
+        "choiceId": "C",
+        "assessment": "contradicted",
+        "rationale": "max_item_count trades page memory against round trips after query execution begins. It is useful for oversized result pages, not retaining a pool discarded before each request.",
+        "sourceIds": ["ai200-20260915-data-cosmos-query"]
+      }
+    ],
+    "checkJustifications": {
+      "answerDefensible": "A alone changes the object lifetime responsible for connection setup; neither response-shaping alternative removes initialization.",
+      "correctOptionsSupported": "A (supported): The SDK connection-best-practices section assigns pooling and routing caches to CosmosClient and explicitly recommends startup/application scope. This addresses the measured setup delay; a per-request client is reasonable only for separately bounded application lifetimes, not this repeated same-account path.",
+      "distractorsIncorrect": "B (contradicted): Projection reduces returned fields and response transfer, so it is useful for a payload bottleneck. It leaves the root-client creation that profiling identifies untouched. C (contradicted): max_item_count trades page memory against round trips after query execution begins. It is useful for oversized result pages, not retaining a pool discarded before each request.",
+      "explanationsSupported": "The distinction between root-client ownership and lightweight container handles is accurate; no fixed performance gain or authorization grant is claimed.",
+      "directSources": "The exact citations ai200-20260915-data-cosmos-sdk, ai200-20260915-data-cosmos-query have matching frozen raw MCP bodies, AI200 approvals and actual credential/course/path/module/unit ancestry. No documentation was admitted by an arbitrary product/topic or external link.",
+      "featureStatus": "Ordinary azure-cosmos client lifecycle and query paging are the documented SDK baseline, not vector or preview tuning features.",
+      "currentTerminology": "cosmos.singleton-client-resource-handles: CosmosClient is the correct root type. No executable fragment or version-specific constructor signature is proposed.",
+      "prerequisitesComplete": "Same account and a running application are specified. Existing access is implicit in successful requests; no service tier or new role is needed for client reuse.",
+      "codeReviewed": "CosmosClient is the correct root type. No executable fragment or version-specific constructor signature is proposed.",
+      "originalContent": "Original prose and decision framing were compared with the actual technical training, not assessments. Beginner troubleshooting is honest: a measured setup bottleneck distinguishes three real optimization targets. No machine warning, answer-length trap, or unclear referent found. Semantic duplication is adjudicated separately: Hold for collision with frozen integration ai200-r-i-008: both move an SDK client out of each request to amortize initialization on an existing instance. Cosmos pool/routing ownership versus Functions warm-instance wording does not require a different corrective invariant. d-037 is distinct because its root pool is already long-lived and it must return a borrowed connection.",
+      "duplicatesReviewed": "Hold for collision with frozen integration ai200-r-i-008: both move an SDK client out of each request to amortize initialization on an existing instance. Cosmos pool/routing ownership versus Functions warm-instance wording does not require a different corrective invariant. d-037 is distinct because its root pool is already long-lived and it must return a borrowed connection.",
+      "qualityReviewed": "Beginner troubleshooting is honest: a measured setup bottleneck distinguishes three real optimization targets. No machine warning, answer-length trap, or unclear referent found."
+    },
+    "semanticAssessment": "Hold for collision with frozen integration ai200-r-i-008: both move an SDK client out of each request to amortize initialization on an existing instance. Cosmos pool/routing ownership versus Functions warm-instance wording does not require a different corrective invariant. d-037 is distinct because its root pool is already long-lived and it must return a borrowed connection.",
+    "qualityAssessment": "Beginner troubleshooting is honest: a measured setup bottleneck distinguishes three real optimization targets. No machine warning, answer-length trap, or unclear referent found.",
+    "sourceIds": [
+      "ai200-20260915-data-cosmos-sdk",
+      "ai200-20260915-data-cosmos-query"
+    ],
+    "warningReviews": [],
+    "additionalSemanticEvidence": {
+      "followupPath": ".grounding\\ai200-release\\data\\technical\\semantic-followup-20260915.json",
+      "relatedQuestionIds": ["ai200-r-i-008", "ai200-r-s-003"],
+      "note": "Async shutdown is a real extra SDK obligation, but only the keyed option reuses a client; that added text does not establish a separately necessary tested decision."
+    }
+  }
+}

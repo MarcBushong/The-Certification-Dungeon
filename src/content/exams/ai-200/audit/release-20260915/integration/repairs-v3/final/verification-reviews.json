@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "requestId": "ai200-integration-independent-adversarial-repairs-v3-20260915",
+  "reviews": [
+    {
+      "questionId": "ai200-i-003",
+      "authorId": "ai200-release-author-integration",
+      "reviewerId": "ai200-release-adversarial-integration",
+      "questionFingerprint": "8d95eaf810b4b9a7cf3acf920d60db1827a3a4cf54dfdba637f04730893240a4",
+      "reviewedAt": "2026-09-15T21:39:03.414Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "ai200-20260915-integration-sb-patterns",
+          "url": "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/3-choose-queues-topics-subscriptions",
+          "evidencePath": ".grounding\\ai200-release\\integration\\raw\\sb-patterns.json",
+          "retrievedAt": "2026-09-15T19:22:49.451Z",
+          "lastReviewedAt": "2026-09-15T19:29:28.610Z",
+          "supportingSummary": "Fresh full-unit reading for v3: the subscription-filter section explicitly assigns more-efficient exact-value matching to correlation filters while defining and demonstrating legitimate SQL equality. The question tests relative efficiency, not whether SQL routes incorrectly. Unrelated queue-delivery generalizations are not used. Exact-option grounding: a: The filter section defines SQL-like property expressions and shows SqlRuleFilter with a property equality. The neighboring sentence specifically identifies correlation filters as more efficient for exact matches. b: The directly read unit says correlation filters match specific property values and have an efficiency advantage over SQL filters for exact-match scenarios; it separately retains SQL’s expression-based role."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "SQL equality can select these messages, so it is not an invalid routing mechanism. It is incorrect as the answer to the explicit comparative criterion: the source assigns the exact-match efficiency advantage to correlation filters, not SQL filters. Literal alternate context: A SQL filter is a documented choice for SQL-like application or system-property predicates, including an equality rule. It can remain correct when the requirement is that predicate’s routing behavior rather than winning this exact-match efficiency comparison. Evidence: The filter section defines SQL-like property expressions and shows SqlRuleFilter with a property equality. The neighboring sentence specifically identifies correlation filters as more efficient for exact matches.",
+          "sourceIds": ["ai200-20260915-integration-sb-patterns"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Not incorrect: model_name equals classification-v2 is a single exact property-value match, the precise scenario for which the actual unit states correlation filters are more efficient than SQL filters. Literal alternate context: Use correlation filtering for specified property-value matches such as the stated equality. This does not imply support for every SQL expression or a guaranteed numerical speedup in every workload. Evidence: The directly read unit says correlation filters match specific property values and have an efficiency advantage over SQL filters for exact-match scenarios; it separately retains SQL’s expression-based role.",
+          "sourceIds": ["ai200-20260915-integration-sb-patterns"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh same-context independent PASS 3 for the exact repairs-v3 i-003 hash. Read the complete current guide/map, actual subscription-patterns unit and complete credential-scoped ancestry, then challenged both literal alternatives. SQL equality remains valid routing, but correlation alone has the documented comparative efficiency advantage asked for here. The previous answer-giving exclusions and accept-all padding are absent. Beginner/concept-recall earns no applied coverage. The independently scored rubric deducts for binary discrimination and conventional framing; no predecessor score, lower-label approval or quota target supplies this verdict. Original v1/v2 history and source snapshots remain untouched. Independently authored criterion total: 46/48.",
+      "confidenceReason": "The actual source supplies both the SQL equality countercontext and the precise correlation efficiency comparison. The key survives that meaningful challenge without an unsupported claim that SQL filtering is wrong in all contexts."
+    },
+    {
+      "questionId": "ai200-i-013",
+      "authorId": "ai200-release-author-integration",
+      "reviewerId": "ai200-release-adversarial-integration",
+      "questionFingerprint": "c4c8db514e2d49af343a7730b7d1acd6097b43920492e739060af0727e6ff46a",
+      "reviewedAt": "2026-09-15T21:39:03.414Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "ai200-20260915-integration-doc-cloudschema",
+          "url": "https://learn.microsoft.com/en-us/azure/event-grid/cloud-event-schema",
+          "evidencePath": ".grounding\\ai200-release\\integration\\raw\\doc-cloudschema.json",
+          "retrievedAt": "2026-09-15T19:25:50.247Z",
+          "lastReviewedAt": "2026-09-15T19:29:28.610Z",
+          "supportingSummary": "Fresh full-article reading for v3: the table permits CloudEvents-to-CloudEvents, EventGrid-to-CloudEvents and EventGrid-to-EventGrid; adjacent prose expressly excludes CloudEvents-to-EventGrid because extensions are not represented. The new dual-parser handler does not add conversion support. Legacy Functions examples and external links are excluded. Exact-option grounding: a: The actual table lists both CloudEvents-to-CloudEvents and EventGrid-to-CloudEvents. Its extension discussion explains why retaining CloudEvents is the supported path for this fixed publisher. b: The configuration section permits EventGrid-to-EventGrid and explicitly states Event Grid output cannot be used with CloudEvents input because the former schema lacks the latter’s extension attributes."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Not incorrect: the explicit CloudEvents-to-CloudEvents row supports this delivery format, the extension-capable envelope is retained, and the stipulated dual-format handler accepts it. Literal alternate context: CloudEvents delivery is supported for the stated CloudEvents input and also for Event Grid input under another explicit table row. This is not merely a rule to repeat the spelling of the input format. Evidence: The actual table lists both CloudEvents-to-CloudEvents and EventGrid-to-CloudEvents. Its extension discussion explains why retaining CloudEvents is the supported path for this fixed publisher.",
+          "sourceIds": ["ai200-20260915-integration-doc-cloudschema"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The handler could parse the proposed output, but the Event Grid service does not support the CloudEvents-to-EventGrid conversion. Parser capability cannot add a conversion that the source expressly prohibits. Literal alternate context: The literal Event Grid delivery schema is supported when the topic receives Event Grid input and the consumer accepts that output, as the table explicitly shows. The present publisher’s fixed CloudEvents input excludes that valid context. Evidence: The configuration section permits EventGrid-to-EventGrid and explicitly states Event Grid output cannot be used with CloudEvents input because the former schema lacks the latter’s extension attributes.",
+          "sourceIds": ["ai200-20260915-integration-doc-cloudschema"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh same-context independent PASS 3 for the exact repairs-v3 i-013 hash. Read the full current guide/map, exact conversion article and complete observed source ancestry, then tested both literal output schemas. Both are consumable by the stated dual-format handler; the service’s explicit CloudEvents-to-EventGrid prohibition, not a receiver clue, makes CloudEvents output uniquely supported. The new Beginner/concept-recall classification is accurate and earns no applied credit. Fresh criterion scores deduct for binary discrimination and familiar framing rather than inheriting prior 43/48 or assuming fewer options mean quality. No quota or staged pool count enters the verdict. All old versions remain unchanged historical evidence. Independently authored criterion total: 46/48.",
+      "confidenceReason": "The full conversion table and explicit extension-attribute restriction directly support the key and the distractor’s valid alternate input context. Neutralizing parser compatibility leaves the documented service restriction genuinely decisive."
+    }
+  ]
+}
