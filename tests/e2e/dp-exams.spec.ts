@@ -194,12 +194,9 @@ test('DP-800 Boss mode enforces real readiness and defers answers', async ({
   const boss = page
     .locator('#dungeon-dp-800')
     .getByRole('button', { name: 'Boss Gauntlet', exact: true });
-  if (!dungeon.readiness.gauntlet) {
-    await expect(boss).toBeDisabled();
-    expect(dungeon.readiness.reasons.length).toBeGreaterThan(0);
-    return;
-  }
-  expect(dungeon.questions.length).toBeGreaterThanOrEqual(75);
+  expect(dungeon.readiness.gauntlet).toBe(true);
+  expect(dungeon.questions.length).toBeGreaterThanOrEqual(150);
+  await expect(boss).toBeEnabled();
   await boss.click();
   await page.waitForURL(/#\/setup$/);
   await page.getByRole('radio', { name: '5', exact: true }).check();
