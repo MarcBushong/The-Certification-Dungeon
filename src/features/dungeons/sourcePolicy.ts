@@ -11,6 +11,18 @@ export function isAzureSearchArticle(url: URL): boolean {
   );
 }
 
+const defenderVulnerabilityAssessmentPaths = new Set([
+  '/en-us/azure/defender-for-cloud/deploy-vulnerability-assessment-defender-vulnerability-management',
+  '/en-us/azure/defender-for-cloud/auto-deploy-vulnerability-assessment',
+]);
+
+export function isDefenderVulnerabilityAssessmentArticle(url: URL): boolean {
+  return (
+    url.hostname === 'learn.microsoft.com' &&
+    defenderVulnerabilityAssessmentPaths.has(url.pathname)
+  );
+}
+
 function directHttpsUrl(value: string): URL | undefined {
   try {
     if (/[%\\\s<>"`]/.test(value)) return undefined;
@@ -58,6 +70,13 @@ const officialLearnProductPrefixes = [
   'defender-xdr',
   'defender-endpoint',
   'defender-cloud-apps',
+  'defender-office-365',
+  'defender-for-identity',
+  'purview',
+  'graph',
+  'sharepoint',
+  'windows/security',
+  'copilot/security',
   'security',
   'microsoft-365',
 ];
@@ -71,9 +90,10 @@ function isOfficialLearnProductUrl(value: string): boolean {
       url.pathname.startsWith(`/en-us/${prefix}/`),
     ) &&
     (!url.pathname.includes('/search') || isAzureSearchArticle(url)) &&
-    !/(?:assessment|knowledge-check|practice-test|exam-sandbox)/i.test(
+    (!/(?:assessment|knowledge-check|practice-test|exam-sandbox)/i.test(
       url.pathname,
-    ),
+    ) ||
+      isDefenderVulnerabilityAssessmentArticle(url)),
   );
 }
 

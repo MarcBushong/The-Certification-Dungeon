@@ -10,6 +10,86 @@ const countUrl =
   'https://learn.microsoft.com/en-us/sql/t-sql/functions/count-transact-sql';
 const canonicalCount = `${countUrl}?view=sql-server-ver17`;
 
+describe('SC-500 observed product moniker redirects', () => {
+  const articles = [
+    ['azure/azure-sql/database/firewall-configure', 'azuresql'],
+    [
+      'azure/azure-sql/database/authentication-azure-ad-only-authentication',
+      'azuresql',
+    ],
+    ['azure/azure-sql/database/auditing-overview', 'azuresql'],
+    ['azure/azure-sql/managed-instance/auditing-configure', 'azuresql'],
+    ['microsoft-365/admin/manage/agent-actions', 'o365-worldwide'],
+  ] as const;
+
+  it.each(articles)(
+    'follows only the recorded view for %s',
+    async (path, view) => {
+      const article = `https://learn.microsoft.com/en-us/${path}`;
+      const canonical = `${article}?view=${view}`;
+      const credential: SourcePolicyContext = {
+        credentialId: 'sc-500',
+        provider: 'Microsoft',
+        sourceAllowlist: [
+          {
+            host: 'learn.microsoft.com',
+            pathPrefixes: [],
+            exactUrls: [article],
+          },
+        ],
+      };
+      expect(safeSourceUrl(canonical, true, credential).href).toBe(canonical);
+      expect(() => safeSourceUrl(canonical, false, credential)).toThrow();
+      expect(() => safeSourceUrl(canonical, true)).toThrow();
+      for (const credentialId of ['dp-700', 'sc-200', 'ai-103'])
+        expect(() =>
+          safeSourceUrl(canonical, true, { ...credential, credentialId }),
+        ).toThrow();
+      expect(() =>
+        safeSourceUrl(canonical, true, {
+          ...credential,
+          sourceAllowlist: [],
+        }),
+      ).toThrow();
+      expect(matchesRecordedSourceTarget(canonical, article, credential)).toBe(
+        true,
+      );
+      for (const unexpected of [
+        `${article}?view=unreviewed`,
+        `${canonical}&redirect=elsewhere`,
+        canonical.replace(path, `${path}-another`),
+        canonical.replace('learn.microsoft.com', 'example.test'),
+        canonical.replace('/en-us/', '/fr-fr/'),
+      ])
+        expect(() => safeSourceUrl(unexpected, true, credential)).toThrow();
+
+      const fetcher = vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(
+          new Response(null, {
+            status: 302,
+            headers: { location: canonical },
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(
+            '<title>Security documentation</title><h1>Security</h1>',
+            {
+              headers: { 'content-type': 'text/html' },
+            },
+          ),
+        );
+      await expect(
+        checkOnlineSource(article, fetcher, credential),
+      ).resolves.toEqual({ finalUrl: canonical, status: 200 });
+      expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([
+        article,
+        canonical,
+      ]);
+    },
+  );
+});
+
 describe('DP-800 observed SQL moniker redirects', () => {
   const article =
     'https://learn.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking';

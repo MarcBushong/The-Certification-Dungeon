@@ -1,0 +1,563 @@
+{
+  "schemaVersion": 1,
+  "requestId": "sc500-expansion-independent-domain-reviews-2026-09-16",
+  "reviews": [
+    {
+      "questionId": "sc500-036",
+      "authorId": "sc500-network-author",
+      "reviewerId": "sc500-network-independent-reviewer",
+      "questionFingerprint": "fce5ea1900f7c238e0e0f8d302e5ffd4e060f833f85351eab4a5331b0539bb3a",
+      "reviewedAt": "2026-09-16T14:06:01.786Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "sc500-network-storage-encryption",
+          "url": "https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption",
+          "evidencePath": ".grounding\\sc500-expansion\\network\\raw\\storage-encryption.json",
+          "retrievedAt": "2026-09-16T13:41:05.889Z",
+          "lastReviewedAt": "2026-09-16T13:50:23.229Z",
+          "supportingSummary": "The key-management section permits customer-managed container/blob encryption scopes in one account. Infrastructure encryption is an additional independent Microsoft-key layer; service encryption is mandatory and key rotation is not a second layer."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Renaming a container cannot turn the account-wide Microsoft-managed key into two customer-controlled rotation domains.",
+          "sourceIds": ["sc500-network-storage-encryption"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The infrastructure layer has its own Microsoft-managed key; it is not documented as a source of independently selected per-container infrastructure keys.",
+          "sourceIds": ["sc500-network-storage-encryption"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The receipt describes customer-provided keys on blob read/write requests. A key on a listing-only request does not assign a persistent encryption boundary to each container.",
+          "sourceIds": ["sc500-network-storage-encryption"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "The key-management section explicitly permits container-scoped encryption scopes using customer-managed keys within one storage account, providing the requested distinct key control.",
+          "sourceIds": ["sc500-network-storage-encryption"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Checked the scope paragraph, key-management table and infrastructure paragraph independently. Separate CMK scopes satisfy the one-account, container-boundary and ownership constraints; Key Vault/Managed HSM is correctly stated in the explanation. This is a distinct key-scope decision from 037, not a second encryption-layer question. Advanced difficulty is only partially convincing, and renaming a container is a weak alternative; the rubric records both deductions.",
+      "confidenceReason": "Container/blob scope and customer-managed key support are explicit, rather than inferred from account-level encryption."
+    },
+    {
+      "questionId": "sc500-039",
+      "authorId": "sc500-network-author",
+      "reviewerId": "sc500-network-independent-reviewer",
+      "questionFingerprint": "f662f2e9e8dd306f3a8e630ff27986d6b1770d2f4e9d6cb28ac891bb4680466f",
+      "reviewedAt": "2026-09-16T14:06:01.786Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "sc500-network-storage-network",
+          "url": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security",
+          "evidencePath": ".grounding\\sc500-expansion\\network\\raw\\storage-network.json",
+          "retrievedAt": "2026-09-16T13:40:46.008Z",
+          "lastReviewedAt": "2026-09-16T13:50:23.229Z",
+          "supportingSummary": "Network rules admit sources to the public endpoint separately from authorization. Service endpoints replace public source addressing; resource-instance rules accept same-tenant cross-subscription resources; signed-IP SAS constraints do not expand firewall access."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "The resource-instance section permits a supported same-tenant resource that cannot use subnet/IP isolation to enter through an explicitly configured resource-instance network rule.",
+          "sourceIds": ["sc500-network-storage-network"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "The receipt separately assigns the permitted storage data operations to the resource instance Azure role assignments, so network admission alone cannot establish read-only access.",
+          "sourceIds": ["sc500-network-storage-network"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The documented restriction is the same tenant, and the article expressly allows any subscription within that tenant; a subscription move is unnecessary.",
+          "sourceIds": ["sc500-network-storage-network"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Signed-IP SAS constraints cannot extend network access beyond the storage firewall, so they cannot replace the required resource-instance admission.",
+          "sourceIds": ["sc500-network-storage-network"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Evaluated network admission and data permission as two distinct controls, without deriving the pair from the author key. Same tenant, supported resource and cross-subscription placement are explicit prerequisites. The pronouns identify that resource unambiguously. The item is a configuration decision rather than a rich troubleshooting exercise; difficulty scores 1. Its core same-tenant/resource-instance boundary differs from the source-IP transition in 038 and SAS-only proposal in 040.",
+      "confidenceReason": "Both the cross-subscription allowance and role-determined operations are stated together in the resource-instance section."
+    },
+    {
+      "questionId": "sc500-042",
+      "authorId": "sc500-network-author",
+      "reviewerId": "sc500-network-independent-reviewer",
+      "questionFingerprint": "0c03e63010da8ef66494940489b6c9da5ad55d82a1ef38ec474fedf9b353fe35",
+      "reviewedAt": "2026-09-16T14:06:01.786Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "sc500-network-storage-sas",
+          "url": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview",
+          "evidencePath": ".grounding\\sc500-expansion\\network\\raw\\storage-sas.json",
+          "retrievedAt": "2026-09-16T13:40:55.424Z",
+          "lastReviewedAt": "2026-09-16T13:50:23.229Z",
+          "supportingSummary": "The captured SAS page distinguishes delegation-key and account-key signatures, limits stored policies to service SAS, and recommends short, least-privilege grants with clock-skew-aware starts. The reviewed questions concern Blob, not inferred maturity of other services."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "A dedicated stored policy binds the intended group of service SAS grants to shared server-side constraints that can be revoked without rotating the signing account key.",
+          "sourceIds": ["sc500-network-storage-sas"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Account SAS must be ad hoc and cannot reference a stored policy; a matching policy identifier does not make that SAS type policy-backed.",
+          "sourceIds": ["sc500-network-storage-sas"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The source notes SAS tokens are generated client-side and not tracked by Storage. An external inventory creates no server-side policy association to revoke these ad hoc grants.",
+          "sourceIds": ["sc500-network-storage-sas"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "User delegation SAS cannot use a stored access policy, and also fails the stipulated continued use of service SAS.",
+          "sourceIds": ["sc500-network-storage-sas"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "The yet-to-be-issued constraint is material: it allows establishing the policy association at issuance rather than falsely promising retroactive revocation of ad hoc tokens. Checked every SAS type and the account-key independence claim in the receipt. Negative phrasing identifies operational constraints, and token references are clear. This original design decision is different from Entra signing in 041. Advanced is a partial fit, not a maximal score.",
+      "confidenceReason": "Stored policy eligibility and revocation without key rotation are expressly documented for service SAS only."
+    },
+    {
+      "questionId": "sc500-050",
+      "authorId": "sc500-network-author",
+      "reviewerId": "sc500-network-independent-reviewer",
+      "questionFingerprint": "1a810427ea0709b647aac320de997326ae7a71eb9845eeb28d92b073e0b51045",
+      "reviewedAt": "2026-09-16T14:06:01.786Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "sc500-network-sql-entra-only",
+          "url": "https://learn.microsoft.com/en-us/azure/azure-sql/database/authentication-azure-ad-only-authentication",
+          "evidencePath": ".grounding\\sc500-expansion\\network\\raw\\sql-entra-only.json",
+          "retrievedAt": "2026-09-16T13:41:01.409Z",
+          "lastReviewedAt": "2026-09-16T13:50:23.229Z",
+          "supportingSummary": "Entra-only authentication blocks SQL connections but preserves SQL principals. The Entra administrator is a prerequisite. The permissions section grants the control to SQL Security Manager and explicitly excludes both SQL Contributor variants."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "The permissions section explicitly gives SQL Security Manager the azureADOnlyAuthentications management actions while excluding SQL Server Contributor, implementing the requested separation.",
+          "sourceIds": ["sc500-network-sql-entra-only"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "A second assignment of SQL Server Contributor still lacks the action explicitly excluded from that role; group membership cannot manufacture the absent permission.",
+          "sourceIds": ["sc500-network-sql-entra-only"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "SQL Managed Instance Contributor is also expressly excluded from enabling or disabling this setting, apart from its mismatch with the logical-server resource.",
+          "sourceIds": ["sc500-network-sql-entra-only"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The documented control is managed through Azure resource actions for servers or instances, not database CONTROL permission alone.",
+          "sourceIds": ["sc500-network-sql-entra-only"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independently checked the permissions and Actions required sections, not just the similar role names. A configured Entra administrator satisfies the feature prerequisite without supplying the provisioning operator missing management permission. The pronoun clearly references the provisioned server. This original authorization-of-management question differs from authentication behavior in 049. Advanced authenticity is partial because the problem reduces to one documented role distinction.",
+      "confidenceReason": "Both the included SQL Security Manager action and excluded Contributor roles are explicitly listed in the receipt."
+    },
+    {
+      "questionId": "sc500-051",
+      "authorId": "sc500-network-author",
+      "reviewerId": "sc500-network-independent-reviewer",
+      "questionFingerprint": "74c9e1b5d6677007f47838860f605ea3b4f06534ef9c9f918bbb1da943a0cce5",
+      "reviewedAt": "2026-09-16T14:06:01.786Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "sc500-network-sql-auditing",
+          "url": "https://learn.microsoft.com/en-us/azure/azure-sql/database/auditing-overview",
+          "evidencePath": ".grounding\\sc500-expansion\\network\\raw\\sql-auditing.json",
+          "retrievedAt": "2026-09-16T13:40:49.363Z",
+          "lastReviewedAt": "2026-09-16T13:50:23.229Z",
+          "supportingSummary": "The Remarks specify allowlisting audit destination FQDNs and re-saving auditing after outbound restrictions. Immutable audit stores must allow protected appends and use storage retention shorter than SQL audit retention; the zero-SQL-retention combination is excluded."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Database authentication controls do not add the audit destination to the outbound allowlist; the Remarks identify network blocking, not user authentication, as the cause.",
+          "sourceIds": ["sc500-network-sql-auditing"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "The outbound-networking remark requires the auditing storage account fully qualified domain names to be allowlisted so audit output can reach the destination.",
+          "sourceIds": ["sc500-network-sql-auditing"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "The same documented recovery sequence explicitly requires re-saving auditing after adding the destination FQDNs to resume event flow.",
+          "sourceIds": ["sc500-network-sql-auditing"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The 4,000-character audit truncation limit concerns field content after capture; it cannot restore a blocked storage destination and is not the prescribed recovery step.",
+          "sourceIds": ["sc500-network-sql-auditing"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Read the actual outbound allowlist and re-save paragraph and confirmed both selected actions are necessary in its stated procedure. Authorization is stipulated unchanged and the missing destination is explicit. No new code or feature-status inference is involved. This recovery sequence is distinct from immutable retention and MI SAS credential formatting. The cause is largely supplied and the alternatives are remote, so difficulty and plausibility each lose one point.",
+      "confidenceReason": "The current receipt explicitly calls for both FQDN admission and a subsequent audit-settings re-save."
+    },
+    {
+      "questionId": "sc500-062",
+      "authorId": "sc500-network-author",
+      "reviewerId": "sc500-network-independent-reviewer",
+      "questionFingerprint": "514eef988e685099d27891d2a274d0a374b13b4b9536b0cd3be836eaa60b5048",
+      "reviewedAt": "2026-09-16T14:06:01.786Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "sc500-network-vwan-routing",
+          "url": "https://learn.microsoft.com/en-us/azure/virtual-wan/how-to-routing-policies",
+          "evidencePath": ".grounding\\sc500-expansion\\network\\raw\\vwan-routing.json",
+          "retrievedAt": "2026-09-16T13:41:00.855Z",
+          "lastReviewedAt": "2026-09-16T13:50:23.229Z",
+          "supportingSummary": "The public-cloud routing-intent guide distinguishes private/inter-hub inspection from local internet egress. It requires participating hubs for symmetric inspection, does not propagate the default route across hubs, and excludes custom hub tables and default-table VNet next hops; prior configuration is not automatically restored."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "The mixed secured/regular-hub example explicitly states that the internet default route does not propagate across hubs, so inter-hub connectivity alone cannot supply East egress to West.",
+          "sourceIds": ["sc500-network-vwan-routing"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The Internet Traffic policy description identifies a 0.0.0.0/0 advertisement, not a list of website-specific prefixes.",
+          "sourceIds": ["sc500-network-vwan-routing"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The guide names VNet, P2S, S2S and ExpressRoute connections as Internet-policy participants; restricting the feature to ExpressRoute is false.",
+          "sourceIds": ["sc500-network-vwan-routing"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The guide distinguishes Private-policy traffic from internet egress and retains the cross-hub default-route restriction; adding a Private policy in East does not create that propagation.",
+          "sourceIds": ["sc500-network-vwan-routing"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independently compared this configuration with the regular-plus-secured-hub table and default-route statements. The never/only distractor is directly contradicted by supported connection types. The key is limited to the stated mere-inter-hub assumption, not a claim that no separately engineered egress architecture could ever exist. Pronouns have hub antecedents. Related to 061 but tests a different routing fact; Advanced difficulty is only partial.",
+      "confidenceReason": "The mixed-hub official example directly rejects inheriting internet egress through another hub solely through inter-hub connectivity."
+    },
+    {
+      "questionId": "sc500-065",
+      "authorId": "sc500-network-author",
+      "reviewerId": "sc500-network-repair-reviewer",
+      "questionFingerprint": "2efa6a3bddcfc13239f3800dcc2a6e12ea89bdcc0cab2aa8a0b815daaf51ed5c",
+      "reviewedAt": "2026-09-16T14:17:27.227Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "sc500-network-vpn-entra",
+          "url": "https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-entra-gateway",
+          "evidencePath": ".grounding\\sc500-expansion\\network\\raw\\vpn-entra.json",
+          "retrievedAt": "2026-09-16T13:41:07.172Z",
+          "lastReviewedAt": "2026-09-16T13:50:23.229Z",
+          "supportingSummary": "The prerequisites exclude the Basic SKU and policy-based VPN type for Entra-authenticated P2S. The configuration requires OpenVPN and a private client pool disjoint from both the destination VNet and connecting on-premises location. Windows 11 is supported. The Microsoft-registered audience avoids the old manual app registration/administrator-consent steps; older manually registered audiences remain supported until the stated future retirements. The separately retired Linux preview is outside this question."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Retaining the proposed Basic policy-based gateway violates both explicit Entra P2S gateway restrictions, and SSTP is not the required OpenVPN tunnel type. Registering an older audience cannot repair either network prerequisite. Older manually registered audiences are not claimed to be already unsupported: the receipt allows them on compatible Windows clients until the future retirement dates.",
+          "sourceIds": ["sc500-network-vpn-entra"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The client-pool instructions require private addresses that do not overlap the destination VNet or the on-premises connection origin. Keeping the stated overlapping pool violates that condition regardless of the authentication label. It also leaves the proposed incompatible gateway unchanged, so this is not a complete revision.",
+          "sourceIds": ["sc500-network-vpn-entra"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Even if compatible gateway here means choosing a supported SKU, the retained policy-based type is expressly excluded for Entra P2S, and the retained overlap violates the separate address-pool requirement. If compatible instead means the whole gateway, the option contradicts its own retained policy-based setting. Neither reading resolves the listed defects.",
+          "sourceIds": ["sc500-network-vpn-entra"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "The gateway prerequisites prohibit Basic and policy-based configurations, the tunnel/authentication instructions specify OpenVPN with Microsoft Entra ID, and the address-pool section requires a private range disjoint from the destination VNet and connecting on-premises location. A compatible non-Basic route-based gateway with that tunnel and pool is the only offered revision that removes all the proposed incompatibilities. It does not replace the remaining tenant and client-profile setup steps.",
+          "sourceIds": ["sc500-network-vpn-entra"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independently reread the complete repaired 065, the actual undated map and the P2S Entra MCP article, including Windows support, Linux-preview retirement, gateway prerequisites, pool, tunnel and audience/consent sections. The new opening is explicitly an incorrect proposed design, not an assertion of an impossible formerly working Basic policy-based P2S deployment. d alone satisfies the listed prerequisite revision. An Entra tenant and client profile remain required setup, not replaced by this answer. Older manually registered Windows audiences can still be supported before their future retirement; a fails because its gateway and SSTP remain incompatible. Compared 064 and the batch stems: no blocking duplicate. Multiple independent compatibility decisions justify only lower-bound Advanced troubleshooting; independently scored difficulty 1 and distractor plausibility 1, other criteria 2, total 18. No exam lifecycle conclusion or target-driven difficulty approval is made. Candidate status remains manual-review-required for author integration.",
+      "confidenceReason": "High technical confidence: the gateway exclusion, tunnel choice, address nonoverlap, Windows support and Microsoft-registered consent distinction are explicit in one current receipt. The framing repair removes the prior ambiguity. Difficulty confidence is intentionally qualified because the listed defects make the multi-setting repair easier than a strong advanced diagnostic item."
+    },
+    {
+      "questionId": "sc500-072",
+      "authorId": "sc500-network-author",
+      "reviewerId": "sc500-network-independent-reviewer",
+      "questionFingerprint": "e9b00b25b460cf1d1542a78b3def0af166fe421099182ea6c60923c21f5418ce",
+      "reviewedAt": "2026-09-16T14:06:01.786Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "sc500-network-private-link",
+          "url": "https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview",
+          "evidencePath": ".grounding\\sc500-expansion\\network\\raw\\private-link.json",
+          "retrievedAt": "2026-09-16T13:40:54.124Z",
+          "lastReviewedAt": "2026-09-16T13:50:23.229Z",
+          "supportingSummary": "For established Standard-LB-backed Private Link service, NIC backends are required and visibility differs from approval. Provider NAT masks client IP; Proxy v2 needs compatible receivers and consistent shared-backend configuration. Direct Connect is separately and explicitly public preview."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Auto-approval immediately approves requests from listed subscriptions; listing both removes the manual decision the second partner must retain.",
+          "sourceIds": ["sc500-network-private-link"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The access-control section says visible subscriptions outside auto-approval create pending requests requiring provider action; an alias does not supply that approval.",
+          "sourceIds": ["sc500-network-private-link"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Visibility makes both partners eligible to request, while auto-approval as a subset automatically approves only the first. The second can remain pending until the provider approves.",
+          "sourceIds": ["sc500-network-private-link"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Excluding the subscription from the visibility set removes the intended request eligibility, rather than establishing a visible-but-pending manual workflow.",
+          "sourceIds": ["sc500-network-private-link"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Read Control service exposure and Control service access, including the subset condition and pending-state traffic restriction. The scenario concerns conventional load-balancer-backed service, not the article explicitly separate Direct Connect preview. Its partner references are clear and there is no assumption that sharing an alias grants access. This request/approval-set design is distinct from Proxy v2 and backend eligibility in 073/074.",
+      "confidenceReason": "The receipt explicitly describes requests from visible but non-autoapproved subscriptions reaching the provider for manual approval."
+    },
+    {
+      "questionId": "sc500-139",
+      "authorId": "sc500-posture-author",
+      "reviewerId": "copilot-sc500-posture-independent-review3",
+      "questionFingerprint": "22b3ab3c39021f48c4228bf702cc408312cfd509c3c3443a3b95fae72a740151",
+      "reviewedAt": "2026-09-16T14:30:48.819Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "sc500-posture-playbooks",
+          "url": "https://learn.microsoft.com/en-us/azure/sentinel/automation/run-playbooks",
+          "evidencePath": ".grounding\\sc500-expansion\\posture\\raw\\playbooks.json",
+          "retrievedAt": "2026-09-16T13:42:22.141Z",
+          "lastReviewedAt": "2026-09-16T13:53:25.609Z",
+          "supportingSummary": "The multitenant incident-playbook section requires an MSSP automation scenario to authorize Sentinel in both tenants. After customer-side playbook permissions, the provider finds Azure Security Insights in Enterprise applications filtered to Microsoft Applications and places its Object ID in an extra Lighthouse authorization. The article supplies Automation Contributor roleDefinitionId f4c81013-99ee-4d62-a7ee-b3f1f648599a and the same display-name field used in this question."
+        },
+        {
+          "sourceId": "sc500-posture-sentinel-roles",
+          "url": "https://learn.microsoft.com/en-us/azure/sentinel/roles",
+          "evidencePath": ".grounding\\sc500-expansion\\posture\\raw\\sentinel-roles.json",
+          "retrievedAt": "2026-09-16T13:41:50.298Z",
+          "lastReviewedAt": "2026-09-16T13:53:25.609Z",
+          "supportingSummary": "The SIEM role table explicitly identifies Automation Contributor as a Microsoft Sentinel service permission, not a user-account role. The additional-permissions section separates that service account and its access to the playbook resource group from a human operator, while identifying playbooks as separate Logic Apps resources. This corroborates the principal-versus-resource distinction; the specific Lighthouse Object ID and role GUID are established by the run-playbooks article."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The MSSP procedure requires an extra Lighthouse authorization for the provider tenant Azure Security Insights application after customer permissions are set. The roles article identifies Automation Contributor as a service permission, not a user-account role. Reusing the already-delegated human operator Object ID would still omit the service application required by this automation path.",
+          "sourceIds": [
+            "sc500-posture-playbooks",
+            "sc500-posture-sentinel-roles"
+          ]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "For an automation rule created while signed into the provider tenant and a customer-tenant playbook, the multitenant section explicitly instructs the provider to find Azure Security Insights under Enterprise applications filtered to Microsoft Applications, copy its Object ID, and use that value as principalId in an extra Lighthouse authorization. Its example supplies exactly the question role GUID f4c81013-99ee-4d62-a7ee-b3f1f648599a; the roles article confirms this authorizes Sentinel rather than a human operator.",
+          "sourceIds": [
+            "sc500-posture-playbooks",
+            "sc500-posture-sentinel-roles"
+          ]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The provider-side steps direct the administrator to copy the Object ID of the Azure Security Insights enterprise application into principalId. A customer directory tenant ID identifies the tenant, not the provider service application whose extra authorization is missing; the existing customer-side playbook grant does not change the required principal field.",
+          "sourceIds": ["sc500-posture-playbooks"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The documented authorization entry requires the provider Azure Security Insights application Object ID as principalId, whereas the playbook is the separate Logic Apps resource to which execution access is needed. Supplying the customer workflow Azure resource ID identifies the target resource instead of the service principal and cannot fill the documented extra-authorization field.",
+          "sourceIds": [
+            "sc500-posture-playbooks",
+            "sc500-posture-sentinel-roles"
+          ]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "This is a fresh content review of the replacement identity-field problem, not an inherited approval of the former resource-group permission question. I read the complete playbooks and sentinel-roles MCP bodies, including the precise multitenant procedure and JSON example. The provider sign-in, customer playbook, customer permission already granted, and missing provider service application reproduce the documented MSSP boundary and independently establish b. The snippet is a valid JSON authorization entry, not a complete deployment template; its role GUID and principalIdDisplayName match the actual source example. principalId must be the enterprise application Object ID in the provider tenant, not a human, customer directory ID or target resource ID. The question asks which identifier to place, not for permission to self-deploy the template; existing human delegation does not assert Owner rights or replace administrator prerequisites for assignment. The incident-trigger context avoids alert/manual-execution differences. The source legacy direct-from-analytics-rule deprecation is unrelated, and the 2027 Azure-portal retirement is not asserted to have occurred. I independently inspected the supplemental feature matrix, which explicitly marks automation rules and running playbooks on incidents GA; no preview template-gallery or URBAC behavior is claimed. The full current guide supports automation/playbook implementation. Compared with canonical sc200-002, the already-satisfied customer grant moves the tested fact from service-role/resource-group authorization to the provider-side Lighthouse enterprise-application Object ID. sc500-129 concerns human authoring roles and sc500-140 trigger compatibility, not this extra delegation identity. No target duplicate or automated quality finding appears in the current 180-question comparison. The prompt and distinct identifier types make advanced difficulty marginal despite its specialized cross-tenant subject; both difficulty and distractor plausibility receive only 1.",
+      "confidenceReason": "The exact MSSP paragraph and adjacent official JSON example supply the provider-side application lookup, principalId semantics and fixed role GUID. The separate roles article corroborates why the human and target-resource alternatives cannot substitute for that service identity."
+    }
+  ]
+}

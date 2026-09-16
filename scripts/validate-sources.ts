@@ -5,6 +5,7 @@ import { isMain, loadContent } from './validate-questions';
 import {
   assertAllowedSourceUrl,
   isAllowedIdentityUrl,
+  isDefenderVulnerabilityAssessmentArticle,
   type SourcePolicyContext,
 } from '../src/features/dungeons/sourcePolicy';
 import { credentials } from '../src/features/dungeons/catalog';
@@ -25,6 +26,29 @@ function isRecordedLayoutView(url: URL, credential?: SourcePolicyContext) {
   );
 }
 
+const sc500RecordedViews = new Map([
+  ['/en-us/azure/azure-sql/database/firewall-configure', '?view=azuresql'],
+  [
+    '/en-us/azure/azure-sql/database/authentication-azure-ad-only-authentication',
+    '?view=azuresql',
+  ],
+  ['/en-us/azure/azure-sql/database/auditing-overview', '?view=azuresql'],
+  [
+    '/en-us/azure/azure-sql/managed-instance/auditing-configure',
+    '?view=azuresql',
+  ],
+  ['/en-us/microsoft-365/admin/manage/agent-actions', '?view=o365-worldwide'],
+]);
+
+function isRecordedSecurityView(url: URL, credential?: SourcePolicyContext) {
+  return (
+    credential?.credentialId === 'sc-500' &&
+    credential.provider === 'Microsoft' &&
+    url.hostname === 'learn.microsoft.com' &&
+    sc500RecordedViews.get(url.pathname) === url.search
+  );
+}
+
 function documentIdentityUrl(
   url: URL,
   allowCanonicalView: boolean,
@@ -42,7 +66,8 @@ function documentIdentityUrl(
     ((url.pathname.startsWith('/en-us/kusto/') &&
       url.search === '?view=microsoft-fabric') ||
       (approvedSqlFamily && url.search === '?view=sql-server-ver17') ||
-      isRecordedLayoutView(url, credential))
+      isRecordedLayoutView(url, credential) ||
+      isRecordedSecurityView(url, credential))
   )
     identity.search = '';
   return identity;
@@ -58,7 +83,11 @@ export function sameCanonicalDocument(
   // Fragments select a section in the client, not a different HTTP document.
   expectedUrl.hash = '';
   actualUrl.hash = '';
-  if (!expectedUrl.search && isRecordedLayoutView(actualUrl, credential))
+  if (
+    !expectedUrl.search &&
+    (isRecordedLayoutView(actualUrl, credential) ||
+      isRecordedSecurityView(actualUrl, credential))
+  )
     actualUrl.search = '';
   return expectedUrl.href === actualUrl.href;
 }
@@ -84,9 +113,10 @@ export function safeSourceUrl(
     strictEvidenceUrlSchema.parse(structuralUrl.href);
   if (
     /%|\\/.test(url.pathname) ||
-    /(?:assessment|knowledge-check|practice-test|exam-sandbox)/i.test(
+    (/(?:assessment|knowledge-check|practice-test|exam-sandbox)/i.test(
       url.pathname,
-    )
+    ) &&
+      !isDefenderVulnerabilityAssessmentArticle(url))
   ) {
     throw new Error(
       'Encoded paths and assessment pages are not permitted source checks.',

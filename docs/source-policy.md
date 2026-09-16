@@ -154,6 +154,25 @@ bounded paths or exact URLs. DP-700 and `learnUrlSchema` retain their original
 strict product-prefix contract; expanding another credential does not expand
 DP-700 or permit arbitrary English/private Learn paths.
 
+SC-200/SC-500 grounding additionally requires the official Defender for Office
+365, Defender for Identity, Purview, Microsoft Graph and SharePoint documentation
+families, plus the bounded `/en-us/windows/security/` and
+`/en-us/copilot/security/` directories. Structural recognition does not approve
+a citation: each security credential registers its own exact retrieved URLs.
+Other Windows/Copilot directories, non-English pages, searches, assessments and
+unapproved credential sources remain excluded.
+
+Two captured Defender for Cloud implementation articles contain the word
+`assessment` because they describe vulnerability scanning, not exam content:
+`deploy-vulnerability-assessment-defender-vulnerability-management` and
+`auto-deploy-vulnerability-assessment`, both directly under
+`https://learn.microsoft.com/en-us/azure/defender-for-cloud/`.
+Offline and online validation recognize only those exact article paths as
+exceptions to the generic assessment-substring filter. Credential approval is
+still required; assessment pages, additional subpaths, query parameters and
+other assessment-named articles do not inherit an exception. The legacy
+DP-700 URL contract and all strict provenance/review gates are unchanged.
+
 Azure AI Search implementation articles under `/en-us/azure/search/<article>`
 are product documentation, not Learn search results. The generic policy permits
 that bounded article shape when the credential explicitly approves it, while
@@ -233,8 +252,15 @@ receipt comparison removes only that validated moniker; different articles,
 unknown views and additional parameters remain rejected. Stored citations stay
 query-free, and the legacy DP-700 relational-document policy is unchanged.
 The additional AI-103 layout exception is specified below.
+SC-500 additionally recognizes five observed same-document moniker redirects:
+`view=azuresql` for Azure SQL Database `firewall-configure`,
+`authentication-azure-ad-only-authentication`, `auditing-overview` and Managed
+Instance `auditing-configure`; and `view=o365-worldwide` for Microsoft 365
+`admin/manage/agent-actions`. These are exact SC-500 transport exceptions, not
+permissions for other articles, query parameters, credentials or stored
+citations. The query-free article must still be explicitly approved for SC-500.
 Expected-versus-resolved document comparisons ignore client-side URL fragments
-and the specifically recorded AI-103 layout selector. Other scheme, host, port,
+and the specifically recorded AI-103/SC-500 selectors. Other scheme, host, port,
 path and query differences still fail. Recorded fragment receipts remain
 unchanged. This does not relax credential allowlists,
 redirect validation, the 2 MB cap, MIME checks or timeouts.
