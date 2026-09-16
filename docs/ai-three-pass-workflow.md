@@ -96,6 +96,16 @@ do not infer GA from omission. A guide/credential overview alone cannot support
 implementation claims. Preserve original short summaries; raw retrieved
 responses stay local in ignored `.grounding\` workspaces.
 
+The strict question schema also permits `featureStatus: "Not applicable"` for
+truly vendor/version-independent methodology without a software lifecycle
+claim. It does not resolve missing maturity evidence for Python SDK methods,
+tool contracts, state fields or other actual API/service behavior. Do not
+derive a question label from a source's `Not applicable` label, or relabel an
+uncertain API to obtain approval. Both independent passes must explicitly
+justify the distinction; all existing source, Preview, rubric and freshness
+gates remain unchanged. A label change restarts all three passes. See
+[question lifecycle labels](source-policy.md#question-feature-lifecycle-labels).
+
 ## Three genuinely distinct contexts
 
 ### Pass 1: grounded authoring

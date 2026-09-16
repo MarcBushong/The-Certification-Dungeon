@@ -137,7 +137,11 @@ export const questionSchema = z
     documentationTitles: z.array(text).min(1),
     generatedAt: timestampSchema,
     lastValidatedAt: timestampSchema,
-    featureStatus: z.enum(['GA', 'Preview']),
+    featureStatus: z
+      .enum(featureStatuses)
+      .describe(
+        'GA or Preview for software feature claims. Not applicable is reserved for three-pass methodology questions without a software lifecycle claim, never unknown API maturity.',
+      ),
     tags: z.array(text).min(1),
     codeLanguage: z
       .enum(['sql', 'python', 'kusto', 'json', 'powershell'])
@@ -453,6 +457,14 @@ export function inspectContent(
       message: string,
       category: ContentFinding['category'] = 'citation',
     ) => fail(`${question.id}: ${message}`, [question.id], category);
+    if (
+      question.featureStatus === 'Not applicable' &&
+      !sourcePolicy?.strictGuideLinked
+    )
+      questionFail(
+        'Not applicable feature status requires the three-pass-v1 review profile.',
+        'verification',
+      );
     if (question.sourceUrls.some((url) => !permitted(url)))
       questionFail('URL is outside the credential source policy.');
     const domain = taxonomy.domains.find(

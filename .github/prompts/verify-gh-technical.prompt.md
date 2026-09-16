@@ -18,6 +18,13 @@ guide/training-linked and credential-approved. AI-103/AI-200 technical evidence
 must be Microsoft Learn-only; another credential's GitHub Docs approvals do not
 transfer. Evaluate duplicate/quality warnings and original wording.
 
+For a question labeled `Not applicable`, independently establish that it tests
+vendor/version-independent methodology with no software lifecycle claim.
+Actual SDK/API/service behavior with unknown maturity cannot use this label.
+A source's `Not applicable` status is not evidence for the question label.
+Record the reasoning in the existing feature-status check and review notes;
+retain all source, Preview-label and review requirements.
+
 Where course/path UIDs establish the route, verify the full credential -> course
 -> path -> module -> unit graph and actual reference receipts, not a fabricated
 credential -> path link. The course must be the exact
