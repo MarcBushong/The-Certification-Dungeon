@@ -165,6 +165,85 @@ describe('DP-800 observed SQL moniker redirects', () => {
   });
 });
 
+describe('DP-800 observed preparation-linked product views', () => {
+  const articles = [
+    ['azure/azure-sql/database/authentication-aad-overview', 'azuresql'],
+    ['azure/azure-sql/database/auditing-overview', 'azuresql'],
+    ['azure/azure-sql/database/service-tiers-sql-database-vcore', 'azuresql'],
+    ['sql/tools/sql-database-projects/sql-database-projects', 'sql-server-ver17'],
+    [
+      'sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts',
+      'sql-server-ver17',
+    ],
+    [
+      'sql/tools/sql-database-projects/howto/compare-database-project',
+      'sql-server-ver17',
+    ],
+    [
+      'sql/tools/sql-database-projects/concepts/schema-comparison',
+      'sql-server-ver17',
+    ],
+    ['sql/tools/sql-database-projects/sql-projects-automation', 'sql-server-ver17'],
+    ['azure/devops/repos/git/branch-policies-overview', 'azure-devops'],
+  ] as const;
+
+  it.each(articles)(
+    'follows the exact recorded view for %s without widening source approval',
+    async (path, view) => {
+      const article = `https://learn.microsoft.com/en-us/${path}`;
+      const canonical = `${article}?view=${view}`;
+      const credential: SourcePolicyContext = {
+        credentialId: 'dp-800',
+        provider: 'Microsoft',
+        strictGuideLinked: true,
+        sourceAllowlist: [
+          { host: 'learn.microsoft.com', pathPrefixes: [], exactUrls: [article] },
+        ],
+      };
+      expect(safeSourceUrl(canonical, true, credential).href).toBe(canonical);
+      expect(matchesRecordedSourceTarget(canonical, article, credential)).toBe(
+        true,
+      );
+      expect(() => safeSourceUrl(canonical, false, credential)).toThrow();
+      for (const context of [
+        { ...credential, strictGuideLinked: false },
+        { ...credential, sourceAllowlist: [] },
+        { ...credential, credentialId: 'dp-700' },
+        { ...credential, credentialId: 'ai-103' },
+      ])
+        expect(() => safeSourceUrl(canonical, true, context)).toThrow();
+      for (const unexpected of [
+        `${article}?view=unreviewed`,
+        `${canonical}&redirect=elsewhere`,
+        `${article}-unreviewed?view=${view}`,
+        canonical.replace('learn.microsoft.com', 'example.test'),
+      ])
+        expect(() => safeSourceUrl(unexpected, true, credential)).toThrow();
+
+      const fetcher = vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(
+          new Response(null, {
+            status: 302,
+            headers: { location: canonical },
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response('<title>SQL documentation</title><h1>SQL</h1>', {
+            headers: { 'content-type': 'text/html' },
+          }),
+        );
+      await expect(
+        checkOnlineSource(article, fetcher, credential),
+      ).resolves.toEqual({ finalUrl: canonical, status: 200 });
+      expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([
+        article,
+        canonical,
+      ]);
+    },
+  );
+});
+
 describe('official SQL documentation view redirects', () => {
   it('accepts the observed canonical view only when following a redirect', () => {
     expect(() => safeSourceUrl(canonicalCount)).toThrow();
