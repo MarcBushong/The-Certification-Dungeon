@@ -2,6 +2,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import { GameProvider } from './features/quiz/GameProvider';
 import { Shell } from './components/Shell';
 import { DungeonMapPage } from './pages/DungeonMapPage';
+import { Dp420PreviewPage } from './pages/Dp420PreviewPage';
 import { TavernPage } from './pages/TavernPage';
 import { ForgePage } from './pages/ForgePage';
 import { SetupPage } from './pages/SetupPage';
@@ -19,6 +20,7 @@ export function AppRoutes() {
       <Route element={<Shell />}>
         <Route index element={<DungeonMapPage />} />
         <Route path="dungeons/:id" element={<DungeonMapPage />} />
+        <Route path="dungeons/dp-420/preview" element={<Dp420PreviewPage />} />
         <Route path="tavern" element={<TavernPage />} />
         <Route path="forge" element={<ForgePage />} />
         <Route path="setup" element={<SetupPage />} />

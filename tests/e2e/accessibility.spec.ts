@@ -17,13 +17,15 @@ for (const route of [
       if (new URL(request.url()).origin !== new URL(baseURL!).origin)
         remoteRequests.push(request.url());
     });
-    const response = await page.goto(route === '/' ? './' : `#${route}`);
+    const response = await page.goto(route === '/' ? './' : `#${route}`, {
+      waitUntil: 'networkidle',
+    });
     expect(response?.status()).toBe(200);
     await expect(page.getByRole('main')).toBeVisible();
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     const heading = await page.getByRole('heading', { level: 1 }).innerText();
     const url = page.url();
-    await page.reload();
+    await page.reload({ waitUntil: 'networkidle' });
     await expect(page).toHaveURL(url);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(heading);
     expect(new URL(page.url()).pathname).toBe(new URL(baseURL!).pathname);
@@ -56,7 +58,7 @@ for (const route of [
       reducedMotion: 'reduce',
       forcedColors: 'active',
     });
-    await page.goto(`#${route}`);
+    await page.goto(`#${route}`, { waitUntil: 'networkidle' });
     await expect(page.getByRole('main')).toBeVisible();
     const url = page.url();
     await page.keyboard.press('Tab');

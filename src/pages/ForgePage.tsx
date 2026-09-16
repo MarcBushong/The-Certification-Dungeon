@@ -5,6 +5,7 @@ import { getDungeonPackage } from '../features/dungeons/packages';
 import { useGame } from '../features/quiz/context';
 import { downloadFile } from '../services/export';
 import { DateStamp, LearnLink, PageHeading } from '../components/common';
+import { ExamUpdateNotice } from '../components/ExamUpdateNotice';
 import {
   createGenerationRequest,
   downloadGenerationRequest,
@@ -76,6 +77,7 @@ export function ForgePage() {
               ))}
             </select>
           </div>
+          <ExamUpdateNotice credential={credential} />
           {!mapped ? (
             <p className="notice warning">
               <LockKeyhole size={17} aria-hidden="true" /> Sealed forge: no

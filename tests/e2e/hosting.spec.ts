@@ -10,7 +10,7 @@ test('launches from the project URL and keeps navigation on the static host', as
     if (response.status() >= 400) failedRequests.push(response.url());
   });
 
-  await page.goto('./');
+  await page.goto('./', { waitUntil: 'networkidle' });
   await expect(
     page.getByRole('heading', {
       level: 1,
@@ -30,7 +30,7 @@ test('launches from the project URL and keeps navigation on the static host', as
   await expect(page).toHaveURL(baseURL!);
   await page.goForward();
   await expect(page).toHaveURL(`${baseURL}#/setup`);
-  await page.reload();
+  await page.reload({ waitUntil: 'networkidle' });
   await expect(page.getByRole('button', { name: 'Descend' })).toBeVisible();
   expect(failedRequests).toEqual([]);
 });
@@ -39,7 +39,7 @@ test('a missing hash route offers navigation back to the hosted app', async ({
   page,
   baseURL,
 }) => {
-  await page.goto('#/not-a-route');
+  await page.goto('#/not-a-route', { waitUntil: 'networkidle' });
   await expect(
     page.getByRole('heading', { level: 1, name: /^This path/ }),
   ).toBeVisible();

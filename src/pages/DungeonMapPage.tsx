@@ -28,6 +28,7 @@ import {
 } from '../components/common';
 import { DungeonArt } from '../components/DungeonArt';
 import { BetaAvailabilityNotice } from '../components/BetaAvailabilityNotice';
+import { ExamUpdateNotice } from '../components/ExamUpdateNotice';
 import { useReaction } from '../features/personality/useReaction';
 import { HostReaction } from '../features/personality/HostReaction';
 import { historyForCredential } from '../features/quiz/origins';
@@ -474,6 +475,18 @@ function DungeonCard({
           credential={credential}
           readiness={dungeon?.readiness}
         />
+        <ExamUpdateNotice credential={credential} />
+        {credential.credentialId === 'dp-420' && (
+          <div className="preview-entry">
+            <Link className="button secondary" to="/dungeons/dp-420/preview">
+              <BookOpen size={18} aria-hidden="true" /> Preview upcoming outline
+            </Link>
+            <p className="small muted">
+              Explore the announced topics and official resources. No questions
+              or scoring.
+            </p>
+          </div>
+        )}
         <div className="encounter-count">
           <strong>{dungeon?.questions.length ?? 0}</strong>
           <span>

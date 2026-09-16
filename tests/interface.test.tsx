@@ -30,6 +30,7 @@ import { makeResponse, selectQuestions } from '../src/features/quiz/engine';
 import { getDungeonPackage } from '../src/features/dungeons/packages';
 import * as dungeonPackages from '../src/features/dungeons/packages';
 import { credentials, heroClasses } from '../src/features/dungeons/catalog';
+import prospectiveDp420 from '../docs/dp-420-prospective-objectives.json';
 import {
   result as makeResult,
   question as makeQuestion,
@@ -158,6 +159,132 @@ function mount(value: GameContextValue, path = '/') {
 }
 
 describe('accessible challenge interface', () => {
+  it('opens the upcoming DP-420 outline without selecting or starting a dungeon', async () => {
+    const user = userEvent.setup();
+    const value = game({ active: session(), history: [makeResult()] });
+    mount(value, '/dungeons/dp-420');
+    const card = screen.getByRole('article', { name: /DP-420/ });
+    await user.click(
+      within(card).getByRole('link', { name: 'Preview upcoming outline' }),
+    );
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'The Cosmos Vault' }),
+    ).toBeVisible();
+    expect(screen.getByText('Read-only preview')).toBeVisible();
+    expect(screen.getByText('October 6, 2026', { exact: true })).toBeVisible();
+    expect(
+      screen.getByText(prospectiveDp420.retrievedAt, { exact: true }),
+    ).toBeVisible();
+    for (const action of [
+      value.selectDungeon,
+      value.setConfig,
+      value.startSession,
+      value.abandonSession,
+      value.resetQuestionHistory,
+      value.clearLocalData,
+    ])
+      expect(action).not.toHaveBeenCalled();
+  });
+
+  it('renders every prospective DP-420 skill and subskill on a direct preview route', () => {
+    const { container } = mount(game(), '/dungeons/dp-420/preview');
+    for (const domain of prospectiveDp420.domains) {
+      expect(
+        screen.getByRole('heading', { level: 2, name: domain.title }),
+      ).toBeVisible();
+      expect(
+        screen.getByText(
+          `${domain.weightRange[0]}-${domain.weightRange[1]}% announced weighting`,
+        ),
+      ).toBeVisible();
+      for (const skill of domain.skills) {
+        const summary = screen.getByText(skill.title, { exact: true });
+        expect(summary.tagName).toBe('SUMMARY');
+        fireEvent.click(summary);
+        const details = summary.closest('details');
+        if (!details) throw new Error('Each skill requires a disclosure.');
+        for (const subskill of skill.subskills)
+          expect(
+            within(details).getByText(subskill, { exact: true }),
+          ).toBeInTheDocument();
+      }
+    }
+    const resources = screen.getByRole('complementary', {
+      name: 'Official study resources',
+    });
+    expect(within(resources).getAllByRole('link')).toHaveLength(3);
+    for (const link of within(resources).getAllByRole('link')) {
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(link.getAttribute('href')).toMatch(
+        /^https:\/\/learn\.microsoft\.com\/en-us\//,
+      );
+    }
+    expect(container.querySelector('.question-panel')).toBeNull();
+    expect(
+      screen.queryByRole('button', { name: /Descend|Submit answer/ }),
+    ).not.toBeInTheDocument();
+    expect(getDungeonPackage('dp-420')).toBeUndefined();
+  });
+
+  it('does not advertise an upcoming preview for another credential', () => {
+    mount(game(), '/dungeons/dp-700');
+    const card = screen.getByRole('article', { name: /DP-700/ });
+    expect(
+      within(card).queryByRole('link', { name: 'Preview upcoming outline' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it.each(['/dungeons/dp-420', '/setup', '/forge'])(
+    'shows the DP-420 exam update notice on %s without allowing play',
+    (path) => {
+      const value = game({
+        selectedCredentialId: 'dp-420',
+        config: { ...defaultConfig, credentialId: 'dp-420' },
+      });
+      mount(value, path);
+      const notice = screen.getByRole('complementary', {
+        name: 'DP-420 exam update',
+      });
+      expect(notice).toHaveTextContent('October 6, 2026');
+      expect(notice).toHaveTextContent('September 15, 2026');
+      expect(notice).toHaveTextContent('not a verified current exam outline');
+      expect(notice).toHaveTextContent('no automatic unlock');
+      const guide = within(notice).getByRole('link', {
+        name: /^Official DP-420 study guide/,
+      });
+      expect(guide).toHaveAttribute(
+        'href',
+        'https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-420',
+      );
+      expect(guide).toHaveAttribute('target', '_blank');
+      expect(guide).toHaveAttribute('rel', 'noopener noreferrer');
+      if (path === '/dungeons/dp-420') {
+        const card = screen.getByRole('article', { name: /DP-420/ });
+        expect(
+          within(card).getByRole('button', { name: 'Sealed' }),
+        ).toBeDisabled();
+        expect(
+          within(card).getByRole('button', { name: 'Boss Gauntlet' }),
+        ).toBeDisabled();
+      } else {
+        expect(
+          screen.getByRole('button', {
+            name: path === '/setup' ? 'Descend' : 'Download request',
+          }),
+        ).toBeDisabled();
+      }
+      expect(value.startSession).not.toHaveBeenCalled();
+    },
+  );
+
+  it('does not show an exam update notice for an unchanged credential', () => {
+    mount(game(), '/setup');
+    expect(
+      screen.queryByRole('complementary', { name: /exam update/ }),
+    ).not.toBeInTheDocument();
+  });
+
   it('distinguishes reviewed content from playable content on a sealed credential', () => {
     const originalGet = dungeonPackages.getDungeonPackage;
     const base = originalGet('dp-700');

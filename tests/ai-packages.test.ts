@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { examId, loadDungeonPackage } from '../scripts/content-files';
 import {
   credentials,
@@ -30,13 +30,40 @@ import { configSchema, defaultConfig } from '../src/features/quiz/types';
 const read = (id: string, file: string): unknown =>
   JSON.parse(readFileSync(join('src', 'content', 'exams', id, file), 'utf8'));
 
+const packageFixtures = new Map<
+  string,
+  Awaited<ReturnType<typeof loadDungeonPackage>>
+>();
+for (const id of ['ai-103', 'ai-200', 'dp-700']) {
+  beforeAll(async () => {
+    packageFixtures.set(id, await loadDungeonPackage(id));
+  });
+}
+
+function packageFixture(id: string) {
+  const dungeon = packageFixtures.get(id);
+  if (!dungeon) throw new Error(`Missing validated package fixture: ${id}.`);
+  return structuredClone(dungeon);
+}
+
+it('isolates each test from changes to another validated package fixture', () => {
+  const changed = packageFixture('ai-103');
+  changed.credential.isVerified = false;
+  changed.questions[0].correctAnswer.push('test-only-mutation');
+  const original = packageFixture('ai-103');
+  expect(original.credential.isVerified).toBe(true);
+  expect(original.questions[0].correctAnswer).not.toContain(
+    'test-only-mutation',
+  );
+});
+
 describe.each(['ai-103', 'ai-200'])('%s installed strict package', (id) => {
-  it('uses the existing canonical ID and independently required complete review policy', async () => {
+  it('uses the existing canonical ID and independently required complete review policy', () => {
     expect(examId(id.toUpperCase())).toBe(id);
     expect(
       credentials.filter((credential) => credential.credentialId === id),
     ).toHaveLength(1);
-    const dungeon = await loadDungeonPackage(id);
+    const dungeon = packageFixture(id);
     expect(dungeon.credential.requiredReviewPolicy).toEqual(
       dungeon.packageManifest.reviewPolicy,
     );
@@ -51,8 +78,8 @@ describe.each(['ai-103', 'ai-200'])('%s installed strict package', (id) => {
     ).toEqual([]);
   });
 
-  it('binds every approved option, final rubric and all three independent passes to current facts', async () => {
-    const dungeon = await loadDungeonPackage(id);
+  it('binds every approved option, final rubric and all three independent passes to current facts', () => {
+    const dungeon = packageFixture(id);
     const stages = validationMetadataSchema.parse(dungeon.validationMetadata);
     const authored = questionSchema.array().parse(read(id, 'questions.json'));
     const objectiveHash = objectiveFingerprint(dungeon.taxonomy);
@@ -96,8 +123,8 @@ describe.each(['ai-103', 'ai-200'])('%s installed strict package', (id) => {
     }
   });
 
-  it('releases 115-150 eligible reviewed encounters with both modes and complete skill breadth', async () => {
-    const dungeon = await loadDungeonPackage(id);
+  it('releases 115-150 eligible reviewed encounters with both modes and complete skill breadth', () => {
+    const dungeon = packageFixture(id);
     const report = buildContentReport(dungeon);
     const eligible = eligibleQuestions(dungeon.questions, {
       ...defaultConfig,
@@ -154,8 +181,8 @@ describe.each(['ai-103', 'ai-200'])('%s installed strict package', (id) => {
     }
   });
 
-  it('accepts persisted Study and Boss configurations without leaking Boss answers', async () => {
-    const dungeon = await loadDungeonPackage(id);
+  it('accepts persisted Study and Boss configurations without leaking Boss answers', () => {
+    const dungeon = packageFixture(id);
     for (const mode of [
       { runMode: 'study', answerMode: 'immediate' },
       { runMode: 'gauntlet', answerMode: 'immediate' },
@@ -221,9 +248,9 @@ describe.each(['ai-103', 'ai-200'])('%s installed strict package', (id) => {
     }
   });
 
-  it('still rejects unavailable identities through direct and raid configurations', async () => {
-    const dungeon = await loadDungeonPackage(id);
-    const dp700 = await loadDungeonPackage('dp-700');
+  it('still rejects unavailable identities through direct and raid configurations', () => {
+    const dungeon = packageFixture(id);
+    const dp700 = packageFixture('dp-700');
     const unavailable = [
       { ...dungeon.credential, isVerified: false },
       ...(
@@ -256,16 +283,16 @@ describe.each(['ai-103', 'ai-200'])('%s installed strict package', (id) => {
   });
 });
 
-it('excludes the held AI-103 workflow-resume revision from the release', async () => {
-  const dungeon = await loadDungeonPackage('ai-103');
+it('excludes the held AI-103 workflow-resume revision from the release', () => {
+  const dungeon = packageFixture('ai-103');
   expect(dungeon.questions.map(questionFingerprint)).not.toContain(
     'd1b43fda08dd9389f2f7070efdaa153ad239629f591b820442256ee2b06a79a8',
   );
 });
 
-it('balances both released AI dungeons and DP-700 in an imported raid', async () => {
+it('balances both released AI dungeons and DP-700 in an imported raid', () => {
   const ids = ['ai-103', 'ai-200', 'dp-700'];
-  const dungeons = await Promise.all(ids.map((id) => loadDungeonPackage(id)));
+  const dungeons = ids.map(packageFixture);
   for (const answerMode of ['immediate', 'exam'] as const) {
     const selection = planDungeonSession(
       dungeons,

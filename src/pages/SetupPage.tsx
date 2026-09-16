@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent } from 'react';
+import { Fragment, useMemo, useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   ArrowRight,
@@ -23,6 +23,7 @@ import { defaultConfig, labels, type QuizConfig } from '../features/quiz/types';
 import { selectQuestions } from '../features/quiz/engine';
 import { ConfirmDialog, PageHeading } from '../components/common';
 import { BetaAvailabilityNotice } from '../components/BetaAvailabilityNotice';
+import { ExamUpdateNotice } from '../components/ExamUpdateNotice';
 import { getDungeonPackage } from '../features/dungeons/packages';
 import { credentials } from '../features/dungeons/catalog';
 import { planDungeonSession } from '../features/quiz/dungeonRuntime';
@@ -78,9 +79,9 @@ export function SetupPage() {
     [config, gauntlet, raid],
   );
   const raidIds = config.raidCredentialIds ?? [];
-  const betaCredentials = credentials.filter(
+  const noticeCredentials = credentials.filter(
     (item) =>
-      item.status === 'beta' &&
+      (item.status === 'beta' || item.examUpdateNotice) &&
       (item.credentialId === selectedCredentialId ||
         (raid && raidIds.includes(item.credentialId))),
   );
@@ -209,12 +210,14 @@ export function SetupPage() {
           <RotateCcw size={16} aria-hidden="true" /> Reset filters
         </button>
       </PageHeading>
-      {betaCredentials.map((credential) => (
-        <BetaAvailabilityNotice
-          key={credential.credentialId}
-          credential={credential}
-          readiness={getDungeonPackage(credential.credentialId)?.readiness}
-        />
+      {noticeCredentials.map((credential) => (
+        <Fragment key={credential.credentialId}>
+          <BetaAvailabilityNotice
+            credential={credential}
+            readiness={getDungeonPackage(credential.credentialId)?.readiness}
+          />
+          <ExamUpdateNotice credential={credential} />
+        </Fragment>
       ))}
       <Link className="text-link setup-map-link" to="/">
         Choose a different dungeon

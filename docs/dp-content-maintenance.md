@@ -35,6 +35,15 @@ copied into a current package or treated as current automatically when a calenda
 date arrives. Retrieve and independently review the then-current official guide
 first. A locked integration is not a completed DP-420 question bank.
 
+The separate `#/dungeons/dp-420/preview` route now displays that preserved
+snapshot as an **upcoming-outline preview**, with official study links and
+independent labels for its announced effective date and actual retrieval date.
+It is a read-only reference view, not a current taxonomy, playable package,
+question-authoring input or new source approval. The card's **Preview upcoming
+outline** link never invokes session creation or changes credential selection,
+scores, history or recent-question lists. Study and Boss stay locked, including
+when the local clock reaches October 6. No current-map or review gate is relaxed.
+
 ## Source approval and three independent contexts
 
 Both catalog records require the existing `three-pass-v1` policy, a **44/48**

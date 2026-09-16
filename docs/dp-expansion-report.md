@@ -1,5 +1,250 @@
 # DP-800 / DP-420 expansion progress
 
+## September 16 read-only DP-420 preview
+
+DP-420 is now accessible through **Preview upcoming outline** on its card and
+the refreshable `#/dungeons/dp-420/preview` route. This is an **unscored reference
+preview, not an unsealed question bank**. It displays the preserved October 6,
+2026 outline: 3 objective areas, 12 skills, 56 subskills, and published future
+weight ranges of 40-45%, 30-35% and 20-25%. Native keyboard-accessible
+disclosures expose the subskills. Official guide, credential and course links
+use the existing safe external-link component.
+
+The announced effective date and the snapshot's actual retrieval timestamp
+(`2026-09-14T18:19:19.756Z`) are displayed separately. The October 6 disclaimer
+remains visible. The credential's active status is unchanged; the current
+objective version is still null and both scored modes remain locked. All
+DP-420 candidate, technical-review, adversarial-review, verified, rejected,
+manual-review, stale and playable counts remain zero. Reading coverage is not
+verified question coverage. Preview navigation has no quiz, storage or credential
+selection actions, and does not award scores or record completion.
+
+The existing prospective JSON is imported only by the reference page, never
+the gameplay package registry. The optional informational `examUpdateNotice`
+field is synchronized into `schemas/credential.schema.json` using
+`npm run questions:schemas` and the existing formatter. No question, source
+allowlist, rubric, ledger, current map, threshold or completed-history format was
+changed. The existing layout, palette, typography and components are reused.
+
+Before implementation, this feature branch fast-forwarded with its local work
+preserved to `608d01130dd7af5c50bfce5e0312b8f04fb3076f` (merged PR #10), retaining
+the new AI-103 release as well as DP-800, DP-700 and GH-600 beta behavior.
+Before final acceptance it incorporated
+`57a46824c5b3fbed0c7425f1eb14aa9b1a29a026`, including the AI-200 and joint AI
+releases. The overlapping browser-test import was resolved by retaining the
+upstream `loadTestDungeonPackage` helper alongside the new preview tests. All
+credential packages, review ledgers and existing readiness fields remain
+unchanged relative to that latest base.
+The fresh guide/credential receipts captured earlier on September 16 still
+describe October 6 as upcoming; no additional research or question authoring
+was performed for this preview.
+
+### Verified preview after the renewed PR request
+
+**The complete local verification now passes for this read-only preview.**
+The earlier failed runs below remain historical evidence, not current failures
+and not approvals of DP-420 question content.
+
+| Stock check                                                                                                                    | Final result                                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run test:coverage`                                                                                                        | **761/761 passed**, 40 files; 97.35% statements/lines, 91.83% branches, 99.4% functions under the existing coverage configuration                  |
+| `npm run test:e2e`                                                                                                             | **98/98 passed**, desktop/mobile, including all ten DP journeys, accessibility, persistence, answer visibility and actual official-tome navigation |
+| `format:check`, `lint`, `typecheck`                                                                                            | Passed                                                                                                                                             |
+| `credentials:validate`, `content:validate-all`, `content:status`                                                               | Passed                                                                                                                                             |
+| `questions:validate`, `validate:sources`, `questions:duplicates`, `questions:verify`, `questions:coverage`, `questions:report` | Passed                                                                                                                                             |
+| Production build                                                                                                               | Passed through the stock browser server's `npm run build`                                                                                          |
+
+The passing coverage run completed at **2026-09-16T14:25:14.5624765Z**; its log
+SHA-256 is
+`1281e7902c0c69ec4da3f314ea51fcf0c71e0412d888cf6bcff5e3c0be0bf268`.
+The passing full browser run completed at **2026-09-16T14:53:54.2607611Z**; its
+log SHA-256 is
+`19bc254c540c0e7d2525258f2a824c78f3d3016db248b1d342d2817538e7542b`.
+Exact command metadata and outputs remain in ignored
+`.grounding\dp-420-preview-checks\pr-*-results.json` and `pr-*.log`.
+
+The corrections are limited to test setup and navigation. AI package fixtures
+are loaded once through the unchanged real loader, including registry-collision
+validation, in ordinary `beforeAll` hooks. Each test receives a `structuredClone`;
+a new regression verifies that mutations cannot leak between tests. No
+production cache, validator or eligibility check was changed. All original
+assertions remain in their original tests.
+
+Browser initial/reload navigation now waits for dynamic application loading
+before the existing visible-state assertions. The DP-800 trace identified a
+redundant full reload costing about seven seconds at the final return to the
+map; that return now uses the actual **Dungeon map** navigation link. The same
+score, history, source and cross-dungeon checks remain, and dedicated reload
+tests still run. No test time limit, runner default, assertion or axe check was
+relaxed. Two targeted eight-case browser runs passed. An intermediate full run
+passed 94/98 and exposed the additional startup boundaries before the final
+98/98 run; its trace and output are preserved.
+
+A separate read-only review covered these final test-only changes and reported
+no remaining high-confidence correctness issue. These passing gates authorize
+the scoped preview PR, **not Study/Boss gameplay or a completed DP-420 bank**.
+The prospective map, zero-question counts and missing current-map prerequisite
+remain unchanged. A pull request is not a deployment.
+
+### Historical development and blocked handoff
+
+Targeted development checks before the final latest-main integration:
+
+- `npm run typecheck`: passed.
+- `npm run test -- tests\interface.test.tsx tests\dp-exams.test.ts tests\dungeon-catalog.test.ts tests\dungeon-readiness.test.ts tests\beta-availability.test.tsx --reporter=dot`: **114/114 passed**. Tests exercise the actual complete preview, active-run boundaries and unchanged availability contracts.
+- `npm run test:e2e -- dp-exams.spec.ts --grep "DP-420 upcoming preview" --reporter=list`: **2/2 passed**, desktop/mobile. Checks cover keyboard disclosures, all 56 subskills, safe links, no viewport overflow, zero axe violations, direct refresh, an October 6 clock and unchanged seeded saved history/configuration/recent-question data. Seeded history is a storage-test fixture, not production question content.
+- The stock browser server's production build and content validation passed.
+
+Initial acceptance attempts on `57a46824c5b3fbed0c7425f1eb14aa9b1a29a026`:
+
+- Stock `format:check`, `lint`, `typecheck`, `credentials:validate` and
+  `content:validate-all` passed.
+- The first full `npm run test:coverage` attempt passed 757/760 tests; three
+  unchanged AI-package cases exceeded the stock five-second timeout. The same
+  AI suite passed 13/13 under coverage when run in isolation. One bounded full
+  retry passed 755/760 with five AI-package timeouts; all other 39 files and all
+  59 interface tests passed. This is **not a passing full unit/coverage gate**.
+  No timeout, runner default, assertion or unrelated implementation was changed,
+  and no further retry was made before the stopped handoff.
+- Stock `npm run test:e2e` passed **93/98** cases. Five unchanged AI, beta and
+  hosting cases failed while waiting for visible UI elements; this is **not a
+  passing full browser gate**. All ten DP browser cases passed, including the
+  six desktop/mobile DP-420 disclaimer, persisted-lock and preview cases.
+  The run completed at `2026-09-16T13:51:32.7971313Z`; its log SHA-256 is
+  `130c9a46bbcac6d4e90a6dc8c0af8bac24a1e3b79dbc401819fcbe402d0a4c68`.
+  No full browser retry or unrelated optimization was attempted before that handoff.
+- Exact outputs, timestamps and hashes are retained locally under ignored
+  `.grounding\dp-420-preview-checks`. The two full attempts remain distinct
+  from the diagnostic result; successful targeted checks do not replace full
+  acceptance.
+
+The checkout initially contained CRLF text while the stock formatter expects
+LF. The existing formatter normalized 760 tracked files only after each output
+was confirmed to differ solely by line endings; the complete Git diff stayed
+identical. No Git/formatter configuration or untracked user files were changed.
+A 911-byte untracked design-hook cache identifying only this session's edits
+was removed, not committed. The stock formatting gate then passed.
+
+At that stopped handoff, the preview remained local and unpublished because
+full acceptance was incomplete; no commit, feature push, PR, merge or deployment
+had been made. The later successful verification is recorded above.
+A separate bounded read-only review covered the notice, preview, route/card,
+schema synchronization and browser assertions. Its nullable-weight and
+persisted-state findings were corrected; no remaining high-confidence
+correctness issue was reported in that scope. This was a preview-code review,
+not question-bank approval or a replacement for the failed full gates.
+
+The missing entry/route assertions initially failed as intended. TypeScript then
+caught nullable shared-schema weights and a test-only reference to a nonexistent
+persisted `active` field; the view now explicitly reports missing weights
+without inventing values, and the browser compares actual saved fields. Active
+in-memory sessions are covered separately by the interface test. No runner
+timeouts, assertions, accessibility requirements or readiness defaults were
+weakened. A proposed decorative side border was removed in favor of the
+existing restrained typography.
+
+The original roughly 150-verified-question goal is still unmet. Playable
+DP-420 requires an independently established complete current official map and
+the unchanged independent content-review and coverage gates. The preview is a
+useful interim reading experience, not completion of that bank or a deployment.
+
+## September 15 exam-update disclaimer follow-up
+
+After the blocked recheck below, an informational disclaimer was added to the
+DP-420 dungeon card, setup and forge at the user's request. It names the
+**October 6, 2026** upcoming update, distinguishes it from the unverified current
+outline, and links safely to the official study guide. The notice uses the
+existing warning presentation and is not a readiness flag or date-triggered
+unlock. No questions, objective maps, source approvals or reviews were changed.
+Both modes remain locked with zero playable encounters; the request to make the
+bank available remains blocked on a verified current map and reviewed content.
+Other credentials retain their existing behavior and availability.
+
+Notice validation: the targeted interface, DP integration, catalog, readiness
+and beta-availability Vitest suites passed **111/111** tests. `npm run lint`,
+`npm run typecheck` and `npm run credentials:validate` passed. Running
+`npm run test:e2e -- dp-exams.spec.ts --grep "DP-420 (shows|cannot)" --reporter=list`
+passed **4/4** desktop/mobile cases, including safe links, no horizontal
+overflow, zero axe violations on the card, persisted configuration and an
+October 6 clock that does not unlock gameplay. The stock browser server also
+completed the production build and its content validation.
+
+The new notice assertions first reproduced the absent notice. A test-only
+unsupported Testing Library option was removed after TypeScript rejected it.
+An initial Windows path selector matched no browser tests; the basename
+selector above corrected it. An overloaded browser case initially timed out;
+the accessibility/screenshot and persisted-configuration journeys were
+separated and now wait for application loading without changing runner limits
+or dropping assertions. Full-suite results below remain historical, not new
+DP-420 acceptance evidence.
+
+## September 15 DP-420 current-map recheck: blocked, no bank delivered
+
+The new DP-420 request reached the first grounding gate, not content delivery.
+The bounded official retrieval still did **not establish a complete currently
+effective English objective map**. The isolated branch
+`anuraagr-dp-420-study-dungeon` started from fetched `origin/main` commit
+`2b1015ae9932aeaf14da73b3baa12ca2bd543a54`, which includes merged PR #9.
+There are no gameplay, catalog, question, review-ledger, or source-policy changes.
+
+Actual Microsoft Learn MCP fetches on **September 15, 2026**:
+
+| Official source                                                                                                                                                         | Retrieval time (UTC) | Current-map finding                                                                                 |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------- |
+| [DP-420 study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-420)                                                        | 18:42:51.713Z        | Complete outline only under October 6, 2026; prior change-log rows omit weights and full subskills. |
+| [Azure Cosmos DB Developer Specialty credential](https://learn.microsoft.com/en-us/credentials/certifications/azure-cosmos-db-developer-specialty/)                     | 18:42:51.609Z        | Explicitly calls the October 6 update upcoming; July 21 page metadata is not an objective version.  |
+| [DP-420T00 course](https://learn.microsoft.com/en-us/training/courses/dp-420t00)                                                                                        | 18:42:51.715Z        | Preparation overview, not a complete dated and weighted blueprint.                                  |
+| [Exact guide-linked exam/preparation path](https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-420)                                                   | 18:45:44.987Z        | Returns the same credential body and upcoming-update notice, not another outline.                   |
+| [Connect to Azure Cosmos DB for NoSQL with the SDK](https://learn.microsoft.com/en-us/training/paths/connect-to-azure-cosmos-db-sql-api-sdk/)                           | 20:09:05.304Z        | Two-module training overview, without exam weights or an effective objective date.                  |
+| [Execute queries and build a Generative AI application with Azure Cosmos DB](https://learn.microsoft.com/en-us/training/paths/execute-queries-azure-cosmos-db-sql-api/) | 20:09:05.152Z        | Three-module training overview, not a complete current exam map.                                    |
+
+One bounded current-outline MCP search at **18:45:45.278Z** returned seven
+sections of the same DP-420 guide and three unrelated credential results, which
+were excluded. A preparation-link lookup at **20:06:04.447Z** resolved the two
+sampled training paths against explicit course HTML UIDs. The credential HTML
+references `course.dp-420t00`; course HTML references thirteen training paths.
+Only those two path overviews were fetched, not the other eleven paths or their
+child modules. No search excerpt or training topic was promoted to exam-map
+evidence. This bounded finding does not claim no current official outline exists
+elsewhere.
+
+All eight actual MCP responses and two HTML captures remain local under ignored
+`.grounding\dp-420-2026-09-15`. The append-only `followUpChecks` entry in
+[`dp-420-grounding-status.json`](dp-420-grounding-status.json) preserves exact
+queries, URLs, titles, timestamps, MCP receipt hashes, observations and
+limitations. It retains the September 14 evidence unchanged, including that
+earlier research context's missing raw receipts. Initially missing MCP SDK
+dependencies were restored from the lockfile; failed commands were not recorded
+as successful retrievals.
+
+**DP-420 counts remain zero:** candidates, technical reviews, adversarial reviews,
+verified, rejected, manual-review, stale and playable records. Objective and
+subskill coverage, difficulty, complexity and answer-position distributions
+cannot be reported for a nonexistent current-mapped bank. Both modes remain
+locked with `objectiveVersion: null` and `isVerified: false`. The prospective
+October 6 snapshot, completed local history, and all other credentials are
+unchanged. The approximately 150-verified target remains unmet; a sealed card is
+not a delivered bank.
+
+**Resume prerequisite:** obtain and independently establish a complete, currently
+effective English DP-420 outline from the official guide or a permitted exact
+guide/credential-linked version or download, with its explicit effective date,
+every domain weight range, skills and subskills. Retrieve it through Learn MCP.
+Neither training coverage nor the future date arriving automatically establishes
+a current map. Only then can grounded authoring and the unchanged independent
+technical/adversarial reviews begin.
+
+This follow-up is documentation/evidence only. The receipt-integrity check
+matched all eight saved MCP inputs, timestamps and SHA-256 hashes, preserved the
+September 14 JSON record, and confirmed that only these two documentation paths
+changed. The initial formatting check reported issues; the grounding JSON and
+new report section were formatted without reformatting historical report
+content. No full-suite formatting, build, unit, browser, content-acceptance or CI
+pass is claimed, and no feature push or PR was made for this blocked bank.
+
+The sections below retain the earlier DP-800 release and historical evidence.
+Their acceptance results are not September 15 DP-420 validation results.
+
 ## Final local acceptance
 
 **All required local gates now pass for the frozen limited DP-800 Study

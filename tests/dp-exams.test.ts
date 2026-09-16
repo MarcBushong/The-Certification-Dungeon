@@ -128,6 +128,11 @@ describe('DP credential integration and prospective-map separation', () => {
     expect(card.verifiedQuestionCount).toBe(0);
     expect(card.readiness).toMatchObject({ study: false, gauntlet: false });
     expect(card.sealedReason).toContain('October 6, 2026 future outline');
+    expect(card.examUpdateNotice).toContain('Exam update: October 6, 2026');
+    expect(card.examUpdateNotice).toContain(
+      'not a verified current exam outline',
+    );
+    expect(card.examUpdateNotice).toContain('no automatic unlock');
     expect(card.officialUrls.training).toBe(
       'https://learn.microsoft.com/en-us/training/courses/dp-420t00',
     );
