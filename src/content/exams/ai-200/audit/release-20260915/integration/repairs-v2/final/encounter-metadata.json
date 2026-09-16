@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "ai200-i-013": {
+      "credentialId": "ai-200",
+      "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+      "questionFingerprint": "f37d0f6ad0be46c659cb8407cf8133d69cf722f40a92b44624c7bec28cc009dd",
+      "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+      "retrievedAt": "2026-09-15T19:25:50.247Z",
+      "lastValidatedAt": "2026-09-15T20:14:59.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+          "summary": "Not incorrect: the table permits E’s EventGrid input to become CloudEvents and C’s CloudEvents input to remain CloudEvents. Both outputs meet the exclusive handler contract and retain C’s extension-capable format. Documented alternate context: This pair fits the exact fixed-input, CloudEvents-only consumer configuration. It is not evidence that all format conversions are reversible or that a consumer accepts arbitrary schemas. Evidence: Two explicit rows of the conversion table support the selected pair, and the adjacent extension paragraph explains why C cannot switch to Event Grid output."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+          "summary": "E would deliver an Event Grid envelope that the newly explicit handler refuses to parse. C is compatible, and both transformations are service-supported, but the consumer contract fails for E. Documented alternate context: This pair works when the consumer actually accepts both Event Grid and CloudEvents formats. That exact alternate acceptance set is now excluded by the repaired stem. Evidence: The table permits EventGrid-to-EventGrid and CloudEvents-to-CloudEvents. The service therefore permits this row, while the stipulated CloudEvents-only consumer rules it out."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+          "summary": "C has CloudEvents input, which cannot use Event Grid output, and neither proposed output meets the CloudEvents-only consumer condition. Documented alternate context: Two Event Grid-input topics feeding an Event Grid-capable consumer could retain Event Grid output. Both the fixed C input and the stated consumer would need to change. Evidence: The source allows EventGrid-to-EventGrid but explicitly prohibits CloudEvents-to-EventGrid because the latter format cannot carry CloudEvents extension attributes."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "reviewerId": "ai200-release-adversarial-integration",
+        "reviewedAt": "2026-09-15T21:02:03.662Z",
+        "notes": "alignment=4: The current Event Grid workflow subskill includes custom events; evaluating topic input versus subscription delivery format is within that scope.\naccuracy=4: The complete table supports E-to-CloudEvents and C-to-CloudEvents, and the new exclusive handler contract now legitimately rejects E-to-EventGrid.\nscenarioCompleteness=4: Basic custom topics, fixed publisher input schemas, C extensions and a handler that cannot parse Event Grid envelopes are all now explicitly supplied.\nanswerUniqueness=4: Only c is both service-compatible and consumable by the stated handler. The formerly valid dual-format-handler counterexample now violates an explicit premise.\ndistractorPlausibility=2: Both distractors visibly deliver Event Grid from E, directly contrary to only CloudEvents. They are documented alternatives but weak under the supplied exclusive output requirement.\ndistractorEvidence=4: The exact three-row compatibility table supports the alternate dual-format context for a and two EventGrid-input publishers with an EventGrid handler for b.\ndocumentationStrength=4: The complete retrieved article explicitly lists the supported conversions and explains the extension-attribute prohibition. No unsupported converse or global schema inference is necessary.\ncitationSpecificity=4: The one cited source is the precise CloudEvents conversion article, directly linked from the actual event-schema training unit through the complete AI-200 preparation chain.\ndifficultyAuthenticity=2: Intermediate technical-implementation remains overstated: the only row spelling CloudEvents twice is selected directly from only CloudEvents in the stem, without applying the input compatibility table.\nexplanationQuality=4: The explanation now matches a condition actually stated in the stem and correctly distinguishes supported EventGrid-to-CloudEvents from unsupported reverse conversion.\noriginality=3: Original two-topic wording applies a conventional format-compatibility fact. This is the same stable i-013 revision, not a new independently countable concept.\nclarityAccessibility=4: E and C remain clear labels, row grammar is parallel, and the explicit negative parsing condition removes ambiguity. The clarity improvement is separate from the task-depth weakness.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 2,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 2,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "ai200-r-i-006": {
+      "credentialId": "ai-200",
+      "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+      "questionFingerprint": "2124549e089c783cda0563d296f2938b21c4366872244c12f04e4a1b9aefb3a0",
+      "sourceIds": [
+        "ai200-20260915-integration-eg-delivery",
+        "ai200-20260915-integration-sb-concepts",
+        "ai200-20260915-integration-sb-reliability"
+      ],
+      "retrievedAt": "2026-09-15T19:22:56.053Z",
+      "lastValidatedAt": "2026-09-15T20:14:59.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": [
+            "ai200-20260915-integration-eg-delivery",
+            "ai200-20260915-integration-sb-concepts",
+            "ai200-20260915-integration-sb-reliability"
+          ],
+          "summary": "Not incorrect: confirmed queue acceptance takes two seconds, keeping elapsed time at about 14 seconds. The two completed jobs already have durable results, and the queue/worker now owns the remaining job before whole-batch acknowledgement. Documented alternate context: A successful durable handoff before the HTTP deadline permits asynchronous acknowledgement. If the queue did not accept the job, starting a send alone would not justify the same success response. Evidence: Event Grid treats 202 as successful asynchronous acceptance; Service Bus provides durable producer-consumer decoupling. Reliability sections preserve acknowledgement boundaries rather than promising exactly-once external effects."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+          "summary": "The endpoint has already spent 12 seconds; adding another minute exceeds Event Grid’s documented 30-second response wait. Earlier completion of two elements does not extend the batch response window. Documented alternate context: A handler can finish synchronously and acknowledge successfully when the entire batch completes within the response window. Evidence: The full unit distinguishes the 30-second endpoint wait from complete processing and requires a success response for the whole batch."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+          "summary": "503 takes the retry path and the batching contract retries the whole delivery, violating the instruction not to ask Event Grid to replay the batch. Documented alternate context: Return 503 when durable acceptance fails or the endpoint cannot accept the batch and whole-batch retry is the desired recovery path. Evidence: The delivery unit explicitly recommends 503 for transient inability to process and describes all-or-none acknowledgement for output batches."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "reviewerId": "ai200-release-adversarial-integration",
+        "reviewedAt": "2026-09-15T21:02:03.662Z",
+        "notes": "alignment=4: The exact current Event Grid workflow subskill includes retries and service integration; placing remaining work behind a queue before whole-batch acknowledgement fits it.\naccuracy=4: The reread unit accepts 202, gives the 30-second wait and whole-batch retry semantics; the queue units support successful durable acceptance followed by separate processing.\nscenarioCompleteness=4: The elapsed 12 seconds, two completed durable jobs, remaining minute, two-second durable enqueue and available worker make the processing and reliability boundaries explicit.\nanswerUniqueness=4: Synchronous completion reaches about 72 seconds, the successful enqueue response about 14, and 503 asks for whole-batch replay. Only b meets all three supplied constraints.\ndistractorPlausibility=3: Synchronous completion and retry-on-failure are real plans, but the timing and no-requested-replay constraints strongly rule them out here.\ndistractorEvidence=4: The actual delivery unit directly supports a successful in-window synchronous response and a 503 whole-batch retry when acceptance fails.\ndocumentationStrength=4: The complete delivery and Service Bus units jointly cover status codes, acknowledgement granularity, response timing, queued ownership and the absence of exactly-once guarantees.\ncitationSpecificity=4: All three references are exact substantive training units linked by their current-course modules; the course itself supplies no technical support and no withdrawn article is used.\ndifficultyAuthenticity=3: Intermediate architecture-design is defensible but easy. The task applies acknowledgement and durable responsibility to partial batch state; supplied arithmetic and architecture do not merit full difficulty realism or Advanced credit.\nexplanationQuality=4: The explanation requires successful durable acceptance before 202 and explicitly withdraws that premise if enqueue fails, avoiding an unsafe fire-and-forget interpretation.\noriginality=3: The partial-batch framing is original but applies a conventional asynchronous acceptance design. It is a revision of r-i-006, not another current fact beside v1.\nclarityAccessibility=4: Completed versus remaining jobs, webhook response and queue worker are consistently distinguished. The pronoun warning has a single clear webhook/batch referent.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "ai200-r-i-011": {
+      "credentialId": "ai-200",
+      "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+      "questionFingerprint": "12752eb5871e6ba3699f9e36977f698d297dbe5c0ebc77721ea05523c3a6b5ff",
+      "sourceIds": [
+        "ai200-20260915-integration-doc-python",
+        "ai200-20260915-integration-fn-configuration"
+      ],
+      "retrievedAt": "2026-09-15T19:25:50.454Z",
+      "lastValidatedAt": "2026-09-15T20:14:59.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["ai200-20260915-integration-doc-python"],
+          "summary": "Not incorrect: changing the interpreter setting does not rebuild previously produced artifacts. Rebuilding and deploying against the new interpreter is the expressly documented obligation. Documented alternate context: Apply this lifecycle for the stated supported-version migration; package version numbers can stay unchanged when they already support the target interpreter. Evidence: The package considerations and Supported Python versions Important notice both require rebuilding and redeploying with the new Python version and deny automatic artifact rebuilding."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": [
+            "ai200-20260915-integration-fn-configuration",
+            "ai200-20260915-integration-doc-python"
+          ],
+          "summary": "Downloading settings supplies local configuration values, not new-interpreter dependency builds or a replacement deployed artifact. Documented alternate context: Download current settings when the task is reproducing a remote function app’s configuration in local development. Evidence: The configuration unit defines fetch-app-settings as a local.settings.json download, while the Python reference separately identifies build/deployment obligations."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["ai200-20260915-integration-doc-python"],
+          "summary": "A Blueprint changes code organization and discovery, not dependency artifacts built for the old interpreter; the current registration already works. Documented alternate context: Use a registered Blueprint to organize decorated handlers across separate Python files in a modular function app. Evidence: The Organizing with blueprints section shows defining, importing and registering handlers; the separate package/version sections require rebuilding artifacts after interpreter changes."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "reviewerId": "ai200-release-adversarial-integration",
+        "reviewedAt": "2026-09-15T21:02:03.662Z",
+        "notes": "alignment=4: The current configure-and-deploy-functions subskill includes deployment artifact obligations after a supported Python interpreter change.\naccuracy=4: The full Python reference explicitly states existing artifacts are not automatically rebuilt and requires rebuild/redeploy using the new interpreter.\nscenarioCompleteness=4: The target interpreter is supported, dependencies were built for the old one, and other file/package/registration conditions are correct. No named unsupported Python version is asserted.\nanswerUniqueness=4: Only a performs the required artifact lifecycle. Settings download and handler organization cannot rebuild and deploy interpreter-specific dependency artifacts.\ndistractorPlausibility=2: Both alternatives are real but weak because the stem already says registration and package declarations are correct and directly announces an interpreter-change obligation.\ndistractorEvidence=4: The configuration unit supports downloading settings for local reproduction; the Python blueprint section supports modular handler organization. Both alternate uses are direct, not invented.\ndocumentationStrength=4: Two explicit passages in the complete Python reference support the rebuild requirement, while separately reread sections fully distinguish both distractors.\ncitationSpecificity=4: The exact Python reference is directly linked by the actual local-development unit, and the configuration unit has its own complete module/path/course ancestry.\ndifficultyAuthenticity=4: Beginner/concept-recall with single-select presentation honestly describes prescription recognition. No implementation or diagnostic credit is claimed for its migration story.\nexplanationQuality=3: The factual explanation is correct and bounds compatible package versions, but the deep explanation largely restates the same rebuild prescription without much additional teaching.\noriginality=3: The original prose describes a conventional version-migration obligation. It preserves the existing fact identity rather than multiplying coverage with the repaired snapshot.\nclarityAccessibility=4: Interpreter, built artifacts, declared package list, local settings and Blueprint are distinct readable concepts. There is no hidden version, syntax puzzle or ambiguous pronoun.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 2,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 4,
+          "explanationQuality": 3,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    }
+  }
+}

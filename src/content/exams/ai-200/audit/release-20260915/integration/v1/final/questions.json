@@ -1,0 +1,2034 @@
+[
+  {
+    "id": "ai200-i-001",
+    "question": "Inference workers are interchangeable and share one Service Bus queue. Jobs are accumulating while the workers are busy. Which change adds consumers competing for that backlog, rather than giving each worker its own copy?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Connect additional worker instances to the existing queue."
+      },
+      {
+        "id": "b",
+        "text": "Connect each worker to a separate subscription on a topic."
+      },
+      {
+        "id": "c",
+        "text": "Extend the validity period of messages in the existing queue."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Receivers on the same queue compete for available work. This fits interchangeable workers; PeekLock redelivery can still occur after lock expiry, so allocation is not an exactly-once guarantee.",
+    "deepExplanation": "Queue receivers compete for work; subscription receivers consume independent copies. Increasing TTL changes the request validity window. These are different controls, and only the first adds the requested competing capacity.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Separate subscriptions distribute independent copies and fit distinct services that each need an event. That fan-out is different from allocating the backlog among interchangeable workers.",
+      "c": "A longer TTL suits requests that remain useful through a longer backlog. It adds time for processing, not worker capacity."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-integration-sb-patterns",
+      "ai200-20260915-integration-sb-reliability",
+      "ai200-20260915-integration-sb-structure"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/3-choose-queues-topics-subscriptions",
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/5-process-messages-reliably",
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/4-structure-messages-ai-workloads"
+    ],
+    "documentationTitles": [
+      "Choose between queues and topics with subscriptions",
+      "Process messages reliably",
+      "Structure messages for AI workloads"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.queue-competing-consumer-pattern",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-sb-patterns",
+      "ai200-20260915-integration-sb-reliability",
+      "ai200-20260915-integration-sb-structure"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. Only a adds consumers to this existing queue. b changes copy distribution and c changes validity, even if both are useful in other architectures. Two warnings examined individually: absolute allocation is not exactly-once completion; worker pronouns are clear. Original wording around a familiar foundational distinction earns originality 3. Rubric 46/48. Reasoning/classification: Beginner concept recall is appropriate: identify shared queue allocation versus per-subscription copies. No applied coverage is earned from the worker story. Semantic assessment: The excluded historical i-002 is the inverse copy-allocation fact and must not return. Current KEDA scaling references require scaler metadata/authentication, unlike this broker topology decision. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "Only a adds consumers to this existing queue. b changes copy distribution and c changes validity, even if both are useful in other architectures. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-003",
+    "question": "Which Service Bus subscription filter is designed for efficient matching against specified property values, rather than evaluating a SQL-like predicate or accepting every message?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "A SQL filter."
+      },
+      {
+        "id": "b",
+        "text": "A Boolean TrueFilter."
+      },
+      {
+        "id": "c",
+        "text": "A correlation filter."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Correlation filters match specified property values and are the documented efficient choice for exact matches. A need for a SQL-like expression would instead favor SQL filtering.",
+    "deepExplanation": "These supported filter classes have different predicate behavior. Correlation matching is suitable for specified property values, SQL filters express SQL-like predicates, and Boolean filters accept or reject messages as a group.",
+    "whyOtherAnswersAreWrong": {
+      "a": "SQL filters are appropriate for SQL-like property predicates. They can express equality but correlation filters are documented as more efficient for exact property-value matches.",
+      "b": "TrueFilter is the real accept-all rule, useful for a subscriber that needs every publication. It does not select specified property values."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-integration-sb-patterns"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/3-choose-queues-topics-subscriptions"
+    ],
+    "documentationTitles": [
+      "Choose between queues and topics with subscriptions"
+    ],
+    "generatedAt": "2026-09-15T19:40:55.508Z",
+    "lastValidatedAt": "2026-09-15T19:40:55.508Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.property-subscription-filter",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. c is technically unique under the efficient exact-match criterion. The hold is quality, not a manufactured ambiguity about SQL equality. Independent total 43/48. Retain manual review despite pass-2 verification: improve the pre-eliminated alternatives through the original author and restart all passes. Beginner relabeling alone is not another repair. Rubric 43/48. Reasoning/classification: The repaired Beginner/concept-recall label is honest, unlike the old implementation label. That repair does not cure the heavily pre-eliminated alternatives. Semantic assessment: This Service Bus filter-class fact is distinct from Event Grid eventType, subject-boundary and scalar conjunction evaluation. Originality 3 reflects a familiar definition question. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "c is technically unique under the efficient exact-match criterion. The hold is quality, not a manufactured ambiguity about SQL equality. Independent total 43/48. Retain manual review despite pass-2 verification: improve the pre-eliminated alternatives through the original author and restart all passes. Beginner relabeling alone is not another repair. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-004",
+    "question": "A Service Bus diagnostic consumer accepts the risk of losing a sample if it crashes after delivery. It wants the broker to remove a delivered sample without a later settlement call. Which receive mode implements that trade-off?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "PeekLock."
+      },
+      {
+        "id": "b",
+        "text": "ReceiveAndDelete."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Receive-and-delete removes the delivered message immediately, avoiding a later settlement call. Its loss window is acceptable for the stipulated disposable samples, not for durable inference work.",
+    "deepExplanation": "The difference concerns delivery acknowledgement and the failure window. No throughput number, transfer guarantee or exactly-once behavior is promised.",
+    "whyOtherAnswersAreWrong": {
+      "a": "PeekLock retains a locked message until settlement and permits redelivery after lock expiry. It is appropriate when losing the work is unacceptable, but requires the acknowledgement path excluded here."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/5-process-messages-reliably"
+    ],
+    "documentationTitles": ["Process messages reliably"],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.peeklock-versus-receiveanddelete",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-sb-reliability"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. b alone implements the stipulated no-later-settlement contract. a is valuable specifically when the crash-loss tolerance changes. Both flagged warnings inspected: the consumer is the clear pronoun referent and immediate removal is the scoped contract. No quantitative performance assertion survives into the question. Rubric 46/48. Reasoning/classification: The two-mode distinction is useful Beginner recall, not technical implementation just because a consumer is described. Semantic assessment: Mode selection precedes the already-PeekLock settlement mapping in i-005; it is not the same decision. Originality 3 reflects a conventional mode comparison. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "b alone implements the stipulated no-later-settlement contract. a is valuable specifically when the crash-loss tolerance changes. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-005",
+    "question": "A PeekLock worker must handle three outcomes: S has a durably saved result; T has a temporary model timeout; P references a permanently unsupported model. All receivers and locks remain valid, TTLs are unexpired, and T is well below the delivery limit. Which settlement mapping matches these outcomes?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "S: Complete; T: DeadLetter; P: Abandon."
+      },
+      {
+        "id": "b",
+        "text": "S: Complete; T: Abandon; P: DeadLetter."
+      },
+      {
+        "id": "c",
+        "text": "S: Defer; T: Abandon; P: Complete."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Complete removes the successfully persisted S job, Abandon releases T for retry within its remaining budget, and DeadLetter preserves permanently invalid P for investigation rather than futile retries.",
+    "deepExplanation": "The outcome table requires three settlement contracts. T explicitly has remaining delivery budget: abandonment cannot promise ordinary redelivery once the maximum delivery count is exhausted.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Complete fits S. DeadLetter would fit a permanent T failure, while Abandon would fit a transient P failure; the given failure classifications are the reverse.",
+      "c": "Defer is valid for prerequisite-blocked work needing later sequence-number retrieval; Complete is valid for successful work. S is already successful and P is not, so these two assignments misclassify the outcomes."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/5-process-messages-reliably"
+    ],
+    "documentationTitles": ["Process messages reliably"],
+    "generatedAt": "2026-09-15T19:40:55.508Z",
+    "lastValidatedAt": "2026-09-15T19:40:55.508Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.complete-versus-abandon-settlement",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-sb-reliability"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. Only b gets all three outcomes correct. a shares S and c shares T, so checking one favored settlement is insufficient. The repaired state/budget table is complete, concise and genuinely applied. No score is awarded merely for three source-backed method names; the actual row comparisons justify the full rubric. Rubric 48/48. Reasoning/classification: Intermediate implementation is justified by applying three different state transitions to a concrete outcome table; changing one outcome changes the correct row. Semantic assessment: Choosing a complete settlement row differs from i-006 deferred retrieval-token ownership and r-i-005 replacement publication from a DLQ. No archived generic idempotency fact is restored. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "Only b gets all three outcomes correct. a shares S and c shares T, so checking one favored settlement is insufficient. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-006",
+    "question": "A Service Bus worker receives a valid analysis job before its required calibration arrives. The application will store a retrieval token and resume the same message after calibration; ordinary receives must not keep returning it meanwhile. Which operation and token should the worker pair?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Abandon the message; record its correlation ID."
+      },
+      {
+        "id": "b",
+        "text": "Dead-letter the message; record its diagnostic reason."
+      },
+      {
+        "id": "c",
+        "text": "Defer the message; record its sequence number."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Deferral removes a message from regular delivery, and receive_deferred_messages uses its sequence number to retrieve it. The application must retain that number; this does not extend TTL indefinitely.",
+    "deepExplanation": "Deferral combines a delivery-state change with a specific retrieval identifier. Correlation metadata and DLQ diagnostics are useful, but they are not substitutes for the deferred message sequence number.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Abandon releases work for ordinary redelivery after transient failure, and correlation ID supports tracing. Neither provides deferred sequence-number retrieval or suppresses ordinary receives.",
+      "b": "Dead-lettering and its reason are appropriate for invalid work requiring investigation and possible replacement submission. This valid waiting message instead needs explicit deferred retrieval."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-integration-sb-reliability",
+      "ai200-20260915-integration-sb-structure"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/5-process-messages-reliably",
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/4-structure-messages-ai-workloads"
+    ],
+    "documentationTitles": [
+      "Process messages reliably",
+      "Structure messages for AI workloads"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.defer-sequence-number-retrieval",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-sb-reliability",
+      "ai200-20260915-integration-sb-structure"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. c alone supplies both the required delivery state and its retrieval token; a offers the wrong delivery state and b a different remediation lifecycle. Both warning types were inspected, not waived. The limiting note on TTL is retained; no live broker execution is claimed. Rubric 47/48. Reasoning/classification: A compact operation-plus-token application merits only difficulty 3 for the intermediate label; the familiar dependency example still makes the task relatively easy. Semantic assessment: The explicit sequence-number responsibility is not interchangeable with transient Abandon in i-005. This is not merely another story about retrying failed work. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "c alone supplies both the required delivery state and its retrieval token; a offers the wrong delivery state and b a different remediation lifecycle. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-009",
+    "question": "Short-lived Service Bus requests lose business value after five minutes. During backlogs, operations needs to inspect requests that expire without extending their useful lifetime. These are ordinary nondeferred messages, and expiration dead-lettering is currently disabled. Which policy change addresses both requirements?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the five-minute TTL and enable expiration dead-lettering."
+      },
+      {
+        "id": "b",
+        "text": "Extend the TTL and retain the current expiration setting."
+      },
+      {
+        "id": "c",
+        "text": "Keep the TTL and raise the maximum delivery count."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Expiration dead-lettering routes expired work to the DLQ while preserving its original short validity period. It addresses retention without making stale requests eligible longer.",
+    "deepExplanation": "TTL, retry count and expiry retention solve different lifecycle problems. The item makes no claim about deferred-message expiration or automatic cleanup of dead-letter contents.",
+    "whyOtherAnswersAreWrong": {
+      "b": "A longer TTL is useful when delayed work remains valuable. Here it changes the required five-minute validity window and does not enable the requested expiry-retention path.",
+      "c": "A larger delivery budget is useful for repeated transient processing failures. It is independent of retaining ordinary messages that expire before processing."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-integration-sb-structure",
+      "ai200-20260915-integration-sb-reliability"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/4-structure-messages-ai-workloads",
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/5-process-messages-reliably"
+    ],
+    "documentationTitles": [
+      "Structure messages for AI workloads",
+      "Process messages reliably"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.expiration-dlq-precondition",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-sb-structure",
+      "ai200-20260915-integration-sb-reliability"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. a preserves both lifetime and inspectability. b changes lifetime and c changes attempt eligibility, neither adding the missing expiry-retention path. The single pronoun warning is resolved by explicit request/expiry references. Difficulty 3 and plausibility 3 record the simple policy contrast without inventing ambiguity. Rubric 46/48. Reasoning/classification: This is an easy intermediate configuration application separating lifecycle validity from post-expiry retention; it is not advanced failure recovery. Semantic assessment: Compared with i-019, this configures an existing broker subqueue expiry switch, not an external Blob destination for failed Event Grid pushes. The concrete controls and prerequisites differ. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "a preserves both lifetime and inspectability. b changes lifetime and c changes attempt eligibility, neither adding the missing expiry-retention path. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-010",
+    "question": "A document exceeds the message-size limit of an AI pipeline’s fixed Service Bus configuration. Workers can already read its durable document store. Requests need end-to-end correlation, and the messaging tier cannot change. Which design satisfies the broker size boundary?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Send a durable-storage reference and correlation metadata."
+      },
+      {
+        "id": "b",
+        "text": "Send the complete document with a shorter validity period."
+      },
+      {
+        "id": "c",
+        "text": "Send the complete document inside a batch of requests."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Claim-check keeps the large document in storage and sends only a small reference with correlation metadata. Existing worker storage access satisfies the retrieval prerequisite.",
+    "deepExplanation": "The proposed boundary separates payload storage from broker delivery. This reduces what crosses Service Bus while preserving correlation; it is not a claim of atomic publication across the storage and messaging services.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Shorter TTL is appropriate for time-sensitive work but does not shrink an oversized body. An inline document is suitable when it fits the deployed size limit.",
+      "c": "Batching reduces round trips for multiple individually suitable messages. It does not remove the excessive document body or bypass the batch size boundary."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["ai200-20260915-integration-sb-structure"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/4-structure-messages-ai-workloads"
+    ],
+    "documentationTitles": ["Structure messages for AI workloads"],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.claim-check-correlation-envelope",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-sb-structure"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. Only a changes what crosses the broker. Both other options preserve the oversized body and therefore fail the stated size boundary. No numeric broker quota is asserted, and both cross-resource access and fixed-tier conditions are explicit. All alternate contexts remain supported. Rubric 47/48. Reasoning/classification: Intermediate architecture design is justified by choosing which service carries the payload under size and access constraints. Semantic assessment: r-i-003 explicitly makes each message small enough and diagnoses a missing exception-path add; that distinct control-flow fact is not claim-check. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "Only a changes what crosses the broker. Both other options preserve the oversized body and therefore fail the stated size boundary. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-r-i-001",
+    "question": "A session-enabled Service Bus queue carries two ordered steps for document D7 and two for document D8. Steps for a document need the same session group; the two documents must not be merged into one group. Which assignment supplies the required session grouping?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use a new session_id for every step, with correlation_id set to its document."
+      },
+      {
+        "id": "b",
+        "text": "Use session_id D7 for D7’s steps and D8 for D8’s steps."
+      },
+      {
+        "id": "c",
+        "text": "Use one session_id for every step, with a unique message_id per step."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "A shared session ID groups related messages for ordered single-receiver session processing. Separate document IDs preserve separate groups; distinct messages may still have unique message IDs.",
+    "deepExplanation": "The table is resolved by grouping semantics, not by generic consumer fan-out. Correlation ID, message ID and session ID have different responsibilities.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Distinct session IDs suit independent session groups; correlation IDs trace related work. Here they split each document’s ordered steps across different sessions, which correlation metadata cannot repair.",
+      "c": "One session fits a single ordered group and unique message IDs distinguish messages. It incorrectly combines the two document groups requested here."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-integration-sb-patterns",
+      "ai200-20260915-integration-sb-structure"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/3-choose-queues-topics-subscriptions",
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/4-structure-messages-ai-workloads"
+    ],
+    "documentationTitles": [
+      "Choose between queues and topics with subscriptions",
+      "Structure messages for AI workloads"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.document-session-grouping",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-sb-patterns",
+      "ai200-20260915-integration-sb-structure"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. b produces exactly two required session groups. a fragments each document and c merges the documents despite their other useful metadata. The warned negative phrase is a material grouping constraint. Difficulty 3 captures the elementary mapping rather than count inflation. Rubric 47/48. Reasoning/classification: This is a compact, easy intermediate grouping application. It does not earn advanced difficulty from an ordered pipeline story. Semantic assessment: Submission duplicate detection in r-i-002 is a message identity/window decision, not session grouping. Both retain distinct fact-level IDs. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "b produces exactly two required session groups. a fragments each document and c merges the documents despite their other useful metadata. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-r-i-002",
+    "question": "Duplicate detection is enabled on a Service Bus queue. Within its detection window, a producer retries the same logical work item after an uncertain send result, then submits a genuinely different work item in the same traced request. Which ID strategy distinguishes those two operations?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Create a new message_id on every send and keep the correlation_id."
+      },
+      {
+        "id": "b",
+        "text": "Reuse one message_id for both work items and keep the correlation_id."
+      },
+      {
+        "id": "c",
+        "text": "Reuse the first item’s message_id for its retry and assign the second a new one."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Duplicate detection uses message_id within its configured window. The retry preserves that logical message identity, while the distinct work item gets a new ID; correlation can remain shared for tracing.",
+    "deepExplanation": "This is broker duplicate detection on submission, not consumer idempotency after a completed external write. The time window and enabled entity feature are explicit.",
+    "whyOtherAnswersAreWrong": {
+      "a": "New message IDs fit genuinely distinct requests; correlation ID traces a wider request. Changing the message ID for the retry prevents the configured message-ID detection from recognizing that repeated submission.",
+      "b": "Reusing an ID fits repeated submissions of the same work within the detection window. It risks suppressing the genuinely distinct second item when both share that ID."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-integration-sb-structure"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/4-structure-messages-ai-workloads"
+    ],
+    "documentationTitles": ["Structure messages for AI workloads"],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.duplicate-detection-message-id-window",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-sb-structure"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. c preserves the repeated message identity and distinguishes the new one. a defeats retry recognition and b conflates different work. No deterministic warning, but the longer key and easy two-case mapping were inspected. Difficulty 3 records the modest depth. Rubric 47/48. Reasoning/classification: An easy intermediate two-case identity assignment is justified; the detection-window phrase alone would be recall, but the two sends require different treatment. Semantic assessment: The archived i-007/d-015 cases concerned durable side effects followed by acknowledgement failure. This pre-consumer submission-window decision does not recreate them. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "c preserves the repeated message identity and distinguishes the new one. a defeats retry recognition and b conflates different work. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-r-i-003",
+    "question": "A sender batches small Service Bus requests. Every request fits an empty batch. The fragment sends full batches, but one request disappears at each size boundary. Which operation is missing after creating the replacement batch?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Add the current message to the replacement batch."
+      },
+      {
+        "id": "b",
+        "text": "Replace the message body with a durable-storage reference."
+      },
+      {
+        "id": "c",
+        "text": "Create the next request with a longer time_to_live."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "add_message raised before the current message entered the full batch. After sending that batch and creating another, adding the same current message preserves the request; each message is stipulated to fit an empty batch.",
+    "deepExplanation": "The fix follows the exception path: the overflowing request has not been accepted by the old batch and must be added to the new one. The empty-batch-fit precondition excludes a different oversized-single-message failure.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Claim-check is appropriate for a body too large to fit the deployed broker configuration. Every current message fits an empty batch, so shrinking the body does not repair this exception path’s missing addition.",
+      "c": "Longer TTL helps accepted requests survive a backlog. It cannot restore a request never added to any batch."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["ai200-20260915-integration-sb-structure"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/4-structure-messages-ai-workloads"
+    ],
+    "documentationTitles": ["Structure messages for AI workloads"],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "codeLanguage": "python",
+    "codeSnippet": "batch = sender.create_message_batch()\nfor message in messages:\n    try:\n        batch.add_message(message)\n    except MessageSizeExceededError:\n        sender.send_messages(batch)\n        batch = sender.create_message_batch()\n        # missing operation\nif len(batch) > 0:\n    sender.send_messages(batch)",
+    "conceptId": "servicebus.batch-overflow-current-message-retry",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-sb-structure"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. a alone places the overflow-causing current message in the replacement. The original fragment skips that message and neither other change restores the missing state transition. Independent total 44/48 reflects concrete deductions, not a filled score. The source-based control flow is valid; live Azure SDK execution is not claimed. Rubric 44/48. Reasoning/classification: There is actual exception-path reasoning, but it is a compact intermediate exercise. The phrase missing operation narrows the diagnosis considerably. Semantic assessment: Unlike i-010, all bodies fit the broker; the new fact is preservation of the exception-causing message. Originality 3 reflects the conventional rollover pattern. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "a alone places the overflow-causing current message in the replacement. The original fragment skips that message and neither other change restores the missing state transition. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-r-i-004",
+    "question": "A Service Bus intake worker now receives jobs that require 40 minutes of inference. A separate processor already reads durable work records. Intake must release queue locks promptly after durably accepting work, rather than hold locks throughout inference. Which design fits this boundary?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep inference in intake and renew the message lock during its run."
+      },
+      {
+        "id": "b",
+        "text": "Persist a work record, complete the message, and let the separate processor run inference."
+      },
+      {
+        "id": "c",
+        "text": "Keep inference in intake and increase the maximum delivery count."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "The documented two-phase approach records the request durably, completes queue intake quickly, and moves long-running inference to a processor of the tracking store. It matches both the resource boundary and prompt lock release.",
+    "deepExplanation": "Durable recording must precede completion. This handoff reduces long-running lock management; it does not promise a cross-resource transaction or exactly-once side effects.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Renewal is documented for work that should remain under a queue lock while the receiving processor runs. It conflicts with promptly releasing that lock and using the available separate long-running processor.",
+      "c": "A higher delivery count gives transient failures more attempts. It does not change the lock lifetime or separate intake from long-running work."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/5-process-messages-reliably"
+    ],
+    "documentationTitles": ["Process messages reliably"],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.two-phase-long-running-work-handoff",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-sb-reliability"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. b alone transfers long work after durable acceptance and ends intake promptly. a preserves the lock phase; c only changes retry budget. The pronoun warning is resolved by named intake/processor boundaries. Preserve the explicit non-atomicity caveat rather than manufacturing a transaction. Rubric 46/48. Reasoning/classification: The architecture choice is genuinely applied but easy: the available processor and desired handoff are strongly supplied. Intermediate difficulty scores 3. Semantic assessment: r-i-006 instead concerns acknowledging an entire Event Grid HTTP batch within 30 seconds. The responsibility handoff is related, but the protocol constraint and failure response differ. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "b alone transfers long work after durable acceptance and ends intake promptly. a preserves the lock phase; c only changes retry budget. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-r-i-005",
+    "question": "A Service Bus DLQ contains requests rejected for an unsupported model. The model is now supported and the team has confirmed the original bodies are valid. It wants replacement work delivered through the original queue and the inspected DLQ entries removed after successful resubmission. Which sequence matches that recovery workflow?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Complete the DLQ messages after inspecting their reason and body."
+      },
+      {
+        "id": "b",
+        "text": "Increase the queue’s delivery budget and resume ordinary queue receives."
+      },
+      {
+        "id": "c",
+        "text": "Send new messages carrying the recovered bodies and metadata, then complete the DLQ entries."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The documented resubmission workflow creates a new message from the DLQ body/properties, sends it to the original queue, and completes the old DLQ message after the send succeeds.",
+    "deepExplanation": "The team first fixes the failure cause and confirms the bodies are usable. This is explicit DLQ resubmission, not an automatic move back after a model fix or an atomic guarantee across the send and completion.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Receiving and completing a DLQ entry is the documented discard/cleanup path. It is appropriate when no replacement work should run, but does not submit recovered work to the original queue.",
+      "b": "A higher delivery count permits more attempts for work still in ordinary delivery. It does not explicitly resubmit messages already held in the dead-letter subqueue."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-integration-sb-reliability"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/5-process-messages-reliably"
+    ],
+    "documentationTitles": ["Process messages reliably"],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.dlq-resubmission-new-message-lifecycle",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-sb-reliability"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. c alone performs both needed actions in the documented order. a is discard-only and b applies to the wrong lifecycle state. The two warnings are bounded by successful resubmission and explicit referents. Do not treat a correct send/complete sequence as an atomic guarantee. Rubric 46/48. Reasoning/classification: An easy intermediate lifecycle sequence is justified; the fixed model story does not make it advanced recovery. Semantic assessment: This new-message lifecycle is different from i-005 selecting a settlement outcome and i-006 retrieving the same deferred object by sequence number. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "c alone performs both needed actions in the documented order. a is discard-only and b applies to the wrong lifecycle state. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-011",
+    "question": "An Event Grid custom topic accepts completion events. A new consumer needs its own selection rules and delivery endpoint, without changing the producer or existing consumers. Which resource contains that consumer-specific routing configuration?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The custom topic."
+      },
+      {
+        "id": "b",
+        "text": "The event subscription."
+      },
+      {
+        "id": "c",
+        "text": "The event handler."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "An event subscription selects events from a topic and names its destination. Separate subscriptions permit different consumers to keep independent routing choices.",
+    "deepExplanation": "Topic, subscription and handler are related but distinct components. This foundational item tests their roles without suggesting that filtering creates a new publisher or a delivery guarantee.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A custom topic is the publication endpoint and holds its input schema. It is appropriate when configuring what the producer can submit, not one consumer’s selection and destination.",
+      "c": "A handler receives and processes delivered events. It is the appropriate place for processing logic, not the Event Grid resource that selects events before delivery."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-integration-eg-concepts",
+      "ai200-20260915-integration-eg-schema"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/event-driven-workflows-event-grid/2-understand-event-grid-concepts",
+      "https://learn.microsoft.com/en-us/training/modules/event-driven-workflows-event-grid/3-event-schemas-properties"
+    ],
+    "documentationTitles": [
+      "Understand Azure Event Grid concepts and event-driven patterns for AI solutions",
+      "Work with event schemas and properties"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.topic-subscription-handler-separation",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-eg-concepts",
+      "ai200-20260915-integration-eg-schema"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. b alone owns the specified filters-plus-destination configuration; a accepts ingress and c implements post-delivery processing. Both emitted warnings were examined. No source claim that every event is successfully delivered or that a new handler changes the producer is retained. Rubric 47/48. Reasoning/classification: Beginner/concept-recall is honest. The consumer story supplies context, not applied architecture credit. Semantic assessment: Consumer routing ownership differs from i-012 publisher origin and i-013 schema conversion. Originality 3 records familiar component-definition framing. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "b alone owns the specified filters-plus-destination configuration; a accepts ingress and c implements post-delivery processing. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-012",
+    "question": "A model-evaluation service will publish an application-defined EvaluationFinished event to Event Grid. The event is emitted by the application, not an Azure resource provider. Which of these topic types accepts the application’s publications?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "A custom topic."
+      },
+      {
+        "id": "b",
+        "text": "A system topic."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Custom topics are application-publishable endpoints with an input schema. They fit the stipulated business event emitted by the evaluation service.",
+    "deepExplanation": "Hosting the application on Azure does not make its own event a resource-provider event. This comparison does not assert that a custom topic is the only possible Event Grid resource model.",
+    "whyOtherAnswersAreWrong": {
+      "b": "System topics carry events emitted by supported Azure services themselves. They are appropriate for provider events, such as resource changes, not direct application publication."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-integration-eg-concepts",
+      "ai200-20260915-integration-eg-publish"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/event-driven-workflows-event-grid/2-understand-event-grid-concepts",
+      "https://learn.microsoft.com/en-us/training/modules/event-driven-workflows-event-grid/5-publish-custom-events"
+    ],
+    "documentationTitles": [
+      "Understand Azure Event Grid concepts and event-driven patterns for AI solutions",
+      "Publish custom events from AI applications"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.system-versus-custom-event-origin",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-eg-concepts",
+      "ai200-20260915-integration-eg-publish"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. a fits the explicitly application-origin publication. b becomes appropriate only when the supported Azure service emits the event itself. The single negative-warning phrase is a necessary contextual bound, not an unsupported absolute product limitation. Rubric 46/48. Reasoning/classification: This is genuinely foundational publisher-origin recall; no applied score is inferred from the model-evaluation narrative. Semantic assessment: This fact cannot answer where a consumer’s filters live in i-011 or which conversion is supported in i-013. Familiar origin framing earns originality 3. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "a fits the explicitly application-origin publication. b becomes appropriate only when the supported Azure service emits the event itself. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-013",
+    "question": "Two existing Basic Event Grid custom topics feed a handler that accepts CloudEvents. Topic E accepts the Event Grid schema; topic C accepts CloudEvents with extension attributes. Publishers cannot change. Which pair of subscription output schemas supports the handler without losing C’s extension contract?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "E: Event Grid schema; C: CloudEvents schema."
+      },
+      {
+        "id": "b",
+        "text": "E: Event Grid schema; C: Event Grid schema."
+      },
+      {
+        "id": "c",
+        "text": "E: CloudEvents schema; C: CloudEvents schema."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The documented compatibility table permits Event Grid-to-CloudEvents and CloudEvents-to-CloudEvents. This pair matches the handler while retaining C’s extensible envelope.",
+    "deepExplanation": "The two publisher contracts must each be checked against the compatibility table. Changing output format on an Event Grid-input subscription is supported; the reverse transformation from CloudEvents input is not.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Both topic/output pairs are supported by Event Grid, but E would still deliver Event Grid envelopes to a CloudEvents-only handler. This pair fits a handler that separately understands both formats.",
+      "b": "Event Grid output is supported for Event Grid input. It would fit two Event Grid-input publishers and an Event Grid handler, but C’s fixed CloudEvents input cannot use that output schema."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/event-grid/cloud-event-schema"
+    ],
+    "documentationTitles": ["CloudEvents v1.0 schema with Azure Event Grid"],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.cloudevents-input-output-schema",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. c is valid, a remains defensible for a dual-format handler, and b is invalid for fixed CloudEvents input C. A single-key final approval is therefore unsupported. Independent 40/48 and the pass-2 hold both require manual review. Original author must change the stem, not just the explanation, then restart generation and both reviews for the new exact hash. Rubric 40/48. Reasoning/classification: Evaluating both fixed publisher schemas is a legitimate intermediate task, but an ambiguous missing acceptance contract is not added difficulty. Semantic assessment: The schema-conversion fact is distinct from publisher ownership and filtering. No duplication rationale substitutes for the missing exclusive handler condition. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "c is valid, a remains defensible for a dual-format handler, and b is invalid for fixed CloudEvents input C. A single-key final approval is therefore unsupported. Independent 40/48 and the pass-2 hold both require manual review. Original author must change the stem, not just the explanation, then restart generation and both reviews for the new exact hash. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-014",
+    "question": "The JSON shows the complete filter and three observed events for a Basic Event Grid subscription using Event Grid schema. There are no subject or advanced filters. Which observed events match this subscription?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Only event E1."
+      },
+      {
+        "id": "b",
+        "text": "Events E1 and E3."
+      },
+      {
+        "id": "c",
+        "text": "Only event E2."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Both events carry the selected BlobCreated operation type. Their different container subjects do not exclude either because this subscription has no subject filter.",
+    "deepExplanation": "The configured field selects the operation kind, not the container name. Evaluate the actual eventType values and avoid importing a subject restriction that is absent from the configuration.",
+    "whyOtherAnswersAreWrong": {
+      "a": "E1 matches the selected operation type. E1 alone would fit an additional invoices subject restriction, but no subject filter is configured, so the other creation event also matches.",
+      "c": "E2 would match a BlobDeleted-only subscription. Its resource path cannot substitute for the BlobCreated type required by the current filter."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/event-grid/event-filtering"
+    ],
+    "documentationTitles": [
+      "Understand event filtering for Event Grid subscriptions"
+    ],
+    "generatedAt": "2026-09-15T19:40:55.508Z",
+    "lastValidatedAt": "2026-09-15T19:40:55.508Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"filter\": {\"includedEventTypes\": [\"Microsoft.Storage.BlobCreated\"]},\n  \"observedEvents\": [\n    {\"id\":\"E1\",\"eventType\":\"Microsoft.Storage.BlobCreated\",\"subject\":\"/blobServices/default/containers/invoices/blobs/a.pdf\"},\n    {\"id\":\"E2\",\"eventType\":\"Microsoft.Storage.BlobDeleted\",\"subject\":\"/blobServices/default/containers/invoices/blobs/a.pdf\"},\n    {\"id\":\"E3\",\"eventType\":\"Microsoft.Storage.BlobCreated\",\"subject\":\"/blobServices/default/containers/incoming/blobs/b.pdf\"}\n  ]\n}",
+    "conceptId": "eventgrid.event-type-filter",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-doc-filtering"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. The independent match set is E1 and E3. E2 fails BlobCreated membership; E3 cannot be silently excluded by its different container. The JSON supplies the actual applied content; the short surrounding prose is not an evidence omission. No live Event Grid deployment is claimed. Rubric 47/48. Reasoning/classification: The configured log does real but elementary intermediate evaluation. Difficulty 3 avoids treating three rows as advanced reasoning. Semantic assessment: i-015 examines literal prefix boundaries; i-016 scalar typed conjunction; r-i-007 missing-key negative membership. Different configured mechanisms are required. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "The independent match set is E1 and E3. E2 fails BlobCreated membership; E3 cannot be silently excluded by its different container. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-015",
+    "question": "A Basic Event Grid subscription uses Event Grid schema and already selects BlobCreated. Its configured prefix is /blobServices/default/containers/invoices/blobs/approved/ and its suffix is .pdf. Which subject passes both filters?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "/blobServices/default/containers/invoices/blobs/approved/june.pdf"
+      },
+      {
+        "id": "b",
+        "text": "/blobServices/default/containers/invoices-archive/blobs/approved/june.pdf"
+      },
+      {
+        "id": "c",
+        "text": "/blobServices/default/containers/invoices/blobs/rejected/june.pdf"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "This subject begins with the full invoices/approved folder boundary and ends with .pdf, satisfying both configured predicates.",
+    "deepExplanation": "Evaluate the literal prefix boundary before the common suffix. The trailing folder separator distinguishes approved/ from other folders, while the complete container boundary excludes invoices-archive.",
+    "whyOtherAnswersAreWrong": {
+      "b": "This is a valid blob subject for a different container. It would match a broader invoices prefix but does not match the exact invoices/blobs/approved/ prefix used here.",
+      "c": "This is a valid PDF subject within invoices. It would match a container-level prefix, but its rejected folder does not match the configured approved folder."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/event-grid/event-filtering"
+    ],
+    "documentationTitles": [
+      "Understand event filtering for Event Grid subscriptions"
+    ],
+    "generatedAt": "2026-09-15T19:40:55.508Z",
+    "lastValidatedAt": "2026-09-15T19:40:55.508Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.subject-prefix-suffix-filter",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-doc-filtering"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. Only a starts with the complete required prefix. All three end in .pdf, so the suffix cannot rescue b or c. The current equal-shaped subjects and intermediate label address earlier clue and inflated-difficulty history without inheriting old approvals. Rubric 47/48. Reasoning/classification: Intermediate string-configuration application is acceptable but elementary, earning difficulty 3 rather than advanced credit. Semantic assessment: Literal path-prefix containment cannot be solved solely from i-014 eventType selection or i-016 Boolean conjunction. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "Only a starts with the complete required prefix. All three end in .pdf, so the suffix cannot rescue b or c. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-016",
+    "question": "A Basic Event Grid subscription uses the advanced filters shown below. All other subscription conditions match. Which scalar data object passes the two filters?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "{\"region\":\"west\",\"released\":false}"
+      },
+      {
+        "id": "b",
+        "text": "{\"region\":\"west\",\"released\":true}"
+      },
+      {
+        "id": "c",
+        "text": "{\"region\":\"east\",\"released\":true}"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "West satisfies the allowed StringIn alternatives and Boolean true satisfies the second filter. AND between filter entries requires both conditions.",
+    "deepExplanation": "Values within StringIn are alternatives, while separate filter objects are combined with AND. Matching the Boolean property alone or one regional alternative alone is insufficient.",
+    "whyOtherAnswersAreWrong": {
+      "a": "West is one permitted StringIn value, but false does not satisfy BoolEquals true. This event would fit a subscription for unreleased western work instead.",
+      "c": "The Boolean condition matches but east is outside the permitted StringIn values. This event would fit a subscription whose allowed regions include east."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/event-grid/event-filtering"
+    ],
+    "documentationTitles": [
+      "Understand event filtering for Event Grid subscriptions"
+    ],
+    "generatedAt": "2026-09-15T19:40:55.508Z",
+    "lastValidatedAt": "2026-09-15T19:40:55.508Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"filter\": {\n    \"advancedFilters\": [\n      {\"operatorType\": \"StringIn\", \"key\": \"data.region\", \"values\": [\"north\", \"west\"]},\n      {\"operatorType\": \"BoolEquals\", \"key\": \"data.released\", \"value\": true}\n    ]\n  }\n}",
+    "conceptId": "eventgrid.advanced-typed-filter-and-or",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-doc-filtering"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. b alone passes. a fails the Boolean predicate; c fails region membership. I independently evaluated both predicates for every object. The one short-scenario warning was reviewed against the full code and choices. Actual supplied configuration supports all criteria, not the format label alone. Rubric 48/48. Reasoning/classification: This is a complete intermediate two-predicate application. The concrete operands and different partial matches justify the label without advanced inflation. Semantic assessment: r-i-007 tests undefined status accepted by a negative operator, not conjunction of present typed values. EventType and subject tasks use different fields and rules. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "b alone passes. a fails the Boolean predicate; c fails region membership. I independently evaluated both predicates for every object. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-017",
+    "question": "A Basic Event Grid custom-topic push subscription receives 401 Unauthorized from its webhook. Time and attempt budgets remain available. How does the endpoint-specific policy classify this response?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "A successful delivery acknowledgement."
+      },
+      {
+        "id": "b",
+        "text": "A retryable endpoint failure."
+      },
+      {
+        "id": "c",
+        "text": "A nonretryable webhook failure."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The documented webhook-specific rule does not retry 401. Remaining attempt and age budgets do not override the endpoint-specific error classification.",
+    "deepExplanation": "The endpoint kind matters: the delivery policy distinguishes webhooks from Azure resource endpoints for 401. Available retry budgets do not turn a nonretryable webhook status into a transient error.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A success response such as 202 is a valid acknowledgement after accepting the event. A 401 authentication rejection is not one of those successful responses.",
+      "b": "Transient failures such as 503 retry, and the unit separately describes retry for 401 from Azure resource endpoints. This endpoint is a webhook, for which 401 is not retried."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/event-driven-workflows-event-grid/4-delivery-retry-policies"
+    ],
+    "documentationTitles": [
+      "Configure delivery and retry policies for reliable event processing"
+    ],
+    "generatedAt": "2026-09-15T19:40:55.508Z",
+    "lastValidatedAt": "2026-09-15T19:40:55.508Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.nonretryable-status-handling",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-eg-delivery"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. c matches the detailed webhook-specific rule. a is not a successful response and b describes a different endpoint/error context. One pronoun warning reviewed. The exception is source-backed despite the broad introductory sentence; documentation authority is from the directly linked training unit. Rubric 46/48. Reasoning/classification: Beginner recall is honest for one endpoint/status exception. The scenario wrapper supplies no advanced troubleshooting credit. Semantic assessment: i-018 compares independent age and attempt budgets; i-019 chooses a retention destination. Neither teaches the webhook 401 exception. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "c matches the detailed webhook-specific rule. a is not a successful response and b describes a different endpoint/error context. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-018",
+    "question": "A Basic Event Grid custom-topic push subscription has a 30-minute event TTL and a maximum of eight delivery attempts. At the next scheduled retry, an undelivered event is 40 minutes old and has used four attempts. The endpoint’s last response was transient, and the Blob dead-letter destination works. Which bound stops further endpoint attempts?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The configured 30-minute TTL."
+      },
+      {
+        "id": "b",
+        "text": "The configured eight-attempt budget."
+      },
+      {
+        "id": "c",
+        "text": "The default 24-hour TTL."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Event Grid stops when either configured bound is reached first. The event exceeds its 30-minute TTL even though attempts remain; the available dead-letter path handles exhausted delivery eligibility.",
+    "deepExplanation": "The configured age boundary and observed attempt count must be evaluated separately. No exact retry timing or immediate Blob-write deadline is inferred from the policy decision.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The attempt bound would stop an event that consumed eight attempts while still within TTL. Four attempts do not reach that bound in the supplied observation.",
+      "c": "The default TTL is relevant when a custom TTL was not supplied. This subscription explicitly replaces it with 30 minutes, so the default does not extend this event’s eligibility."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/event-driven-workflows-event-grid/4-delivery-retry-policies"
+    ],
+    "documentationTitles": [
+      "Configure delivery and retry policies for reliable event processing"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.attempt-versus-ttl-first-limit",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-eg-delivery"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. a is reached, b is not, and c is not this subscription’s effective setting. The supplied working Blob destination does not change the first-limit decision. No absolute retry timing is imported. The simple numeric comparison is applied but not advanced. Rubric 47/48. Reasoning/classification: Intermediate troubleshooting compares state to configured rather than default policy. The arithmetic is elementary, so difficulty scores 3. Semantic assessment: Distinct from the webhook-status exception and from enabling optional retention. Same delivery unit does not imply the same tested decision. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "a is reached, b is not, and c is not this subscription’s effective setting. The supplied working Blob destination does not change the first-limit decision. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-019",
+    "question": "An Event Grid Basic custom-topic push subscription exhausts delivery retries during long consumer outages. Its current retry window must remain unchanged, but operations needs undelivered payloads for investigation. A Blob container is already provisioned and accessible. Which subscription change provides the retention path?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Increase the maximum delivery attempts."
+      },
+      {
+        "id": "b",
+        "text": "Configure the container as the dead-letter destination."
+      },
+      {
+        "id": "c",
+        "text": "Increase the event time-to-live."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "A configured Blob dead-letter destination retains undeliverable events after delivery limits are reached. The stated existing container and access satisfy the external-storage prerequisite.",
+    "deepExplanation": "Event Grid dead-lettering is optional and disabled by default. This configuration applies to the specified Basic custom-topic push subscription and uses an external Blob destination for retained payloads.",
+    "whyOtherAnswersAreWrong": {
+      "a": "More attempts are useful when transient failures may resolve within the eligible window. They change the retry policy rather than add post-exhaustion payload retention.",
+      "c": "A longer TTL is useful when older events remain worth delivering after a longer outage. It changes the required delivery window and does not itself configure a retention destination."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/event-driven-workflows-event-grid/4-delivery-retry-policies"
+    ],
+    "documentationTitles": [
+      "Configure delivery and retry policies for reliable event processing"
+    ],
+    "generatedAt": "2026-09-15T19:40:55.508Z",
+    "lastValidatedAt": "2026-09-15T19:40:55.508Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.optional-blob-deadletter",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-eg-delivery"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. b alone adds the requested retention path while leaving retry eligibility unchanged. a and c change retry policy instead. The prior missing Basic scope is now explicit. Retain modest intermediate classification without treating successful source checks as proof of deep architecture reasoning. Rubric 47/48. Reasoning/classification: This is an easy intermediate configuration choice based on lifecycle stage; difficulty 3 records its modest depth. Semantic assessment: i-009 changes the broker’s built-in expiry-DLQ switch for stale messages. Here an external Blob resource is attached after failed push delivery; concrete resource prerequisites distinguish them. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "b alone adds the requested retention path while leaving retry eligibility unchanged. a and c change retry policy instead. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-020",
+    "question": "A managed identity has an Event Grid token but no event-send role. It should publish to the one evaluation topic, not the other topics in the same resource group or subscription. Where should EventGrid Data Sender be assigned?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "At the Azure subscription scope."
+      },
+      {
+        "id": "b",
+        "text": "At the resource group scope."
+      },
+      {
+        "id": "c",
+        "text": "At the individual topic scope."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The topic scope grants the send permission at the requested boundary. Event Grid validates authorization separately from the token, so token possession alone is insufficient.",
+    "deepExplanation": "All three scopes are real authorization choices; the stated set of allowed resources determines the least-privilege one. The question does not use preview disableLocalAuth APIs.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Subscription scope is a documented assignment scope and fits a principal intended to publish across that subscription. It grants a broader target set than this single-topic requirement.",
+      "b": "Resource-group scope fits a publisher needing the group’s topics. The group explicitly contains unrelated topics, so it is broader than required."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-integration-doc-egauth"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/event-grid/authenticate-with-microsoft-entra-id"
+    ],
+    "documentationTitles": [
+      "Authentication and authorization with Microsoft Entra ID"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.publisher-identity-send-authorization",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-doc-egauth"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. c is the narrow supported scope meeting the entire allowed set. a and b are technically valid role assignments but too broad here. Both negative and pronoun warnings were independently resolved. The preview local-auth section does not contaminate the baseline scoped-role claim. Rubric 46/48. Reasoning/classification: The scope choice is an easy intermediate configuration application; naming the correct role alone would have been recall. Semantic assessment: The installed GH secret-injection and Fabric connection-type cases use different control surfaces. Functions i-032 requires an exact connection prefix plus receive role, not inherited topic scope. Originality 3 reflects the familiar least-privilege pattern. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "c is the narrow supported scope meeting the entire allowed set. a and b are technically valid role assignments but too broad here. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-r-i-006",
+    "question": "A Basic Event Grid webhook receives a batch of three jobs. After 12 seconds it has durably finished two; the third needs another minute. A Service Bus queue can durably accept the remaining job in two seconds, and a worker will process it. The endpoint must finish within Event Grid’s response window without asking Event Grid to replay the whole batch. Which plan meets that contract?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Finish the third job synchronously, then return a success response."
+      },
+      {
+        "id": "b",
+        "text": "Successfully enqueue the remaining job, then return 202 for the batch."
+      },
+      {
+        "id": "c",
+        "text": "Return 503 for the batch and let the next delivery retry its work."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Event Grid accepts 202 as successful delivery, including asynchronous acceptance. Persisting the unfinished work before acknowledging moves its reliability to Service Bus and fits the stated remaining response time without requesting whole-batch retry.",
+    "deepExplanation": "Output batching acknowledges the whole HTTP request, not individual elements. The decision combines the 30-second response boundary, completed versus unfinished work, and a successful durable handoff. If queue acceptance fails, the premise supporting 202 no longer holds.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Synchronous completion suits a batch whose full processing finishes within the 30-second response window. The remaining minute would exceed that bound despite the first two successes.",
+      "c": "503 and all-or-none batch retry are valid when the handler cannot accept the batch and retry should occur. That explicitly requests replay of the batch, contrary to the required handoff contract."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-integration-eg-delivery",
+      "ai200-20260915-integration-sb-concepts",
+      "ai200-20260915-integration-sb-reliability"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/event-driven-workflows-event-grid/4-delivery-retry-policies",
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/2-explore-service-bus-concepts",
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/5-process-messages-reliably"
+    ],
+    "documentationTitles": [
+      "Configure delivery and retry policies for reliable event processing",
+      "Explore Azure Service Bus concepts and messaging in AI architectures",
+      "Process messages reliably"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.batch-acknowledgement-durable-handoff",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. b is technically the only offered plan meeting acceptance, time and no-requested-replay conditions. The final hold is the inaccurate Advanced label, not key uncertainty. Independent total 44/48 does not override the separate difficulty-classification failure or pass-2 hold. Original author must relabel honestly or write deeper grounded content, then restart all passes. Rubric 44/48. Reasoning/classification: Advanced is unsupported: 12+2 is below 30 and 12+60 above it, with the only viable plan supplied. This supports Intermediate architecture-design, not advanced trade-off reasoning. Semantic assessment: r-i-004 settles queue intake into a tracking store; here the all-or-none Event Grid HTTP response is the decisive protocol. They are related handoffs but not identical mechanics. Originality 3 records conventional async acceptance. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "b is technically the only offered plan meeting acceptance, time and no-requested-replay conditions. The final hold is the inaccurate Advanced label, not key uncertainty. Independent total 44/48 does not override the separate difficulty-classification failure or pass-2 hold. Original author must relabel honestly or write deeper grounded content, then restart all passes. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-r-i-007",
+    "question": "A Basic Event Grid subscription should accept events with a present, nonnull data.status other than draft. It currently has only StringNotIn [\"draft\"] on data.status, and an event with no status is delivered. Which added advanced filter addresses the missing-field case while retaining the existing exclusion?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "IsNotNull on data.status."
+      },
+      {
+        "id": "b",
+        "text": "IsNullOrUndefined on data.status."
+      },
+      {
+        "id": "c",
+        "text": "StringIn [\"draft\"] on data.status."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "StringNotIn matches a missing key, whereas IsNotNull requires a defined, nonnull value. AND between the existing and added filters enforces presence while retaining the draft exclusion.",
+    "deepExplanation": "The unexpected event follows documented missing-key behavior for a negative membership operator. A presence test is distinct from changing the list of excluded statuses.",
+    "whyOtherAnswersAreWrong": {
+      "b": "This operator intentionally selects missing or null values and fits a data-quality handler for incomplete events. It selects precisely the missing-field population this handler must exclude.",
+      "c": "StringIn draft is useful for a draft-only subscriber. Combined with the existing StringNotIn draft through AND, it cannot produce the requested present non-draft set."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["ai200-20260915-integration-doc-filtering"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/event-grid/event-filtering"
+    ],
+    "documentationTitles": [
+      "Understand event filtering for Event Grid subscriptions"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.negative-membership-missing-key-guard",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-doc-filtering"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. a rejects undefined/null while leaving non-draft selection intact; b targets incomplete events and c contradicts the retained exclusion. The complete existing-plus-added filter interpretation was evaluated, including missing and null values. One pronoun warning is resolved without generic stamping. Rubric 48/48. Reasoning/classification: The missing-field edge case requires actual operator semantics plus conjunction, supporting intermediate troubleshooting rather than simple vocabulary matching. Semantic assessment: This edge case differs from i-016 present-value AND/OR evaluation and from Cosmos vector metadata selection, despite shared filtering vocabulary. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "a rejects undefined/null while leaving non-draft selection intact; b targets incomplete events and c contradicts the retained exclusion. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-021",
+    "question": "An Azure Function must start on a schedule, read a reference blob through an input binding, and write a result through a Cosmos DB output binding. Which trigger supplies the invocation event?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "A Blob Storage trigger."
+      },
+      {
+        "id": "b",
+        "text": "An Azure Cosmos DB trigger."
+      },
+      {
+        "id": "c",
+        "text": "A timer trigger."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The timer supplies the schedule that invokes the function. One trigger can coexist with the Blob input and Cosmos DB output bindings.",
+    "deepExplanation": "Invocation, input data and output data are separate responsibilities. A function has one trigger and can combine that trigger with multiple optional bindings.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A Blob trigger is suitable when a blob event should invoke the function. Reading a reference blob during scheduled work is instead an input-binding role.",
+      "b": "A Cosmos DB trigger is suitable when database changes invoke processing. Writing the result is an output-binding role, not the schedule’s invocation event."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Build serverless APIs, including implementing triggers and bindings",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-integration-doc-triggers"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings"
+    ],
+    "documentationTitles": ["Azure Functions triggers and bindings"],
+    "generatedAt": "2026-09-15T19:40:55.508Z",
+    "lastValidatedAt": "2026-09-15T19:40:55.508Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "service-integration"],
+    "conceptId": "functions.one-trigger-optional-bindings",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-doc-triggers"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. c alone supplies scheduled invocation. a and b could trigger other workflows but would change the stated source of execution. No heuristic warning was generated. The conceptual framing is not miscounted as applied complexity, and no preview SDK type is silently adopted. Rubric 46/48. Reasoning/classification: Beginner/concept-recall is honest; the documentation-like schedule story earns no applied implementation credit. Semantic assessment: i-027 asks whether an additional standalone input direction exists, not which source invokes this function. Originality 3 acknowledges the familiar exact service combination in the documentation example. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "c alone supplies scheduled invocation. a and b could trigger other workflows but would change the stated source of execution. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-022",
+    "question": "An authenticated request invokes this Python v2 function at /api/jobs/J42 with no query string or body. It returns not-found. Which replacement assignment reads the identifier supplied by the configured route?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "job_id = req.route_params.get(\"job_id\")"
+      },
+      {
+        "id": "b",
+        "text": "job_id = req.params.get(\"job_id\")"
+      },
+      {
+        "id": "c",
+        "text": "job_id = req.get_json().get(\"job_id\")"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "The route template captures J42 as job_id and exposes it through route_params. This matches the actual path without requiring a query or JSON body.",
+    "deepExplanation": "Trace the value from the URL template into the correct HttpRequest collection. The returned text not-found is not an asserted HTTP 404 status.",
+    "whyOtherAnswersAreWrong": {
+      "b": "params reads query-string values and is correct for a request such as ?job_id=J42. The supplied request has no query string, so it does not read the route value.",
+      "c": "get_json reads a JSON request body and is useful when a client sends the identifier there. This GET request supplies no body, so that collection does not contain the route identifier."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Build serverless APIs, including implementing triggers and bindings",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-fn-triggers"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python",
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/4-create-triggers-bindings-ai-patterns"
+    ],
+    "documentationTitles": [
+      "Azure Functions developer reference guide for Python apps",
+      "Create triggers and bindings for AI integration patterns"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "service-integration"],
+    "codeLanguage": "python",
+    "codeSnippet": "import azure.functions as func\n\napp = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)\n\n@app.route(route=\"jobs/{job_id}\", methods=[\"GET\"])\ndef get_job(req: func.HttpRequest) -> func.HttpResponse:\n    job_id = req.params.get(\"job_id\")\n    return func.HttpResponse(job_id or \"not-found\")",
+    "conceptId": "functions.http-route-and-request-data",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-fn-triggers"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. a yields J42; b still has no query value; c has no JSON body. All three API expressions were checked against the exact supplied request. Both negative and pronoun warnings were assessed. The complete code/request pairing supports the applied label, with no claimed cloud execution. Rubric 48/48. Reasoning/classification: Intermediate troubleshooting is justified by the observed route/query mismatch and exact corrective assignment, not by Python formatting alone. Semantic assessment: The installed Foundry conversation-ID reuse case preserves remote conversation state, unlike a local HttpRequest collection bug. Blueprint discovery and packaging are also different mechanisms. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "a yields J42; b still has no query value; c has no JSON body. All three API expressions were checked against the exact supplied request. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-025",
+    "question": "Which declaration mechanism identifies triggers and bindings in the Python v2 Azure Functions programming model?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Per-function function.json binding definitions."
+      },
+      {
+        "id": "b",
+        "text": "Decorators associated with FunctionApp or registered blueprints."
+      },
+      {
+        "id": "c",
+        "text": "App-wide runtime configuration in host.json."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Python v2 defines triggers and bindings using decorators in function_app.py or registered blueprint modules. This is the requested programming-model mechanism.",
+    "deepExplanation": "The programming-model version is the distinguishing condition. Decorators keep v2 function declarations alongside Python code; host.json remains shared runtime configuration.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Separate function.json binding definitions are the Python v1 programming-model mechanism. They are a valid legacy-model approach, not the v2 decorator mechanism requested.",
+      "c": "host.json sets shared runtime behavior such as timeout and extension configuration. It is valid for those app-level concerns, not for declaring Python v2 handler triggers and bindings."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Build serverless APIs, including implementing triggers and bindings",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-fn-local"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python",
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/3-set-up-local-development-environment"
+    ],
+    "documentationTitles": [
+      "Azure Functions developer reference guide for Python apps",
+      "Set up the local development environment for Functions"
+    ],
+    "generatedAt": "2026-09-15T19:40:55.508Z",
+    "lastValidatedAt": "2026-09-15T19:40:55.508Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "service-integration"],
+    "conceptId": "functions.python-decorator-model",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-fn-local"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. b is the v2 declaration mechanism; a describes v1 and c global runtime settings. No emitted warning is treated as proof of rigor. The foundational classification is accurate, and no previous implementation label or approval is inherited. Rubric 46/48. Reasoning/classification: Beginner/concept-recall is the honest repaired classification. This remains a model-definition lookup rather than technical implementation. Semantic assessment: i-026 requires discovering a missing blueprint registration in two actual files. Knowing decorators are the v2 mechanism alone does not perform that trace. Originality 3 reflects the common definition contrast. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "b is the v2 declaration mechanism; a describes v1 and c global runtime settings. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-026",
+    "question": "The Python v2 app shown below imports successfully, but Core Tools lists ping and not jobs. The team wants both routes in this app while retaining jobs.py as a separate module. What should change?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Move the jobs handler and its decorators into function_app.py."
+      },
+      {
+        "id": "b",
+        "text": "Deploy jobs.py as a separately configured function app."
+      },
+      {
+        "id": "c",
+        "text": "Register bp with app in function_app.py after importing it."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "A Blueprint’s decorated handlers become part of the main FunctionApp through app.register_functions(bp). Importing the module alone is not the documented registration step; this keeps both routes in one modular app.",
+    "deepExplanation": "Successful import and handler code are not the same as function discovery. The fix connects the existing blueprint to the main app without changing its deployment boundary.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Defining handlers directly in function_app.py is supported and would fit a small single-file app. It does not preserve the required separate jobs module.",
+      "b": "A separate function app is appropriate for an independent deployment/runtime boundary. It changes the required one-app design and requires its own complete entry-point project."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Build serverless APIs, including implementing triggers and bindings",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-doc-reference"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python",
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference"
+    ],
+    "documentationTitles": [
+      "Azure Functions developer reference guide for Python apps",
+      "Azure Functions developer guide"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "service-integration"],
+    "codeLanguage": "python",
+    "codeSnippet": "# jobs.py\nimport azure.functions as func\nbp = func.Blueprint()\n@bp.route(route=\"jobs\")\ndef jobs(req: func.HttpRequest) -> func.HttpResponse:\n    return func.HttpResponse(\"jobs\")\n\n# function_app.py\nimport azure.functions as func\nfrom jobs import bp\napp = func.FunctionApp()\n@app.route(route=\"ping\")\ndef ping(req: func.HttpRequest) -> func.HttpResponse:\n    return func.HttpResponse(\"pong\")",
+    "conceptId": "functions.blueprint-registration",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-doc-reference"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. c preserves both constraints and repairs the missing registration. a loses the module separation and b loses the one-app requirement. Both warning categories were reviewed against actual code. The prior binary unregistered/register clue is not reused as approval for this different full example. Rubric 48/48. Reasoning/classification: Intermediate discovery troubleshooting is justified by actual two-file code and a missing route observation; the stem does not simply say unregistered and ask for register. Semantic assessment: i-028 minimizes app count for independent release groups, whereas the one-app boundary is fixed here and handler registration is missing. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "c preserves both constraints and repairs the missing registration. a loses the module separation and b loses the one-app requirement. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-027",
+    "question": "An Azure Functions 4.x HTTP handler needs an additional standalone input binding. Which service in this list supports that direction in the documented binding matrix, rather than only trigger and output directions?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Azure Blob Storage."
+      },
+      {
+        "id": "b",
+        "text": "Azure Service Bus."
+      },
+      {
+        "id": "c",
+        "text": "Azure Event Grid."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "The runtime 4.x matrix gives Blob Storage trigger, standalone input and output support. Its input direction supplies additional data without replacing the HTTP trigger.",
+    "deepExplanation": "A trigger can supply input data, but it is not the same capability as adding an ordinary input binding to an already-triggered function. No Preview SDK-specific parameter type is required.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Service Bus has trigger and output directions in the matrix. A queue-triggered processor or outgoing message suits those directions, but not an additional standalone input binding on this HTTP handler.",
+      "c": "Event Grid has trigger and output directions in the matrix. It can invoke event processing or publish an event, but does not provide the standalone input direction requested here."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Build serverless APIs, including implementing triggers and bindings",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-integration-doc-triggers"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings"
+    ],
+    "documentationTitles": ["Azure Functions triggers and bindings"],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "service-integration"],
+    "conceptId": "functions.binding-direction-support",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-doc-triggers"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. a has standalone Input support in the selected matrix. b and c have other real directions, not the one requested. The old applied-classification hold is not inherited or ignored: the current classification is explicitly foundational. One pronoun warning is resolved. Rubric 47/48. Reasoning/classification: Beginner/concept-recall is accurate for a capability-matrix lookup. The HTTP context clarifies terminology rather than earning applied credit. Semantic assessment: i-021 chooses what invokes scheduled work. This asks which extra data direction exists; the concept is related but not the same answer. Originality 3 acknowledges the familiar matrix lookup. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "a has standalone Input support in the selected matrix. b and c have other real directions, not the one requested. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-028",
+    "question": "Four Python functions form two release groups: intake and status always deploy together; transform and export always deploy together. The two groups require independent deployment and host-runtime version management. They may share source repositories. Which design uses the fewest function apps while satisfying these boundaries?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "One function app with a blueprint for each release group."
+      },
+      {
+        "id": "b",
+        "text": "Two function apps, one for each release group."
+      },
+      {
+        "id": "c",
+        "text": "Four function apps, one for each individual function."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "The function app is the deployment and runtime-management unit. Two apps isolate the two required groups without splitting functions that already share a release lifecycle.",
+    "deepExplanation": "This applies a resource boundary to a grouping problem. It does not generalize app-level scaling across every hosting plan; the requested shared properties are deployment and host-runtime management.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Blueprints organize related code within an app and suit groups sharing deployment/runtime management. They do not separate those app-wide boundaries, so one app does not meet the independence requirement.",
+      "c": "One app per function supports independent lifecycle management for all four. That is appropriate if each function needs it, but exceeds the fewest-app requirement for the two stated groups."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Configure and deploy function apps",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-integration-doc-reference",
+      "ai200-20260915-integration-doc-python"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference",
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python"
+    ],
+    "documentationTitles": [
+      "Azure Functions developer guide",
+      "Azure Functions developer reference guide for Python apps"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "deployment-configuration"],
+    "conceptId": "functions.app-deployment-management-unit",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-doc-reference",
+      "ai200-20260915-integration-doc-python"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. b is the minimum satisfying two independent groups. a lacks isolation and c exceeds the minimum even though it can provide isolation. Both absolute/pronoun warnings were reviewed. The current grouping/minimum comparison adds a real second constraint to the earlier binary definition question. Rubric 47/48. Reasoning/classification: Intermediate grouping application is real but elementary. Difficulty 3 reflects applying the boundary to two groups, not advanced architecture optimization. Semantic assessment: Blueprint registration i-026 keeps the app boundary fixed; this task chooses resource boundaries. The Python refactor reference preserves code interfaces, not Azure deployment units. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "b is the minimum satisfying two independent groups. a lacks isolation and c exceeds the minimum even though it can provide isolation. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-030",
+    "question": "A Python v2 app named backend imports requests locally but reports ModuleNotFoundError for requests after a remote-build deployment. The deployed project contains function_app.py and host.json. Its build log installs only azure-functions and azure-identity from requirements.txt. The Python version is unchanged. Which repair follows the documented dependency mechanism?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Declare requests in requirements.txt and rebuild/redeploy."
+      },
+      {
+        "id": "b",
+        "text": "Rename a project directory that shadows a Python standard-library module."
+      },
+      {
+        "id": "c",
+        "text": "Register an imported Blueprint with the main FunctionApp."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Remote build installs the external packages declared in requirements.txt. The build log’s package set omits requests, so declaring it repairs the missing deployed distribution.",
+    "deepExplanation": "The observed build inputs distinguish a deployed dependency omission from module-name shadowing or blueprint discovery. A local virtual environment does not replace the external-package declarations used by remote build.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Renaming a conflicting directory is documented for names such as json or email that shadow standard libraries. The supplied missing external distribution and project name do not indicate that problem.",
+      "c": "Blueprint registration addresses missing function discovery after a module import succeeds. It does not install the requests distribution missing from this deployment."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Configure and deploy function apps",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["ai200-20260915-integration-doc-python"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python"
+    ],
+    "documentationTitles": [
+      "Azure Functions developer reference guide for Python apps"
+    ],
+    "generatedAt": "2026-09-15T19:40:55.508Z",
+    "lastValidatedAt": "2026-09-15T19:40:55.508Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "deployment-configuration"],
+    "conceptId": "functions.dependency-and-project-layout",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": ["ai200-20260915-integration-doc-python"],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. a repairs the missing remote package. b treats a different import-resolution cause and c treats discovery after imports succeed. No quality warning was emitted, but the obvious log clue and weaker registration option receive deductions. The old unsupported host.json alternative is absent. Rubric 46/48. Reasoning/classification: Intermediate troubleshooting is modest: the concrete log distinguishes stages, but the omitted package is fairly easy to spot, earning difficulty 3. Semantic assessment: r-i-010 instead has all external requirements installed and a helper directory excluded from the artifact. Different failing build stages require different repairs. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "a repairs the missing remote package. b treats a different import-resolution cause and c treats discovery after imports succeed. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-031",
+    "question": "A local Python function’s timer fails to start with connection-refused errors to 127.0.0.1:10000. Core Tools is running and AzureWebJobsStorage is UseDevelopmentStorage=true. A separate test of the business Cosmos DB SDK succeeds. Which dependency should be restored first?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The business Cosmos DB connection."
+      },
+      {
+        "id": "b",
+        "text": "The installed Functions Core Tools executable."
+      },
+      {
+        "id": "c",
+        "text": "The local Azurite storage service used by the Functions host."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "UseDevelopmentStorage=true directs host storage to Azurite. Timer coordination needs that host dependency even when business data uses Cosmos DB, and the observed local storage endpoint is refusing connections.",
+    "deepExplanation": "Host coordination storage is separate from business-data storage. The error targets the emulator selected by the local host connection; it does not establish a failure in Cosmos or require adding an application Blob binding.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A Cosmos connection supports the application’s own database operations and would be relevant if those operations failed. Its successful test does not supply the Functions host’s separate storage connection.",
+      "b": "Core Tools provides the local Functions host and is needed when the runtime cannot start. It is already running and reporting the storage error, so reinstalling it is not the indicated dependency repair."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Configure and deploy function apps",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-integration-fn-local",
+      "ai200-20260915-integration-doc-reference"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/3-set-up-local-development-environment",
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference"
+    ],
+    "documentationTitles": [
+      "Set up the local development environment for Functions",
+      "Azure Functions developer guide"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "deployment-configuration"],
+    "conceptId": "functions.host-storage-versus-application-storage",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-fn-local",
+      "ai200-20260915-integration-doc-reference"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. c is the unavailable dependency selected by host configuration. a’s business test succeeds and b is actively producing the diagnostic. The current endpoint/configuration observations support actual troubleshooting, unlike the earlier pure dependency-name question. No cloud or emulator integration test is claimed. Rubric 47/48. Reasoning/classification: Intermediate fault isolation is justified by one failing endpoint and two explicitly healthy dependencies, not by merely naming a host requirement. Semantic assessment: i-032 fixes a named Service Bus connection while host storage already works. Installed Fabric connection-type mismatch diagnoses executor compatibility, not this local emulator dependency. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "c is the unavailable dependency selected by host configuration. a’s business test succeeds and b is actively producing the diagnostic. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-032",
+    "question": "A deployed Python function has a Service Bus queue trigger with connection=\"Jobs\". Its installed extension supports identity-based connections; the system-assigned identity is enabled and host storage works. The old Jobs connection string was removed, and no Jobs endpoint settings or Service Bus roles replace it. Which two changes configure this trigger? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Set Jobs__fullyQualifiedNamespace to jobs-east.servicebus.windows.net."
+      },
+      {
+        "id": "b",
+        "text": "Grant Azure Service Bus Data Sender to the function app identity."
+      },
+      {
+        "id": "c",
+        "text": "Configure AzureWebJobsStorage__accountName for host storage."
+      },
+      {
+        "id": "d",
+        "text": "Grant Azure Service Bus Data Receiver to the function app identity."
+      }
+    ],
+    "correctAnswer": ["a", "d"],
+    "explanation": "The binding’s Jobs prefix must resolve to the Service Bus fullyQualifiedNamespace endpoint setting. That supplies the secret-free target connection but does not by itself grant receive authorization. Data Receiver authorizes the trigger’s consumption operation. Alongside the named namespace setting, it completes the endpoint-plus-permission configuration for the enabled system identity.",
+    "deepExplanation": "The selected pair addresses two missing controls: locating the namespace under the exact connection prefix and authorizing reception. This uses the ordinary binding connection feature, not the Preview Python ServiceBusReceivedMessage SDK-type trigger.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Data Sender is documented for outgoing Service Bus bindings. The requested queue trigger receives work, so send authorization does not provide the required operation.",
+      "c": "That setting belongs to identity-based host storage. It is appropriate when converting the host connection, but host storage is already working and it does not configure the named Jobs connection."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Configure and deploy function apps",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-integration-fn-identity",
+      "ai200-20260915-integration-doc-reference"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/6-configure-identity-access",
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference"
+    ],
+    "documentationTitles": [
+      "Configure identity and access for Functions",
+      "Azure Functions developer guide"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "deployment-configuration"],
+    "conceptId": "functions.identity-connection-prefix",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-fn-identity",
+      "ai200-20260915-integration-doc-reference"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. Exactly a+d supplies the two missing controls. a+b cannot receive, c+d cannot resolve Jobs, and a+c still lacks receive rights. The one pronoun warning is resolved. The complete multiselect was independently checked rather than accepting each key in isolation. Rubric 48/48. Reasoning/classification: The exact connection-prefix plus operation-role pair constitutes intermediate implementation. Select-two formatting alone is not the reason for that classification. Semantic assessment: The Event Grid scope item fixes the breadth of an already named send role. This constructs an exact connection suffix and receive permission pair. The installed Container Apps scaler identity example uses a different scale-rule control plane. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "Exactly a+d supplies the two missing controls. a+b cannot receive, c+d cannot resolve Jobs, and a+c still lacks receive rights. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-i-034",
+    "question": "A warm Premium function instance begins an HTTP request immediately. Its functionTimeout is ten minutes, and backend work finishes after six minutes. The client loses the direct response at about 230 seconds. Which boundary explains why increasing functionTimeout alone does not solve the response failure?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Instance startup delay before the request begins."
+      },
+      {
+        "id": "b",
+        "text": "The HTTP response limit enforced by the Azure Load Balancer."
+      },
+      {
+        "id": "c",
+        "text": "The configured ten-minute function execution timeout."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "HTTP-triggered Functions have a roughly 230-second response boundary independent of functionTimeout and hosting plan. Backend execution can continue while the direct response no longer reaches the client.",
+    "deepExplanation": "Compare the start delay, backend duration and client response duration rather than changing an unrelated timer. A durable asynchronous request-reply design is the documented direction for work longer than the HTTP response window; it is not guaranteed uninterrupted execution.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Cold start is relevant when allocating an instance and initializing dependencies delays the first request. The warm instance begins immediately, so it does not explain the later response loss.",
+      "c": "The execution timeout would matter if work exceeded its configured duration. Six minutes is shorter than ten, while the observed client boundary is earlier."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Build serverless APIs, including implementing triggers and bindings",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-integration-fn-hosting",
+      "ai200-20260915-integration-fn-triggers"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/2-understand-hosting-scaling",
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/4-create-triggers-bindings-ai-patterns"
+    ],
+    "documentationTitles": [
+      "Understand Azure Functions hosting and scaling for AI workloads",
+      "Create triggers and bindings for AI integration patterns"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "service-integration"],
+    "conceptId": "functions.hosting-coldstart-http-timeout",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-fn-hosting",
+      "ai200-20260915-integration-fn-triggers"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. b alone matches an early client-response cutoff while the warm backend finishes within its longer execution timeout. The one negative-warning phrase was examined. Current intermediate classification and direct training evidence do not inherit any earlier withdrawn-source approval. Rubric 48/48. Reasoning/classification: Intermediate troubleshooting is justified by reconciling three independently meaningful time observations, rather than just recognizing the number 230. Semantic assessment: SDK construction on a warm instance is a different fault, and r-i-006 deals with Event Grid’s shorter acknowledgement window plus whole-batch semantics. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "b alone matches an early client-response cutoff while the warm backend finishes within its longer execution timeout. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-r-i-008",
+    "question": "A Python inference function runs repeatedly on an already-warm instance. Profiling shows repeated credential and SDK-client initialization before each request’s fast remote call. The client and credential are constructed inside the handler, and their endpoint is unchanged. Which adjustment directly reduces this repeated work on that instance?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Initialize the credential and reusable SDK client at module scope."
+      },
+      {
+        "id": "b",
+        "text": "Add always-ready instances to the hosting configuration."
+      },
+      {
+        "id": "c",
+        "text": "Reduce the application’s startup dependency graph."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "The training recommends creating the credential and client outside the handler so subsequent invocations on the same instance reuse their initialization. This addresses the observed per-invocation setup path.",
+    "deepExplanation": "Reusable client state is scoped to an instance and may be recreated after recycling. This does not claim a global durable cache or that clients remain available across all function instances.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Always-ready instances mitigate startup delay for latency-sensitive traffic. These calls already run on a warm instance, so the handler would still recreate its client on every invocation.",
+      "c": "Reducing imports can lower cold-start initialization cost. It does not remove the explicit credential/client construction performed on every warm handler call."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Build serverless APIs, including implementing triggers and bindings",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-integration-fn-triggers",
+      "ai200-20260915-integration-fn-identity",
+      "ai200-20260915-integration-fn-hosting"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/4-create-triggers-bindings-ai-patterns",
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/6-configure-identity-access",
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/2-understand-hosting-scaling"
+    ],
+    "documentationTitles": [
+      "Create triggers and bindings for AI integration patterns",
+      "Configure identity and access for Functions",
+      "Understand Azure Functions hosting and scaling for AI workloads"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "service-integration"],
+    "conceptId": "functions.warm-instance-sdk-client-reuse",
+    "verificationStatus": "rejected",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. a is technically unique, while b and c address new-instance startup. Final rejection is for the established repeated core decision, not a newly invented technical defect. Reject this frozen duplicate and retain at most one representative, preferring existing d-001 only if its own reviews pass. Pass-2 manual status is not bypassed. Any new distinct authored decision needs fresh three-pass review. Rubric 42/48. Reasoning/classification: This is easy intermediate troubleshooting in isolation. The peer items remain solvable by the same lifetime-reuse invariant despite different services or extra cleanup wording. Semantic assessment: I read all options and explanations for d-001 c2f4cab787dde4ca4516d8e775255e1b04eba5c0d3b9dc9ad5622a30da05d18d and r-s-003 22c4986f0c9bb641c0e8d2193f8bb8237b36e9c965c23c0f4692cd886a167465. Each uniquely selects application/service/module reuse instead of per-request construction. Key Vault async cleanup is nondiscriminating because no other option reuses objects. Originality 0 applies to this duplicate decision, not an accusation of copied prose. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "a is technically unique, while b and c address new-instance startup. Final rejection is for the established repeated core decision, not a newly invented technical defect. Reject this frozen duplicate and retain at most one representative, preferring existing d-001 only if its own reviews pass. Pass-2 manual status is not bypassed. Any new distinct authored decision needs fresh three-pass review. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-r-i-009",
+    "question": "A Python Functions project is ready, and its target function app already exists in Azure. Which Core Tools command deploys the project’s code to that app, rather than starting the local host or downloading remote settings?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "func start"
+      },
+      {
+        "id": "b",
+        "text": "func azure functionapp fetch-app-settings ai-worker"
+      },
+      {
+        "id": "c",
+        "text": "func azure functionapp publish ai-worker"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The documented Core Tools publish command deploys the project to the named existing function app. App creation and production setting management remain separate concerns.",
+    "deepExplanation": "Publishing code, fetching settings and starting the local host are separate operations. The local-only settings file is not the production configuration store, and the target app must exist before its project is deployed.",
+    "whyOtherAnswersAreWrong": {
+      "a": "func start launches the local Functions host from the project. It is appropriate for local trigger testing, not publishing the project to an Azure app.",
+      "b": "fetch-app-settings downloads the app’s settings into local development configuration. It is appropriate for reproducing configuration, not sending code to the app."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Configure and deploy function apps",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-integration-fn-local",
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-fn-configuration",
+      "ai200-20260915-integration-doc-reference"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/3-set-up-local-development-environment",
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python",
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/5-manage-secrets-configuration",
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference"
+    ],
+    "documentationTitles": [
+      "Set up the local development environment for Functions",
+      "Azure Functions developer reference guide for Python apps",
+      "Manage secrets and configuration in Functions",
+      "Azure Functions developer guide"
+    ],
+    "generatedAt": "2026-09-15T19:40:55.508Z",
+    "lastValidatedAt": "2026-09-15T19:40:55.508Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "deployment-configuration"],
+    "conceptId": "functions.core-tools-code-publish-versus-local-commands",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-fn-local",
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-fn-configuration",
+      "ai200-20260915-integration-doc-reference"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. c publishes code, a runs locally and b fetches remote settings. The distinctions are explicit in the supporting sources and exact command strings. Independent 44/48 is a narrow foundational pass with plausibility, explanation and originality deductions. The pronoun warning is resolved by the named existing app, not silently waived. Rubric 44/48. Reasoning/classification: Beginner/concept-recall is honest for this direct command identification; no implementation or troubleshooting coverage is earned. Semantic assessment: This deployment-operation identity differs from missing requirements, missing helper files and app-boundary grouping. Originality 3 reflects routine command recognition. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "c publishes code, a runs locally and b fetches remote settings. The distinctions are explicit in the supporting sources and exact command strings. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-r-i-010",
+    "question": "A Python v2 deployment fails importing shared.parsers, although the same import works locally. The remote build installed every external requirement. Artifact inspection shows function_app.py but no shared directory; .funcignore contains shared/. The directory contains ordinary helper code, not decorated functions. Which change addresses the artifact difference?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Add an external package requirement to requirements.txt."
+      },
+      {
+        "id": "b",
+        "text": "Remove the shared/ exclusion from .funcignore and redeploy."
+      },
+      {
+        "id": "c",
+        "text": "Register a Blueprint with the main FunctionApp."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": ".funcignore controls files omitted from deployment. Including the application’s needed helper directory repairs the documented packaging cause while leaving development-only exclusions intact.",
+    "deepExplanation": "Dependency installation, file inclusion and function discovery are different stages. The artifact observation and explicit exclusion identify the file-inclusion stage without changing the package list.",
+    "whyOtherAnswersAreWrong": {
+      "a": "requirements.txt installs external distributions during remote build. It is appropriate for a missing third-party package, not an application helper directory deliberately excluded from the artifact.",
+      "c": "Blueprint registration exposes decorated functions in imported modules. Ordinary helper code has no functions to register, and registration cannot restore a directory missing from the deployed artifact."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Configure and deploy function apps",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-fn-local"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python",
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/3-set-up-local-development-environment"
+    ],
+    "documentationTitles": [
+      "Azure Functions developer reference guide for Python apps",
+      "Set up the local development environment for Functions"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "deployment-configuration"],
+    "conceptId": "functions.funcignore-runtime-helper-inclusion",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:36:59.150Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-fn-local"
+    ],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. b directly changes the missing artifact content. a changes external package installation and c registers handlers only after their code exists. The single negative warning is essential diagnostic evidence. Publishing needed helpers is not permission to remove all exclusions. Rubric 46/48. Reasoning/classification: Intermediate packaging troubleshooting is justified but easy because artifact absence and its exclusion are explicit, earning difficulty 3. Semantic assessment: This does not revive SEM-019 hosted environment injection. It also differs from i-030’s missing third-party distribution despite the shared import symptom. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "b directly changes the missing artifact content. a changes external package installation and c registers handlers only after their code exists. Confidence rests on exact source-backed option distinctions and the stated countercontexts, not the preceding reviewer’s verdict. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  },
+  {
+    "id": "ai200-r-i-011",
+    "question": "A Python function app is being moved to another supported Python interpreter version. Its third-party dependencies were built for the previous interpreter. The application files, declared package list and blueprint registration are otherwise correct. What must the deployment workflow do for the version change?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Rebuild and redeploy the app and dependencies using the new Python version."
+      },
+      {
+        "id": "b",
+        "text": "Download the app’s current settings into local.settings.json."
+      },
+      {
+        "id": "c",
+        "text": "Move related handlers into a registered Blueprint."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "The Python reference explicitly requires rebuild and redeployment after a Python version change. Existing artifacts and dependencies are not automatically rebuilt by changing the app’s interpreter setting.",
+    "deepExplanation": "A version-setting change and an artifact build are separate lifecycle actions. The required rebuild does not mandate new package versions where the declared versions support the target interpreter.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Downloading settings helps reproduce configuration locally. It does not rebuild dependencies for the new interpreter or replace deployed artifacts.",
+      "c": "Blueprints provide modular organization and function discovery. They are appropriate for organizing a larger app, not for rebuilding artifacts after an interpreter change."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-and-implement-azure-functions",
+    "subskill": "Configure and deploy function apps",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-integration-doc-python",
+      "ai200-20260915-integration-fn-configuration"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python",
+      "https://learn.microsoft.com/en-us/training/modules/build-backends-azure-functions/5-manage-secrets-configuration"
+    ],
+    "documentationTitles": [
+      "Azure Functions developer reference guide for Python apps",
+      "Manage secrets and configuration in Functions"
+    ],
+    "generatedAt": "2026-09-15T19:37:49.697Z",
+    "lastValidatedAt": "2026-09-15T19:37:49.697Z",
+    "featureStatus": "GA",
+    "tags": ["azure-functions", "deployment-configuration"],
+    "conceptId": "functions.python-version-change-rebuild-artifacts",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh independent third-context adversarial review of frozen v1, after actual guide, full source, provenance and every-option reading. a is technically the only appropriate action; b and c do not rebuild artifacts. Correctness does not justify the current applied classification. Independent total 41/48 and the separate classification defect require manual review. Original author must honestly reclassify or author a genuinely applied diagnostic, then restart all three passes. Rubric 41/48. Reasoning/classification: Intermediate/technical-implementation is unsupported. Removing the app story leaves direct recall of the required action after an interpreter change; no artifact log or compatibility decision is evaluated. Semantic assessment: The interpreter-rebuild fact is distinct from package declaration and helper inclusion, but that distinct fact remains foundational. Originality 3 reflects the generic migration prescription. Exact sources and authored fields remain unchanged. Credential unverified/sealed status is separate; this is not gameplay or release-target completion.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:29:28.610Z",
+    "confidenceReason": "a is technically the only appropriate action; b and c do not rebuild artifacts. Correctness does not justify the current applied classification. Independent total 41/48 and the separate classification defect require manual review. Original author must honestly reclassify or author a genuinely applied diagnostic, then restart all three passes. No live Azure deployment or exhaustive future-bank uniqueness proof is claimed."
+  }
+]

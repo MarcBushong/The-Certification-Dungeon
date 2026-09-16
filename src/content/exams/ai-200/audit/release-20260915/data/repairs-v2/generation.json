@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "ai200-d-008": {
+      "generation": {
+        "questionFingerprint": "8e80bce12934bb606021ae6581908e56cf22399a7431384db4049764bf49bb40",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T20:36:28.363Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-cosmos-consistency"],
+            "summary": "The approved consistency unit explains partition-bound session tokens, automatic token tracking within one SDK client and explicit handoff across clients. Passing the token from this caller’s relevant write supplies the session position required for the subsequent point read."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-cosmos-consistency"],
+            "summary": "A separate tokenless Session client does not carry the write position observed by instance A. That independent session can be suitable when its caller tolerates replication lag, but it cannot establish this caller’s requested read-your-writes handoff."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-cosmos-consistency"],
+            "summary": "A token from another partition represents that other partition’s session position and can be relevant to reads there. The source explicitly makes tokens partition-bound, so the unrelated token does not carry the required position for the item in this scenario."
+          }
+        ]
+      }
+    },
+    "ai200-d-029": {
+      "generation": {
+        "questionFingerprint": "042db725da465615efca83d946c14e7032f143f3f9bb297720cae300825d1e61",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T20:36:28.365Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-lifecycle",
+              "ai200-20260915-data-pg-scale"
+            ],
+            "summary": "The lifecycle unit supplies row count times vector dimensions times element width as a payload estimate. That is useful for a vector-only export or current payload calculation, but omits the live indexes, growth and update-related old versions explicitly included in this budget."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-lifecycle",
+              "ai200-20260915-data-pg-scale"
+            ],
+            "summary": "The lifecycle unit documents functions measuring current table and index size. They are appropriate for a current footprint report; the scale unit separately requires projecting workload and data growth, and the live-release scenario also requires maintenance headroom."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-lifecycle",
+              "ai200-20260915-data-pg-scale"
+            ],
+            "summary": "The lifecycle unit documents separate table/index storage and MVCC retaining old row versions after updates. Combined with the scale unit’s growth-planning guidance, measured live structures plus projected growth and maintenance headroom address the full stated scope without a universal index multiplier."
+          }
+        ]
+      }
+    },
+    "ai200-d-040": {
+      "generation": {
+        "questionFingerprint": "2f1248e518e77fd14e0d5c1e6654af900896050ccbff24621774b179dba5938e",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T20:36:28.367Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-redis-client",
+              "ai200-20260915-data-redis-data"
+            ],
+            "summary": "The client unit explicitly requires all keys of an OSS-cluster multi-key command to map to the same hash slot. Placing the participating keys together satisfies both the fixed OSS deployment policy and the required single MGET."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-redis-client",
+              "ai200-20260915-data-redis-data"
+            ],
+            "summary": "The client unit explicitly permits cross-slot MGET with Enterprise clustering. That is a valid alternative deployment policy when migration is permitted, but this scenario requires retaining OSS."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-redis-client",
+              "ai200-20260915-data-redis-data"
+            ],
+            "summary": "The data unit documents GET for string values and the client unit documents pipelining for network efficiency. Individual GET commands in a pipeline are a useful alternative when command decomposition is allowed; they do not retain the required single-MGET interface."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-011": {
+      "generation": {
+        "questionFingerprint": "406b9645644e6a68a81ad516f1d215dfbb132bb5834c6a326395523dadd8eade",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T20:36:28.408Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-redis-index",
+              "ai200-20260915-data-redis-types"
+            ],
+            "summary": "The approved index unit documents VECTOR_RANGE for distance-threshold retrieval rather than a fixed nearest-neighbor request. It is appropriate when a threshold defines eligibility, but it changes the KNN 10 contract and does not target only the requested HNSW exploration effort."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-redis-index",
+              "ai200-20260915-data-redis-types"
+            ],
+            "summary": "The approved Redis vector units document EF_RUNTIME as a query-level HNSW exploration control with a recall/latency tradeoff. Increasing it for the evaluation request retains the existing index and requested neighbor count while changing search effort locally."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-redis-index",
+              "ai200-20260915-data-redis-types"
+            ],
+            "summary": "The approved units document FLAT for exhaustive vector search. Rebuilding a collection with that algorithm can suit an exhaustive-search requirement, but changes the common index and normal route rather than tuning only one evaluation request."
+          }
+        ]
+      }
+    },
+    "ai200-d-010": {
+      "generation": {
+        "questionFingerprint": "ebf195156d053e5d8a83871ac35aeb3286327fad7f405cb32a045408bfe20ad4",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T20:36:28.410Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-store",
+              "ai200-20260915-data-cosmos-vector-index"
+            ],
+            "summary": "The vector-storage and tuning units document quantizedFlat as brute-force search over compressed vectors, useful when reduced precision is acceptable. The reference requires exhaustive comparison of original vectors, and its indexed population exceeds the threshold where a small-population fallback could obscure the distinction."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-store",
+              "ai200-20260915-data-cosmos-vector-index"
+            ],
+            "summary": "The approved units document flat as exhaustive original-vector search with a maximum of 505 dimensions. The 384-dimensional fixed dataset satisfies that dimension limit and the requirement to avoid quantization or approximate graph search."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-store",
+              "ai200-20260915-data-cosmos-vector-index"
+            ],
+            "summary": "The units document diskANN as an approximate graph-based vector index, useful for large fast-search workloads. The scenario requires exhaustive original-vector comparison and has 2500 indexed vectors, avoiding reliance on its below-1000 full-scan fallback."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-001": {
+      "generation": {
+        "questionFingerprint": "4a82e80e03a918f4bb750f371e43f4fdcad7fa0ceab74d364e67eca8a9296285",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T20:36:28.411Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-index",
+              "ai200-20260915-data-cosmos-cost"
+            ],
+            "summary": "The approved indexing units distinguish asynchronous additions from immediate loss of removed-index support and recommend adding the replacement before removing the old index. Waiting for completion before new queries, and retaining the old composite while old clients remain, satisfy both independent readiness conditions."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-index",
+              "ai200-20260915-data-cosmos-cost"
+            ],
+            "summary": "Keeping both completed index patterns is useful during mixed-version traffic. The source explicitly says new indexes do not supply their benefit before transformation completes, so retaining their definitions is not sufficient for switching the new ordering now."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-cosmos-index",
+              "ai200-20260915-data-cosmos-cost"
+            ],
+            "summary": "Removing an unused index can reduce write-maintenance overhead. Here old instances still rely on the old composite, so removal before they drain contradicts the requirement to preserve their index support during the transition."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-004": {
+      "generation": {
+        "questionFingerprint": "ec5256df49167d01c2a3e631ddb662bdcb6eadb2f765a68a7e95f6c16af3e05b",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T20:36:28.480Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "The feed unit identifies pull consumption for batch or infrequent processing with application-controlled timing and persistent continuation tracking. That matches the existing scheduled orchestrator’s chosen ownership of when reads occur and where its saved position is retained."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "The feed unit documents the Azure Functions Cosmos DB trigger for automatic delivery, partition management and checkpointing. It is appropriate when those push-trigger responsibilities are desired, unlike the explicitly orchestrated occasional reads in this scenario."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+            "summary": "The feed unit documents push processors with a shared lease container for continuous delivery and coordination. That is a legitimate continuous-processing model, but the scenario assigns read timing and saved continuation to the scheduled application instead."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-007": {
+      "generation": {
+        "questionFingerprint": "3f25737d91a3cbdbf82301f19478f48f7326c6b47c88b46703d92343e3f4060b",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T20:36:28.481Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-index"
+            ],
+            "summary": "The approved product article describes a missing dimension declaration as an index-creation error. That is a valid failed-build diagnosis, but the supplied index is established and working before only probes changes; no schema alteration explains the observed transition."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-index"
+            ],
+            "summary": "The approved index and product tables distinguish cosine and L2 operator/index pairings. A metric mismatch can make an index ineligible, but the scenario explicitly retains cosine with vector_cosine_ops; an L2 rebuild would change the required metric rather than explain the one-variable experiment."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-performance",
+              "ai200-20260915-data-pg-index"
+            ],
+            "summary": "The approved product article states that probes equal to the number of lists searches all lists and the planner does not use the IVFFlat index at that exact-search boundary. Comparing lower probe counts against measured recall and latency tests the documented candidate-reduction tradeoff."
+          }
+        ]
+      }
+    },
+    "ai200-d-025": {
+      "generation": {
+        "questionFingerprint": "579ba94fd43d60135807cefa08e3e15ff5dbbeacf7aadd29f4c5322415195b68",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T20:36:28.482Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "The approved IVFFlat material documents probes as controlling how many lists are searched when that index is eligible. Raising probes can trade speed for recall, but it does not repair a changed L2 query operator against the supplied cosine operator class."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "Both approved sources explicitly pair PostgreSQL cosine distance <=> with vector_cosine_ops. Restoring <=> corrects the regressed query while retaining the index and the application’s required cosine comparison; it does not guarantee plan selection."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ],
+            "summary": "The approved operator tables document <-> with vector_l2_ops as a valid Euclidean query/index combination. It could be chosen when Euclidean distance is required, but it would violate this application’s unchanged cosine metric."
+          }
+        ]
+      }
+    },
+    "ai200-r-d-009": {
+      "generation": {
+        "questionFingerprint": "171f5d1096ea51c7f521e599fa7a98983a6839d3377874bbc2cd35d99fdaeff3",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-data",
+        "generatedAt": "2026-09-15T20:36:28.483Z",
+        "claims": [
+          {
+            "choiceId": "A",
+            "sourceIds": [
+              "ai200-20260915-data-pg-tune",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "The approved tuning unit assigns work_mem per operation per connection, including sorts; the pool unit documents concurrency limits and SET LOCAL work_mem. The revised scenario explicitly has only three simultaneous sorts in a nonparallel transaction. Five × three × 64 = 960 MiB is within the 1024-MiB sort allowance and meets the observed 64-MiB per-sort minimum."
+          },
+          {
+            "choiceId": "B",
+            "sourceIds": [
+              "ai200-20260915-data-pg-tune",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "For the explicitly sort-only nonparallel plan, eight × three × 32 = 768 MiB is within the workspace budget. The source’s per-operation control does not override the scenario’s measured requirement of at least 64 MiB per sort, so this plan fails that requirement; it is a valid lower-memory policy for sorts that work within 32 MiB."
+          },
+          {
+            "choiceId": "C",
+            "sourceIds": [
+              "ai200-20260915-data-pg-tune",
+              "ai200-20260915-data-pg-pool"
+            ],
+            "summary": "For the explicitly bounded plan, four × three × 128 = 1536 MiB exceeds the reserved 1024 MiB. The setting is a meaningful higher-workspace policy when a larger allowance is available, but not under this budget. No assumption about hash-memory multiplication or extra parallel workers is used."
+          }
+        ]
+      }
+    }
+  }
+}

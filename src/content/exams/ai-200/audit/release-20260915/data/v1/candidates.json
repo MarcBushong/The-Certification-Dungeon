@@ -1,0 +1,2467 @@
+[
+  {
+    "id": "ai200-d-001",
+    "question": "A Python recommendation API constructs a CosmosClient for every request. All requests use the same account, and profiling attributes most of the delay to connection establishment rather than query execution or response transfer. Which change targets the measured bottleneck?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Reuse one application-scoped CosmosClient and its container handle."
+      },
+      {
+        "id": "B",
+        "text": "Keep the client lifecycle and project fewer document fields."
+      },
+      {
+        "id": "C",
+        "text": "Keep the client lifecycle and use smaller query pages."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Retain the object that owns the connection pool instead of rebuilding it for each request.",
+    "deepExplanation": "The evidence distinguishes client lifetime from query shape and paging. The measured delay is incurred before the query benefits of smaller projections or pages can address it.",
+    "whyOtherAnswersAreWrong": {
+      "B": "The query unit documents projection for reducing response payload. That is useful when data transfer is the bottleneck, but it does not retain the client-owned connections identified here.",
+      "C": "The query unit documents page-size control for per-page memory and round-trip tradeoffs. It is a genuine paging option, not a way to retain a newly discarded root client pool."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Connect to Azure Cosmos DB for NoSQL by using the SDK and run queries",
+    "difficulty": "beginner",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-data-cosmos-sdk",
+      "ai200-20260915-data-cosmos-query"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-cosmos-db/3-implement-cosmos-db-sdk",
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-cosmos-db/4-query-cosmos-db-nosql"
+    ],
+    "documentationTitles": [
+      "Implement the Azure Cosmos DB for NoSQL SDK",
+      "Query Azure Cosmos DB for NoSQL"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.728Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.728Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.singleton-client-resource-handles",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-002",
+    "question": "A Cosmos DB for NoSQL container uses /tenantId as its partition key. An authenticated Python container client needs the item with id 'entry-72' and tenantId 'tenant-red'; both values are known. Which SDK operation retrieves it without SQL query parsing and execution?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "container.query_items(query='SELECT * FROM c WHERE c.id = @id', parameters=[{'name':'@id','value':'entry-72'}], partition_key='tenant-red')"
+      },
+      {
+        "id": "B",
+        "text": "container.read_item(item='entry-72', partition_key='tenant-red')"
+      },
+      {
+        "id": "C",
+        "text": "container.query_items(query='SELECT * FROM c WHERE c.tenantId = @tenant', parameters=[{'name':'@tenant','value':'tenant-red'}], partition_key='tenant-red')"
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "A point read takes both the item ID and partition-key value.",
+    "deepExplanation": "Knowing both address components permits the SDK point-read path. A SQL query can return the same item but is still a query; this question distinguishes operations rather than claiming an exact RU cost.",
+    "whyOtherAnswersAreWrong": {
+      "A": "This valid single-partition query can retrieve the matching document and is useful when retrieval needs predicates or projections. It still uses the query execution path, unlike a point read.",
+      "C": "This valid tenant-scoped query retrieves that tenant’s documents and is useful for a tenant listing. It is neither an item-specific point read nor free of query execution."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Connect to Azure Cosmos DB for NoSQL by using the SDK and run queries",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-data-cosmos-sdk",
+      "ai200-20260915-data-cosmos-query"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-cosmos-db/3-implement-cosmos-db-sdk",
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-cosmos-db/4-query-cosmos-db-nosql"
+    ],
+    "documentationTitles": [
+      "Implement the Azure Cosmos DB for NoSQL SDK",
+      "Query Azure Cosmos DB for NoSQL"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.728Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.728Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.point-read-id-partition-key",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-003",
+    "question": "A Cosmos DB for NoSQL endpoint accepts a category from a caller, including categories containing quotation marks. The application must keep that value separate from the SQL-like query text. Which Python SDK construction uses the documented value-binding channel?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Use WHERE c.category = @category and pass a parameters entry with name @category and value category."
+      },
+      {
+        "id": "B",
+        "text": "Construct the complete WHERE clause by concatenating the caller category into the query string."
+      },
+      {
+        "id": "C",
+        "text": "Replace @category in the query string with the caller category before calling query_items."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Pass the category as a separate name/value parameter, not as query-text replacement.",
+    "deepExplanation": "The visible @ characters alone do not establish parameterization. The deciding detail is whether the value reaches query_items through its parameters argument or has already been inserted into the SQL string.",
+    "whyOtherAnswersAreWrong": {
+      "B": "The unit distinguishes fixed literal SQL examples from its parameterized external-input pattern. Literal construction can express a fixed developer-authored category query, but putting this caller value into SQL text does not use the required separate value channel.",
+      "C": "The unit’s literal and parameterized examples show the distinction: replacing text produces a literal query rather than binding data. Such fixed query text can represent known authored constants, but substitution of this external value loses the documented binding separation."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Connect to Azure Cosmos DB for NoSQL by using the SDK and run queries",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-data-cosmos-query"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-cosmos-db/4-query-cosmos-db-nosql"
+    ],
+    "documentationTitles": ["Query Azure Cosmos DB for NoSQL"],
+    "generatedAt": "2026-09-15T19:44:00.728Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.728Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.parameterized-json-query",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-004",
+    "question": "A support endpoint must return all open cases for tenant-amber from a Cosmos DB container partitioned by /tenantId. Its current request filters only on status and enables cross-partition querying. Results include other tenants. Which revision fixes the eligibility defect and uses the known partition?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Keep the status filter, but set a smaller max_item_count."
+      },
+      {
+        "id": "B",
+        "text": "Keep the status filter, but project only case IDs."
+      },
+      {
+        "id": "C",
+        "text": "Bind tenantId = tenant-amber along with status, and pass that tenant as partition_key."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Filter on both business conditions and target the known partition key.",
+    "deepExplanation": "This is not only a cost optimization: the original request has the wrong business scope. Paging and projection remain useful options for different problems but cannot supply the missing tenant restriction.",
+    "whyOtherAnswersAreWrong": {
+      "A": "A smaller max_item_count controls page size and memory/round trips. It does not add the missing tenant condition, so it cannot repair a tenant eligibility defect.",
+      "B": "Projection limits returned properties and is useful for reducing payload. It does not change which tenants’ cases qualify."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Connect to Azure Cosmos DB for NoSQL by using the SDK and run queries",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["ai200-20260915-data-cosmos-query"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-cosmos-db/4-query-cosmos-db-nosql"
+    ],
+    "documentationTitles": ["Query Azure Cosmos DB for NoSQL"],
+    "generatedAt": "2026-09-15T19:44:00.728Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.728Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.partition-targeted-query-routing",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-006",
+    "question": "A completed Cosmos DB composite index is defined in the sequence (category ASC, priority DESC). No additional composite indexes are available. Which two ORDER BY clauses have the supported property order and direction combination for this index? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "ORDER BY c.category ASC, c.priority DESC"
+      },
+      {
+        "id": "B",
+        "text": "ORDER BY c.priority DESC, c.category ASC"
+      },
+      {
+        "id": "C",
+        "text": "ORDER BY c.category ASC, c.priority ASC"
+      },
+      {
+        "id": "D",
+        "text": "ORDER BY c.category DESC, c.priority ASC"
+      }
+    ],
+    "correctAnswer": ["A", "D"],
+    "explanation": "A composite supports its original ordering and the complete direction reversal, with property sequence unchanged.",
+    "deepExplanation": "Changing which property sorts first and reversing only one direction are distinct changes. Each can be a valid ordering in an application, but neither is covered by this particular composite.",
+    "whyOtherAnswersAreWrong": {
+      "B": "This orders priority before category and could use a separately defined composite in that sequence. The existing index begins with category, so it does not provide that sequence.",
+      "C": "This is a valid ordering requirement that needs a composite matching these directions or their full reversal. Reversing only one direction does not match the supplied mixed-direction index."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Optimize query performance and Request Units (RUs) consumption by using indexing policies and consistency levels",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-data-cosmos-index"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/3-configure-range-composite-indexes"
+    ],
+    "documentationTitles": ["Configure range and composite indexes"],
+    "generatedAt": "2026-09-15T19:44:00.728Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.728Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.composite-orderby-property-order",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-007",
+    "question": "A Cosmos DB audit service repeatedly updates a large rawTrace object. Workload inspection shows that rawTrace is returned in item reads but never filtered or sorted; only status and createdAt appear in frequent queries. Which indexing change directly removes unnecessary write work while preserving those query paths?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Add a composite index on status and createdAt."
+      },
+      {
+        "id": "B",
+        "text": "Exclude /rawTrace/* while retaining the status and createdAt indexes."
+      },
+      {
+        "id": "C",
+        "text": "Retain all existing indexes and add range indexes for new searchable metadata."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Index the properties used to find or order documents, not a large object used only as returned content.",
+    "deepExplanation": "The trace remains stored and readable. The proposed exclusion changes index maintenance, not the document body. A composite for another query could be worthwhile independently, but it would not remove this unnecessary work.",
+    "whyOtherAnswersAreWrong": {
+      "A": "A composite can improve a frequently used filter/sort combination. It adds maintenance work rather than removing the unnecessary rawTrace indexing identified by this workload.",
+      "C": "Broader coverage is useful when frequent new predicates need support. Here it does not stop rawTrace maintenance and the stated query workload has no such missing metadata requirement."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Optimize query performance and Request Units (RUs) consumption by using indexing policies and consistency levels",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-data-cosmos-cost",
+      "ai200-20260915-data-cosmos-index"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/5-reduce-ru-costs-strategic-indexing",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/3-configure-range-composite-indexes"
+    ],
+    "documentationTitles": [
+      "Reduce RU costs with strategic indexing",
+      "Configure range and composite indexes"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.728Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.728Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.read-write-index-cost-tradeoff",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-008",
+    "question": "A Cosmos DB account uses Session consistency. API instance A commits a document write; the caller’s next point read may run on instance B, whose client has not observed that partition’s session state. Account-wide stronger consistency is not part of the design. Which handoff meets this caller’s read-your-writes requirement?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Pass the relevant write’s session token to B for the subsequent read."
+      },
+      {
+        "id": "B",
+        "text": "Let B use its existing tokenless Session client for the read."
+      },
+      {
+        "id": "C",
+        "text": "Give B a session token obtained from a different partition."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Transfer the session state associated with the relevant write, not merely the account setting.",
+    "deepExplanation": "The guarantee is scoped to the caller’s session and partition, not global newest-value visibility for unrelated clients. This concerns a point read and does not assert immediate asynchronous vector-index inclusion.",
+    "whyOtherAnswersAreWrong": {
+      "B": "A tokenless separate client may be sufficient for an unrelated session that tolerates stale data. It does not carry A’s observed write position for this caller.",
+      "C": "A session token tracks the partition from which it was obtained and is useful for related reads there. An unrelated partition token does not represent the position needed for this item."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Optimize query performance and Request Units (RUs) consumption by using indexing policies and consistency levels",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": ["ai200-20260915-data-cosmos-consistency"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/6-choose-consistency-levels-performance"
+    ],
+    "documentationTitles": [
+      "Choose consistency levels for optimal performance"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.728Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.728Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.session-token-versus-strong-read-contract",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-009",
+    "question": "A new Cosmos DB vector container will store an array of 384 float32 components at /embedding. The selected model requires cosine comparison, and the account’s vector feature is enabled. Which vector-policy entry describes that stored array?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "path=/embedding, dataType=float32, dimensions=768, distanceFunction=cosine"
+      },
+      {
+        "id": "B",
+        "text": "path=/embedding, dataType=float16, dimensions=384, distanceFunction=cosine"
+      },
+      {
+        "id": "C",
+        "text": "path=/embedding, dataType=float32, dimensions=384, distanceFunction=cosine"
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "The policy must match the embedding array’s path, type, dimensions and required metric.",
+    "deepExplanation": "An embedding is an array-valued property, not a scalar. Float16 is a supported alternative, but changing precision is a separate design decision that this requirement has not made.",
+    "whyOtherAnswersAreWrong": {
+      "A": "A 768-dimensional policy is appropriate for a model producing 768 components. The stated array contains 384, so its dimension does not match.",
+      "B": "The current unit genuinely supports float16; it is not an unavailable feature. That policy describes half-precision storage, whereas this design explicitly chooses float32."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Store and retrieve embeddings and execute vector similarity search for semantic retrieval",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-data-cosmos-store"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-cosmos-db/2-store-retrieve-embeddings"
+    ],
+    "documentationTitles": ["Store and retrieve embeddings in Azure Cosmos DB"],
+    "generatedAt": "2026-09-15T19:44:00.728Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.728Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.embedding-path-dimension-policy",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-010",
+    "question": "A Cosmos DB evaluation container has 2,500 indexed 384-dimensional vectors in one physical partition, with no writes during evaluation. The team needs an index that searches the original vectors exhaustively, rather than quantized representations or an approximate graph. Which index type fits this reference run?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "quantizedFlat"
+      },
+      {
+        "id": "B",
+        "text": "flat"
+      },
+      {
+        "id": "C",
+        "text": "diskANN"
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Use flat for the exhaustive, unquantized reference within its dimension limit.",
+    "deepExplanation": "The fixed population deliberately rules out the documented small-population full-scan fallback for the other index types. This is the retained exact-versus-approximate representative; the old PostgreSQL and Redis cosmetic baseline variants are not regenerated.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The documented quantizedFlat index performs brute-force search over compressed vectors and is useful when reduced precision is acceptable. The stated reference requires original-vector exhaustive comparison; the population is above the minimum effective-index threshold.",
+      "C": "DiskANN is useful for fast approximate search on large datasets. Its graph search is not the exhaustive original-vector algorithm required by this reference, and the 2500-vector population removes the below-1000 fallback ambiguity."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Store and retrieve embeddings and execute vector similarity search for semantic retrieval",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-data-cosmos-store",
+      "ai200-20260915-data-cosmos-vector-index"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-cosmos-db/2-store-retrieve-embeddings",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/4-tune-vector-indexes-embeddings"
+    ],
+    "documentationTitles": [
+      "Store and retrieve embeddings in Azure Cosmos DB",
+      "Tune vector indexes for embedding workloads"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.734Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.734Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.vector-index-type-tradeoff",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-012",
+    "question": "A tenant-scoped Cosmos DB retriever first asks for a global TOP 20, then removes other tenants and drafts in application code. It often yields no usable documents despite eligible content existing. The container is partitioned by /tenantId and has suitable metadata/vector indexes. Which design expresses the eligible corpus in the retrieval request?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Keep the global query and request TOP 40 before application filtering."
+      },
+      {
+        "id": "B",
+        "text": "Target the tenant partition but remove drafts only after its TOP 20."
+      },
+      {
+        "id": "C",
+        "text": "Bind tenant and published-status predicates in the vector query and target the tenant partition."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Make both metadata conditions part of the retrieval request and use the tenant partition.",
+    "deepExplanation": "This fixes the application’s corpus definition; it does not guarantee exactly 20 results or universal physical prefiltering. The documented optimizer may choose different filter strategies, so latency and recall still require measurement.",
+    "whyOtherAnswersAreWrong": {
+      "A": "A larger result cap can be useful when the application genuinely needs more global candidates. It does not express the tenant/published scope and cannot establish that those extra candidates contain the eligible documents.",
+      "B": "Partition targeting is useful for tenant-only retrieval. Leaving status outside the retrieval predicate preserves the possibility that drafts occupy the bounded returned candidates."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Store and retrieve embeddings and execute vector similarity search for semantic retrieval",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-data-cosmos-filter",
+      "ai200-20260915-data-cosmos-query"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-cosmos-db/4-combine-vector-metadata-filtering",
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-cosmos-db/4-query-cosmos-db-nosql"
+    ],
+    "documentationTitles": [
+      "Combine vector similarity results with metadata filtering",
+      "Query Azure Cosmos DB for NoSQL"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.734Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.734Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.vector-metadata-filter-routing",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-001",
+    "question": "A Cosmos DB API is migrating from a category/date ordering to a category/priority ordering. Old instances remain live during a rolling deployment. The new composite is being added but its transformation is incomplete; removal of the old index would affect the old instances immediately. Which rollout preserves index support through the transition?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Finish the new transformation, switch query traffic, then remove the old composite after old instances drain."
+      },
+      {
+        "id": "B",
+        "text": "Switch to the new ordering now and leave both index definitions in the policy."
+      },
+      {
+        "id": "C",
+        "text": "Remove the old composite now, then wait for the new transformation before switching."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Separate adding an index definition from completion, and retain the old pattern until its callers are gone.",
+    "deepExplanation": "There are two independent readiness conditions: the replacement must finish building, and the previous query version must no longer require its old index. This new rollout concept does not reuse the archived nested-path-specificity record.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Keeping both completed patterns is appropriate during mixed-version traffic. Definition presence alone does not make the incomplete new composite usable, so switching now is premature.",
+      "C": "Removing a genuinely unused index reduces maintenance overhead. Old instances still rely on this one, so removing it before they drain violates the live-support requirement."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Optimize query performance and Request Units (RUs) consumption by using indexing policies and consistency levels",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-data-cosmos-index",
+      "ai200-20260915-data-cosmos-cost"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/3-configure-range-composite-indexes",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/5-reduce-ru-costs-strategic-indexing"
+    ],
+    "documentationTitles": [
+      "Configure range and composite indexes",
+      "Reduce RU costs with strategic indexing"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.734Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.734Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.composite-index-rollout-add-wait-switch-remove",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-002",
+    "question": "A Cosmos DB change-feed worker generates embeddings from title and content, then writes embedding and contentHash back to the monitored item. The model is unchanged and writes are serialized. Metadata edits and the worker’s own write repeatedly trigger unnecessary embedding calls. Which handler change targets both causes without suppressing actual title/content edits?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Batch every received item into a larger embedding request."
+      },
+      {
+        "id": "B",
+        "text": "Compare a hash of title/content with contentHash, and refresh only when they differ, storing the new hash with the embedding."
+      },
+      {
+        "id": "C",
+        "text": "Move embedding generation to a separate queued worker while keeping every-change refresh."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Detect changes to embedding inputs rather than treating every item write as a semantic change.",
+    "deepExplanation": "The hash excludes the generated vector, the stored hash and metadata not used by the model. The same-model and serialized-write conditions bound this design; it is not a claim to solve model upgrades or concurrent stale overwrites.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The unit documents batching for high-volume API efficiency. It reduces per-call overhead but still regenerates unchanged semantic inputs, so it does not address the two triggering causes.",
+      "C": "Queue-based processing is documented for buffering and independent scaling. Without input-change detection it moves the unnecessary work but does not eliminate it."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Implement a change feed processor to detect and handle new or updated items",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-cosmos-db/5-change-feed-trigger-embedding-refresh"
+    ],
+    "documentationTitles": ["Use the change feed to trigger embedding refresh"],
+    "generatedAt": "2026-09-15T19:44:00.734Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.734Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.embedding-refresh-content-hash-self-update-loop",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-003",
+    "question": "A push-based Cosmos DB change-feed deployment needs workers to share processing ownership and continue from saved progress after a worker fails. The monitored document container already exists. Which additional state store serves those processor coordination requirements?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "The contentHash property written into each source document."
+      },
+      {
+        "id": "B",
+        "text": "A queue used to buffer embedding-generation requests."
+      },
+      {
+        "id": "C",
+        "text": "A separate lease container used by the change-feed deployment."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "The lease container holds processor ownership and checkpoint state.",
+    "deepExplanation": "The source document, the downstream queue and the processor lease store have different responsibilities. This item does not assert an unsupported language table or exact standalone processorName configuration.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Content hashes support selective embedding refresh by comparing semantic inputs. They do not represent the processor’s partition ownership and saved feed checkpoints.",
+      "B": "A queue can decouple change detection from a downstream embedding worker. It serves a different workload-buffering purpose from processor lease/checkpoint coordination."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Implement a change feed processor to detect and handle new or updated items",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-cosmos-db/5-change-feed-trigger-embedding-refresh"
+    ],
+    "documentationTitles": ["Use the change feed to trigger embedding refresh"],
+    "generatedAt": "2026-09-15T19:44:00.734Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.734Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.change-feed-lease-checkpoint-and-failover-store",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-004",
+    "question": "A Python maintenance job is scheduled by an existing batch orchestrator. It should read changes only when invoked, control its own batch timing and persist its continuation position between runs. Continuous push delivery and an Azure Functions trigger are not required. Which consumption model fits?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Use the SDK pull model and persist the continuation position between scheduled runs."
+      },
+      {
+        "id": "B",
+        "text": "Use an Azure Functions Cosmos DB trigger for automatic change delivery."
+      },
+      {
+        "id": "C",
+        "text": "Use a continuously running push processor deployment with a shared lease container."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Use pull consumption when the application deliberately owns read timing and saved continuation state.",
+    "deepExplanation": "The alternative push models are real supported architectures, not invalid APIs. This new timing/ownership decision replaces the archived generic repeat-safe-redelivery duplicate; it does not claim exactly-once processing.",
+    "whyOtherAnswersAreWrong": {
+      "B": "The trigger is documented for automatic push delivery, partition management and checkpointing. It is appropriate when those continuous managed-trigger responsibilities are desired, unlike this explicitly orchestrated batch.",
+      "C": "A push processor is appropriate for continuous delivery with built-in partition coordination. This scenario asks the scheduled job to determine when reading occurs instead."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Implement a change feed processor to detect and handle new or updated items",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["ai200-20260915-data-cosmos-feed"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-cosmos-db/5-change-feed-trigger-embedding-refresh"
+    ],
+    "documentationTitles": ["Use the change feed to trigger embedding refresh"],
+    "generatedAt": "2026-09-15T19:44:00.734Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.734Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.change-feed-pull-scheduled-batch-consumption",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-005",
+    "question": "A live Cosmos DB container was created with a 384-dimensional vector policy. A replacement model produces 768 components, and the old retrieval path must stay available during backfill. The account supports vector search and temporary capacity is available. Which change supplies a valid policy for the new data?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Rebuild only the current vector index with a larger search-list setting."
+      },
+      {
+        "id": "B",
+        "text": "Create a new container with the 768-dimensional policy, backfill matching embeddings, and validate before switching retrieval."
+      },
+      {
+        "id": "C",
+        "text": "Use float16 for the replacement vectors while retaining the current container policy."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "A changed embedding dimension requires a new vector policy, which means a new container.",
+    "deepExplanation": "Vector-index tuning and element precision are separate from dimensionality. The new container avoids relying on a mutable policy or on compatibility between two embedding models. Backfill validation is an application rollout condition, not a database quality guarantee.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Index search/build settings tune accuracy and work for vectors described by the existing policy. They do not change the immutable dimension declaration to 768.",
+      "C": "Float16 is a documented precision/storage choice for a suitably configured policy. A narrower element representation does not change the number of components, and the existing policy itself remains immutable."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Store and retrieve embeddings and execute vector similarity search for semantic retrieval",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-data-cosmos-store",
+      "ai200-20260915-data-cosmos-vector-index"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-cosmos-db/2-store-retrieve-embeddings",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/4-tune-vector-indexes-embeddings"
+    ],
+    "documentationTitles": [
+      "Store and retrieve embeddings in Azure Cosmos DB",
+      "Tune vector indexes for embedding workloads"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.734Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.734Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.vector-policy-dimension-change-new-container",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-006",
+    "question": "A Python diagnostic creates a Cosmos DB query iterator with populate_query_metrics and a response_hook, then immediately prints the hook’s still-empty dictionary. It has not iterated any results. The query is valid and credentials work. Which next action obtains response metadata for the query rather than changing its data model?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Consume the query iterator, then inspect the response metadata captured during execution."
+      },
+      {
+        "id": "B",
+        "text": "Add a composite index and print the same dictionary before consuming results."
+      },
+      {
+        "id": "C",
+        "text": "Reduce projected fields and print the same dictionary before consuming results."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Execute the iterator’s work by consuming results before reading response-derived diagnostics.",
+    "deepExplanation": "The failure is diagnostic sequencing, not missing index coverage. For multi-page or concurrent work, measurement needs to capture each relevant response carefully; this question does not treat a shared last-response value as a universal total.",
+    "whyOtherAnswersAreWrong": {
+      "B": "A composite is useful for a supported filter/sort workload. It changes query execution support, not whether the lazy iterator has executed and called the response hook.",
+      "C": "Projection can reduce response payload once the query runs. It does not cause an unconsumed iterator to deliver a response or populate its hook output."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-cosmos-db-for-nosql",
+    "subskill": "Connect to Azure Cosmos DB for NoSQL by using the SDK and run queries",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-data-cosmos-cost",
+      "ai200-20260915-data-cosmos-query"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/5-reduce-ru-costs-strategic-indexing",
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-cosmos-db/4-query-cosmos-db-nosql"
+    ],
+    "documentationTitles": [
+      "Reduce RU costs with strategic indexing",
+      "Query Azure Cosmos DB for NoSQL"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.734Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.734Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "cosmos"],
+    "conceptId": "cosmos.query-metrics-lazy-iterator-execution",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-017",
+    "question": "A psycopg 3 application queries documents by a caller-supplied title that may contain an apostrophe. With an open cursor cur and the value in title, which call sends the value separately from the SQL structure?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "cur.execute(\"SELECT id FROM documents WHERE title = '\" + title + \"'\")"
+      },
+      {
+        "id": "B",
+        "text": "cur.execute(\"SELECT id FROM documents WHERE title = '%s'\" % title)"
+      },
+      {
+        "id": "C",
+        "text": "cur.execute('SELECT id FROM documents WHERE title = %s', (title,))"
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Keep %s in SQL and pass the one-element tuple as the separate execute argument.",
+    "deepExplanation": "Identical-looking percent characters can be processed by Python formatting or by the database driver. The parameter tuple determines which path is used. This is psycopg’s binding interface, distinct from Cosmos name/value parameter arrays.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The SDK unit contrasts concatenated SQL with driver binding. Literal SQL is suitable for a fixed developer-authored query, but inserting the caller’s title into its text does not retain a separate parameter value.",
+      "B": "Python percent formatting produces query text before execute sees it. The %s characters only act as driver placeholders when the value is passed separately; this formatted literal construction is not the external-input pattern documented by the unit."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Connect and query Azure Database for PostgreSQL by using SDKs",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-data-pg-sdk"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-database-postgresql/6-integrate-sdks-apps"
+    ],
+    "documentationTitles": ["Integrate SDKs and applications"],
+    "generatedAt": "2026-09-15T19:44:00.737Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.737Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.psycopg-parameterized-query",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-018",
+    "question": "A PostgreSQL database identity is already configured for Microsoft Entra authentication. Python has obtained token = credential.get_token(\"https://ossrdbms-aad.database.windows.net/.default\"). Which value goes in this Entra-authenticated database connection’s password field?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "token.token"
+      },
+      {
+        "id": "B",
+        "text": "The native PostgreSQL password for a separate database login"
+      },
+      {
+        "id": "C",
+        "text": "\"https://ossrdbms-aad.database.windows.net/.default\""
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Supply the issued token string, not the scope used to request it.",
+    "deepExplanation": "This question starts after identity setup and successful token acquisition. It does not imply that knowing a scope URL grants access or that a credential provider object can replace the issued PostgreSQL token.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Native authentication legitimately uses a database username and password. It is a different configured authentication flow from the specified Entra database identity.",
+      "C": "This exact string is the documented resource scope passed when requesting the access token. It identifies the token audience request, not the issued token string used in the password field."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Connect and query Azure Database for PostgreSQL by using SDKs",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-data-pg-connect"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-database-postgresql/3-connect-to-postgresql"
+    ],
+    "documentationTitles": ["Connect to PostgreSQL"],
+    "generatedAt": "2026-09-15T19:44:00.737Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.737Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.entra-token-versus-password-connection",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-019",
+    "question": "A PostgreSQL client can already reach and authenticate to its Azure server. Its transport policy requires encryption, validation of the issuing CA, and validation that the certificate matches the requested hostname. Trusted root certificates are installed. Which sslmode supplies the complete policy?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "verify-ca"
+      },
+      {
+        "id": "B",
+        "text": "verify-full"
+      },
+      {
+        "id": "C",
+        "text": "require"
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "verify-full adds hostname verification to encryption and issuer validation.",
+    "deepExplanation": "Transport verification does not create firewall access or database authorization. Those are explicit prerequisites in this scenario, so the remaining decision is between the documented TLS validation guarantees.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The unit documents encryption and CA validation for verify-ca. It fits a policy that stops at issuer trust, but it does not add the required hostname check.",
+      "C": "The documented require mode enforces encrypted transport without the complete certificate-validation contract requested here. It is appropriate only for a narrower encryption requirement, not this three-part policy."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Connect and query Azure Database for PostgreSQL by using SDKs",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-data-pg-connect"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-database-postgresql/3-connect-to-postgresql"
+    ],
+    "documentationTitles": ["Connect to PostgreSQL"],
+    "generatedAt": "2026-09-15T19:44:00.737Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.737Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.tls-network-connection-boundary",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-020",
+    "question": "Every PostgreSQL document chunk must reference an existing source document and have a non-null position. A position must be unique within its document, while different documents may each have position 1. Which constraint set enforces exactly that scope?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "document_id NOT NULL REFERENCES documents(id), position NOT NULL, UNIQUE(position)"
+      },
+      {
+        "id": "B",
+        "text": "document_id NOT NULL REFERENCES documents(id), position NOT NULL, with no uniqueness constraint"
+      },
+      {
+        "id": "C",
+        "text": "document_id NOT NULL REFERENCES documents(id), position NOT NULL, UNIQUE(document_id, position)"
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Enforce uniqueness on the document/position pair rather than position alone.",
+    "deepExplanation": "The solution must avoid both underconstraint and overconstraint. A valid parent does not ensure unique ordering, and a globally unique position rejects records that are valid for different documents.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Foreign keys and NOT NULL enforce parent validity and presence. Global UNIQUE(position) is valid for a globally unique sequence, but it prevents different documents from sharing position 1 here.",
+      "B": "These real constraints enforce the parent and non-null fields and are suitable when repeated positions are allowed. They leave duplicate positions possible within a document, which this requirement forbids."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Model schemas and implement indexing strategies, including designing tables and choosing appropriate data types",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-data-pg-schema",
+      "ai200-20260915-data-pg-rag"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-database-postgresql/4-create-manage-schemas",
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/6-implement-retrieval-patterns-rag-pipelines"
+    ],
+    "documentationTitles": [
+      "Create and manage schemas",
+      "Implement retrieval patterns for RAG pipelines"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.737Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.737Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.relational-constraints-and-types",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-021",
+    "question": "An Azure PostgreSQL table already has typed tenant and timestamp columns. It also needs optional nested metadata whose keys vary by document and that must be queried using PostgreSQL JSON operators. Which type fits that additional column?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "JSONB"
+      },
+      {
+        "id": "B",
+        "text": "BYTEA"
+      },
+      {
+        "id": "C",
+        "text": "VARCHAR"
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "JSONB supplies the flexible nested JSON representation and its query operators.",
+    "deepExplanation": "The question does not propose moving known tenant or timestamp attributes into JSONB. Typed common fields and flexible additional attributes can coexist.",
+    "whyOtherAnswersAreWrong": {
+      "B": "BYTEA is the documented binary-data type and is appropriate for small binary objects. It does not represent this metadata as a JSONB object available to the requested JSON operators.",
+      "C": "VARCHAR stores character strings and optionally enforces a maximum length. It fits a text value, not the requested directly queryable nested JSON object."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Model schemas and implement indexing strategies, including designing tables and choosing appropriate data types",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-data-pg-schema"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-database-postgresql/4-create-manage-schemas"
+    ],
+    "documentationTitles": ["Create and manage schemas"],
+    "generatedAt": "2026-09-15T19:44:00.737Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.737Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.jsonb-versus-typed-metadata",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-022",
+    "question": "The vector extension is installed in a PostgreSQL database. An empty staging table declares embedding as vector without dimensions. HNSW creation fails with “column does not have dimensions”; every incoming embedding has 768 components. Which correction addresses the reported cause?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Keep the column and increase hnsw.ef_search."
+      },
+      {
+        "id": "B",
+        "text": "Declare embedding as vector(768) before creating the index."
+      },
+      {
+        "id": "C",
+        "text": "Keep the column and choose IVFFlat rather than HNSW."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Declare the dimension in the column type; changing search effort or algorithm is a different concern.",
+    "deepExplanation": "The empty-table condition makes the schema repair straightforward and avoids a data-conversion claim. Appropriate extension and permission setup is already established; the question diagnoses only the reported index prerequisite.",
+    "whyOtherAnswersAreWrong": {
+      "A": "ef_search controls the runtime search candidate list for an existing HNSW index. It is a recall/latency control, not a declaration of the column’s dimensions.",
+      "C": "IVFFlat is a legitimate alternative ANN algorithm with different build/memory tradeoffs. The product article’s dimension-declaration prerequisite applies to indexing the column, so an algorithm swap does not cure the schema defect."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Model schemas and implement indexing strategies, including designing tables and choosing appropriate data types",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-data-pg-store",
+      "ai200-20260915-data-pg-performance",
+      "ai200-20260915-data-pg-index"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/2-store-query-embeddings-pgvector",
+      "https://learn.microsoft.com/en-us/azure/postgresql/extensions/how-to-optimize-performance-pgvector",
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/3-perform-fast-vector-similarity-search"
+    ],
+    "documentationTitles": [
+      "Store and query embeddings with pgvector",
+      "Optimize performance when using pgvector in Azure Database for PostgreSQL flexible server",
+      "Perform fast vector similarity search"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.737Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.737Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.dimensioned-vector-column",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-007",
+    "question": "An established PostgreSQL IVFFlat cosine index has 100 lists. In a controlled session, changing probes from 10 to 100 leaves the query and data unchanged, increases runtime, and yields a plan without the IVFFlat index. The operator still matches vector_cosine_ops. Which explanation and next experiment fit the documented boundary?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "The column lacks dimensions; change its type before comparing recall."
+      },
+      {
+        "id": "B",
+        "text": "The query metric changed; rebuild the index with vector_l2_ops."
+      },
+      {
+        "id": "C",
+        "text": "All lists are now searched; compare lower probe counts against measured recall and latency."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Probing every IVFFlat list removes its candidate-reduction advantage.",
+    "deepExplanation": "This is not the generic “choose exact instead of ANN” baseline already represented by Cosmos d-010. It diagnoses a specific runtime parameter crossing the documented all-lists planner boundary, with dimensionality and operator matching ruled out.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The product article documents missing dimensions as an index-creation failure. That diagnosis fits a failed build, not this established working index whose only change is probing every list.",
+      "B": "An operator/index metric mismatch is a genuine reason an index is ineligible. The scenario explicitly preserves cosine and its matching class, so an L2 rebuild would change the required comparison."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Implement indexing strategies, including optimizing query latency and reducing pgvector compute overhead",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-data-pg-performance",
+      "ai200-20260915-data-pg-index"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/postgresql/extensions/how-to-optimize-performance-pgvector",
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/3-perform-fast-vector-similarity-search"
+    ],
+    "documentationTitles": [
+      "Optimize performance when using pgvector in Azure Database for PostgreSQL flexible server",
+      "Perform fast vector similarity search"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.737Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.737Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "pgvector.ivfflat-all-lists-probes-exact-plan-boundary",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-024",
+    "question": "A PostgreSQL application must create an ANN index before its first representative vectors arrive. It accepts higher build time and memory use to avoid a data-dependent clustering step. Which documented approach fits that provisioning order?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "HNSW"
+      },
+      {
+        "id": "B",
+        "text": "IVFFlat"
+      },
+      {
+        "id": "C",
+        "text": "Exact distance search without an ANN index"
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "HNSW can be created without representative training data.",
+    "deepExplanation": "The answer is based on construction dependencies rather than promised recall or latency. The alternatives are genuine approaches whose tradeoffs fit other requirements, not false descriptions of their capabilities.",
+    "whyOtherAnswersAreWrong": {
+      "B": "IVFFlat is a real lower-memory/faster-build option when representative data exists for k-means clustering. The required empty-table provisioning order removes that prerequisite.",
+      "C": "Exact unindexed search is legitimate for small corpora or exhaustive results. It does not create the ANN index expressly required by this provisioning contract."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Implement indexing strategies, including optimizing query latency and reducing pgvector compute overhead",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-data-pg-index",
+      "ai200-20260915-data-pg-performance"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/3-perform-fast-vector-similarity-search",
+      "https://learn.microsoft.com/en-us/azure/postgresql/extensions/how-to-optimize-performance-pgvector"
+    ],
+    "documentationTitles": [
+      "Perform fast vector similarity search",
+      "Optimize performance when using pgvector in Azure Database for PostgreSQL flexible server"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.737Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.737Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "pgvector.ivfflat-versus-hnsw-build",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-025",
+    "question": "A PostgreSQL table has an IVFFlat index on embedding vector_cosine_ops. A latency regression followed a query change to ORDER BY embedding <-> $1 LIMIT 8. The application still requires cosine distance. Which correction restores the documented operator/index pairing without changing that metric?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Keep <-> and increase ivfflat.probes."
+      },
+      {
+        "id": "B",
+        "text": "Use <=> in the ORDER BY and retain vector_cosine_ops."
+      },
+      {
+        "id": "C",
+        "text": "Keep <-> and rebuild with vector_l2_ops."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Use the cosine operator with the cosine operator class.",
+    "deepExplanation": "Correct pairing makes an index eligible, not guaranteed to be selected for every data distribution. Unlike the Azure SQL compatibility-warning item, this question repairs the changed PostgreSQL operator while preserving the existing index and application metric.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Probes increases the lists searched when IVFFlat is eligible. It adjusts recall/latency, not the mismatch between an L2 operator and a cosine index.",
+      "C": "This is a documented valid L2 query/index pairing. It would implement Euclidean rather than the required cosine comparison, so it does not preserve the application contract."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Implement indexing strategies, including optimizing query latency and reducing pgvector compute overhead",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-data-pg-index",
+      "ai200-20260915-data-pg-performance"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/3-perform-fast-vector-similarity-search",
+      "https://learn.microsoft.com/en-us/azure/postgresql/extensions/how-to-optimize-performance-pgvector"
+    ],
+    "documentationTitles": [
+      "Perform fast vector similarity search",
+      "Optimize performance when using pgvector in Azure Database for PostgreSQL flexible server"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.739Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.739Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "pgvector.operator-class-distance-match",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-026",
+    "question": "A pgvector query completes quickly on staging, but a tuning review needs actual operator timings and buffer activity for this execution before considering a larger server. Which diagnostic should the engineer run?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Inspect pg_stat_user_indexes for aggregate index usage."
+      },
+      {
+        "id": "B",
+        "text": "Run EXPLAIN without executing the query."
+      },
+      {
+        "id": "C",
+        "text": "Run EXPLAIN (ANALYZE, VERBOSE, BUFFERS) for the query."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Use the measured execution plan for per-query timings and buffer evidence.",
+    "deepExplanation": "Neither the existence of an index nor historical scan counts substitute for this execution’s plan. Running ANALYZE is appropriate because the scenario explicitly provides a manageable staging execution.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The lifecycle unit documents cumulative index usage statistics. They help identify whether an index is used over time, but do not provide this query’s measured operator timings and buffers.",
+      "B": "The product reference recommends omitting ANALYZE when execution would take too long. An estimated plan is useful in that situation; this manageable staging query instead requires measured execution details."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Implement indexing strategies, including optimizing query latency and reducing pgvector compute overhead",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-data-pg-performance",
+      "ai200-20260915-data-pg-lifecycle"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/postgresql/extensions/how-to-optimize-performance-pgvector",
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/4-manage-index-lifecycle-embedding-updates"
+    ],
+    "documentationTitles": [
+      "Optimize performance when using pgvector in Azure Database for PostgreSQL flexible server",
+      "Manage index lifecycle and embedding updates"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.739Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.739Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "pgvector.explain-index-plan-diagnosis",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-027",
+    "question": "A PostgreSQL vector workload has low CPU, no sort spills, and repeated storage reads for hot index pages. Its measured working set exceeds physical memory, while effective_cache_size already reflects installed memory. Which next experiment targets the diagnosed resource limit rather than merely changing planner estimates or sort memory?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Evaluate a higher-memory server and an appropriate shared_buffers allocation using the same workload."
+      },
+      {
+        "id": "B",
+        "text": "Increase effective_cache_size while keeping installed memory and shared_buffers unchanged."
+      },
+      {
+        "id": "C",
+        "text": "Increase work_mem for the vector-search sessions."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Test actual memory/cache capacity for the measured hot-page working set.",
+    "deepExplanation": "The diagnosis combines resource measurements with parameter roles. A new planner estimate cannot create RAM, and increasing per-operation memory can reduce rather than increase the memory left for page caching under concurrency.",
+    "whyOtherAnswersAreWrong": {
+      "B": "This setting can correct a planner estimate and influence index-versus-scan costing when the estimate is wrong. It allocates no memory, and the scenario already establishes an accurate estimate and a physical working-set shortfall.",
+      "C": "work_mem is useful for sort/hash operations that need more working memory. The scenario has no spills and attributes I/O to hot index pages, not those per-operation workspaces."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Configure compute, memory, and storage resources to support vector workloads",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-data-pg-tune",
+      "ai200-20260915-data-pg-scale"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/2-tune-postgresql-pgvector",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/5-scale-high-volume-workloads"
+    ],
+    "documentationTitles": [
+      "Tune PostgreSQL for pgvector",
+      "Scale for high-volume workloads"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.739Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.739Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "pgvector.index-memory-versus-compute-pressure",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-028",
+    "question": "Load testing shows a PostgreSQL primary can serve the current 40 writes/s plus 20 confirmation reads/s, but not the additional 300 recommendation reads/s. Recommendations tolerate replica lag; confirmation must see the user’s just-committed change. Two asynchronous read replicas have measured spare read capacity. Which routing plan meets both requirements?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Route every read to the replicas and keep writes on the primary."
+      },
+      {
+        "id": "B",
+        "text": "Keep writes and immediate confirmations on the primary; distribute recommendations across replicas."
+      },
+      {
+        "id": "C",
+        "text": "Keep all reads and writes on the primary."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Separate freshness-sensitive reads from read traffic that can tolerate asynchronous replication.",
+    "deepExplanation": "The throughput figures are scenario measurements, not platform limits. The design uses two independent facts: replicas are read-only and asynchronous, and the measured primary cannot absorb all read volume.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Read-only replicas can offload read traffic, so this fits a wholly staleness-tolerant read workload. The source explicitly warns that asynchronous lag does not meet immediate read-after-write requirements.",
+      "C": "The primary legitimately serves both reads and writes and supplies immediate freshness. The given load test excludes using it for the added recommendation traffic, so this plan fails the throughput requirement."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Configure compute, memory, and storage resources to support vector workloads",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": ["ai200-20260915-data-pg-scale"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/5-scale-high-volume-workloads"
+    ],
+    "documentationTitles": ["Scale for high-volume workloads"],
+    "generatedAt": "2026-09-15T19:44:00.739Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.739Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.read-replica-vector-scale",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-029",
+    "question": "A PostgreSQL team budgets the next vector-corpus release using only row count × dimensions × four bytes. Its existing database also has vector indexes, frequent embedding replacements, and a growing corpus. It must reserve capacity for the live database, not just export the current vector values. Which budgeting basis addresses all three omitted consumers?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "The current raw-vector payload, measured from dimension and row counts."
+      },
+      {
+        "id": "B",
+        "text": "The current table and index sizes, with no growth or maintenance allowance."
+      },
+      {
+        "id": "C",
+        "text": "Measured table/index sizes plus projected growth and update/maintenance headroom."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Budget the measured live structures and future maintenance/growth, not just vector payload.",
+    "deepExplanation": "Frequent updates do not instantly erase prior row versions. This does not assert an exact index-size multiplier or a fixed percentage of spare storage; the allowance must be determined from actual workload observations.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The source gives dimensions times element size times rows as a useful vector-payload estimate. It fits a payload-only scope, not live indexes, growth or replacement-related old row versions.",
+      "B": "The documented relation-size functions measure the current table/index footprint and are useful for current usage reporting. A future live-release budget also needs growth and update/maintenance headroom."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Configure compute, memory, and storage resources to support vector workloads",
+    "difficulty": "advanced",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-data-pg-lifecycle",
+      "ai200-20260915-data-pg-scale"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/4-manage-index-lifecycle-embedding-updates",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/5-scale-high-volume-workloads"
+    ],
+    "documentationTitles": [
+      "Manage index lifecycle and embedding updates",
+      "Scale for high-volume workloads"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.739Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.739Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "pgvector.storage-index-capacity-budget",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-030",
+    "question": "A PostgreSQL tenant filter selects 60 rows from a much larger vector corpus. Current statistics and EXPLAIN ANALYZE show a metadata-index scan followed by distance computation and sorting; measured latency meets its target. What is the appropriate response to the absence of HNSW in this plan?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Retain the tenant filter and judge the measured cost of the selective plan."
+      },
+      {
+        "id": "B",
+        "text": "Increase hnsw.ef_search as the first correction."
+      },
+      {
+        "id": "C",
+        "text": "Increase server CPU capacity as the first correction."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "An efficient selective metadata plan can be the correct cost-based choice.",
+    "deepExplanation": "A vector index is a tool, not a required plan shape for every vector query. This case is grounded in an observed plan; it does not generalize physical prefiltering to every ANN query.",
+    "whyOtherAnswersAreWrong": {
+      "B": "ef_search is useful for improving candidate exploration and recall when an HNSW path is used. It does not directly improve a plan that already uses a small metadata-selected set and meets the latency target.",
+      "C": "The scale/tuning units recommend compute scaling for measured CPU pressure or insufficient query capacity. Those conditions are not established by the absence of an HNSW operator alone."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Implement indexing strategies, including optimizing query latency and reducing pgvector compute overhead",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-data-pg-retrieval",
+      "ai200-20260915-data-pg-layout",
+      "ai200-20260915-data-pg-tune"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/5-run-vector-similarity-search-semantic-retrieval",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/4-optimize-data-layout",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/2-tune-postgresql-pgvector"
+    ],
+    "documentationTitles": [
+      "Run vector similarity search for semantic retrieval",
+      "Optimize data layout",
+      "Tune PostgreSQL for pgvector"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.739Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.739Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "pgvector.metadata-filter-selectivity",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-031",
+    "question": "A PostgreSQL semantic retriever returns up to five chunks by ascending cosine distance. Evaluation shows that some queries have no relevant corpus match, yet still return unrelated chunks. A corpus-specific maximum acceptable distance has been validated, and empty responses are allowed. Which change encodes that quality requirement while retaining the five-result cap?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Lower the cap to one result without a distance predicate."
+      },
+      {
+        "id": "B",
+        "text": "Apply the validated maximum-distance predicate, keep ascending distance order, and retain LIMIT 5."
+      },
+      {
+        "id": "C",
+        "text": "Raise the cap to ten results without a distance predicate."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Use a distance predicate for acceptance and a limit for result count.",
+    "deepExplanation": "A top-k operation ranks candidates relative to one another; it does not certify that any meets a relevance standard. The threshold is supplied by corpus evaluation rather than asserted as a universal numeric constant.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The sources use count limits for token/resource control. Reducing the cap limits quantity, but the closest remaining result can still fall outside the evaluated relevance boundary.",
+      "C": "Increasing retrieved count is a documented way to improve recall when relevant material is being missed. It does not reject low-quality matches when this corpus has no acceptable one."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Run vector similarity search, including storing embeddings, semantic retrieval, and implementing retrieval-augmented generation (RAG) patterns by using metadata filter",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-data-pg-retrieval",
+      "ai200-20260915-data-pg-rag"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/5-run-vector-similarity-search-semantic-retrieval",
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/6-implement-retrieval-patterns-rag-pipelines"
+    ],
+    "documentationTitles": [
+      "Run vector similarity search for semantic retrieval",
+      "Implement retrieval patterns for RAG pipelines"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.739Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.739Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "pgvector.distance-threshold-versus-topk",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-032",
+    "question": "A PostgreSQL RAG service must retrieve individual manual sections, fetch their neighbors when needed, and store each manual’s source metadata once. Which schema organization directly supports those combined access patterns?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "One row per manual with full content, metadata and a single document embedding."
+      },
+      {
+        "id": "B",
+        "text": "One row per manual with separate title and full-content embedding columns."
+      },
+      {
+        "id": "C",
+        "text": "A source-document table plus ordered chunk rows containing document_id, position, content and an embedding."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Represent the retrievable sections as ordered child rows linked to a source document.",
+    "deepExplanation": "Whole-document and multi-representation schemas are legitimate for other access patterns. Here the separate chunk identity and position are necessary for retrieving a section and its neighbors.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The storage unit documents colocating a document’s content, metadata and vector. It fits whole-document retrieval, but not independently ranked sections with adjacency in a chunk sequence.",
+      "B": "Multiple vector columns are documented for different representations of a document. They support title-versus-content search, not the required per-section sequence and neighbor retrieval."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Model schemas and implement indexing strategies, including designing tables and choosing appropriate data types",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["ai200-20260915-data-pg-rag", "ai200-20260915-data-pg-store"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/6-implement-retrieval-patterns-rag-pipelines",
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/2-store-query-embeddings-pgvector"
+    ],
+    "documentationTitles": [
+      "Implement retrieval patterns for RAG pipelines",
+      "Store and query embeddings with pgvector"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.739Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.739Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.rag-document-chunk-schema",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-033",
+    "question": "A PostgreSQL RAG retriever returns chunk text and distance, but its consumers also need a followable source citation. The database already stores source title, URL, section and page. Which retrieval change supplies the missing citation data?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Join or project the stored source title, locator and passage location with the chunk."
+      },
+      {
+        "id": "B",
+        "text": "Tighten the distance threshold for the returned chunks."
+      },
+      {
+        "id": "C",
+        "text": "Fetch adjacent chunks around each semantic match."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Return the stored provenance fields along with retrieved content.",
+    "deepExplanation": "Relevance, contextual completeness and source traceability are separate requirements. Better rankings or longer passages do not substitute for a source locator.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Distance thresholds are documented for improving minimum relevance. They do not add the missing source locator or passage location to a result.",
+      "C": "Context-window retrieval is documented for passages whose meaning depends on neighbors. Additional content does not supply the omitted provenance columns by itself."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Run vector similarity search, including storing embeddings, semantic retrieval, and implementing retrieval-augmented generation (RAG) patterns by using metadata filter",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-data-pg-rag",
+      "ai200-20260915-data-pg-retrieval"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/6-implement-retrieval-patterns-rag-pipelines",
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/5-run-vector-similarity-search-semantic-retrieval"
+    ],
+    "documentationTitles": [
+      "Implement retrieval patterns for RAG pipelines",
+      "Run vector similarity search for semantic retrieval"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.742Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.742Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.rag-source-citation-projection",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-008",
+    "question": "A PostgreSQL content service receives frequent edits. Saving an edit must remain responsive during a temporary embedding-service outage; semantic retrieval may lag, and the model is unchanged. A document is not edited again while its refresh is running. The team also needs to track rows awaiting regeneration. Which workflow separates those responsibilities?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Generate a replacement vector before completing each content update transaction."
+      },
+      {
+        "id": "B",
+        "text": "Commit content with an embedding_stale flag, then batch-regenerate flagged rows and clear the flag with the new embedding."
+      },
+      {
+        "id": "C",
+        "text": "Periodically regenerate every row’s embedding without recording pending edited rows."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Persist the edit and its pending-refresh marker, then update the embedding asynchronously.",
+    "deepExplanation": "This concerns edit availability and explicit pending-work state, not live migration between incompatible model spaces. Concurrent editing would require an additional version check; the workflow is not asserted to solve that race on its own.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The lifecycle unit documents synchronous content/embedding updates for occasional changes requiring immediate consistency. It couples edit latency and availability to the embedding service, contrary to this outage requirement.",
+      "C": "A scheduled full refresh is documented for periodic reevaluation and catching other changes. It does not identify precisely which edited rows are waiting, and does unnecessary full-corpus work for the stated requirement."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Run vector similarity search, including storing embeddings, semantic retrieval, and implementing retrieval-augmented generation (RAG) patterns by using metadata filter",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": ["ai200-20260915-data-pg-lifecycle"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/4-manage-index-lifecycle-embedding-updates"
+    ],
+    "documentationTitles": ["Manage index lifecycle and embedding updates"],
+    "generatedAt": "2026-09-15T19:44:00.742Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.742Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.embedding-stale-flag-asynchronous-refresh",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-035",
+    "question": "Built-in PgBouncer is enabled on an Azure Database for PostgreSQL General Purpose server. An application currently connects directly to the verified server FQDN on port 5432. It has passed pooling-compatibility tests. Which endpoint change selects the built-in pooler?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Keep the FQDN and port 5432."
+      },
+      {
+        "id": "B",
+        "text": "Keep the FQDN and change only connect_timeout."
+      },
+      {
+        "id": "C",
+        "text": "Keep the FQDN and use port 6432."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "The enabled built-in pooler listens on 6432 at the same server FQDN.",
+    "deepExplanation": "Merely enabling pooling does not rewrite an existing direct endpoint. This item avoids unsupported Burstable pooler configurations and claims of implicit port redirection.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The connection unit documents 5432 for direct PostgreSQL connections. That endpoint remains appropriate for intentional direct access, not for selecting the enabled built-in pooler.",
+      "B": "The SDK/pooling guidance uses connect_timeout to bound connection establishment. It changes waiting behavior, not which server endpoint handles the connection."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Implement connection optimization to improve throughput and minimize latency",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-data-pg-connect",
+      "ai200-20260915-data-pg-pool"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-database-postgresql/3-connect-to-postgresql",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/6-connection-optimization"
+    ],
+    "documentationTitles": ["Connect to PostgreSQL", "Connection optimization"],
+    "generatedAt": "2026-09-15T19:44:00.742Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.742Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.pgbouncer-port-and-tier",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-036",
+    "question": "A PostgreSQL service uses PgBouncer transaction pooling. One vector-search transaction needs ivfflat.probes=12; other requests must retain their usual settings. Which pattern keeps the override with the search’s backend assignment without relying on the same backend in later transactions?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "BEGIN; SET LOCAL ivfflat.probes=12; run the vector query; COMMIT."
+      },
+      {
+        "id": "B",
+        "text": "Set ivfflat.probes=12 once when the application client starts."
+      },
+      {
+        "id": "C",
+        "text": "Change the server-wide default probes value to 12."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Apply SET LOCAL in the same transaction as the search.",
+    "deepExplanation": "The relevant guarantee is ownership during this transaction, not a blanket assertion that every session variable is reset between transactions. The server-wide and session approaches have real uses, but different scopes.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Session settings are useful when a client intentionally owns a persistent backend session. Transaction pooling does not guarantee that startup and later search transactions share that backend.",
+      "C": "The pooling unit allows server-side defaults for a uniform desired setting. Here the change is required for one transaction, so a global default changes the scope of the requirement."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Implement connection optimization to improve throughput and minimize latency",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-data-pg-pool",
+      "ai200-20260915-data-pg-performance"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/6-connection-optimization",
+      "https://learn.microsoft.com/en-us/azure/postgresql/extensions/how-to-optimize-performance-pgvector"
+    ],
+    "documentationTitles": [
+      "Connection optimization",
+      "Optimize performance when using pgvector in Azure Database for PostgreSQL flexible server"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.742Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.742Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.transaction-pool-session-state",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-037",
+    "question": "A psycopg 3 service already owns a process-scoped ConnectionPool. A handler must borrow from that pool and return the borrowed connection when its database block exits, including on exceptions. Which context manager supplies this particular lifecycle?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "with psycopg.connect(connection_string) as conn:"
+      },
+      {
+        "id": "B",
+        "text": "with pool.connection() as conn:"
+      },
+      {
+        "id": "C",
+        "text": "with conn.cursor() as cur:"
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Use the pool’s connection context, not a standalone connection or only a cursor context.",
+    "deepExplanation": "The root pool is already correctly long-lived. The problem is bounding a borrowed resource, which is distinct from the Cosmos client-lifetime problem.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The SDK unit documents this context manager for constructing and closing a standalone connection. It is a valid lifecycle when direct ownership is intended, but bypasses the existing application pool.",
+      "C": "The SDK unit documents cursor context managers for cursor cleanup inside a connection lifetime. Managing a cursor is not the same as borrowing and returning the connection from the application pool."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Implement connection optimization to improve throughput and minimize latency",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-data-pg-pool", "ai200-20260915-data-pg-sdk"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/6-connection-optimization",
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-database-postgresql/6-integrate-sdks-apps"
+    ],
+    "documentationTitles": [
+      "Connection optimization",
+      "Integrate SDKs and applications"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.742Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.742Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.application-pool-client-reuse",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-038",
+    "question": "After a planned PostgreSQL restart, a read-only lookup on an old connection fails with a confirmed connection-reset OperationalError. The endpoint is reachable again and the SQL has previously succeeded. Which recovery path fits this failure class?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Correct the statement syntax before retrying."
+      },
+      {
+        "id": "B",
+        "text": "Report a uniqueness violation to the caller and request different data."
+      },
+      {
+        "id": "C",
+        "text": "Re-establish the connection and retry the read with bounded backoff."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Recover the broken connection and retry the confirmed transient, read-only operation within a bound.",
+    "deepExplanation": "Recovery should be selected by failure class rather than retrying all exceptions identically. This does not promise that pooling keeps old connections alive through maintenance.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The SDK guidance identifies syntax errors as faults that need code correction rather than transient retry. The scenario instead establishes previously valid SQL and a connection reset.",
+      "B": "The SDK unit documents handling constraint violations with meaningful data feedback. No write or uniqueness violation occurred in this read-only connection failure."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Implement connection optimization to improve throughput and minimize latency",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["ai200-20260915-data-pg-sdk", "ai200-20260915-data-pg-pool"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/build-query-azure-database-postgresql/6-integrate-sdks-apps",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/6-connection-optimization"
+    ],
+    "documentationTitles": [
+      "Integrate SDKs and applications",
+      "Connection optimization"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.742Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.742Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.connection-recovery-and-batching",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-009",
+    "question": "A PostgreSQL service can admit up to eight vector-search transactions at once. Each has three concurrent sort/hash workspaces, and staging shows each needs at least 64 MiB to meet the no-spill latency target. Only 1,024 MiB is reserved for these workspaces; other memory is budgeted separately. Which admission limit and transaction-local work_mem keep the potential allowance within that budget and meet the measured workspace requirement?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Admit five concurrent transactions with work_mem=64 MiB."
+      },
+      {
+        "id": "B",
+        "text": "Admit eight concurrent transactions with work_mem=32 MiB."
+      },
+      {
+        "id": "C",
+        "text": "Admit four concurrent transactions with work_mem=128 MiB."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Combine the per-workspace minimum with the concurrency multiplier: five × three × 64 MiB fits.",
+    "deepExplanation": "work_mem is neither one shared pool nor a guaranteed immediate allocation. This question budgets its potential concurrent use. Reducing memory alone fails the measured latency requirement; enlarging each workspace alone exceeds the dedicated allowance. SET LOCAL limits the override to these transactions, while admission control bounds how many run together.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Eight × three × 32 = 768 MiB is a valid lower-memory policy when 32-MiB operations meet the workload target. The supplied staging measurement requires at least 64 MiB per workspace, so this plan violates the latency condition.",
+      "C": "Four × three × 128 = 1536 MiB is a meaningful higher-workspace policy when the memory budget permits it. It satisfies the per-workspace minimum but exceeds the specified 1024-MiB allowance."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "develop-ai-solutions-by-using-azure-database-for-postgresql",
+    "subskill": "Configure compute, memory, and storage resources to support vector workloads",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-data-pg-tune", "ai200-20260915-data-pg-pool"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/2-tune-postgresql-pgvector",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/6-connection-optimization"
+    ],
+    "documentationTitles": [
+      "Tune PostgreSQL for pgvector",
+      "Connection optimization"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.742Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.742Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "postgres"],
+    "conceptId": "postgres.work-mem-per-operation-concurrency-budget",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-039",
+    "question": "An application stores a catalog record as a Redis string with a ten-minute TTL. After a confirmed source-database update, it must invalidate the old cached value immediately. No concurrent refill is running, and reads reload on a cache miss. Which Redis action meets that requirement?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Wait for the existing TTL to expire."
+      },
+      {
+        "id": "B",
+        "text": "Use PERSIST on the existing key."
+      },
+      {
+        "id": "C",
+        "text": "Delete the affected cache key."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Delete the stale key so the next cache miss loads the current record.",
+    "deepExplanation": "This is a direct command/lifetime distinction, honestly classified as recall. TTL, deletion and persistence have different purposes; the example does not make separate database/cache operations atomic or solve concurrent refill races.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The data unit documents time-based invalidation for tolerated cache age. Waiting leaves the old value available during its remaining lifetime, so it does not meet immediate invalidation.",
+      "B": "PERSIST legitimately removes key expiration when indefinite retention is desired. It preserves the old value rather than invalidating it."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "integrate-azure-managed-redis-in-ai-solutions",
+    "subskill": "Implement Azure Managed Redis data operations, including caching, expiration, and invalidation",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-data-redis-data"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-data-operations-azure-managed-redis/4-implement-data-operations"
+    ],
+    "documentationTitles": ["Implement data operations"],
+    "generatedAt": "2026-09-15T19:44:00.743Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.743Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "redis"],
+    "conceptId": "redis.cache-aside-ttl-and-invalidation",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-040",
+    "question": "An Azure Managed Redis client uses OSS clustering. A feature must retain a single MGET for several related string keys, but their current slot distribution causes CROSSSLOT. The deployment must remain OSS and the one-command interface is fixed. Which redesign satisfies both constraints?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Arrange the participating keys so they map to one hash slot."
+      },
+      {
+        "id": "B",
+        "text": "Move this feature to Enterprise clustering and retain cross-slot MGET."
+      },
+      {
+        "id": "C",
+        "text": "Replace MGET with individual GET commands sent through a pipeline."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Preserving both OSS and a multi-key command requires same-slot key placement.",
+    "deepExplanation": "The alternatives are valid ways to change other parts of the design, not fictional exceptions to OSS behavior. The constraints deliberately distinguish deployment policy, key placement and command decomposition.",
+    "whyOtherAnswersAreWrong": {
+      "B": "The unit explicitly permits MGET across slots under Enterprise clustering. It is a legitimate alternative architecture, but it violates the requirement to retain OSS.",
+      "C": "GET and pipelining are documented for single-key retrieval and reduced network overhead. This avoids a multi-key command by changing the interface, whereas the scenario requires one MGET."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "integrate-azure-managed-redis-in-ai-solutions",
+    "subskill": "Implement Azure Managed Redis data operations, including caching, expiration, and invalidation",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-data-redis-client",
+      "ai200-20260915-data-redis-data"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-data-operations-azure-managed-redis/3-client-libraries-best-practices",
+      "https://learn.microsoft.com/en-us/training/modules/implement-data-operations-azure-managed-redis/4-implement-data-operations"
+    ],
+    "documentationTitles": [
+      "Client libraries and development best practices",
+      "Implement data operations"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.743Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.743Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "redis"],
+    "conceptId": "redis.same-slot-multikey-policy",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-041",
+    "question": "A maintenance job must discover keys matching a tenant prefix through an Azure Managed Redis Enterprise-clustering endpoint. The complete key list is unknown, and a single blocking traversal is unacceptable. The job can keep a cursor and process batches. Which approach matches those constraints?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Run KEYS for the prefix and split its returned list into batches."
+      },
+      {
+        "id": "B",
+        "text": "Iterate SCAN with MATCH and its cursor, processing each returned batch."
+      },
+      {
+        "id": "C",
+        "text": "Use MGET with a list of already known string keys."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Use the incremental cursor-based key discovery operation.",
+    "deepExplanation": "The question is about enumeration, not fetching values for known names. It does not claim SCAN is a transactional snapshot or that each key is returned exactly once under concurrent changes.",
+    "whyOtherAnswersAreWrong": {
+      "A": "KEYS performs pattern enumeration, but the unit warns it blocks the server. Application-side batching after the call does not make that traversal incremental. It is only a coherent choice where that blocking cost is acceptable.",
+      "C": "MGET is documented for efficient value retrieval when key names are known. It is not prefix-based key discovery and cannot supply the unknown complete list in this scenario."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "integrate-azure-managed-redis-in-ai-solutions",
+    "subskill": "Implement Azure Managed Redis data operations, including caching, expiration, and invalidation",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-data-redis-data",
+      "ai200-20260915-data-redis-client"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-data-operations-azure-managed-redis/4-implement-data-operations",
+      "https://learn.microsoft.com/en-us/training/modules/implement-data-operations-azure-managed-redis/3-client-libraries-best-practices"
+    ],
+    "documentationTitles": [
+      "Implement data operations",
+      "Client libraries and development best practices"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.743Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.743Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "redis"],
+    "conceptId": "redis.scan-versus-blocking-key-enumeration",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-d-043",
+    "question": "A new Redis vector collection must retain nested product specifications in the database and use JSON paths for indexed fields. RediSearch and RedisJSON are already correctly provisioned. Its index expects 384 FLOAT32 components. Which storage/index pairing matches that structure and its vector representation?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Use HASH documents, packed float32 vector bytes, and a HASH index."
+      },
+      {
+        "id": "B",
+        "text": "Use Redis strings containing serialized product records."
+      },
+      {
+        "id": "C",
+        "text": "Use JSON documents, numeric arrays for embeddings, and a JSON index with JSON-path fields."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Use the JSON document/index pairing when nested JSON fields are required.",
+    "deepExplanation": "Packed bytes are correct for HASH vectors and numeric arrays for JSON vectors. The choice is driven by the data structure, not by claiming binary HASH vectors are generally invalid. Actual model/type/dimension matching remains required.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The structure unit documents this valid compact pairing for flat metadata. It does not provide the required nested JSON structure and JSON-path field indexing.",
+      "B": "The data unit documents strings for serialized data and cache values. That representation is not the JSON-document numeric-array/index pairing needed for these JSON-path vector fields."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "integrate-azure-managed-redis-in-ai-solutions",
+    "subskill": "Implement vector indexing to enable similarity search",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-data-redis-structure",
+      "ai200-20260915-data-redis-data"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-storage-azure-managed-redis/4-optimize-redis-data-structure",
+      "https://learn.microsoft.com/en-us/training/modules/implement-data-operations-azure-managed-redis/4-implement-data-operations"
+    ],
+    "documentationTitles": [
+      "Optimize Redis data structures for vector storage",
+      "Implement data operations"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.743Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.743Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "redis"],
+    "conceptId": "redis.hash-versus-json-vector-representation",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-010",
+    "question": "An Azure Managed Redis key already contains a populated HASH. The application must retain its fields and add a five-minute expiration to that existing key. Which operation is intended for that requirement?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "EXPIRE the existing key with a 300-second lifetime."
+      },
+      {
+        "id": "B",
+        "text": "SETEX the key to a serialized string with a 300-second lifetime."
+      },
+      {
+        "id": "C",
+        "text": "PERSIST the existing key."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Apply key-level EXPIRE to retain the HASH while adding its lifetime.",
+    "deepExplanation": "Expiration is attached to a key, but SETEX also sets a string value. Those are different operations; the broad applicability of expiration does not make SETEX a HASH-field operation.",
+    "whyOtherAnswersAreWrong": {
+      "B": "SETEX legitimately creates a string value with expiration atomically. It does not preserve the existing HASH field representation required here.",
+      "C": "PERSIST is a documented key-level operation that removes expiration. It is appropriate for indefinite retention, not for adding a five-minute lifetime."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "integrate-azure-managed-redis-in-ai-solutions",
+    "subskill": "Implement Azure Managed Redis data operations, including caching, expiration, and invalidation",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-data-redis-data"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-data-operations-azure-managed-redis/4-implement-data-operations"
+    ],
+    "documentationTitles": ["Implement data operations"],
+    "generatedAt": "2026-09-15T19:44:00.743Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.743Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "redis"],
+    "conceptId": "redis.expire-existing-hash-versus-string-setex",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-011",
+    "question": "A provisioned Redis HNSW index already has correct vectors, dimensions and metric. An evaluation route needs more thorough graph exploration than the normal route; it can tolerate extra latency, but both routes must keep KNN 10 and the existing index. Which change targets search effort only for the evaluation request?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Change that request from KNN 10 to a distance-range query."
+      },
+      {
+        "id": "B",
+        "text": "Increase EF_RUNTIME in that request’s KNN query and measure recall/latency."
+      },
+      {
+        "id": "C",
+        "text": "Rebuild the shared collection with a FLAT index."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Use the query-local HNSW exploration control without changing count or the shared algorithm.",
+    "deepExplanation": "This is not another exact-versus-approximate baseline selection. It separates request-specific effort from a threshold query and a shared-index change, with empirical testing rather than a promised recall percentage.",
+    "whyOtherAnswersAreWrong": {
+      "A": "VECTOR_RANGE is documented for threshold-based retrieval rather than a fixed nearest-neighbor request. It changes result-selection semantics and does not preserve the required KNN 10 contract.",
+      "C": "FLAT is documented for exhaustive retrieval and can be appropriate for a different collection requirement. Rebuilding changes the common index and normal-route behavior rather than tuning only this evaluation request."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "integrate-azure-managed-redis-in-ai-solutions",
+    "subskill": "Implement vector indexing to enable similarity search",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-data-redis-index",
+      "ai200-20260915-data-redis-types"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-storage-azure-managed-redis/2-index-query-vector-data",
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-storage-azure-managed-redis/3-vector-types-index-strategy"
+    ],
+    "documentationTitles": [
+      "Index and query vector data",
+      "Choose vector types and indexing strategies"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.743Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.743Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "redis"],
+    "conceptId": "redis.hnsw-ef-runtime-query-local-effort",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-012",
+    "question": "A Redis HASH vector collection is being capacity-tested with one million 384-component dense vectors. Offline evaluation accepts FLOAT32 precision. Which raw-vector payload estimate and matching representation reduce element storage compared with FLOAT64, before metadata and index overhead are added?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "3,072,000,000 bytes using packed FLOAT64 components."
+      },
+      {
+        "id": "B",
+        "text": "1,536,000,000 bytes using packed FLOAT32 components."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Use four bytes per FLOAT32 component; budget metadata and indexes separately.",
+    "deepExplanation": "This arithmetic describes only packed vector payload, not total Redis memory. FLOAT64 is a real alternative for a higher-precision requirement; no universal search-quality guarantee is made for reducing precision.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The unit documents eight bytes per FLOAT64 component: 1000000 × 384 × 8 is 3072000000. It is appropriate when the extra precision is required, but the stated evaluation accepts the smaller FLOAT32 representation."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "integrate-azure-managed-redis-in-ai-solutions",
+    "subskill": "Implement vector indexing to enable similarity search",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-data-redis-types",
+      "ai200-20260915-data-redis-structure"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-storage-azure-managed-redis/3-vector-types-index-strategy",
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-storage-azure-managed-redis/4-optimize-redis-data-structure"
+    ],
+    "documentationTitles": [
+      "Choose vector types and indexing strategies",
+      "Optimize Redis data structures for vector storage"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.743Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.743Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "redis"],
+    "conceptId": "redis.float32-float64-raw-vector-byte-budget",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-013",
+    "question": "A Redis HASH vector index uses the prefix article:. New documents are written under note: keys, while older article: documents remain searchable. Both sets use the expected embedding field, FLOAT32 bytes and matching dimensions. Which configuration boundary explains why the new keys are outside this index’s monitored collection?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "The configured index prefix does not include the new key namespace."
+      },
+      {
+        "id": "B",
+        "text": "The vector field’s DIM must match the number of components."
+      },
+      {
+        "id": "C",
+        "text": "The index type must match HASH rather than JSON documents."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "The key prefix determines collection membership independently of a valid vector field.",
+    "deepExplanation": "A valid embedding does not automatically join every vector index on the instance. The remedy should align the intended key namespace and index definition; it need not change the model or serialize the same vectors differently.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Dimension matching is a genuine ingestion/query prerequisite documented by the units. It would explain a dimension defect, but the scenario explicitly verifies matching dimensions for both sets.",
+      "C": "HASH versus JSON index type is a genuine structure boundary documented by the structure unit. Both old and new records are already HASH documents under a HASH index, so it is not the observed difference."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "integrate-azure-managed-redis-in-ai-solutions",
+    "subskill": "Implement vector indexing to enable similarity search",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-data-redis-index",
+      "ai200-20260915-data-redis-structure"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-storage-azure-managed-redis/2-index-query-vector-data",
+      "https://learn.microsoft.com/en-us/training/modules/implement-vector-storage-azure-managed-redis/4-optimize-redis-data-structure"
+    ],
+    "documentationTitles": [
+      "Index and query vector data",
+      "Optimize Redis data structures for vector storage"
+    ],
+    "generatedAt": "2026-09-15T19:44:00.743Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.743Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "redis"],
+    "conceptId": "redis.vector-index-prefix-ingestion-membership",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  },
+  {
+    "id": "ai200-r-d-014",
+    "question": "Several workers report completed inference units to one Redis key whose value is a numeric string. Each worker must atomically add its own positive batch count without replacing another worker’s increment. Which documented operation fits the shared-counter update?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "SET the counter to a client-computed replacement value."
+      },
+      {
+        "id": "B",
+        "text": "INCRBY the counter by the worker’s batch count."
+      },
+      {
+        "id": "C",
+        "text": "RPUSH the batch count into a Redis list."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Use the atomic numeric addition operation for a shared numeric-string counter.",
+    "deepExplanation": "The requirement is an aggregate counter, not an event list or a cache replacement. This does not imply an exactly-once worker-delivery guarantee; duplicate business reports would still require separate application handling.",
+    "whyOtherAnswersAreWrong": {
+      "A": "SET is documented for assigning a string/cache value. It is appropriate when replacing that value is intended, but a client-computed read/modify/write replacement does not provide the atomic addition required by concurrent workers.",
+      "C": "Lists and RPUSH are documented for ordered collections/queue patterns. A list of batch records is a legitimate different data model, but it does not atomically add into the existing numeric-string counter."
+    },
+    "objectiveDomain": "develop-ai-solutions-by-using-azure-data-management-services",
+    "skill": "integrate-azure-managed-redis-in-ai-solutions",
+    "subskill": "Implement Azure Managed Redis data operations, including caching, expiration, and invalidation",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-data-redis-data"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-data-operations-azure-managed-redis/4-implement-data-operations"
+    ],
+    "documentationTitles": ["Implement data operations"],
+    "generatedAt": "2026-09-15T19:44:00.745Z",
+    "lastValidatedAt": "2026-09-15T19:44:00.745Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "data-management", "redis"],
+    "conceptId": "redis.atomic-incrby-versus-client-read-modify-write",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh grounded authoring only. Independent technical and adversarial reviews are pending; no prior verdict or rubric is inherited.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:31:40.797Z",
+    "confidenceReason": "Author grounded the stated baseline behavior and alternatives in the exact frozen sources; independent reviewers must evaluate the complete content and feature classification."
+  }
+]

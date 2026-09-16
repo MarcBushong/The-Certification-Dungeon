@@ -1,9 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { credentialSchema } from '../../src/features/dungeons/schema';
+import { loadTestDungeonPackage } from './dungeon-fixtures';
 import { validationMetadataSchema } from '../../src/features/dungeons/threePass';
-import { validateDungeonPackage } from '../../src/features/dungeons/validation';
 import { scoreSession } from '../../src/features/results/scoring';
 import {
   freshData,
@@ -11,28 +8,7 @@ import {
   STORAGE_KEY,
 } from '../../src/services/storage';
 
-function loadDp800() {
-  const read = (path: string): unknown =>
-    JSON.parse(readFileSync(path, 'utf8'));
-  const root = join(process.cwd(), 'src', 'content');
-  const credential = credentialSchema
-    .array()
-    .parse(read(join(root, 'credentials', 'credentials.json')))
-    .find((entry) => entry.credentialId === 'dp-800');
-  if (!credential) throw new Error('DP-800 is missing from the real catalog.');
-  const file = (name: string) =>
-    read(join(root, 'exams', 'dp-800', `${name}.json`));
-  return validateDungeonPackage(credential, {
-    packageManifest: file('manifest'),
-    questions: file('questions'),
-    taxonomy: file('objectives'),
-    manifest: file('sources'),
-    reviews: file('verification-reviews'),
-    encounterMetadata: file('encounter-metadata'),
-    validationMetadata: file('validation-metadata'),
-    sourceRegistry: file('source-registry'),
-  });
-}
+const loadDp800 = () => loadTestDungeonPackage('dp-800');
 
 async function saved(page: Page) {
   return savedDataSchema.parse(

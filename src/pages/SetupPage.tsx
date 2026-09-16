@@ -66,7 +66,7 @@ export function SetupPage() {
       gauntlet
         ? {
             ...config,
-            runMode: 'gauntlet' as const,
+            runMode: raid ? ('raid' as const) : ('gauntlet' as const),
             answerMode: 'exam' as const,
             objectiveDomains: [],
             skills: [],
@@ -75,7 +75,7 @@ export function SetupPage() {
             order: 'balanced' as const,
           }
         : config,
-    [config, gauntlet],
+    [config, gauntlet, raid],
   );
   const raidIds = config.raidCredentialIds ?? [];
   const betaCredentials = credentials.filter(
@@ -84,10 +84,16 @@ export function SetupPage() {
       (item.credentialId === selectedCredentialId ||
         (raid && raidIds.includes(item.credentialId))),
   );
-  const ready = raid
+  const examReady = raid
     ? raidIds.length >= 2 &&
-      raidIds.every((id) => getDungeonPackage(id)?.readiness.study)
-    : Boolean(dungeon?.readiness[gauntlet ? 'gauntlet' : 'study']);
+      raidIds.every((id) => getDungeonPackage(id)?.readiness.gauntlet)
+    : Boolean(dungeon?.readiness.gauntlet);
+  const ready = gauntlet
+    ? examReady
+    : raid
+      ? raidIds.length >= 2 &&
+        raidIds.every((id) => getDungeonPackage(id)?.readiness.study)
+      : Boolean(dungeon?.readiness.study);
   const [customCount, setCustomCount] = useState(
     ![5, 10, 20, 30, 50].includes(config.questionCount),
   );
@@ -247,12 +253,12 @@ export function SetupPage() {
                 </span>
               </label>
               <label
-                className={`expedition-option ${gauntlet ? 'selected' : ''}`}
+                className={`expedition-option ${gauntlet && !raid ? 'selected' : ''}`}
               >
                 <input
                   type="radio"
                   name="run-mode"
-                  checked={gauntlet}
+                  checked={gauntlet && !raid}
                   disabled={!dungeon?.readiness.gauntlet}
                   onChange={() =>
                     setConfig({
@@ -366,7 +372,9 @@ export function SetupPage() {
               <p className="notice warning" role="status">
                 This expedition is sealed.{' '}
                 {raid
-                  ? 'Choose at least two study-ready dungeons.'
+                  ? gauntlet
+                    ? 'Choose at least two Boss-ready dungeons for exam-mode raids.'
+                    : 'Choose at least two study-ready dungeons.'
                   : 'The selected package does not meet this mode’s evidence and coverage safeguards.'}
               </p>
             )}
@@ -672,15 +680,14 @@ export function SetupPage() {
                       value={mode}
                       checked={config.answerMode === mode}
                       disabled={
-                        (gauntlet && mode !== 'exam') ||
-                        (mode === 'exam' &&
-                          (!dungeon?.readiness.gauntlet || raid))
+                        (gauntlet && !raid && mode !== 'exam') ||
+                        (mode === 'exam' && !examReady)
                       }
                       onChange={() =>
                         mode === 'exam'
                           ? setConfig({
                               ...config,
-                              runMode: 'gauntlet',
+                              runMode: raid ? 'raid' : 'gauntlet',
                               answerMode: 'exam',
                               order: 'balanced',
                               objectiveDomains: [],

@@ -224,6 +224,19 @@ scheduling link cannot substitute for status evidence. Report reviewed
 coverage separately from playable coverage; do not promise Study/Boss modes or
 future counts. Respect existing thresholds and publish actual shortfalls.
 
+Count distinct reviewed facts across the entire selected bank, not just within
+each author cohort or a sampled run. The AI release acceptance checks require
+one eligible representative per normalized fact-level `conceptId`. General
+same-concept warnings still require independent semantic review; different IDs,
+domains or wording do not resolve an identical decision. A newly substantiated
+duplicate must be excluded from release counts while its actual reviewer
+reconsiders it, preserving the earlier judgment rather than rewriting history.
+
+Preserve applicable adverse findings across repairs. An older-hash verdict
+cannot be rebound to a newer hash; if its underlying defect remains, withhold
+the affected revision until independently resolved or leave it outside the
+selected bank. Do not choose a favorable score to bypass an unresolved concern.
+
 After current evidence, objectives and matching policies are prepared, use the
 existing commands, replacing the credential ID to repeat for AI-200:
 

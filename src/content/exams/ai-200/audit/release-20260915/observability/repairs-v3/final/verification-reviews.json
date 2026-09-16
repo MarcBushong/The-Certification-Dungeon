@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "requestId": "ai200-observability-r-s005-pass3-20260915-v3",
+  "reviews": [
+    {
+      "questionId": "ai200-r-s-005",
+      "authorId": "ai200-release-author-observability",
+      "reviewerId": "ai200-release-adversarial-observability",
+      "questionFingerprint": "322133f4e429dde96d92e90a068e294e7f5da45e84c10a465ac8449f22d1a822",
+      "reviewedAt": "2026-09-15T20:57:17.968Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "ai200-20260915-observe-config-2-connect-app-configuration",
+          "url": "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration",
+          "evidencePath": ".grounding\\ai200-release\\observability\\raw\\config-2-connect-app-configuration.json",
+          "retrievedAt": "2026-09-15T19:24:01.276Z",
+          "lastReviewedAt": "2026-09-15T19:30:13.919Z",
+          "supportingSummary": "Independently reread the full original MCP unit for this new hash, including the explicit refresh call, ordinary interval early-return rule and watched-sentinel publication role. I tested the latest allowed completion of each prior call rather than assuming checks occurred at invocation start: 360 minus 241 is 119, already greater than the ordinary 60-second interval. This body is byte-identical to the later audit-only v2 retrieval, but the original selected snapshot/date is unchanged. No new source curation or renewal of any other question is attested."
+        },
+        {
+          "sourceId": "ai200-20260915-observe-config-4-reference-key-vault-secrets",
+          "url": "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/4-reference-key-vault-secrets",
+          "evidencePath": ".grounding\\ai200-release\\observability\\raw\\config-4-reference-key-vault-secrets.json",
+          "retrievedAt": "2026-09-15T19:24:02.870Z",
+          "lastReviewedAt": "2026-09-15T19:30:13.919Z",
+          "supportingSummary": "Independently reread the full original reference unit: versionless URI resolution, separate access to both services and secret_refresh_interval in seconds support refreshed vault values during explicit refresh calls despite unchanged App Configuration content. The t=120/240 calls cannot reach a 300-second secret interval even with their stipulated execution bound. At 360 the independent interval is elapsed and the ordinary gate is separately clear. Only this bounded existing contract is used; broad HSM and automatic arbitrary-secret rotation-policy language is excluded. The audit-only v2 text contributes no new claim or admitted source ID."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "A",
+          "assessment": "contradicted",
+          "rationale": "t=240 is too early for the supplied secret_refresh_interval=300 measured from the last retrieval completed at t=0; even completion at t=241 remains early. Its ordinary check may be eligible, but that separate fact cannot satisfy the secret interval. A sourced countercontext is a shorter configured secret interval, for example 200 seconds: t=120 would remain early and t=240 could qualify with the ordinary gate already clear. The reference unit defines this independently configurable seconds interval, while the connection unit defines the ordinary elapsed-time gate.",
+          "sourceIds": [
+            "ai200-20260915-observe-config-2-connect-app-configuration",
+            "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+          ]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "supported",
+          "rationale": "B is not incorrect in the exact new context. Calls at 120 and 240, each finishing within one second, remain before secret age 300. At 360 the secret interval is elapsed, while the previous ordinary check completed no later than 241, leaving at least 119 seconds against its 60-second gate. Either internal check ordering therefore permits this timing. The approved reference unit permits independent secret refresh without a sentinel change. This answer is appropriate when the first listed secret-due invocation demonstrably clears both gates, as here; it is not a guarantee for closer-spaced calls, unbounded prior work or a fixed-version reference. The arithmetic tests scenario premises, not an executed SDK implementation.",
+          "sourceIds": [
+            "ai200-20260915-observe-config-2-connect-app-configuration",
+            "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+          ]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "contradicted",
+          "rationale": "C incorrectly imposes the watched ordinary-setting reload condition on the independent secret path. The source expressly supports retrieving refreshed secret values after secret_refresh_interval even when App Configuration does not change. A changed watched sentinel is a genuine correct condition for the ordinary-setting publication/reload pattern, together with an eligible explicit call, but it is not necessary for this versionless secret's interval-based refresh. No event-driven push or automatic scheduling is inferred from either path.",
+          "sourceIds": [
+            "ai200-20260915-observe-config-2-connect-app-configuration",
+            "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+          ]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh independent PASS3 approval applies only to v3 hash 322133f4e429dde96d92e90a068e294e7f5da45e84c10a465ac8449f22d1a822, after its actual fresh generation and technical review. I reread the full original two source bodies, current guide and complete objective map, then tried early-call execution drift, the latest preceding ordinary-check completion and a sentinel-only countercondition. Early calls finish by 121 and 241, before secret age 300; at 360 the preceding ordinary check is at least 119 seconds old, so both documented intervals are clear. B alone is defensible without resolving internal SDK ordering. All options have genuine sourced countercontexts and all twelve checks were assessed; there is no candidate code block, and parameter names/units plus arithmetic were reviewed without claiming live SDK execution. The single pronoun warning is resolved by explicit antecedents. Same-ID history remains unchanged; s014 publisher ordering, s016 flag-refresh enablement and r-s006 missing invocation are distinct complete decisions. The three selected source records and six registry nodes are exact original objects; later identical v2 receipts remain audit-only. No v1 verdict/date, other 39 approval, source snapshot, sampling hold, duplicate rejection, canonical package or gameplay status is renewed.",
+      "confidenceReason": "High confidence in the revised bounded eligibility result: the original approved documentation supplies separate interval purposes, and the explicit call/completion margins make the old ambiguous gate ordering irrelevant. Source equality and the prior positive technical verdict were checked but were not substituted for this independent all-option analysis."
+    }
+  ]
+}

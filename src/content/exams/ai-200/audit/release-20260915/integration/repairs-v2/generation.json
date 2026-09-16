@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "ai200-i-013": {
+      "generation": {
+        "questionFingerprint": "f37d0f6ad0be46c659cb8407cf8133d69cf722f40a92b44624c7bec28cc009dd",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T20:14:59.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+            "summary": "Event Grid input may retain Event Grid output, and CloudEvents input may retain CloudEvents output. This pair works for a dual-format handler, but the repaired stem explicitly limits this handler to CloudEvents and rules out parsing E’s Event Grid envelope."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+            "summary": "Event Grid output is supported for Event Grid input and would fit two such publishers with an Event Grid handler. The fixed CloudEvents input on C cannot use that output format, and the stated handler does not parse it."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+            "summary": "The compatibility table permits Event Grid-to-CloudEvents and CloudEvents-to-CloudEvents. Both outputs therefore meet the explicit CloudEvents-only handler contract while C keeps its extension-capable envelope."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-006": {
+      "generation": {
+        "questionFingerprint": "2124549e089c783cda0563d296f2938b21c4366872244c12f04e4a1b9aefb3a0",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T20:14:59.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "Synchronous success is appropriate when the entire batch completes within the 30-second response window. Here 12 elapsed seconds plus another minute exceeds that boundary, so this is not the required in-window plan."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-integration-eg-delivery",
+              "ai200-20260915-integration-sb-concepts",
+              "ai200-20260915-integration-sb-reliability"
+            ],
+            "summary": "A successful durable queue acceptance takes the stated two seconds and precedes 202, leaving unfinished processing to the queue worker. Event Grid treats 202 as acknowledgement of the whole batch; the key depends on successful acceptance, not merely starting a send."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-eg-delivery"],
+            "summary": "503 is an appropriate retryable response when the endpoint cannot accept the batch. All-or-none batching then requests replay of the batch, which is the alternative recovery path rather than the successful durable handoff required here."
+          }
+        ]
+      }
+    },
+    "ai200-r-i-011": {
+      "generation": {
+        "questionFingerprint": "12752eb5871e6ba3699f9e36977f698d297dbe5c0ebc77721ea05523c3a6b5ff",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-integration",
+        "generatedAt": "2026-09-15T20:14:59.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "The supported-version and package-management guidance expressly requires rebuilding and redeploying after a Python version change; changing the interpreter setting does not rebuild existing dependency artifacts. The question recalls this lifecycle obligation."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-integration-fn-configuration",
+              "ai200-20260915-integration-doc-python"
+            ],
+            "summary": "Downloading remote settings is documented for reproducing configuration in local development. It does not rebuild or redeploy interpreter-specific artifacts and is not a replacement for the stated version-change obligation."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["ai200-20260915-integration-doc-python"],
+            "summary": "Registered blueprints organize and expose handlers across Python modules. They are useful for modular application structure but do not rebuild dependencies when the interpreter version changes."
+          }
+        ]
+      }
+    }
+  }
+}

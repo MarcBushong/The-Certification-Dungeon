@@ -1,0 +1,2147 @@
+[
+  {
+    "id": "ai200-c-001",
+    "conceptId": "acr.registry-repository-artifact-hierarchy",
+    "question": "An Azure Container Registry stores several tagged versions of an image named text-normalizer. Which object groups those versions under the image name?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Registry"
+      },
+      {
+        "id": "b",
+        "text": "Repository"
+      },
+      {
+        "id": "c",
+        "text": "Manifest"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "The repository groups the tagged versions of text-normalizer.",
+    "deepExplanation": "The registry contains repositories, while manifests describe the content of individual artifacts. These are different levels of the documented storage hierarchy.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The registry is the overall store and can host many repositories; choose it when identifying the top-level resource, not one named image family.",
+      "c": "A manifest describes an individual artifact’s layers and configuration; it fits inspecting that artifact rather than grouping its versions."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Build, store, version, and manage container images by using Azure Container Registry",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-2-image-storage"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/2-image-storage"
+    ],
+    "documentationTitles": ["Registries, repositories, and artifacts"],
+    "generatedAt": "2026-09-15T19:31:08.950Z",
+    "lastValidatedAt": "2026-09-15T19:31:08.950Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.966Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same fact and ID retained with fresh original wording; foundational hierarchy recognition, not applied coverage."
+  },
+  {
+    "id": "ai200-c-003",
+    "conceptId": "acr.stable-base-image-tags",
+    "question": "A framework team services a compatible base-image release line in ACR. Application build tasks already track that same-registry base image. Security patches must trigger dependent rebuilds without a Dockerfile edit for every patch. Which reference policy fits the build input?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Pin the original base-image digest in every Dockerfile."
+      },
+      {
+        "id": "b",
+        "text": "Use a never-reused tag for the original base-image build."
+      },
+      {
+        "id": "c",
+        "text": "Use a stable release-line tag and update it with compatible patches."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Use a stable tag for the compatible, serviced base-image line.",
+    "deepExplanation": "The task dependency is already established. Updating that base tag makes patched content visible to dependent builds. This is an input-maintenance decision, not a recommendation to reuse tags for production outputs.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A digest is appropriate for a frozen reproducible input. Here the input must advance to compatible patched content, so fixing the original digest defeats servicing.",
+      "b": "A never-reused tag identifies a fixed build and is useful for controlled production deployment. It does not advance the tracked input to later patches."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Build, store, version, and manage container images by using Azure Container Registry",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-4-tag-version-images",
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-3-build-run-acr-tasks",
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-2-image-storage"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/4-tag-version-images",
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/3-build-run-acr-tasks",
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/2-image-storage"
+    ],
+    "documentationTitles": [
+      "Tag and version images",
+      "Build and run images with ACR Tasks",
+      "Registries, repositories, and artifacts"
+    ],
+    "generatedAt": "2026-09-15T19:31:08.954Z",
+    "lastValidatedAt": "2026-09-15T19:31:08.954Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:52.243Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Preserves c003 stable-base factual identity and prior history. No inheritance of its prior three-pass approval; c012 trigger recognition is not reissued."
+  },
+  {
+    "id": "ai200-c-004",
+    "conceptId": "acr.unique-production-tags",
+    "question": "Two build systems independently number executions and may rebuild the same application commit after different base-image patches. A local build number is unique only within its system. A deployment tag must never be reused and must identify the exact producing execution. Which policy handles both collision sources?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use only the application commit hash."
+      },
+      {
+        "id": "b",
+        "text": "Use the system name and its build number as a delimited pair, never reusing the pair."
+      },
+      {
+        "id": "c",
+        "text": "Use only the local build number."
+      },
+      {
+        "id": "d",
+        "text": "Reuse one semantic release-line tag after successful builds."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Use a never-reused, delimited system-name/build-number pair.",
+    "deepExplanation": "This is a derived identifier design: two equal pairs identify the same system and its same locally unique run. A source commit may be rebuilt, and a local number alone can collide across systems. ACR does not automatically enforce this naming policy.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A commit identifies source state and is useful for source lookup. Rebuilding that commit after base changes can produce separate executions, so it is not the required execution identity.",
+      "c": "The number identifies an execution within one system. It would suffice in a single numbering namespace, but the two systems can independently issue the same number.",
+      "d": "Stable release-line aliases suit consumers intentionally following updates. They do not preserve a never-reused identifier for each producing execution."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Build, store, version, and manage container images by using Azure Container Registry",
+    "difficulty": "advanced",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-4-tag-version-images",
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-3-build-run-acr-tasks"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/4-tag-version-images",
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/3-build-run-acr-tasks"
+    ],
+    "documentationTitles": [
+      "Tag and version images",
+      "Build and run images with ACR Tasks"
+    ],
+    "generatedAt": "2026-09-15T19:31:08.956Z",
+    "lastValidatedAt": "2026-09-15T19:31:08.956Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:52.243Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c004 fact preserved. Composite uniqueness is explicitly derived from stem premises, not claimed as an ACR automatic guarantee; full gh600-a-012 was read for the different run/evaluated-commit evidence contract."
+  },
+  {
+    "id": "ai200-c-005",
+    "conceptId": "acr.manifest-layer-content-addressing",
+    "question": "An engineer is studying ACR image representation, rather than selecting a deployment reference. Which two statements describe manifests and layers? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "A manifest lists an image’s layers and configuration."
+      },
+      {
+        "id": "b",
+        "text": "A manifest groups differently tagged versions under one image name."
+      },
+      {
+        "id": "c",
+        "text": "Images can share identical content-addressed layers."
+      },
+      {
+        "id": "d",
+        "text": "A layer is the human-readable alias that can move to another image."
+      }
+    ],
+    "correctAnswer": ["a", "c"],
+    "explanation": "Manifests list layers and configuration, and identical layers can be shared.",
+    "deepExplanation": "Repositories group image versions and tags provide human-readable references. Neither role changes the content-oriented meaning of a layer.",
+    "whyOtherAnswersAreWrong": {
+      "b": "This is the repository role. It is appropriate when describing the named collection, not a manifest for an individual artifact.",
+      "d": "This describes a tag. Tags can move between image manifests; a layer represents content rather than a mutable alias."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Build, store, version, and manage container images by using Azure Container Registry",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-2-image-storage"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/2-image-storage"
+    ],
+    "documentationTitles": ["Registries, repositories, and artifacts"],
+    "generatedAt": "2026-09-15T19:31:08.957Z",
+    "lastValidatedAt": "2026-09-15T19:31:08.957Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.966Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same composition fact preserved; two-answer recall, not scenario or implementation credit."
+  },
+  {
+    "id": "ai200-c-006",
+    "conceptId": "acr.deployed-tag-write-lock",
+    "question": "A release is serving traffic from a unique ACR image tag. The pipeline needs the documented registry-side write safeguard for that deployed tag, beyond a team convention not to reuse its name. What should it set?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "An additional semantic-version tag"
+      },
+      {
+        "id": "b",
+        "text": "The digest in the release record"
+      },
+      {
+        "id": "c",
+        "text": "The deployed tag’s write-enabled attribute to false"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Set write-enabled to false for the deployed image tag.",
+    "deepExplanation": "A naming convention or recorded digest does not perform the registry-side write-control operation. This item deliberately makes no claim about deleteEnabled, retention exemptions or administrator irreversibility.",
+    "whyOtherAnswersAreWrong": {
+      "a": "An additional tag is an alias useful for version communication. It does not set the documented write-enabled control.",
+      "b": "Recording a digest provides traceability and exact content identity. It is not a registry-side mutation of the deployed tag’s write attribute."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Build, store, version, and manage container images by using Azure Container Registry",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-4-tag-version-images",
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-2-image-storage"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/4-tag-version-images",
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/2-image-storage"
+    ],
+    "documentationTitles": [
+      "Tag and version images",
+      "Registries, repositories, and artifacts"
+    ],
+    "generatedAt": "2026-09-15T19:31:08.957Z",
+    "lastValidatedAt": "2026-09-15T19:31:08.957Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:52.243Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Preserves c006 factual identity and full prior history. Beginner recall; the questionable broader deletion/retention statements in the training unit are excluded."
+  },
+  {
+    "id": "ai200-c-007",
+    "conceptId": "acr.explicit-tag-versus-latest-default",
+    "question": "An ACR repository has tags latest, 4.2 and 5.0. A developer runs docker pull with the registry and repository name but supplies neither a tag nor a digest. Which tag is requested?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "latest"
+      },
+      {
+        "id": "b",
+        "text": "5.0"
+      },
+      {
+        "id": "c",
+        "text": "4.2"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Docker requests latest when the tag is omitted.",
+    "deepExplanation": "The tag called latest is not selected by sorting other tags. Explicit version selection is a separate operation.",
+    "whyOtherAnswersAreWrong": {
+      "b": "This named version can be requested explicitly with :5.0. Docker does not choose it merely because it is the largest version-shaped tag.",
+      "c": "This named version can be requested explicitly with :4.2. An omitted tag does not select that historical version."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Build, store, version, and manage container images by using Azure Container Registry",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-2-image-storage",
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-4-tag-version-images"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/2-image-storage",
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/4-tag-version-images"
+    ],
+    "documentationTitles": [
+      "Registries, repositories, and artifacts",
+      "Tag and version images"
+    ],
+    "generatedAt": "2026-09-15T19:31:08.957Z",
+    "lastValidatedAt": "2026-09-15T19:31:08.957Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:52.243Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same omitted-tag default fact; no c002 digest-versus-moving-history duplicate recreated."
+  },
+  {
+    "id": "ai200-c-009",
+    "conceptId": "acr.quick-task-build-and-push",
+    "question": "A developer has source files and a Dockerfile but no local Docker engine. ACR Tasks is already operational and authorized. Which on-demand command builds the source in Azure and pushes the resulting image by default?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "az acr run"
+      },
+      {
+        "id": "b",
+        "text": "az acr task logs"
+      },
+      {
+        "id": "c",
+        "text": "az acr build"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Use az acr build for an on-demand cloud build and default push.",
+    "deepExplanation": "The context contains the Dockerfile and required source. Executing an existing image and retrieving run logs serve different workflow stages.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The tasks unit uses run to execute a command in an existing image. That is useful for a smoke test but does not perform the source build requested here.",
+      "b": "Task logs retrieve build execution output. They are useful for diagnosing an existing run rather than starting a source build."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Build and run images by using Azure Container Registry Tasks",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-3-build-run-acr-tasks"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/3-build-run-acr-tasks"
+    ],
+    "documentationTitles": ["Build and run images with ACR Tasks"],
+    "generatedAt": "2026-09-15T19:31:08.958Z",
+    "lastValidatedAt": "2026-09-15T19:31:08.958Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:52.112Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Repairs the prior superficial applied classification: now explicitly foundational command recognition."
+  },
+  {
+    "id": "ai200-c-010",
+    "conceptId": "acr.local-versus-remote-build-context",
+    "question": "An ACR quick build must test a developer’s edited Dockerfile and Python module before either edit is committed. The remote branch and its published tarball still contain the old files. The developer is in the directory containing both edits. Which context should be passed to the build?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The local working directory, using ."
+      },
+      {
+        "id": "b",
+        "text": "The remote branch URL"
+      },
+      {
+        "id": "c",
+        "text": "The published remote tarball URL"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use the local working directory as the build context.",
+    "deepExplanation": "The required input state exists only locally. All three context forms are supported, but they currently contain different source snapshots.",
+    "whyOtherAnswersAreWrong": {
+      "b": "A Git context builds content available at the chosen remote location. It is appropriate after the desired edits reach that branch, not before.",
+      "c": "A remote tarball is a supported context for the content in that archive. The stipulated archive predates both edits, so it tests the wrong input snapshot."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Build and run images by using Azure Container Registry Tasks",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-3-build-run-acr-tasks"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/3-build-run-acr-tasks"
+    ],
+    "documentationTitles": ["Build and run images with ACR Tasks"],
+    "generatedAt": "2026-09-15T19:31:08.958Z",
+    "lastValidatedAt": "2026-09-15T19:31:08.958Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:52.112Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same local-versus-remote context decision; fresh approved training citation replaces the extra withdrawn overview without inheriting prior approval."
+  },
+  {
+    "id": "ai200-r-c-001",
+    "conceptId": "acr.build-context-upload-exclusion",
+    "question": "An ACR quick build from a local directory spends most of its time uploading a large folder of training recordings. The Dockerfile does not copy or use that folder. The build output image and application behavior must remain unchanged. Which adjustment targets the measured delay?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Move frequently changing Dockerfile instructions later."
+      },
+      {
+        "id": "b",
+        "text": "Exclude the recordings folder with .dockerignore."
+      },
+      {
+        "id": "c",
+        "text": "Add the task run ID to the output image tag."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Exclude the unused folder from the build context with .dockerignore.",
+    "deepExplanation": "The evidence identifies upload, rather than layer execution or release identification, as the slow stage. Keep every file required by the Dockerfile in the context.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Instruction ordering can improve layer-cache reuse during the build. It does not exclude the unused recordings from the uploaded source context.",
+      "c": "A run-ID tag improves build traceability. It does not reduce the source context or the measured upload time."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Build and run images by using Azure Container Registry Tasks",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-3-build-run-acr-tasks",
+      "ai200-20260915-unit-store-manage-containers-azure-container-registry-4-tag-version-images"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/3-build-run-acr-tasks",
+      "https://learn.microsoft.com/en-us/training/modules/store-manage-containers-azure-container-registry/4-tag-version-images"
+    ],
+    "documentationTitles": [
+      "Build and run images with ACR Tasks",
+      "Tag and version images"
+    ],
+    "generatedAt": "2026-09-15T19:31:08.959Z",
+    "lastValidatedAt": "2026-09-15T19:31:08.959Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:52.243Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New fact: context transfer optimization, not source snapshot selection or image tag identity. No original c ID is repurposed."
+  },
+  {
+    "id": "ai200-r-c-002",
+    "conceptId": "appservice.same-tag-push-restart-webhook",
+    "question": "A conventional Linux App Service app still serves the old build after a new image is pushed to its configured ACR tag. Registry access succeeds; the web app has not restarted and continuous deployment is disabled. The team intentionally keeps this development tag and wants future pushes picked up automatically. Which plan addresses the missing deployment step?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Enable container continuous deployment and configure ACR push events to call the returned webhook."
+      },
+      {
+        "id": "b",
+        "text": "Update the web app to a different unique image tag for every release."
+      },
+      {
+        "id": "c",
+        "text": "Restart the web app manually after the present push."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Enable container continuous deployment and connect the ACR push webhook.",
+    "deepExplanation": "Pushing new content to the same tag does not itself notify a continuously running App Service instance. The configured webhook supplies the restart trigger; a one-off manual restart lacks future automation.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Changing the configured image tag triggers a restart and is appropriate for explicit releases. It does not preserve the stipulated same-tag, push-driven development workflow.",
+      "c": "A restart causes App Service to check the image and pull changed layers, repairing this one deployment. It does not arrange automatic pickup of future pushes."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Deploy containers to Azure App Service, including configuring App Service to supply environment variables and secrets",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-app-service-2-deploy-containers"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-app-service/2-deploy-containers"
+    ],
+    "documentationTitles": ["Deploy containers to Azure App Service"],
+    "generatedAt": "2026-09-15T19:31:08.959Z",
+    "lastValidatedAt": "2026-09-15T19:31:08.959Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:48.610Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New fact: event delivery between registry push and App Service image pull. No new production tag policy or immutable-reference duplicate."
+  },
+  {
+    "id": "ai200-c-018",
+    "conceptId": "appservice.custom-container-port-routing",
+    "question": "A conventional Linux App Service container has sidecar support disabled. Its image pull succeeds and logs show HTTP listening on 0.0.0.0:7000. The current app settings are shown. The deployed image must remain unchanged. Which update corrects the forwarding mismatch?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Change LOG_LEVEL to DEBUG and retain WEBSITES_PORT=8000."
+      },
+      {
+        "id": "b",
+        "text": "Change registry credentials and retain WEBSITES_PORT=8000."
+      },
+      {
+        "id": "c",
+        "text": "Change WEBSITES_PORT to 7000."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Set WEBSITES_PORT to the observed HTTP listener, 7000.",
+    "deepExplanation": "A successful pull establishes image availability, not correct HTTP forwarding. The conventional-container setting controls forwarding; application logging and registry authentication address different layers.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A debug log level can help collect application evidence when needed, but it does not change the forwarding destination. The actual listener is already known.",
+      "b": "Registry credentials address failed image pulls. The image has pulled successfully, so this leaves the demonstrated forwarding mismatch unchanged."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Deploy containers to Azure App Service, including configuring App Service to supply environment variables and secrets",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-app-service-3-configure-runtime",
+      "ai200-20260915-unit-deploy-containers-azure-app-service-2-deploy-containers",
+      "ai200-20260915-unit-deploy-containers-azure-app-service-5-observe-troubleshoot"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-app-service/3-configure-runtime",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-app-service/2-deploy-containers",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-app-service/5-observe-troubleshoot"
+    ],
+    "documentationTitles": [
+      "Configure container runtime behavior",
+      "Deploy containers to Azure App Service",
+      "Observe and troubleshoot containerized apps"
+    ],
+    "generatedAt": "2026-09-15T19:36:31.655Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.655Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"WEBSITES_PORT\": \"8000\",\n  \"LOG_LEVEL\": \"INFO\"\n}",
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:48.944Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c018 contract, now supported by the freshly read runtime unit instead of the withdrawn custom-container article. Intermediate diagnostic mapping, not Advanced."
+  },
+  {
+    "id": "ai200-c-019",
+    "conceptId": "appservice.startup-command-override",
+    "question": "A conventional Linux App Service image has an ENTRYPOINT dispatcher that accepts --mode api or --mode batch. Its Dockerfile CMD supplies --mode api, and the dispatcher does not read a mode environment variable. One web app must use batch mode while retaining the image and ENTRYPOINT. Which configuration fits?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Set the web app startup command to --mode batch."
+      },
+      {
+        "id": "b",
+        "text": "Add an app setting named MODE with value batch."
+      },
+      {
+        "id": "c",
+        "text": "Rebuild the image with CMD set to --mode batch."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Override CMD with the App Service startup command --mode batch.",
+    "deepExplanation": "The application’s stated input contract matters. Environment injection cannot configure an argument-only dispatcher, while rebuilding would change an input the scenario requires preserving.",
+    "whyOtherAnswersAreWrong": {
+      "b": "App settings inject environment variables and are appropriate when the application reads them. This dispatcher explicitly does not read a mode variable.",
+      "c": "Changing the Dockerfile default is appropriate when publishing a new image with new default behavior. Here the image must remain unchanged."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Deploy containers to Azure App Service, including configuring App Service to supply environment variables and secrets",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-app-service-3-configure-runtime",
+      "ai200-20260915-unit-deploy-containers-azure-app-service-4-configure-settings"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-app-service/3-configure-runtime",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-app-service/4-configure-settings"
+    ],
+    "documentationTitles": [
+      "Configure container runtime behavior",
+      "Configure application settings"
+    ],
+    "generatedAt": "2026-09-15T19:36:31.663Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.663Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:48.812Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c019 CMD/ENTRYPOINT decision. The dispatcher’s accepted arguments are explicit scenario facts, not alleged platform flags."
+  },
+  {
+    "id": "ai200-c-021",
+    "conceptId": "appservice.connection-string-prefixes",
+    "question": "A Python application in a conventional Linux App Service container reads its Reporting database configuration using the code below. Operations configured Reporting as a SQLAzure connection string, not an ordinary app setting. Which lookup name matches the configured resource?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "CUSTOMCONNSTR_Reporting"
+      },
+      {
+        "id": "b",
+        "text": "Reporting"
+      },
+      {
+        "id": "c",
+        "text": "SQLAZURECONNSTR_Reporting"
+      },
+      {
+        "id": "d",
+        "text": "SQLCONNSTR_Reporting"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Read SQLAZURECONNSTR_Reporting.",
+    "deepExplanation": "App Service prefixes connection-string environment variables by configured type. The display name alone is the lookup for an ordinary app setting, not for this typed connection string.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The Custom connection-string type receives CUSTOMCONNSTR_. This would match a Custom entry, not the stated SQLAzure type.",
+      "b": "An ordinary app setting named Reporting is injected under that name. The scenario instead supplies a typed connection string.",
+      "d": "SQLCONNSTR_ corresponds to SQL Server connection strings. It is a valid different type mapping, not the SQLAzure mapping shown."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Deploy containers to Azure App Service, including configuring App Service to supply environment variables and secrets",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-app-service-4-configure-settings"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-app-service/4-configure-settings"
+    ],
+    "documentationTitles": ["Configure application settings"],
+    "generatedAt": "2026-09-15T19:36:31.664Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.664Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"currentPythonLookup\": \"os.environ.get('Reporting')\",\n  \"configuredName\": \"Reporting\",\n  \"configuredType\": \"SQLAzure\"\n}",
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:48.812Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Preserves c021 typed-connection-string fact. The JSON is a diagnostic description containing a Python expression, not an executable App Service template."
+  },
+  {
+    "id": "ai200-c-023",
+    "conceptId": "appservice.key-vault-reference-resolution",
+    "question": "An unchanged Linux App Service application reads the secret value from API_KEY in its process environment. A reachable Key Vault must remain the secret’s system of record, without copying its current value into app configuration. The web app identity can read the secret. What should the API_KEY app setting contain?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The secret’s ordinary HTTPS URI as a literal value."
+      },
+      {
+        "id": "b",
+        "text": "An @Microsoft.KeyVault(SecretUri=...) reference to the secret."
+      },
+      {
+        "id": "c",
+        "text": "The current secret value entered directly as an encrypted-at-rest app setting."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Use the App Service Key Vault reference syntax in API_KEY.",
+    "deepExplanation": "App Service performs reference resolution on behalf of the application using its authorized identity. The application continues to read the environment value; it does not need a Key Vault SDK lookup.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A literal URI is useful for an application that consumes a URI and fetches the secret itself. This unchanged application expects the secret value, and an ordinary URI does not request App Service resolution.",
+      "c": "App settings can hold runtime values and are encrypted at rest. Direct entry can suit app-managed configuration, but it copies the current value and does not use the required Key Vault reference mechanism."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Deploy containers to Azure App Service, including configuring App Service to supply environment variables and secrets",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-app-service-4-configure-settings"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-app-service/4-configure-settings"
+    ],
+    "documentationTitles": ["Configure application settings"],
+    "generatedAt": "2026-09-15T19:36:31.664Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.664Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:48.812Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c023 fact repaired with a real directly managed setting alternative rather than source-controlled live secrets. Classification lowered to Intermediate."
+  },
+  {
+    "id": "ai200-r-c-003",
+    "conceptId": "appservice.home-persistence-mount-and-write-path",
+    "question": "A conventional Linux App Service app writes replaceable generated reports to /app/output. Reports must survive app restarts and be visible from every instance after scale-out. The app supports changing its output path; the plan’s shared storage quota is sufficient. Persistent App Service storage is currently disabled. Which plan satisfies both storage requirements?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Enable App Service storage and keep writing reports to /app/output."
+      },
+      {
+        "id": "b",
+        "text": "Keep storage disabled and change the output path to /home/output."
+      },
+      {
+        "id": "c",
+        "text": "Enable App Service storage and write reports to /home/output."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Enable the persistent mount and direct reports into /home/output.",
+    "deepExplanation": "Persistence is a property of the enabled mounted storage, not arbitrary files in the container. The unit also states that scaled-out instances share /home; this does not make it a transactional database or remove the plan quota.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Enabling storage mounts the persistent /home location. It is sufficient only if the application writes into that mount; retaining the unrelated path leaves these reports outside it.",
+      "b": "The /home path is useful for persisted output when the App Service storage mount is enabled. A path name alone does not enable the disabled persistent-storage feature."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Deploy containers to Azure App Service, including configuring App Service to supply environment variables and secrets",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-app-service-3-configure-runtime"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-app-service/3-configure-runtime"
+    ],
+    "documentationTitles": ["Configure container runtime behavior"],
+    "generatedAt": "2026-09-15T19:36:31.665Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.665Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:48.675Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New joint mount/path requirement, not a cosmetic secret-injection or tag question. No data durability guarantee beyond documented restart and shared-instance behavior."
+  },
+  {
+    "id": "ai200-r-c-004",
+    "conceptId": "appservice.scm-versus-container-diagnostic-boundary",
+    "question": "Kudu’s Environment page shows the expected nonsensitive app settings, but its file browser does not show /opt/model inside an App Service image. The engineer needs to inspect that directory and the running application process, not mounted /home files. The authorized engineer’s container image already supports App Service SSH. Which diagnostic surface fits?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The Kudu Environment page"
+      },
+      {
+        "id": "b",
+        "text": "An SSH session into the running application container"
+      },
+      {
+        "id": "c",
+        "text": "The Kudu mounted-storage file browser"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Use the supported SSH connection to the application container.",
+    "deepExplanation": "Kudu runs as a separate SCM site. Missing an image path in Kudu is not evidence that the path is absent from the actual application container.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This page verifies applied environment variables. It has already supplied that evidence and does not provide a view of the application container’s running processes or full filesystem.",
+      "c": "This browser is useful for mounted paths such as /home and /home/LogFiles. It is not a browser for the complete image filesystem or its running processes."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-application-hosting",
+    "subskill": "Deploy containers to Azure App Service, including configuring App Service to supply environment variables and secrets",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-app-service-5-observe-troubleshoot"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-app-service/5-observe-troubleshoot"
+    ],
+    "documentationTitles": ["Observe and troubleshoot containerized apps"],
+    "generatedAt": "2026-09-15T19:36:31.665Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.665Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "hosting"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:48.944Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New diagnostic-surface boundary. SSH readiness and authorization are explicit; no live SSH command or credential is created."
+  },
+  {
+    "id": "ai200-c-024",
+    "conceptId": "containerapps.environment-network-log-boundary",
+    "question": "A production Container Apps API calls a worker that must be exposed only inside their shared application environment. Development experiments need a separate environment lifecycle and logging setup. Which placement matches those two boundaries?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Place the production API and worker in separate environments, retaining internal-only worker ingress."
+      },
+      {
+        "id": "b",
+        "text": "Place production and development in one environment under different app names."
+      },
+      {
+        "id": "c",
+        "text": "Place the production services together with internal worker ingress, and development in a different environment."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Use one production environment for the API and internal worker, and another for development.",
+    "deepExplanation": "App names do not replace the environment’s network, observability and lifecycle boundary. This is a simple grouping design, not a complex enterprise-network topology.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Separate environments fit independent network/lifecycle groups. Internal ingress is scoped to the worker’s environment, so this does not give the stipulated API its same-environment access.",
+      "b": "Different app names distinguish resources within a shared environment. They suit related services sharing that boundary, not the requested separate development lifecycle and logging setup."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy applications to Azure Container Apps, including environment configuration and revision management",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-container-apps-2-container-apps-environments"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-container-apps/2-container-apps-environments"
+    ],
+    "documentationTitles": ["Explore Container Apps environments"],
+    "generatedAt": "2026-09-15T19:36:31.666Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.666Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:49.063Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c024 environment decision, honestly Intermediate rather than the prior Advanced label."
+  },
+  {
+    "id": "ai200-c-025",
+    "conceptId": "containerapps.revision-versus-application-scope",
+    "question": "A Container Apps release plan includes the following configuration changes. Which two create a new revision because they change revision-scoped configuration? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Change the container image reference in properties.template."
+      },
+      {
+        "id": "b",
+        "text": "Change an existing secret value in properties.configuration."
+      },
+      {
+        "id": "c",
+        "text": "Change ingress traffic-splitting weights."
+      },
+      {
+        "id": "d",
+        "text": "Change the scale rules in properties.template."
+      }
+    ],
+    "correctAnswer": ["a", "d"],
+    "explanation": "The image reference and scale rules are revision-scoped changes.",
+    "deepExplanation": "An immutable revision captures template configuration. Application-level secrets and traffic routing are managed separately from that template snapshot.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Secrets are application-scope changes in the revision-modes unit. This is appropriate for changing the stored secret, not for creating a new template revision.",
+      "c": "Traffic splitting is application-scoped; changing weights routes among revisions without itself creating a new template snapshot."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy applications to Azure Container Apps, including environment configuration and revision management",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-unit-scale-containers-azure-container-apps-6-revision-modes-traffic-management"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/scale-containers-azure-container-apps/6-revision-modes-traffic-management"
+    ],
+    "documentationTitles": ["Choose and apply revision modes"],
+    "generatedAt": "2026-09-15T19:40:29.696Z",
+    "lastValidatedAt": "2026-09-15T19:40:29.696Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.764Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c025 scope fact; both withdrawn product articles replaced with the directly approved, freshly read revision-modes training unit. Foundational property-scope classification, not applied implementation."
+  },
+  {
+    "id": "ai200-c-026",
+    "conceptId": "containerapps.single-mode-readiness-rollover",
+    "question": "A Container App uses single revision mode. Its existing revision serves HTTP requests successfully. A replacement revision has provisioned, but it has not passed its configured health checks. Which routing behavior describes this current not-yet-healthy interval, without an operator changing revision mode?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep serving from the existing revision while the replacement becomes ready."
+      },
+      {
+        "id": "b",
+        "text": "Shift traffic to the replacement after its health checks pass and the readiness transition completes."
+      },
+      {
+        "id": "c",
+        "text": "Distribute traffic across concurrently active revisions using configured canary weights."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "The existing revision continues serving while the replacement is not ready.",
+    "deepExplanation": "Single-mode handoff is tied to the replacement becoming ready, not simply to resource provisioning. Multiple-mode canary routing is a different rollout strategy.",
+    "whyOtherAnswersAreWrong": {
+      "b": "This is the documented subsequent handoff when the replacement is ready. Those conditions are not yet true, so it does not describe the current interval.",
+      "c": "Configured canary splitting is appropriate in multiple revision mode with ready revisions. The stipulated single-mode transition does not use that operator-managed split."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy applications to Azure Container Apps, including environment configuration and revision management",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-scale-containers-azure-container-apps-6-revision-modes-traffic-management",
+      "ai200-20260915-unit-manage-containers-azure-container-apps-5-health-probes"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/scale-containers-azure-container-apps/6-revision-modes-traffic-management",
+      "https://learn.microsoft.com/en-us/training/modules/manage-containers-azure-container-apps/5-health-probes"
+    ],
+    "documentationTitles": [
+      "Choose and apply revision modes",
+      "Configure health probes and troubleshoot failures"
+    ],
+    "generatedAt": "2026-09-15T19:36:31.666Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.666Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.764Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c026 rollout fact. Replaces unsupported automatic-first-replica distractors with documented later handoff and multiple-mode behavior; Intermediate scope."
+  },
+  {
+    "id": "ai200-c-027",
+    "conceptId": "containerapps.multiple-mode-traffic-labels",
+    "question": "A Container App has ready revisions v1 and v2 in multiple revision mode. Its application URL sends 90% of HTTP requests to v1 and 10% to v2. Testers need a stable URL dedicated to v2 that can later target a different revision, without changing those weights. Which mechanism fits?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Increase v2’s application-URL traffic weight to 100%."
+      },
+      {
+        "id": "b",
+        "text": "Assign an ordinary revision label to v2 and use its label URL."
+      },
+      {
+        "id": "c",
+        "text": "Keep using the application URL with its existing 90/10 split."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Give testers an ordinary revision-label URL assigned to v2.",
+    "deepExplanation": "The application URL continues to follow traffic weights. The label URL targets its assigned revision, and moving that label later changes its destination without changing the tester URL.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Changing weights directs ordinary application traffic and is useful for completing a rollout. It violates the unchanged production-weight requirement and does not provide a separate tester endpoint.",
+      "c": "That URL is appropriate for a production canary experiment sampling both revisions. It cannot give these testers dedicated v2 access."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy applications to Azure Container Apps, including environment configuration and revision management",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-unit-scale-containers-azure-container-apps-6-revision-modes-traffic-management"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/scale-containers-azure-container-apps/6-revision-modes-traffic-management"
+    ],
+    "documentationTitles": ["Choose and apply revision modes"],
+    "generatedAt": "2026-09-15T19:36:31.667Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.667Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.764Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c027 fact, explicitly ordinary revision labels rather than Preview deployment-label mode. Intermediate recognition of two routing mechanisms."
+  },
+  {
+    "id": "ai200-c-028",
+    "conceptId": "containerapps.event-backlog-scale-target",
+    "question": "A single-revision Container App has one authenticated, reachable Service Bus queue scaler. For this observation the queue contains 40 active messages. Using the shown threshold and replica bounds, what desired-count ceiling follows from the backlog calculation, rather than a guarantee of immediately ready replicas?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Eight replicas"
+      },
+      {
+        "id": "b",
+        "text": "Five replicas"
+      },
+      {
+        "id": "c",
+        "text": "Six replicas"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The requested ceiling is six: 40 / 5 = 8, capped by maxReplicas=6.",
+    "deepExplanation": "The backlog threshold and replica limit play different roles. This arithmetic does not promise that six replicas have already started or that the queue meets any processing deadline.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Forty messages divided by the five-message target requests eight before applying bounds. Eight would be allowed with a maximum of at least eight, but the shown maximum is six.",
+      "b": "Five could be the desired count for 25 messages at this target when no other bound intervenes. The message target is not itself a desired replica count for the supplied 40-message backlog."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Implement event-driven scaling by using Kubernetes Event‑driven Autoscaling (KEDA) in Container Apps",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-scale-containers-azure-container-apps-3-event-driven-scaling-keda",
+      "ai200-20260915-unit-scale-containers-azure-container-apps-2-configure-scale-rules"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/scale-containers-azure-container-apps/3-event-driven-scaling-keda",
+      "https://learn.microsoft.com/en-us/training/modules/scale-containers-azure-container-apps/2-configure-scale-rules"
+    ],
+    "documentationTitles": [
+      "Implement event-driven scaling with KEDA",
+      "Configure scale rules"
+    ],
+    "generatedAt": "2026-09-15T19:36:32.036Z",
+    "lastValidatedAt": "2026-09-15T19:36:32.036Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"minReplicas\": 0,\n  \"maxReplicas\": 6,\n  \"rules\": [\n    {\n      \"name\": \"queue\",\n      \"custom\": {\n        \"type\": \"azure-servicebus\",\n        \"metadata\": {\n          \"queueName\": \"analysis\",\n          \"namespace\": \"study-bus\",\n          \"messageCount\": \"5\"\n        },\n        \"auth\": [\n          {\n            \"triggerParameter\": \"connection\",\n            \"secretRef\": \"queue-connection\"\n          }\n        ]\n      }\n    }\n  ]\n}",
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.494Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c028 backlog/limit fact. Integer division avoids sourcing a separate rounding rule; five-replica alternative now has a genuine documented different-backlog context. Intermediate, not Advanced."
+  },
+  {
+    "id": "ai200-c-029",
+    "conceptId": "containerapps.scaler-authentication-versus-app-identity",
+    "question": "A single-revision Container Apps worker reads its Service Bus queue successfully using the existing secret bus-connection. Image pulls also succeed. The scaler targets the correct queue but fails authentication; its triggerParameter is connection and its secretRef names a deleted secret. Which change repairs the demonstrated scaler configuration?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Map the scaler’s connection parameter to the existing bus-connection secret."
+      },
+      {
+        "id": "b",
+        "text": "Reconfigure the registry identity used for image pulls."
+      },
+      {
+        "id": "c",
+        "text": "Set the worker’s runtime connection-string environment variable again."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Repair the scaler authentication reference to bus-connection.",
+    "deepExplanation": "Application credentials, registry pull credentials and scaler event-source authentication serve different clients. Success in the first two does not repair a deleted secret reference in the third.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Registry identity configuration is relevant when image pulls fail. Pulls already work here and registry configuration does not replace the scaler’s event-source authentication reference.",
+      "c": "Runtime secret references configure the application process. They are appropriate for a broken application credential lookup, but this process already reads messages and the scaler has its own failed reference."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Implement event-driven scaling by using Kubernetes Event‑driven Autoscaling (KEDA) in Container Apps",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-scale-containers-azure-container-apps-3-event-driven-scaling-keda",
+      "ai200-20260915-unit-deploy-containers-azure-container-apps-4-configure-runtime",
+      "ai200-20260915-unit-deploy-containers-azure-container-apps-5-connect-to-registries"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/scale-containers-azure-container-apps/3-event-driven-scaling-keda",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-container-apps/4-configure-runtime",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-container-apps/5-connect-to-registries"
+    ],
+    "documentationTitles": [
+      "Implement event-driven scaling with KEDA",
+      "Configure runtime settings with environment variables and secrets",
+      "Configure image pull authentication for private registries"
+    ],
+    "generatedAt": "2026-09-15T19:36:32.042Z",
+    "lastValidatedAt": "2026-09-15T19:36:32.042Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.494Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Preserves c029 scoped credential-consumer fact; lowers difficulty to Intermediate. c031 migration variant is not revived."
+  },
+  {
+    "id": "ai200-r-c-005",
+    "conceptId": "containerapps.yaml-configuration-precedence",
+    "question": "A Container Apps pipeline applies containerapp.yml and also supplies --image with the new release tag. The applied template still contains the old image, which remains in the YAML. The team requires the version-controlled YAML to remain the configuration source of truth. Which repair matches the documented CLI behavior?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Edit the image value inside the YAML and apply that file."
+      },
+      {
+        "id": "b",
+        "text": "Change only the --image argument while retaining the old YAML image."
+      },
+      {
+        "id": "c",
+        "text": "Remove --yaml and deploy using only the --image argument."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Update the YAML image value, then apply the YAML.",
+    "deepExplanation": "This is configuration precedence, not an image-pull or revision-health failure. Keeping the YAML unchanged preserves the old desired image despite the extra flag.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The image flag updates an image in a flag-based update without YAML. It does not override the image supplied by the authoritative YAML file in this flow.",
+      "c": "A flag-based image update is supported and can change the live image. It abandons the required reviewed-YAML source of truth rather than fixing that file."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy applications to Azure Container Apps, including environment configuration and revision management",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-container-apps-3-deploy-container-app",
+      "ai200-20260915-unit-deploy-containers-azure-container-apps-4-configure-runtime"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-container-apps/3-deploy-container-app",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-container-apps/4-configure-runtime"
+    ],
+    "documentationTitles": [
+      "Deploy a container app using the Azure CLI and YAML",
+      "Configure runtime settings with environment variables and secrets"
+    ],
+    "generatedAt": "2026-09-15T19:36:32.043Z",
+    "lastValidatedAt": "2026-09-15T19:36:32.043Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:49.443Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New deployment precedence fact. The stem concerns configuration flags, not claims that app/resource identifiers become irrelevant."
+  },
+  {
+    "id": "ai200-r-c-006",
+    "conceptId": "containerapps.template-secretref-versus-literal-value",
+    "question": "A Container Apps template sets API_KEY using the JSON fragment below. Secret provider-key holds the required production credential; backup-key holds a different test-provider credential. Both exist. The unchanged production application receives the literal string secretref:provider-key. Secret values must stay outside the template. Which entry supplies the intended credential?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "{\"name\":\"API_KEY\",\"value\":\"provider-key\"}"
+      },
+      {
+        "id": "b",
+        "text": "{\"name\":\"API_KEY\",\"secretRef\":\"provider-key\"}"
+      },
+      {
+        "id": "c",
+        "text": "{\"name\":\"API_KEY\",\"secretRef\":\"backup-key\"}"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Use the template property secretRef with provider-key.",
+    "deepExplanation": "The CLI and template represent a secret reference differently. The application variable name remains API_KEY and the template contains only the secret name, not its value.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A value field supplies an ordinary literal environment string. This is useful when an application expects a nonsensitive identifier, not when it expects the secret’s contents.",
+      "c": "This is a valid template reference to the existing test-provider secret. It is appropriate for that provider, but the production application explicitly requires provider-key instead."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy applications to Azure Container Apps, including environment configuration and revision management",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-container-apps-4-configure-runtime"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-container-apps/4-configure-runtime"
+    ],
+    "documentationTitles": [
+      "Configure runtime settings with environment variables and secrets"
+    ],
+    "generatedAt": "2026-09-15T19:40:29.702Z",
+    "lastValidatedAt": "2026-09-15T19:40:29.702Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"name\": \"API_KEY\",\n  \"value\": \"secretref:provider-key\"\n}",
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:49.443Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New concrete serialization-boundary repair, separate from choosing an environment setting or fixing a scaler’s authentication reference. All option JSON parses. Fresh author revision replaces the literal-string distractor with a valid alternate-provider secret reference."
+  },
+  {
+    "id": "ai200-r-c-007",
+    "conceptId": "containerapps.registry-identity-selection",
+    "question": "A Container App has a system-assigned identity with the required ACR pull permission, and the registry network path works. Its registry entry still selects username/password authentication. The team wants future revision pulls to use the assigned identity without stored registry credentials. Which configuration change selects that identity for image pulls?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Set an application environment variable containing the registry server name."
+      },
+      {
+        "id": "b",
+        "text": "Replace the registry password with another valid password."
+      },
+      {
+        "id": "c",
+        "text": "Update the ACR registry entry with --identity system."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Select the system identity in the registry entry.",
+    "deepExplanation": "Assigning permissions to an identity and configuring a client to use it are separate steps. The stated authorization and network prerequisites are already satisfied; the remaining change is the registry authentication selection.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Environment variables are consumed by the application after startup. A server-name setting can configure application behavior but does not select Container Apps registry authentication.",
+      "b": "Username/password authentication is documented for private registries and can repair bad credentials. It keeps the stored-credential mode that this deployment must replace."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy applications to Azure Container Apps, including environment configuration and revision management",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-container-apps-5-connect-to-registries",
+      "ai200-20260915-unit-deploy-containers-azure-container-apps-4-configure-runtime"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-container-apps/5-connect-to-registries",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-container-apps/4-configure-runtime"
+    ],
+    "documentationTitles": [
+      "Configure image pull authentication for private registries",
+      "Configure runtime settings with environment variables and secrets"
+    ],
+    "generatedAt": "2026-09-15T19:36:32.044Z",
+    "lastValidatedAt": "2026-09-15T19:36:32.044Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:49.598Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New Container Apps registry-selection fact, not a renamed c017 App Service ARM-token prerequisite. No ABAC mode or role-scope generalization is added."
+  },
+  {
+    "id": "ai200-r-c-008",
+    "conceptId": "containerapps.console-system-log-triage",
+    "question": "Two new Container Apps revisions fail in different stages. Revision A never starts its application because the image cannot be pulled. Revision B pulls and starts but the application throws an exception when processing a test request. An operator has log access. Which initial evidence pairing targets the two failure layers?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "A: system logs; B: application console logs."
+      },
+      {
+        "id": "b",
+        "text": "A: application console logs; B: system logs."
+      },
+      {
+        "id": "c",
+        "text": "A: replica count; B: ingress FQDN."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Start with system logs for A and console logs for B.",
+    "deepExplanation": "Match evidence to the component that failed. Counts and endpoint configuration complement this investigation but do not replace error output from the platform and application layers.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Console logs are useful once application code runs, while system logs help platform lifecycle failures. This swaps those roles for the stated stages and may leave A with no application output.",
+      "c": "Replica status and ingress FQDN help identify whether instances exist and how to reach them. They are useful deployment checks but do not contain the pull error or the application exception details requested."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Monitor and troubleshoot solutions on AKS and Container Apps by inspecting logs, events, and end-to-end connectivity",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-containers-azure-container-apps-6-verify-deployment",
+      "ai200-20260915-unit-manage-containers-azure-container-apps-4-monitor-logs-troubleshoot",
+      "ai200-20260915-unit-deploy-containers-azure-container-apps-5-connect-to-registries"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-container-apps/6-verify-deployment",
+      "https://learn.microsoft.com/en-us/training/modules/manage-containers-azure-container-apps/4-monitor-logs-troubleshoot",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-containers-azure-container-apps/5-connect-to-registries"
+    ],
+    "documentationTitles": [
+      "Verify deployments with logs and status",
+      "Monitor logs and troubleshoot issues",
+      "Configure image pull authentication for private registries"
+    ],
+    "generatedAt": "2026-09-15T19:36:32.045Z",
+    "lastValidatedAt": "2026-09-15T19:36:32.045Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:50.264Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New two-stage log-surface discrimination. No instrumentation or generic correlation-ID question overlapping the monitoring domain is authored."
+  },
+  {
+    "id": "ai200-r-c-009",
+    "conceptId": "containerapps.servicebus-subscription-specific-scaling",
+    "question": "A single-revision Container Apps worker consumes the enrich subscription of the Service Bus topic documents. Another application consumes audit from the same topic. Authentication is already configured. The enrich worker must scale from its own active-message backlog, not the other subscriber’s backlog. Which event-source metadata identifies that work?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "queueName=documents on the Service Bus scaler"
+      },
+      {
+        "id": "b",
+        "text": "topicName=documents and subscriptionName=enrich on the Service Bus scaler"
+      },
+      {
+        "id": "c",
+        "text": "topicName=documents and subscriptionName=audit on the Service Bus scaler"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Target topic documents and subscription enrich.",
+    "deepExplanation": "A topic name does not identify one subscriber’s pending work. Supplying the intended subscription distinguishes independent consumer backlogs even though both subscriptions receive events from the same topic.",
+    "whyOtherAnswersAreWrong": {
+      "a": "queueName selects a Service Bus queue. It is appropriate for a queue named documents, but the stated work is in a topic subscription.",
+      "c": "This correctly identifies the audit subscriber’s backlog. It is useful for that separate consumer but would scale enrich from the wrong pending work."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Implement event-driven scaling by using Kubernetes Event‑driven Autoscaling (KEDA) in Container Apps",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-scale-containers-azure-container-apps-3-event-driven-scaling-keda"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/scale-containers-azure-container-apps/3-event-driven-scaling-keda"
+    ],
+    "documentationTitles": ["Implement event-driven scaling with KEDA"],
+    "generatedAt": "2026-09-15T19:36:32.045Z",
+    "lastValidatedAt": "2026-09-15T19:36:32.045Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.494Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New queue-versus-subscription address selection, not scale-to-zero activation or scaler credential wiring."
+  },
+  {
+    "id": "ai200-r-c-010",
+    "conceptId": "containerapps.cron-reactive-highest-request-with-bounds",
+    "question": "A Container App combines a cron scale rule and an HTTP scale rule with minReplicas=2 and maxReplicas=9. During the active cron window, cron requests 7 replicas and the HTTP metric requests 11. Later, outside that window, the HTTP metric requests 3. Ignore transition timing and consider only the desired count after rule combination and bounds. Which pair follows?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "During: 7; later: 3"
+      },
+      {
+        "id": "b",
+        "text": "During: 9; later: 2"
+      },
+      {
+        "id": "c",
+        "text": "During: 9; later: 3"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The bounded desired counts are nine during the window and three afterward.",
+    "deepExplanation": "Cron establishes demand during its configured window; it is neither an overriding cap nor a permanent minimum outside that window. Apply the global replica bounds after comparing active rule requests. Actual ready counts can lag.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Seven is the cron request and would dominate if the HTTP request were at most seven. Here HTTP requests eleven, so treating cron as an overriding fixed count misses the highest-request rule.",
+      "b": "Nine correctly caps the active-window request. A later count of two would fit demand at or below the minimum, but the remaining HTTP rule requests three."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Implement event-driven scaling by using Kubernetes Event‑driven Autoscaling (KEDA) in Container Apps",
+    "difficulty": "advanced",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-unit-scale-containers-azure-container-apps-4-keda-scalers-custom-workloads",
+      "ai200-20260915-unit-scale-containers-azure-container-apps-2-configure-scale-rules"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/scale-containers-azure-container-apps/4-keda-scalers-custom-workloads",
+      "https://learn.microsoft.com/en-us/training/modules/scale-containers-azure-container-apps/2-configure-scale-rules"
+    ],
+    "documentationTitles": [
+      "Apply KEDA scalers for custom workloads",
+      "Configure scale rules"
+    ],
+    "generatedAt": "2026-09-15T19:36:32.045Z",
+    "lastValidatedAt": "2026-09-15T19:36:32.045Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.625Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New three-part composition: active time window, highest-rule request, then replica limits. Counts are supplied observations rather than unsupported HTTP formula assumptions."
+  },
+  {
+    "id": "ai200-r-c-011",
+    "conceptId": "containerapps.eventhubs-partition-concurrency-ceiling",
+    "question": "A single-revision Container Apps worker uses an Event Hubs scaler and one consumer group over four partitions. Four replicas are already processing all four partitions, one assigned consumer per partition, but lag grows. The partition count and consumer group must remain unchanged. Which conclusion about scaling follows from this topology?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Raising maxReplicas alone cannot add more simultaneous partition readers to this consumer group."
+      },
+      {
+        "id": "b",
+        "text": "Raising maxReplicas from four to twelve adds eight effective partition readers."
+      },
+      {
+        "id": "c",
+        "text": "Lowering the lag threshold creates more concurrently readable partitions."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "The four-partition consumer group bounds concurrent partition readers.",
+    "deepExplanation": "Desired replica demand and useful partition parallelism are different. Once every partition has an assigned consumer, investigate processing throughput rather than assuming another replica bound or trigger threshold adds partitions.",
+    "whyOtherAnswersAreWrong": {
+      "b": "A higher replica bound can enable more partition readers when enough unassigned partitions exist. The fixed four-partition group does not have those additional assignments.",
+      "c": "A lower metric threshold can request replicas sooner while partition capacity is available. It changes scaling demand, not the Event Hub partition count supplied in this topology."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Implement event-driven scaling by using Kubernetes Event‑driven Autoscaling (KEDA) in Container Apps",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-unit-scale-containers-azure-container-apps-3-event-driven-scaling-keda"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/scale-containers-azure-container-apps/3-event-driven-scaling-keda"
+    ],
+    "documentationTitles": ["Implement event-driven scaling with KEDA"],
+    "generatedAt": "2026-09-15T19:36:32.046Z",
+    "lastValidatedAt": "2026-09-15T19:36:32.046Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.494Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New Event Hubs topology limit. No claim that the scaler automatically changes partitions, and no promise that adding partitions would repair every throughput problem."
+  },
+  {
+    "id": "ai200-c-037",
+    "conceptId": "containerapps.readiness-versus-liveness-failure",
+    "question": "A new Container Apps revision normally needs 90 seconds to load its model. Logs show steady progress, but an early liveness failure repeatedly restarts it. Its readiness endpoint currently returns success as soon as the web server starts, before inference is usable. Which two changes address the separate restart and premature-routing problems? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Adjust liveness initial delay to accommodate measured normal model initialization."
+      },
+      {
+        "id": "b",
+        "text": "Change readiness to report success only when inference can be served."
+      },
+      {
+        "id": "c",
+        "text": "Change only readiness timing and keep the early liveness restart behavior."
+      },
+      {
+        "id": "d",
+        "text": "Change only liveness timing and retain listener-start readiness success."
+      }
+    ],
+    "correctAnswer": ["a", "b"],
+    "explanation": "Allow measured startup time in liveness and make readiness reflect inference availability.",
+    "deepExplanation": "Liveness controls restart, while readiness controls routing. Fixing only one leaves the other independently demonstrated failure. Normal initialization duration is a supplied measurement, not a universal platform timeout.",
+    "whyOtherAnswersAreWrong": {
+      "c": "Readiness timing can protect traffic during startup when liveness is already appropriate. Here leaving the observed liveness failure unchanged still interrupts loading.",
+      "d": "Liveness tuning can prevent premature restarts. It is sufficient when readiness already reflects application availability, but this explicitly premature readiness still routes inference too early."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Monitor and troubleshoot solutions on AKS and Container Apps by inspecting logs, events, and end-to-end connectivity",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-manage-containers-azure-container-apps-5-health-probes",
+      "ai200-20260915-unit-manage-containers-azure-container-apps-4-monitor-logs-troubleshoot"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-containers-azure-container-apps/5-health-probes",
+      "https://learn.microsoft.com/en-us/training/modules/manage-containers-azure-container-apps/4-monitor-logs-troubleshoot"
+    ],
+    "documentationTitles": [
+      "Configure health probes and troubleshoot failures",
+      "Monitor logs and troubleshoot issues"
+    ],
+    "generatedAt": "2026-09-15T19:36:32.046Z",
+    "lastValidatedAt": "2026-09-15T19:36:32.046Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:50.392Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Preserves c037 two-control fact. Removes unsupported TCP-specific assertions and distinguishes each partial repair with an actual correct-when condition. No probe defaults or Preview extensions used."
+  },
+  {
+    "id": "ai200-c-032",
+    "conceptId": "aks.deployment-desired-state-manifest",
+    "question": "An AKS release must change a Deployment from image v1 with two replicas to image v2 with three replicas. The image is accessible, configuration is compatible and cluster capacity is sufficient. The desired release must be reproducible from source control and survive individual Pod replacement. Which update records the requested state?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Change the Service selector and leave the Deployment’s image and replica fields unchanged."
+      },
+      {
+        "id": "b",
+        "text": "Set the Deployment template image to v2 and spec.replicas to 3, apply the manifest, then verify readiness."
+      },
+      {
+        "id": "c",
+        "text": "Restart Pods while retaining the v1, two-replica Deployment manifest."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Update and apply the Deployment’s desired image and replica count.",
+    "deepExplanation": "A Service changes routing; a Pod restart re-creates instances of the declared template. Neither substitutes for recording the new Deployment state. Successful apply alone is not completed rollout evidence.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Changing a Service selector adjusts which labeled Pods receive traffic and can repair routing. It does not declare a new image or desired Deployment replica count.",
+      "c": "Restarting Pods can refresh startup-consumed configuration after ConfigMap or Secret changes. Retaining this Deployment still declares v1 and two replicas, not the new release."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy and manage applications to Azure Kubernetes Service (AKS) by using manifest files",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-apps-azure-kubernetes-service-2-create-deployment-manifests",
+      "ai200-20260915-unit-deploy-apps-azure-kubernetes-service-4-deploy-verify-results",
+      "ai200-20260915-unit-deploy-apps-azure-kubernetes-service-3-expose-applications",
+      "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-apps-azure-kubernetes-service/2-create-deployment-manifests",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-apps-azure-kubernetes-service/4-deploy-verify-results",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-apps-azure-kubernetes-service/3-expose-applications",
+      "https://learn.microsoft.com/en-us/training/modules/configure-apps-azure-kubernetes-service/2-define-configmaps"
+    ],
+    "documentationTitles": [
+      "Create Kubernetes deployment manifests",
+      "Deploy applications to Azure Kubernetes Services",
+      "Expose applications in Azure Kubernetes Services",
+      "Define ConfigMaps for application settings"
+    ],
+    "generatedAt": "2026-09-15T19:36:31.564Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.564Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:48.498Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c032 declarative-release fact, replacing unsupported manual container edits with a documented restart countercontext. Concrete desired fields and post-apply verification, not an Advanced label."
+  },
+  {
+    "id": "ai200-c-033",
+    "conceptId": "aks.configmap-versus-secret-reference",
+    "question": "An AKS namespace contains ConfigMap app-settings with key LOG_LEVEL and Secret api-credentials with key TOKEN. A Deployment in that namespace must inject these existing values as environment variables without copying their contents into the manifest. Which two references match? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "LOG_LEVEL: valueFrom.configMapKeyRef with name app-settings and key LOG_LEVEL"
+      },
+      {
+        "id": "b",
+        "text": "TOKEN: valueFrom.secretKeyRef with name api-credentials and key TOKEN"
+      },
+      {
+        "id": "c",
+        "text": "LOG_LEVEL: valueFrom.secretKeyRef with name app-settings and key LOG_LEVEL"
+      },
+      {
+        "id": "d",
+        "text": "TOKEN: valueFrom.configMapKeyRef with name api-credentials and key TOKEN"
+      }
+    ],
+    "correctAnswer": ["a", "b"],
+    "explanation": "Use configMapKeyRef for LOG_LEVEL and secretKeyRef for TOKEN.",
+    "deepExplanation": "Kubernetes resource kind is part of the reference contract. Matching a name and key is not enough if the reference looks in the wrong resource kind.",
+    "whyOtherAnswersAreWrong": {
+      "c": "secretKeyRef is valid when that name/key exists in a Secret, for example confidential configuration. Here app-settings is explicitly a ConfigMap, not a Secret.",
+      "d": "configMapKeyRef is valid for an existing ConfigMap containing nonsensitive data. The supplied api-credentials resource is a Secret; this alternative neither changes its kind nor reads it."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy and manage applications to Azure Kubernetes Service (AKS) by using manifest files",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps",
+      "ai200-20260915-unit-configure-apps-azure-kubernetes-service-3-implement-secrets"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/configure-apps-azure-kubernetes-service/2-define-configmaps",
+      "https://learn.microsoft.com/en-us/training/modules/configure-apps-azure-kubernetes-service/3-implement-secrets"
+    ],
+    "documentationTitles": [
+      "Define ConfigMaps for application settings",
+      "Implement secrets for sensitive data"
+    ],
+    "generatedAt": "2026-09-15T19:36:31.571Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.571Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:48.011Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c033 mapping. Countercontexts do not recommend storing a live credential in a ConfigMap."
+  },
+  {
+    "id": "ai200-c-034",
+    "conceptId": "aks.service-port-targetport-mapping",
+    "question": "This AKS Service selects healthy Pods that listen on TCP port 8080. In-cluster clients must continue using Service port 8443. Which field change repairs the forwarding mismatch while preserving the client-facing contract?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Change targetPort from 9000 to 8080."
+      },
+      {
+        "id": "b",
+        "text": "Change port from 8443 to 8080 and keep targetPort=9000."
+      },
+      {
+        "id": "c",
+        "text": "Change targetPort from 9000 to 8443."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Set targetPort=8080 and keep port=8443.",
+    "deepExplanation": "Client-facing Service port and container listener port can differ. The healthy Pod state and matching selector do not correct a wrong forwarding destination.",
+    "whyOtherAnswersAreWrong": {
+      "b": "This maps clients on 8080 to an application on 9000, useful only under that different client/listener contract. Both conflict with the supplied requirements.",
+      "c": "This would be valid for Pods listening on 8443 behind the same Service port. These Pods instead listen on 8080, so the mismatch remains."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Monitor and troubleshoot solutions on AKS and Container Apps by inspecting logs, events, and end-to-end connectivity",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-apps-azure-kubernetes-service-3-expose-applications",
+      "ai200-20260915-unit-monitor-apps-azure-kubernetes-service-3-troubleshoot-pods-services"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-apps-azure-kubernetes-service/3-expose-applications",
+      "https://learn.microsoft.com/en-us/training/modules/monitor-apps-azure-kubernetes-service/3-troubleshoot-pods-services"
+    ],
+    "documentationTitles": [
+      "Expose applications in Azure Kubernetes Services",
+      "Troubleshoot pods and services"
+    ],
+    "generatedAt": "2026-09-15T19:36:31.572Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.572Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"apiVersion\": \"v1\",\n  \"kind\": \"Service\",\n  \"metadata\": {\n    \"name\": \"text-api\"\n  },\n  \"spec\": {\n    \"type\": \"ClusterIP\",\n    \"selector\": {\n      \"app\": \"text-api\"\n    },\n    \"ports\": [\n      {\n        \"protocol\": \"TCP\",\n        \"port\": 8443,\n        \"targetPort\": 9000\n      }\n    ]\n  }\n}",
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:50.956Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c034 Service contract, distinct from conventional App Service c018; no implicit TLS behavior is inferred from the numeric port."
+  },
+  {
+    "id": "ai200-c-035",
+    "conceptId": "aks.pending-imagepull-crashloop-evidence",
+    "question": "A single-container AKS Pod named text-api-pod in namespace ai-workloads is in CrashLoopBackOff. Events show successful scheduling and image pulls. The previous container instance terminated during initialization, while the current one has produced little output. Which command targets the terminated instance’s application output?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "kubectl describe service text-api -n ai-workloads"
+      },
+      {
+        "id": "b",
+        "text": "kubectl describe node worker-node"
+      },
+      {
+        "id": "c",
+        "text": "kubectl logs text-api-pod -n ai-workloads --previous"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Use kubectl logs with --previous for the named Pod in ai-workloads.",
+    "deepExplanation": "Current-container logs and previous-container logs cover different instances. A CrashLoopBackOff investigation should capture the failed instance’s output rather than assume the current brief output explains the failure.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Service description supplies routing selectors, ports and endpoints. It is useful for connectivity configuration, not application output from the terminated container instance.",
+      "b": "Node description helps scheduling and capacity investigations. Successful scheduling and pulls make it less targeted than the available previous-container logs for this startup failure."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Monitor and troubleshoot solutions on AKS and Container Apps by inspecting logs, events, and end-to-end connectivity",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-apps-azure-kubernetes-service-4-deploy-verify-results",
+      "ai200-20260915-unit-monitor-apps-azure-kubernetes-service-3-troubleshoot-pods-services",
+      "ai200-20260915-unit-monitor-apps-azure-kubernetes-service-2-monitor-logs-metrics"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-apps-azure-kubernetes-service/4-deploy-verify-results",
+      "https://learn.microsoft.com/en-us/training/modules/monitor-apps-azure-kubernetes-service/3-troubleshoot-pods-services",
+      "https://learn.microsoft.com/en-us/training/modules/monitor-apps-azure-kubernetes-service/2-monitor-logs-metrics"
+    ],
+    "documentationTitles": [
+      "Deploy applications to Azure Kubernetes Services",
+      "Troubleshoot pods and services",
+      "Monitor application logs and metrics"
+    ],
+    "generatedAt": "2026-09-15T19:36:31.573Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.573Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:50.956Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c035 prior-instance evidence fact. No live cluster commands were executed and sufficient log access remains required."
+  },
+  {
+    "id": "ai200-c-036",
+    "conceptId": "aks.service-selector-endpoint-connectivity",
+    "question": "An AKS Service selects app=text-service. Its intended Ready Pods have app=text-api, and no Pod has the selected label. The Service resolves in DNS but its EndpointSlices have no backing Pod addresses. Ports are correct, and the Deployment labels must remain unchanged. Which focused repair and validation fit?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Retain the selector, change the Service port and check DNS again."
+      },
+      {
+        "id": "b",
+        "text": "Set the Service selector to app=text-api, inspect EndpointSlices and send a request through the Service."
+      },
+      {
+        "id": "c",
+        "text": "Change the Deployment Pod labels to app=text-service and replace the Pods."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Repair the Service selector, then verify backing addresses and a Service request.",
+    "deepExplanation": "Successful DNS resolution proves the Service name resolves, not that it selects any Pods. Correct ports cannot route traffic to an empty selected set.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Changing ports fits a proven forwarding mismatch, while DNS checks establish name resolution. Neither makes the unmatched selector choose the required Ready Pods.",
+      "c": "Changing template labels is a documented way to align a Service when that change is permitted. Here Deployment labels are explicitly fixed, so the Service-side repair is required."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Monitor and troubleshoot solutions on AKS and Container Apps by inspecting logs, events, and end-to-end connectivity",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-apps-azure-kubernetes-service-3-expose-applications",
+      "ai200-20260915-unit-monitor-apps-azure-kubernetes-service-3-troubleshoot-pods-services",
+      "ai200-20260915-unit-monitor-apps-azure-kubernetes-service-4-verify-connectivity"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-apps-azure-kubernetes-service/3-expose-applications",
+      "https://learn.microsoft.com/en-us/training/modules/monitor-apps-azure-kubernetes-service/3-troubleshoot-pods-services",
+      "https://learn.microsoft.com/en-us/training/modules/monitor-apps-azure-kubernetes-service/4-verify-connectivity"
+    ],
+    "documentationTitles": [
+      "Expose applications in Azure Kubernetes Services",
+      "Troubleshoot pods and services",
+      "Verify service connectivity and endpoints"
+    ],
+    "generatedAt": "2026-09-15T19:36:31.573Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.573Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.231Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. Same c036 selector/endpoint fact; Intermediate rather than the previously overstated Advanced classification."
+  },
+  {
+    "id": "ai200-r-c-012",
+    "conceptId": "aks.per-node-request-fit-versus-total-free-memory",
+    "question": "Each of two AKS nodes has 3 GiB available for additional Pod memory requests. A new Deployment requests 4 GiB per Pod, limits memory to 6 GiB and needs two replicas. Both Pods remain Pending with Insufficient memory events. Tests require at least a 4 GiB request, and all other scheduling conditions are satisfied. Which plan addresses placement without under-requesting the workload?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Lower each memory limit from 6 GiB to 5 GiB while retaining the 4 GiB request."
+      },
+      {
+        "id": "b",
+        "text": "Provide nodes with at least 4 GiB of available request capacity for each needed Pod."
+      },
+      {
+        "id": "c",
+        "text": "Reduce the Deployment to one replica while leaving node capacity and requests unchanged."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Provide sufficient per-node request capacity for the 4 GiB Pods.",
+    "deepExplanation": "Six GiB across two nodes is not a single six-GiB placement slot. Lowering limits changes a different field, and reducing count does not fix an individual Pod’s request-fit failure. Preserve the workload’s tested request requirement.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A lower limit can constrain maximum consumption when a workload fits within that bound. Scheduling still uses the unchanged 4 GiB request, which exceeds each node’s available 3 GiB.",
+      "c": "Reducing replicas can relieve aggregate capacity pressure when an individual Pod fits. Here even one 4 GiB Pod cannot fit either node’s 3 GiB remaining request capacity."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy and manage applications to Azure Kubernetes Service (AKS) by using manifest files",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-deploy-apps-azure-kubernetes-service-2-create-deployment-manifests",
+      "ai200-20260915-unit-deploy-apps-azure-kubernetes-service-4-deploy-verify-results"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/deploy-apps-azure-kubernetes-service/2-create-deployment-manifests",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-apps-azure-kubernetes-service/4-deploy-verify-results"
+    ],
+    "documentationTitles": [
+      "Create Kubernetes deployment manifests",
+      "Deploy applications to Azure Kubernetes Services"
+    ],
+    "generatedAt": "2026-09-15T19:36:31.574Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.574Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:48.498Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New scheduling diagnosis combines per-node fit, aggregate capacity, request/limit distinction and measured lower bound. No false claim that CPU limits cause OOM termination."
+  },
+  {
+    "id": "ai200-r-c-013",
+    "conceptId": "aks.configmap-refresh-consumption-and-subpath",
+    "question": "Three AKS Deployments consume one mutable ConfigMap that has just been updated. A reads its value from an environment variable at process startup. B reads a file mounted with subPath. C uses an ordinary ConfigMap volume and rereads the file per request; its file already shows the new value. Which focused rollout plan updates the remaining consumers without restarting C?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Restart A only and wait for B’s subPath file to refresh."
+      },
+      {
+        "id": "b",
+        "text": "Restart B only and wait for A’s process environment to refresh."
+      },
+      {
+        "id": "c",
+        "text": "Restart A and B; leave C running."
+      },
+      {
+        "id": "d",
+        "text": "Wait for all three consumers without restarting Pods."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Roll out A and B; C already has and rereads the updated file.",
+    "deepExplanation": "Updating the ConfigMap object is not equivalent to refreshing every consumption mode. Application reload behavior also matters, so C’s per-request reread and observed updated file are explicit conditions.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Restarting A refreshes its startup environment. Waiting would fit B if it used an ordinary updating volume, but the ConfigMap unit explicitly excludes subPath from automatic updates.",
+      "b": "Restarting B refreshes its mount. Waiting would fit an ordinary updating file consumer, not A’s startup-only environment variables, which do not automatically update.",
+      "d": "Waiting is appropriate for ordinary ConfigMap volume consumers that reread updated files. It does not satisfy the two nonrefreshing consumption modes explicitly used by A and B."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy and manage applications to Azure Kubernetes Service (AKS) by using manifest files",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/configure-apps-azure-kubernetes-service/2-define-configmaps"
+    ],
+    "documentationTitles": ["Define ConfigMaps for application settings"],
+    "generatedAt": "2026-09-15T19:36:31.574Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.574Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:47.812Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New three-consumer refresh decision. Distinct from c033 choosing the resource kind; no claim of instantaneous volume update or automatic application reload."
+  },
+  {
+    "id": "ai200-r-c-014",
+    "conceptId": "aks.secret-key-metadata-inspection-without-values",
+    "question": "An authorized AKS operator must confirm that Secret api-credentials contains the key TOKEN without displaying its value. Which command shows the Secret’s metadata and key information for this check?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "kubectl describe secret api-credentials"
+      },
+      {
+        "id": "b",
+        "text": "kubectl get secrets"
+      },
+      {
+        "id": "c",
+        "text": "kubectl describe deployment text-api"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use kubectl describe secret api-credentials in the correct namespace.",
+    "deepExplanation": "A reference in a Deployment records what the application requests. Inspecting the Secret metadata checks the source object without printing the credential.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Listing Secrets shows names, types and data counts. This is useful for inventory but does not show whether the specific TOKEN key exists.",
+      "c": "Deployment description verifies the template’s requested secretKeyRef. It is useful for checking the consumer reference, not confirming that the referenced key actually exists in the Secret resource."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy and manage applications to Azure Kubernetes Service (AKS) by using manifest files",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-unit-configure-apps-azure-kubernetes-service-3-implement-secrets",
+      "ai200-20260915-unit-monitor-apps-azure-kubernetes-service-2-monitor-logs-metrics"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/configure-apps-azure-kubernetes-service/3-implement-secrets",
+      "https://learn.microsoft.com/en-us/training/modules/monitor-apps-azure-kubernetes-service/2-monitor-logs-metrics"
+    ],
+    "documentationTitles": [
+      "Implement secrets for sensitive data",
+      "Monitor application logs and metrics"
+    ],
+    "generatedAt": "2026-09-15T19:36:31.574Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.574Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:50.692Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New foundational key-metadata inspection, separate from generic secret retrieval and environment injection. Names are fictional and no secret values are accessed."
+  },
+  {
+    "id": "ai200-r-c-015",
+    "conceptId": "aks.external-path-verification-after-local-port-forward",
+    "question": "During an AKS rollout, an engineer receives HTTP 200 through a local kubectl port-forward to the API Service. The release gate requires clients to reach the expected inference route through the configured public ingress hostname. Public access still fails. Which next check tests the requirement that the local tunnel did not cover?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Repeat the request through the same localhost port-forward."
+      },
+      {
+        "id": "b",
+        "text": "Inspect the ingress address and host/path backend mapping, then request the expected public route from an external client."
+      },
+      {
+        "id": "c",
+        "text": "Check that the Deployment still has the expected number of Ready Pods."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Inspect and test the actual public ingress path.",
+    "deepExplanation": "A working local tunnel narrows the investigation but is not end-to-end external connectivity proof. Pair the public request with logs to identify which backend receives it; do not declare release success from an internal test alone.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Port-forwarding is useful for isolated access to the Service or a Pod. Repeating it checks the tunnel path again, not the public hostname, ingress host/path mapping or external route.",
+      "c": "Readiness is necessary rollout evidence and useful for detecting workload failures. It does not prove the configured external ingress route reaches those Pods."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Monitor and troubleshoot solutions on AKS and Container Apps by inspecting logs, events, and end-to-end connectivity",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-monitor-apps-azure-kubernetes-service-4-verify-connectivity",
+      "ai200-20260915-unit-deploy-apps-azure-kubernetes-service-4-deploy-verify-results",
+      "ai200-20260915-unit-monitor-apps-azure-kubernetes-service-3-troubleshoot-pods-services"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/monitor-apps-azure-kubernetes-service/4-verify-connectivity",
+      "https://learn.microsoft.com/en-us/training/modules/deploy-apps-azure-kubernetes-service/4-deploy-verify-results",
+      "https://learn.microsoft.com/en-us/training/modules/monitor-apps-azure-kubernetes-service/3-troubleshoot-pods-services"
+    ],
+    "documentationTitles": [
+      "Verify service connectivity and endpoints",
+      "Deploy applications to Azure Kubernetes Services",
+      "Troubleshoot pods and services"
+    ],
+    "generatedAt": "2026-09-15T19:36:31.575Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.575Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:51.231Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New acceptance-path scope. Does not claim kubectl port-forward exercises every Service network data-plane component."
+  },
+  {
+    "id": "ai200-r-c-016",
+    "conceptId": "aks.log-namespace-and-container-disambiguation",
+    "question": "AKS namespaces production and staging each contain a Pod named worker-0, and each Pod has containers api and proxy. The current kubectl context defaults to staging. The operator needs the production application’s current logs, not the proxy logs. Which explicit command selects both required boundaries?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "kubectl logs worker-0 -c api -n staging"
+      },
+      {
+        "id": "b",
+        "text": "kubectl logs worker-0 -c proxy -n production"
+      },
+      {
+        "id": "c",
+        "text": "kubectl logs worker-0 -c api -n production"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Select namespace production and container api explicitly.",
+    "deepExplanation": "A Pod name is not globally unique across namespaces, and a Pod can contain multiple log-producing containers. Explicitly specify both dimensions for this incident.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This selects the application container but in staging. It is appropriate for staging application diagnosis, not the supplied production incident.",
+      "b": "This selects the production Pod’s proxy. It is appropriate for proxy diagnostics, not the application container output requested."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Monitor and troubleshoot solutions on AKS and Container Apps by inspecting logs, events, and end-to-end connectivity",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-unit-monitor-apps-azure-kubernetes-service-2-monitor-logs-metrics"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/monitor-apps-azure-kubernetes-service/2-monitor-logs-metrics"
+    ],
+    "documentationTitles": ["Monitor application logs and metrics"],
+    "generatedAt": "2026-09-15T19:36:31.575Z",
+    "lastValidatedAt": "2026-09-15T19:36:31.575Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 only: freshly authored against reviewed 2026-09-15 MCP snapshots. Technical and adversarial review are pending; no prior approval is inherited.",
+    "sourceLastReviewedAt": "2026-09-15T19:28:50.692Z",
+    "confidenceReason": "Author-supplied source mapping, not an independent correctness or availability attestation. New two-axis log selection. Distinct from c035 previous-versus-current instance selection; this item asks for the current instance and resolves namespace/container ambiguity."
+  }
+]

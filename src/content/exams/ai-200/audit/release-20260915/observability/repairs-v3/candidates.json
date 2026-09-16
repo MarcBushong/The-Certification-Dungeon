@@ -1,0 +1,61 @@
+[
+  {
+    "id": "ai200-r-s-005",
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "questionType": "scenario",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "conceptId": "appconfig.secret-refresh-independent-interval",
+    "question": "A Python provider’s last secret retrieval and ordinary refresh check both complete at t=0. It uses a versionless Key Vault reference, refresh_interval=60 and secret_refresh_interval=300. The app calls refresh() only at t=120,240,360,..., and each call succeeds within one second. The sentinel stays unchanged; a new enabled secret version is stored at t=200. Which is the first listed call whose timing permits the secret to be re-resolved?",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "t=240 seconds"
+      },
+      {
+        "id": "B",
+        "text": "t=360 seconds"
+      },
+      {
+        "id": "C",
+        "text": "Only a call after the sentinel changes"
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "The t=360 call is the first listed call after the 300-second secret interval, and the ordinary 60-second interval has also elapsed.",
+    "deepExplanation": "The calls are 120 seconds apart and complete within one second, so each later call is more than 60 seconds after the previous ordinary check. At t=120 and t=240 the 300-second secret interval has not elapsed. At t=360 both interval conditions are satisfied. The secret refresh mechanism does not require a sentinel change. This schedule avoids the unresolved SDK ordering question that arises when the secret interval is due but the ordinary interval is not; it does not assert which check the implementation performs first.",
+    "whyOtherAnswersAreWrong": {
+      "A": "t=240 is an ordinary-refresh-eligible call, but only 240 seconds have passed since the secret was retrieved. A shorter secret_refresh_interval could permit that call; the specified value is 300 seconds.",
+      "C": "A changed sentinel is the publication trigger for watched ordinary settings. The documented independent secret refresh exists for rotated secrets whose App Configuration reference and sentinel remain unchanged, so that ordinary-setting condition is not required here."
+    },
+    "sourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/4-reference-key-vault-secrets"
+    ],
+    "documentationTitles": [
+      "Connect to App Configuration from application code",
+      "Reference Key Vault secrets from App Configuration"
+    ],
+    "generatedAt": "2026-09-15T20:35:34.264Z",
+    "lastValidatedAt": "2026-09-15T20:35:34.264Z",
+    "featureStatus": "GA",
+    "tags": [
+      "ai-200",
+      "observability-release",
+      "repairs-v3",
+      "pass-1-candidate"
+    ],
+    "verificationStatus": "candidate",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh pass-1 same-fact timing repair bound to the original unchanged v1 source snapshots. Separate technical and adversarial reviews must evaluate this exact v3 hash; no v1/v2 review or source-curation timestamp is renewed.",
+    "confidenceReason": "The original source bodies already contain the explicit ordinary refresh gate and independent secret interval. The collision-free 120-second schedule and one-second completion bound are scenario premises, not new SDK facts.",
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z"
+  }
+]

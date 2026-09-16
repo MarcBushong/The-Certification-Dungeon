@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "ai200-r-c-013": {
+      "generation": {
+        "questionFingerprint": "07f378079b204ad8bb62db4af63543e0552dc2942268b6606bc92b22752d2545",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-containers",
+        "generatedAt": "2026-09-15T20:43:55.477Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+            ],
+            "summary": "Roll out new Pods for A; leave B and C running. — Rolling out A is the documented way to refresh A’s startup-consumed environment, but leaving B unchanged does not refresh its pre-update subPath mount. This exact selective action is appropriate when A alone still needs refreshing and B has already received the current ConfigMap in a replacement Pod, while C is already current. It makes no claim that B’s existing subPath file can update automatically."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+            ],
+            "summary": "Roll out new Pods for B; leave A and C running. — Rolling out B recreates its Pod and configuration mount, but leaving A unchanged preserves A’s pre-update process environment. This exact selective action is appropriate when B alone remains outdated and A has already started replacement Pods with the current ConfigMap, while C is already current. It does not claim that A’s running process environment refreshes itself."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+            ],
+            "summary": "Roll out new Pods for A and B; leave C running. — The frozen ConfigMap unit distinguishes startup environment values and subPath mounts, which do not auto-refresh, from ordinary updating volumes. Replacing the pre-update Pods for A and B obtains current configuration, while C’s observed updated file and per-request reread satisfy the no-C-rollout requirement."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+            ],
+            "summary": "Roll out new Pods for A, B, and C. — A rollout of every Deployment is a valid way to refresh all startup-consumed configuration when every application requires new Pods and no keep-running constraint excludes one. Here C already has and consumes the updated file, and replacing C violates the explicit requirement to keep it running. The action is valid, but its scope is unnecessarily broad for this task."
+          }
+        ]
+      }
+    }
+  }
+}
