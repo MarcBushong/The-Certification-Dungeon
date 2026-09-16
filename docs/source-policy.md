@@ -166,6 +166,44 @@ The narrow textual Content Understanding article exception permits only HTTPS
 Credential allowlisting and full provenance remain mandatory; videos, shows,
 media and search pages stay barred. This does not expand DP-700 permissions.
 
+## Question feature lifecycle labels
+
+Question `featureStatus` is separate from a source's evidence role. `GA` and
+`Preview` describe actual software-feature claims. A question using the bound
+`three-pass-v1` profile may use `Not applicable` only for genuinely
+vendor/version-independent methodology or hypothetical decision methods that
+make no software lifecycle claim. Legacy packages, including unchanged DP-700,
+retain their `GA`/`Preview` admission policy.
+
+This is an honest metadata representation, not an unknown-maturity fallback.
+A named SDK operation, API response contract, service feature, permission or
+version-specific behavior still needs the appropriate `GA`/`Preview` evidence.
+If that evidence is missing, keep the candidate excluded; do not relabel it
+`Not applicable`. A source marked `Not applicable` never assigns or proves a
+question's lifecycle label.
+
+For example, a hypothetical model-selection exercise can compare stipulated
+costs and quality requirements using abstract alternatives without asserting
+actual vendor prices, model availability or service behavior. In contrast,
+`response.usage`, `function_call_output.call_id`, SDK function-tool declarations
+and published-agent permission contracts are actual software claims. Unknown
+GA/Preview evidence for those contracts cannot be replaced with this label.
+
+Both independent reviewers must evaluate every actual claim and explicitly
+justify a non-feature classification in the existing feature-status review and
+adversarial challenge. Approved training/documentation provenance, per-option
+evidence, all review stages, rubric minima, freshness and readiness still apply.
+The existing rule that any cited Preview source requires a Preview question is
+unchanged. A label edit is an authored-content change: old fingerprints and
+reviews cannot approve the new label without fresh generation and both
+independent passes. No command automatically converts existing records.
+
+Schemas validate declarations and hashes bind exact content; neither proves
+that a lifecycle classification is true or that reviewers genuinely acted
+independently. A named-API regression test demonstrates that a recorded
+technical hold cannot be overridden, not that code can discover deliberately
+false approvals from question wording.
+
 ## Retrieval versus availability versus review
 
 Actual retrieval timestamps and source titles/URLs are preserved in the

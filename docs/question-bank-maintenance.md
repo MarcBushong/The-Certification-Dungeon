@@ -60,6 +60,21 @@ old rubrics cannot be renewed merely by rewriting envelope versions or dates.
 See [architecture](architecture.md), [onboarding](dungeon-onboarding.md),
 [lifecycle](dungeon-lifecycle.md), and [source policy](source-policy.md).
 
+## Question feature status
+
+Strict `three-pass-v1` questions can represent genuinely non-feature methodology
+with `featureStatus: "Not applicable"` instead of inventing a software release
+claim. This does not apply to unknown maturity of a real SDK/API/service
+contract. Reviewers must justify that distinction against the actual question;
+a source's `Not applicable` label supplies neither GA evidence nor permission
+to copy that label to a question. Legacy DP-700 and other non-strict packages
+retain their `GA`/`Preview` admission policy.
+
+All existing source, Preview-label, independent-review, rubric, freshness and
+mode gates remain in force. Relabeling changes the authored fingerprint and
+requires fresh passes; it does not renew or convert an old approval. See
+[the precise source-policy boundary](source-policy.md#question-feature-lifecycle-labels).
+
 ## Evidence and dates
 
 The expansion's actual primary Microsoft Learn MCP fetches were:

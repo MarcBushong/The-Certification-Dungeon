@@ -14,6 +14,12 @@ against exact admitted evidence. Confirm that citations resolve and the entire
 provenance chain reaches this credential's guide or linked training. A matching
 hostname or page topic is insufficient.
 
+The bound three-pass profile permits question `Not applicable` only for
+genuinely vendor/version-independent methodology without a software lifecycle
+claim. Independently justify that classification in the feature-status review.
+Do not use it for unknown SDK/API/service maturity or infer it from a source
+label. Existing Preview-source, provenance and review checks are unchanged.
+
 Examine duplicate and construction warnings, including fact-level cosmetic
 variants, reused setups, answer-position skew, grammar and answer-length clues.
 Reject unsupported, ambiguous or inflated questions; record the specific failure.

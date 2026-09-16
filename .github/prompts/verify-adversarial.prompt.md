@@ -17,6 +17,12 @@ explain why it is supported, not incorrect, in this context. Record each require
 challenge: scope, plan, role, preconditions, featureStatus, sourceChanges,
 stemSufficiency, explanationBounds, reasoningDepth and answerClues.
 
+If a question uses `Not applicable`, challenge whether its actual claims are
+genuinely vendor/version-independent methodology rather than a software
+feature with unestablished maturity. Explain the distinction independently in
+`featureStatus`; never infer it from a source label. All ordinary source,
+Preview-label, rubric and independent-review requirements remain in force.
+
 Independently score all twelve version-2 criteria from 0 to 4: alignment,
 accuracy, scenarioCompleteness, answerUniqueness, distractorPlausibility,
 distractorEvidence, documentationStrength, citationSpecificity,

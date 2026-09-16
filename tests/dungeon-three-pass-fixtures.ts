@@ -14,7 +14,11 @@ import type { Question } from '../src/features/grounding/schema';
 import type { VerificationReview } from '../src/features/grounding/workflow';
 
 // Synthetic structural tests only; no real source retrieval or review is asserted.
-export function strictFixture(count = 1, sourceClass?: 'doc' | 'training') {
+export function strictFixture(
+  count = 1,
+  sourceClass?: 'doc' | 'training',
+  featureStatus: Question['featureStatus'] = 'GA',
+) {
   const fixture = dungeonFixture();
   if (sourceClass) {
     const url =
@@ -71,6 +75,7 @@ export function strictFixture(count = 1, sourceClass?: 'doc' | 'training') {
       verifiedAt: adversarialTime,
       difficulty: 'expert',
       complexity: 'scenario-based',
+      featureStatus,
     };
     const hash = questionFingerprint(q);
     questions.push(q);

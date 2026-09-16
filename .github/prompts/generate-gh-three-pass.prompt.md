@@ -26,6 +26,13 @@ candidates on retrieval failure. Preserve actual retrieval timestamps,
 link/redirect receipts or short explicit reference passages in
 `source-registry.json`.
 
+Under the bound `three-pass-v1` profile, `featureStatus: "Not applicable"` is
+reserved for genuinely vendor/version-independent methodology without a
+software lifecycle claim. It is not a substitute for missing GA/Preview
+evidence about a named SDK/API/service contract, and must never be copied
+automatically from a source label. Keep uncertain feature claims excluded.
+Both subsequent independent contexts must justify a non-feature classification.
+
 Preserve observed credential -> course -> path -> module -> unit ancestry,
 including course/path UID `explicit-reference` receipts. Never invent a direct
 credential -> path link. A `/en-us/training/courses/` record may be `training`

@@ -34,6 +34,13 @@ supported by the cited evidence. Do not invent restrictions to fill a checklist;
 justify nonapplicability. Check grammar, length, negative wording, superficial
 difficulty and reused concepts.
 
+Challenge any question labeled `Not applicable`: it must genuinely make no
+software lifecycle claim, rather than hide uncertainty about a named
+SDK/API/service behavior. Re-evaluate that distinction independently in
+`challenges.featureStatus`; a source's label is not an approval. Preview-source
+labeling, source support and every existing rubric/check requirement still
+apply. A mislabeled actual feature remains excluded, even if its key is correct.
+
 Score the exact candidate 0–4 on all 12 version-2 rubric criteria: alignment,
 accuracy, scenarioCompleteness, answerUniqueness, distractorPlausibility,
 distractorEvidence, documentationStrength, citationSpecificity,
