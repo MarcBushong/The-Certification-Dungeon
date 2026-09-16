@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "ai200-r-s-005": {
+      "credentialId": "ai-200",
+      "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+      "questionFingerprint": "322133f4e429dde96d92e90a068e294e7f5da45e84c10a465ac8449f22d1a822",
+      "sourceIds": [
+        "ai200-20260915-observe-config-2-connect-app-configuration",
+        "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+      ],
+      "retrievedAt": "2026-09-15T19:24:02.870Z",
+      "lastValidatedAt": "2026-09-15T20:35:34.264Z",
+      "answerEvidence": [
+        {
+          "choiceId": "B",
+          "sourceIds": [
+            "ai200-20260915-observe-config-2-connect-app-configuration",
+            "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+          ],
+          "summary": "B is not incorrect in the exact new context. Calls at 120 and 240, each finishing within one second, remain before secret age 300. At 360 the secret interval is elapsed, while the previous ordinary check completed no later than 241, leaving at least 119 seconds against its 60-second gate. Either internal check ordering therefore permits this timing. The approved reference unit permits independent secret refresh without a sentinel change. This answer is appropriate when the first listed secret-due invocation demonstrably clears both gates, as here; it is not a guarantee for closer-spaced calls, unbounded prior work or a fixed-version reference. The arithmetic tests scenario premises, not an executed SDK implementation."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "A",
+          "sourceIds": [
+            "ai200-20260915-observe-config-2-connect-app-configuration",
+            "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+          ],
+          "summary": "t=240 is too early for the supplied secret_refresh_interval=300 measured from the last retrieval completed at t=0; even completion at t=241 remains early. Its ordinary check may be eligible, but that separate fact cannot satisfy the secret interval. A sourced countercontext is a shorter configured secret interval, for example 200 seconds: t=120 would remain early and t=240 could qualify with the ordinary gate already clear. The reference unit defines this independently configurable seconds interval, while the connection unit defines the ordinary elapsed-time gate."
+        },
+        {
+          "choiceId": "C",
+          "sourceIds": [
+            "ai200-20260915-observe-config-2-connect-app-configuration",
+            "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+          ],
+          "summary": "C incorrectly imposes the watched ordinary-setting reload condition on the independent secret path. The source expressly supports retrieving refreshed secret values after secret_refresh_interval even when App Configuration does not change. A changed watched sentinel is a genuine correct condition for the ordinary-setting publication/reload pattern, together with an eligible explicit call, but it is not necessary for this versionless secret's interval-based refresh. No event-driven push or automatic scheduling is inferred from either path."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "reviewerId": "ai200-release-adversarial-observability",
+        "reviewedAt": "2026-09-15T20:57:17.968Z",
+        "notes": "Independently scored the repaired record, not converted the old failing rubric. Alignment 4: exact App Configuration retrieval subskill. Accuracy 4: all three time statements and the independent secret path follow the original evidence. Scenario completeness 4: explicit origins, versionless reference, availability and bounded calls remove the old gate collision. Answer uniqueness 4: only 360 clears both required intervals. Distractor plausibility 3: the sentinel condition is genuine but easier than a close competing invocation. Distractor evidence 4: shorter-secret-interval and ordinary-watched-setting countercontexts are sourced. Documentation strength 4 and citation specificity 4: the two exact approved units establish the two gates and their separate purposes, with no new SDK ordering claim. Difficulty authenticity 3: modest arithmetic and separation of refresh concepts fit a low-end intermediate item, not Advanced. Explanation quality 4: bounded timing eligibility rather than internal ordering or an SLA. Originality 4: this retained same-fact repair is distinct from the neighboring publisher-order, missing-call and flag-enable decisions, not a new duplicate count. Clarity/accessibility 4: explicit antecedents, readable times and parallel numeric options. Total 46/48; all mandated critical scores are 4.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 4,
+          "clarityAccessibility": 4
+        }
+      }
+    }
+  }
+}

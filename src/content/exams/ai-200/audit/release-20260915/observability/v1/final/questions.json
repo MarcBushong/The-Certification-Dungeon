@@ -1,0 +1,2318 @@
+[
+  {
+    "id": "ai200-s-001",
+    "question": "A service receives an opaque access token from an external provider. It must retrieve the same string at runtime; it does not need certificate renewal or a vault-hosted signing operation. Which Azure Key Vault object type matches this requirement?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "A key object"
+      },
+      {
+        "id": "B",
+        "text": "A secret object"
+      },
+      {
+        "id": "C",
+        "text": "A certificate object"
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Store the token as a Key Vault secret.",
+    "deepExplanation": "Choose the object type by the operation the application needs. Secret retrieval returns an opaque value; key operations and certificate lifecycle management solve different requirements. This does not make every authentication token a cryptographic key object.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Key objects support cryptographic operations such as encryption and signing. They are appropriate when the application needs those operations, rather than retrieval of an opaque provider-issued token.",
+      "C": "Certificate objects manage X.509 certificates and their lifecycle. They fit certificate issuance or renewal requirements, not this provider-issued token string."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Secure secrets by using Azure Key Vault, including rotation and retrieval",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-observe-secrets-2-store-organize-secrets"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/2-store-organize-secrets"
+    ],
+    "documentationTitles": [
+      "Store and organize secrets, keys, and certificates"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.520Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.520Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "keyvault.secret-key-certificate-distinction",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:24:17.002Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-secrets-2-store-organize-secrets"
+    ],
+    "verificationNotes": "Tried treating the token as key material or a certificate-related secret. Neither counterexample changes the required opaque-string retrieval operation: the supplied value is not an X.509 object and no vault cryptographic operation is requested. B alone fits. Read all object definitions without inheriting the unit's overbroad key-export/HSM assertions. This remains foundational, not an advanced implementation encounter.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "Direct object-purpose evidence resolves all three options under the expressly stated retrieval requirement."
+  },
+  {
+    "id": "ai200-s-002",
+    "question": "A Python inventory tool already has permission to list secrets in one vault. It needs the names, content types, and enabled states of the vault's secrets, but its design excludes retrieving secret values. Which SecretClient operation should supply this inventory?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Call get_secret for each discovered secret name."
+      },
+      {
+        "id": "B",
+        "text": "Call list_properties_of_secret_versions for one secret name."
+      },
+      {
+        "id": "C",
+        "text": "Call list_properties_of_secrets for the vault."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Use list_properties_of_secrets for metadata-only discovery.",
+    "deepExplanation": "The distinction is both scope and returned information: listing secrets discovers named objects, listing versions inspects one object's history, and getting a secret retrieves its value. Metadata visibility is not proof that an identity can read secret values.",
+    "whyOtherAnswersAreWrong": {
+      "A": "get_secret retrieves a KeyVaultSecret including its value. It is useful for an application that must use a credential, but it violates this metadata-only retrieval design.",
+      "B": "This operation inventories the versions of a particular named secret. It suits rotation-history analysis, not discovery of the separate secret names throughout this vault."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Secure secrets by using Azure Key Vault, including rotation and retrieval",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-observe-secrets-3-retrieve-secrets-sdk",
+      "ai200-20260915-observe-secrets-4-handle-versioning-rotation"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/3-retrieve-secrets-sdk",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/4-handle-versioning-rotation"
+    ],
+    "documentationTitles": [
+      "Retrieve secrets using Azure SDK client libraries",
+      "Handle secret versioning and rotation"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.520Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.520Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "keyvault.value-get-versus-metadata-list",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:24:17.002Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-secrets-3-retrieve-secrets-sdk",
+      "ai200-20260915-observe-secrets-4-handle-versioning-rotation"
+    ],
+    "verificationNotes": "Attempted a value-bearing inventory and a version-listing substitute. get_secret violates the metadata-only result, while version listing narrows to one named object and misses vault-wide discovery. C satisfies both output shape and scope. Compared the complete AKS r-c014 metadata-key check: that asks for one resource's key presence rather than discovering vault secret objects. No Python readme approval is needed.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "Both the returned metadata and per-vault versus per-secret scope are explicitly documented in the two admitted SDK units."
+  },
+  {
+    "id": "ai200-s-003",
+    "question": "An Azure-hosted Python service authenticates to an RBAC-enabled Key Vault with its managed identity. Network access succeeds, but the service cannot read an enabled secret. The service must read secret values without receiving secret-management permissions. Which role should be assigned to that identity at the vault?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Key Vault Secrets User"
+      },
+      {
+        "id": "B",
+        "text": "Key Vault Reader"
+      },
+      {
+        "id": "C",
+        "text": "Key Vault Secrets Officer"
+      },
+      {
+        "id": "D",
+        "text": "Key Vault Contributor"
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Assign Key Vault Secrets User to the application's managed identity.",
+    "deepExplanation": "Successful Microsoft Entra authentication does not by itself authorize secret access. The requirement excludes both metadata-only access and secret-management privileges. Scope the role assignment to the intended vault rather than expanding unrelated resource access.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Reader exposes metadata without revealing secret values. It is appropriate for discovery tools, but not a service that must retrieve the credential value.",
+      "C": "Secrets Officer grants secret-management operations in addition to access. It suits rotation operators, but exceeds the explicitly read-only requirement.",
+      "D": "Contributor manages the vault resource's control plane rather than granting secret data-plane reads. It suits vault administration, not runtime credential retrieval."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Secure secrets by using Azure Key Vault, including rotation and retrieval",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-secrets-2-store-organize-secrets",
+      "ai200-20260915-observe-secrets-3-retrieve-secrets-sdk"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/2-store-organize-secrets",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/3-retrieve-secrets-sdk"
+    ],
+    "documentationTitles": [
+      "Store and organize secrets, keys, and certificates",
+      "Retrieve secrets using Azure SDK client libraries"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.520Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.520Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "keyvault.managed-identity-secret-client",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:24:17.002Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-secrets-2-store-organize-secrets",
+      "ai200-20260915-observe-secrets-3-retrieve-secrets-sdk"
+    ],
+    "verificationNotes": "Challenged the tempting Officer permission superset and the Contributor control-plane label. Neither satisfies secret-value access without secret management: only Secrets User does. Authentication and network success do not grant data rights. All four role definitions were read directly. s015 independently requires two services' authorizations; this is not its complete dual-resource decision.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The admitted role table and explicit Contributor warning precisely establish A and exclude all three neighboring roles."
+  },
+  {
+    "id": "ai200-s-005",
+    "question": "A provider supports two valid credentials at a time. A long-running service caches credential A, and the operator can issue B without revoking A. The operator must retire A without restarting replicas or rejecting calls from replicas that have not refreshed yet. Which rotation plan fits this transition?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Publish B in Key Vault and restart the application to reload its configuration."
+      },
+      {
+        "id": "B",
+        "text": "Use a near-expiry event to publish B in Key Vault, leaving consumer refresh to its normal schedule."
+      },
+      {
+        "id": "C",
+        "text": "Publish B in Key Vault, confirm each replica is using B, and then revoke A at the provider."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Retain A until every replica has adopted B, then retire A at the provider.",
+    "deepExplanation": "Key Vault publication and consumer adoption are separate steps. The stipulated provider permits overlap, so confirmation of adoption supplies the safe boundary for retiring the credential cached by existing replicas. This does not claim that storing a secret changes credentials in the external service or refreshes every client automatically.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The unit documents manual publication followed by restart as a rotation strategy. That fits an application whose operational plan permits restart; it does not provide the required uninterrupted transition for these long-running replicas.",
+      "B": "Near-expiry automation is a documented way to initiate credential replacement before expiry. Publishing a replacement alone does not establish which replicas use it or define when A can be retired; the question needs that consumer-adoption boundary."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Secure secrets by using Azure Key Vault, including rotation and retrieval",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-observe-secrets-4-handle-versioning-rotation",
+      "ai200-20260915-observe-secrets-5-implement-caching-strategies"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/4-handle-versioning-rotation",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/5-implement-caching-strategies"
+    ],
+    "documentationTitles": [
+      "Handle secret versioning and rotation",
+      "Implement caching strategies to reduce Key Vault calls"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.520Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.520Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "keyvault.external-credential-rotation-consumer-refresh",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:24:17.002Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-secrets-4-handle-versioning-rotation",
+      "ai200-20260915-observe-secrets-5-implement-caching-strategies"
+    ],
+    "verificationNotes": "Tried using automatic near-expiry publication as a complete safe-retirement plan. Publication alone does not determine whether cached consumers moved; the requirement includes retiring A safely. With two concurrently valid provider credentials, confirming B at every replica before revoking A supplies that missing boundary. The no-restart premise excludes the otherwise documented restart pattern.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The dual-credential source explicitly orders publication, consumer adoption and old-key retirement; the stem supplies the provider overlap needed for that sequence."
+  },
+  {
+    "id": "ai200-s-006",
+    "question": "An authorized recovery tool can retrieve an enabled Key Vault secret version even though its expiration date has passed. Operators need to block subsequent vault reads of that particular version while leaving other versions usable. Copies already downloaded are outside this requirement. Which action changes the relevant access state?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Set enabled=False on the targeted version with update_secret_properties()."
+      },
+      {
+        "id": "B",
+        "text": "Set an earlier expires_on timestamp on the targeted version."
+      },
+      {
+        "id": "C",
+        "text": "Add a rotation-policy tag to the targeted version."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Disable the specific version to prevent subsequent retrieval through Key Vault.",
+    "deepExplanation": "The versioning unit explicitly distinguishes informational expiration from the enabled property. Updating version properties is different from deleting the secret or revoking credentials already held by downstream clients. No claim about not-before semantics is needed.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Expiration records intended credential lifetime and supports lifecycle monitoring. The unit explicitly says expired secrets remain retrievable; moving that timestamp does not supply this access block.",
+      "C": "Tags support organization and rotation-policy reporting. They can document a policy but are metadata, not the enabled property that controls retrieval of this version."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Secure secrets by using Azure Key Vault, including rotation and retrieval",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-secrets-4-handle-versioning-rotation",
+      "ai200-20260915-observe-secrets-2-store-organize-secrets"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/4-handle-versioning-rotation",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/2-store-organize-secrets"
+    ],
+    "documentationTitles": [
+      "Handle secret versioning and rotation",
+      "Store and organize secrets, keys, and certificates"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.520Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.520Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "keyvault.expiry-metadata-versus-get-availability",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:24:17.002Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-secrets-4-handle-versioning-rotation",
+      "ai200-20260915-observe-secrets-2-store-organize-secrets"
+    ],
+    "verificationNotes": "Tested whether earlier expiration or a rotation tag could block vault retrieval. The actual version unit expressly allows expired secret retrieval and separately documents disabling the selected version. A alone changes the access state. This does not revoke provider credentials or erase downloaded copies, and it does not rely on erroneous individual-version deletion language.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The evidence explicitly contrasts informational expiry with enabled=False, and the stem removes already-downloaded copies from scope."
+  },
+  {
+    "id": "ai200-s-007",
+    "question": "Each replica of a high-throughput API currently retrieves the same Key Vault secret for every request. Security permits up to five minutes of local staleness after a planned rotation but forbids storing credentials in a shared external cache. Requests arrive continuously, and refresh failures are handled separately. Which design best reduces redundant reads within those constraints?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Preload the secret once per process and retain it until that process restarts."
+      },
+      {
+        "id": "B",
+        "text": "Cache the secret in each process and refetch on access once its five-minute TTL expires."
+      },
+      {
+        "id": "C",
+        "text": "Place the secret in a shared cache and have one worker refresh it every five minutes."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Use a time-bounded in-memory cache per process.",
+    "deepExplanation": "The design balances two independent constraints: bounded local age and no new shared secret store. It does not promise that a timer alone refreshes an idle or disconnected process. A fleet still needs throttling-aware retries and load management; a TTL is not proof that all failures are impossible.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Startup-only caching minimizes reads for secrets that remain unchanged during a process lifetime. Long-lived replicas can exceed the explicit five-minute staleness bound, so that cache lifetime is unsuitable here.",
+      "C": "A shared cache can reduce fleet-wide vault reads, but stores credentials in another service that requires its own protection. It would fit a policy allowing that additional storage, which this stem forbids."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Secure secrets by using Azure Key Vault, including rotation and retrieval",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "ai200-20260915-observe-secrets-5-implement-caching-strategies"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/5-implement-caching-strategies"
+    ],
+    "documentationTitles": [
+      "Implement caching strategies to reduce Key Vault calls"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.520Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.520Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "keyvault.cache-freshness-throttling-balance",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:24:17.002Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-secrets-5-implement-caching-strategies"
+    ],
+    "verificationNotes": "Challenged per-process caching with a shared-store optimization and a startup-only cache. Shared storage violates the stated credential-location policy; startup-only state can exceed the five-minute age. TTL-on-access fits the continuous-request and separately handled failure premises. No exact fleet call cap, race-free implementation or hard network-latency SLA is inferred from the illustrative cache source.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The unit directly compares all three cache scopes; explicit staleness and storage constraints determine the key without assuming idle refresh."
+  },
+  {
+    "id": "ai200-s-008",
+    "question": "An application caches Key Vault secrets with a TTL. Its existing notification handler can invalidate a cached entry when notified of a vault change. Operators want prompt adoption after a new secret version is stored, while retaining the TTL as a fallback if notification delivery fails. Which event should trigger invalidation?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "SecretNearExpiry"
+      },
+      {
+        "id": "B",
+        "text": "SecretExpired"
+      },
+      {
+        "id": "C",
+        "text": "SecretNewVersionCreated"
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Invalidate the entry on SecretNewVersionCreated.",
+    "deepExplanation": "An event about creating a new version directly matches the cache-change trigger. Invalidation is application behavior; the event does not itself update every in-memory copy. Keeping time-based expiration avoids making cache freshness depend exclusively on successful notification delivery.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Near-expiry notification can initiate rotation before a credential ages out. It does not specifically identify that a replacement version has just been stored, which is the invalidation trigger required here.",
+      "B": "Expiration notification supports lifecycle monitoring at expiry. It is appropriate for expired-secret handling, but can occur independently of creating a replacement and needlessly delays adoption."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Secure secrets by using Azure Key Vault, including rotation and retrieval",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-observe-secrets-5-implement-caching-strategies",
+      "ai200-20260915-observe-secrets-4-handle-versioning-rotation"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/5-implement-caching-strategies",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/4-handle-versioning-rotation"
+    ],
+    "documentationTitles": [
+      "Implement caching strategies to reduce Key Vault calls",
+      "Handle secret versioning and rotation"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.520Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.520Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "keyvault.rotation-event-cache-invalidation",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:24:17.002Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-secrets-5-implement-caching-strategies",
+      "ai200-20260915-observe-secrets-4-handle-versioning-rotation"
+    ],
+    "verificationNotes": "Tried the lifecycle-near-expiry and already-expired events as equivalent update notifications. Neither specifically reports creation of a replacement. C connects the already implemented invalidator to the exact change event; the TTL remains a missed-notification fallback. Full data d039 instead chooses Redis DEL after a known update, so its operative decision is not repeated here.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The source explicitly associates SecretNewVersionCreated with cache invalidation and separately documents both expiry-related notifications."
+  },
+  {
+    "id": "ai200-s-009",
+    "question": "A pipeline has a non-sensitive retry count and a partner API token that grants access to an external account. Its policy reserves Key Vault for sensitive values and requires a single configuration-reading path. Which placement fits the documented App Configuration and Key Vault pattern?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Keep both as direct App Configuration values."
+      },
+      {
+        "id": "B",
+        "text": "Keep the retry count in App Configuration and reference a Key Vault token."
+      },
+      {
+        "id": "C",
+        "text": "Keep both in Key Vault and reference both from App Configuration."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Store the retry count directly in App Configuration and the token in Key Vault, exposed through a reference.",
+    "deepExplanation": "Placement follows sensitivity and lifecycle rather than whether both values are strings. A reference does not copy the token into App Configuration. This answer assumes the provider is configured to resolve references; it does not imply that access to the configuration store authorizes secret retrieval.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Direct values fit non-sensitive operational settings, such as the retry count. The access-granting token instead belongs in Key Vault; treating both as ordinary settings misses the requested secret-storage boundary.",
+      "C": "References can provide a unified reading path for secret values. This placement could fit two sensitive values, but placing the non-sensitive retry count in Key Vault violates the policy reserving the vault for sensitive data."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-observe-config-5-decide-app-config-vs-key-vault",
+      "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/5-decide-app-config-vs-key-vault",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/4-reference-key-vault-secrets"
+    ],
+    "documentationTitles": [
+      "Decide what to store in App Configuration vs Key Vault",
+      "Reference Key Vault secrets from App Configuration"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.520Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.520Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "appconfig.setting-versus-secret-placement",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:24:17.002Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-config-5-decide-app-config-vs-key-vault",
+      "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+    ],
+    "verificationNotes": "Challenged both placement extremes. Both-in-vault could work technically through references, but violates the explicit sensitive-only policy; both-direct lacks the required credential separation. B preserves a single provider-facing path while keeping the token value in Key Vault. No generalized HSM, audit-every-access or expiry-enforcement claims from the placement unit are accepted.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "Sensitivity criteria and client-side reference indirection are directly documented; the policy makes the otherwise viable all-vault alternative incorrect."
+  },
+  {
+    "id": "ai200-s-010",
+    "question": "The Python App Configuration provider has successfully loaded key 'RetryPolicy'. Its content type is application/json and its stored value is {\"attempts\":4,\"delaySeconds\":2}. The returned mapping is named config. Which expression accesses the parsed attempts value without reparsing the JSON?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "config[\"RetryPolicy\"][\"attempts\"]"
+      },
+      {
+        "id": "B",
+        "text": "config[\"RetryPolicy:attempts\"]"
+      },
+      {
+        "id": "C",
+        "text": "config[\"attempts\"]"
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Read the nested mapping with config[\"RetryPolicy\"][\"attempts\"].",
+    "deepExplanation": "The application/json content type causes the provider to interpret RetryPolicy as a JSON object. The loaded provider Mapping then exposes that object under the literal RetryPolicy key. A colon in another key name would be a key-naming convention, not an automatic nested-JSON lookup.",
+    "whyOtherAnswersAreWrong": {
+      "B": "A colon can be part of a literal hierarchical setting key. This expression would fit a separately stored key named RetryPolicy:attempts, which the stem does not define; it is not nested JSON-property access.",
+      "C": "This looks up a top-level setting named attempts. It would work if that independent key were loaded, but the provided attempts value is a property inside RetryPolicy."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-observe-config-2-connect-app-configuration"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration"
+    ],
+    "documentationTitles": [
+      "Connect to App Configuration from application code"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.525Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.525Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "appconfig.python-provider-mapping",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:28:47.610Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration"
+    ],
+    "verificationNotes": "Attempted a colon-delimited lookup and a flattened top-level lookup. Neither key is supplied; the application/json value is parsed under RetryPolicy, making A the required nested lookup. This does not confuse JSON structure with literal key naming. Full dp800-direct-035 changes JSON through a SQL-typed argument, a different operation from reading this already parsed value.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The provider's JSON content-type and Mapping contracts directly determine the lookup shape; no network behavior is needed."
+  },
+  {
+    "id": "ai200-s-011",
+    "question": "Two deployments must both read the setting key 'Classifier:Threshold' from one App Configuration store. Development needs 0.60 and Production needs 0.85. Neither deployment may change that key name in its application code. How should the two variants be represented?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Use separate keys 'Classifier:Threshold:Development' and 'Classifier:Threshold:Production'."
+      },
+      {
+        "id": "B",
+        "text": "Use one null-labeled 'Classifier:Threshold' setting as the shared default."
+      },
+      {
+        "id": "C",
+        "text": "Use key 'Classifier:Threshold' with Development and Production labels."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Represent the environments with labels on the same key.",
+    "deepExplanation": "The key stays stable and the selected label chooses the variant. A null label is itself a variant used for defaults, not an instruction to load every environment. This question concerns identity of stored settings, not precedence when several selectors are composed.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Separate hierarchical key names are a valid organization pattern when applications choose different lookup keys. They do not preserve this common application key without an additional transformation.",
+      "B": "A single null-labeled value is the documented shared-default pattern. It fits deployments that can use the same threshold; it cannot represent both of the stipulated different values."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-3-organize-labels-feature-flags"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/3-organize-labels-feature-flags"
+    ],
+    "documentationTitles": [
+      "Connect to App Configuration from application code",
+      "Organize settings with labels and feature flags"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.525Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.525Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "appconfig.key-label-identity",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:28:47.610Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-3-organize-labels-feature-flags"
+    ],
+    "verificationNotes": "Tested whether a common default or environment suffix could preserve both required lookup identity and unequal values. A changes the key, B supplies only one shared value, and C uses the documented key-label identity. This is representation, not s012's sparse override precedence.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The same-key/different-label example in C3 directly matches the required environment variant contract."
+  },
+  {
+    "id": "ai200-s-012",
+    "question": "An App Configuration store has null-labeled defaults BatchSize=20 and Timeout=40. Its Production label has BatchSize=80 but no Timeout setting. A Python provider loads the Production selector first and the null-label selector second; the application sees BatchSize=20. It needs BatchSize=80 and the default Timeout=40 without duplicating settings. What should change?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Keep the existing selector order and remove the Production BatchSize setting."
+      },
+      {
+        "id": "B",
+        "text": "Load the null-label selector first and the Production selector second."
+      },
+      {
+        "id": "C",
+        "text": "Load only the Production selector and omit the null-label selector."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Load defaults first, then apply the Production overlay.",
+    "deepExplanation": "Selector composition is ordered rather than an automatic preference for a label named Production. Reversing the order simultaneously corrects the override and retains an inherited default. Selecting only the environment would discard a needed value.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Removing the override leaves the default BatchSize=20, which is useful when all environments should share the default. It cannot produce the required Production value of 80.",
+      "C": "Selecting only Production obtains its BatchSize override but does not load the missing Timeout default. It fits a fully populated environment label, not this sparse override set."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-3-organize-labels-feature-flags"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/3-organize-labels-feature-flags"
+    ],
+    "documentationTitles": [
+      "Connect to App Configuration from application code",
+      "Organize settings with labels and feature flags"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.525Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.525Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "appconfig.default-environment-overlay-order",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:28:47.610Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-3-organize-labels-feature-flags"
+    ],
+    "verificationNotes": "Recomputed both loaded values under every selector plan: existing order yields 20/40, removing override yields 20/40, Production-only loses Timeout, and defaults-then-Production gives 80/40. B uniquely preserves the sparse fallback as well as the override. Label names confer no intrinsic precedence.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "Ordered last-selector priority and default retention explicitly documented in both units support the complete two-setting result."
+  },
+  {
+    "id": "ai200-s-013",
+    "question": "One App Configuration store serves several applications and environments. A Python worker must load only Production-labeled keys beginning 'AuditWorker:' and expose 'AuditWorker:BatchSize' as 'BatchSize' in its local mapping. The stored keys must remain unchanged. Which provider configuration meets both requirements?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Select key filter 'AuditWorker:*' and label Production; trim prefix 'AuditWorker:'."
+      },
+      {
+        "id": "B",
+        "text": "Select key filter '*' and label Production; trim prefix 'AuditWorker:'."
+      },
+      {
+        "id": "C",
+        "text": "Select key filter 'AuditWorker:*' and label Production; leave prefixes untrimmed."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Use both a scoped key/label selector and a local prefix trim.",
+    "deepExplanation": "Filtering and trimming act on different parts of the loading process. Prefix trimming is neither an authorization mechanism nor a filter; selectors also do not rename keys. No store mutation is needed for the requested local mapping.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Trimming removes a prefix from matching loaded names but does not exclude other applications' keys. This wider selector suits an application needing all Production settings, which the stem excludes.",
+      "C": "The selector correctly limits loaded settings, but preserves AuditWorker:BatchSize as the local key. It fits code using fully qualified keys, not the required BatchSize lookup."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-observe-config-2-connect-app-configuration"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration"
+    ],
+    "documentationTitles": [
+      "Connect to App Configuration from application code"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.525Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.525Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "appconfig.setting-selector-prefix-trim",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:28:47.610Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration"
+    ],
+    "verificationNotes": "Tried prefix trimming as if it filtered keys and a selector as if it renamed them. These are separate operations: only A restricts Production AuditWorker keys and exposes the shorter local name. Nothing in the answer changes the store or grants security isolation.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The two separate documented provider parameters exactly satisfy the independent filter and local-name requirements."
+  },
+  {
+    "id": "ai200-s-014",
+    "question": "A Python worker reloads ordinary settings only when a watched sentinel changes and the application calls refresh(). Operators will update two related settings. Both writes can finish before the sentinel is changed, but a worker might check between any two writes. Which publication order avoids announcing a partially written release?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Change the sentinel, write the first setting, then write the second setting."
+      },
+      {
+        "id": "B",
+        "text": "Write the first setting, change the sentinel, then write the second setting."
+      },
+      {
+        "id": "C",
+        "text": "Write both settings, then change the sentinel for the completed release."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Publish both setting changes before updating the sentinel.",
+    "deepExplanation": "Update the sentinel after the related writes have completed. This is a publication-order rule for the specified watcher pattern, not a cross-key transaction, a rollback mechanism or a guarantee about concurrent publishers. A worker can retain the preceding configuration until its next eligible explicit refresh.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Updating the sentinel first can cause a worker to reload before both writes finish. A sentinel may be updated alone when the desired settings are already complete, but that precondition is absent here.",
+      "B": "This signals a reload while the second value is still old. It would fit a release consisting only of the first setting, not this paired update."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-3-organize-labels-feature-flags"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/3-organize-labels-feature-flags"
+    ],
+    "documentationTitles": [
+      "Connect to App Configuration from application code",
+      "Organize settings with labels and feature flags"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.525Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.525Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "appconfig.sentinel-dynamic-refresh",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:28:47.610Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-3-organize-labels-feature-flags"
+    ],
+    "verificationNotes": "Constructed a worker check immediately after each premature sentinel write. Both A and B announce a release before the second setting exists; C writes both before signaling. This is safe publication ordering for the stipulated watcher, not an atomicity guarantee. It differs from the missing refresh call in r-s006 and the unresolved dual-timer behavior in r-s005.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The explicit operator-updates-settings-then-sentinel sequence supports the key; adversarial interleavings disprove both partial plans."
+  },
+  {
+    "id": "ai200-s-015",
+    "question": "A Python application uses one managed identity and the App Configuration provider to read settings and resolve a Key Vault secret reference. Both services use Azure RBAC. Network access and keyvault_credential are configured, and the app requires read-only data access. Which two roles provide the necessary access at the respective resources? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "App Configuration Data Reader at the configuration store"
+      },
+      {
+        "id": "B",
+        "text": "Key Vault Reader at the referenced vault"
+      },
+      {
+        "id": "C",
+        "text": "App Configuration Data Owner at the configuration store"
+      },
+      {
+        "id": "D",
+        "text": "Key Vault Secrets User at the referenced vault"
+      }
+    ],
+    "correctAnswer": ["A", "D"],
+    "explanation": "Assign App Configuration Data Reader and Key Vault Secrets User to the application identity at their respective resources.",
+    "deepExplanation": "App Configuration stores a URI reference rather than a copy of the value. Successful reading of that URI does not authorize the provider's subsequent vault access. A single identity can authenticate to both services, but each service still requires its own authorization.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Key Vault Reader permits metadata discovery, not reading the referenced secret value. It suits inventory, but cannot replace the secret-value permission needed by reference resolution.",
+      "C": "Data Owner includes modifying settings and is suitable for operators or publishing pipelines. It exceeds the explicit read-only data-access requirement and is not the least-privilege choice here."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-4-reference-key-vault-secrets",
+      "ai200-20260915-observe-secrets-2-store-organize-secrets"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/4-reference-key-vault-secrets",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/2-store-organize-secrets"
+    ],
+    "documentationTitles": [
+      "Connect to App Configuration from application code",
+      "Reference Key Vault secrets from App Configuration",
+      "Store and organize secrets, keys, and certificates"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.525Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.525Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "appconfig.keyvault-reference-dual-permission",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:28:47.610Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-4-reference-key-vault-secrets",
+      "ai200-20260915-observe-secrets-2-store-organize-secrets"
+    ],
+    "verificationNotes": "Enumerated the complete two-answer set. App Configuration Data Reader supplies settings and the URI but cannot authorize vault value resolution; Key Vault Secrets User supplies the other resource's read. Reader at the vault returns metadata only, and Data Owner violates read-only access. A+D is uniquely complete. One identity is not one shared authorization boundary.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The reference unit explicitly prescribes both independent role assignments; neighboring roles are separately defined in the cited units."
+  },
+  {
+    "id": "ai200-s-016",
+    "question": "A Python service loads App Configuration feature flags and evaluates them through FeatureManager on every request. The configured provider is shown. Ordinary setting changes are observed after a sentinel update, but toggling an already-loaded feature flag is not reflected during the process lifetime. Which provider change enables that separate refresh path?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Add trim_prefixes for the ordinary application-setting prefix."
+      },
+      {
+        "id": "B",
+        "text": "Set feature_flag_refresh_enabled to true."
+      },
+      {
+        "id": "C",
+        "text": "Add another ordinary setting to refresh_on."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Enable feature_flag_refresh_enabled.",
+    "deepExplanation": "Flag loading, flag evaluation, ordinary-setting refresh and feature-flag refresh are distinct steps. The shown setup loads flags but does not enable their refresh. feature_flag_refresh_enabled=True adds that path; the existing refresh calls still matter.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Prefix trimming adjusts local setting names. It is useful for simplifying lookups, but does not enable the independent feature-flag refresh mechanism.",
+      "C": "Watching an additional setting can trigger regular-configuration reloads. It is appropriate when that setting signals ordinary changes, but it does not substitute for independently enabling flag refresh."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-config-3-organize-labels-feature-flags",
+      "ai200-20260915-observe-config-2-connect-app-configuration"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/3-organize-labels-feature-flags",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration"
+    ],
+    "documentationTitles": [
+      "Organize settings with labels and feature flags",
+      "Connect to App Configuration from application code"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.525Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.525Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "codeLanguage": "python",
+    "codeSnippet": "config = load(\n    endpoint=endpoint,\n    credential=credential,\n    feature_flags_enabled=True,\n    refresh_on=[WatchKey(\"Sentinel\")],\n    refresh_interval=30,\n)\n\n# The request handler calls config.refresh() before evaluating flags.",
+    "conceptId": "appconfig.feature-flag-versus-setting-refresh",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:28:47.610Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-config-3-organize-labels-feature-flags",
+      "ai200-20260915-observe-config-2-connect-app-configuration"
+    ],
+    "verificationNotes": "Tried another ordinary watcher and a key trim as remedies. The displayed setup already loads flags, calls refresh and evaluates FeatureManager; the missing independently enabled flag-refresh path is the remaining defect. B alone repairs it. Python syntax parses; the snippet is a configured fragment, not a claim of standalone imports and credentials.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The source explicitly separates flag loading, evaluation, ordinary refresh and feature_flag_refresh_enabled, covering the complete scenario."
+  },
+  {
+    "id": "ai200-s-017",
+    "question": "Two instrumented HTTP services export telemetry successfully, but each incoming call to the second service starts an unrelated trace. A proxy between them removes traceparent. The team needs to retain the caller-to-callee span relationship, not merely display both services on a map. What should be corrected?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Assign both services the same service.name resource attribute."
+      },
+      {
+        "id": "B",
+        "text": "Preserve traceparent and let the receiver extract the propagated context."
+      },
+      {
+        "id": "C",
+        "text": "Configure a distinct service.instance.id for each running process."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Restore trace-context propagation through the proxy.",
+    "deepExplanation": "Exporter delivery, resource naming, and context propagation are separate concerns. Both services can report valid telemetry while their traces remain disconnected. The requested relationship depends on transmitting and consuming the calling span's context.",
+    "whyOtherAnswersAreWrong": {
+      "A": "With no namespace configured, a common service.name represents one logical service, such as several replicas; with a namespace, role naming includes both attributes. Neither naming strategy transports the caller’s trace and parent-span IDs across HTTP.",
+      "C": "service.instance.id identifies a running instance for replica diagnostics. It does not convey a trace’s parent context on an incoming call."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Trace distributed systems by using OpenTelemetry SDKs",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-otel-2-explore-opentelemetry-observability",
+      "ai200-20260915-observe-otel-3-add-opentelemetry-sdk",
+      "ai200-20260915-observe-doc-otel-config"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/2-explore-opentelemetry-observability",
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/3-add-opentelemetry-sdk",
+      "https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-configuration"
+    ],
+    "documentationTitles": [
+      "Explore OpenTelemetry and its role in observability",
+      "Add the OpenTelemetry SDK to an application",
+      "Configure Azure Monitor OpenTelemetry"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.525Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.525Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "otel.trace-span-parent-context",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:28:47.610Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-otel-2-explore-opentelemetry-observability",
+      "ai200-20260915-observe-otel-3-add-opentelemetry-sdk",
+      "ai200-20260915-observe-doc-otel-config"
+    ],
+    "verificationNotes": "Tried common service names and per-instance identity as substitutes for caller context. Neither transmits the trace and parent IDs removed by the proxy. Restoring traceparent plus receiver extraction uniquely reconnects the existing instrumentation. Full ai103-015 instead adds nested timing spans to an already measured request; that different missing structure does not duplicate this propagation repair.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The actual W3C header contents and receiver behavior directly prove the key and distinguish naming from trace linkage."
+  },
+  {
+    "id": "ai200-s-018",
+    "question": "An application already creates OpenTelemetry spans using vendor-neutral APIs. A team is identifying the component responsible for serializing collected telemetry and transmitting it to the Application Insights ingestion endpoint. Which component has that responsibility?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "An instrumentation library"
+      },
+      {
+        "id": "B",
+        "text": "The OpenTelemetry API surface"
+      },
+      {
+        "id": "C",
+        "text": "The Azure Monitor exporter"
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "The Azure Monitor exporter performs that serialization and transmission.",
+    "deepExplanation": "The API, SDK, instrumentation, and exporter work together but do not have interchangeable responsibilities. Changing the export destination need not require rewriting every vendor-neutral span declaration, although backend capabilities and configuration can differ.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Instrumentation libraries observe framework or library operations and produce telemetry. They suit capturing an HTTP call or database operation, rather than selecting the backend transport.",
+      "B": "The APIs define interfaces used by instrumentation to describe telemetry. They permit vendor-neutral authoring but are not the backend-specific serialization and transport implementation."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Trace distributed systems by using OpenTelemetry SDKs",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-observe-otel-2-explore-opentelemetry-observability",
+      "ai200-20260915-observe-otel-5-export-telemetry-azure-monitor"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/2-explore-opentelemetry-observability",
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/5-export-telemetry-azure-monitor"
+    ],
+    "documentationTitles": [
+      "Explore OpenTelemetry and its role in observability",
+      "Export telemetry to Azure Monitor"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.528Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.528Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "otel.vendor-neutral-sdk-versus-exporter",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:31:47.879Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-otel-2-explore-opentelemetry-observability",
+      "ai200-20260915-observe-otel-5-export-telemetry-azure-monitor"
+    ],
+    "verificationNotes": "Challenged exporter responsibility with the API and instrumentation library. Both participate upstream but neither is the described backend-specific serialization/transport component. C alone fits already-created telemetry. The familiar decomposition is honestly foundational and not a diagnosis of missing setup.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "O2 directly defines all offered components and O5 repeats the exporter-to-ingestion pipeline."
+  },
+  {
+    "id": "ai200-s-019",
+    "question": "A Python 3.10 application has azure-monitor-opentelemetry installed and a valid APPLICATIONINSIGHTS_CONNECTION_STRING environment variable. No other code configures its OpenTelemetry providers or exporter. Which startup action initializes the Azure Monitor Distro before the application begins instrumented work?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Import and call configure_azure_monitor once during startup."
+      },
+      {
+        "id": "B",
+        "text": "Obtain a tracer with trace.get_tracer and begin application work."
+      },
+      {
+        "id": "C",
+        "text": "Set OTEL_SERVICE_NAME and begin application work."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Call configure_azure_monitor during startup.",
+    "deepExplanation": "The prerequisites in the stem separate package installation and destination configuration from actual initialization. Custom instrumentation can then use the configured global providers. This does not claim every Python framework or third-party library is instrumented automatically.",
+    "whyOtherAnswersAreWrong": {
+      "B": "get_tracer obtains an instrumentation source after provider configuration. It is appropriate for creating custom spans in an initialized application but is not a replacement for the missing distro setup.",
+      "C": "OTEL_SERVICE_NAME supplies resource identity when telemetry is configured. It is useful for naming a service but does not itself initialize the Python distro or exporter."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Trace distributed systems by using OpenTelemetry SDKs",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-observe-otel-3-add-opentelemetry-sdk",
+      "ai200-20260915-observe-otel-4-configure-spans-traces",
+      "ai200-20260915-observe-doc-otel-enable"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/3-add-opentelemetry-sdk",
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/4-configure-spans-traces",
+      "https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable"
+    ],
+    "documentationTitles": [
+      "Add the OpenTelemetry SDK to an application",
+      "Configure spans and traces",
+      "Enable Azure Monitor OpenTelemetry for .NET, Node.js, Python, and Java applications"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.528Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.528Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "otel.python-distro-instrumentation",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:31:47.879Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-otel-3-add-opentelemetry-sdk",
+      "ai200-20260915-observe-otel-4-configure-spans-traces",
+      "ai200-20260915-observe-doc-otel-enable"
+    ],
+    "verificationNotes": "Tried treating a named tracer or service-name environment variable as distro initialization. The former uses configured providers and the latter supplies identity; neither installs the missing provider/exporter configuration. A is the documented startup call. Direct current product evidence gives Python 3.10+. The current full ai103-g-038 prerequisite checklist is distinct, but a future rewritten initializer question is not cleared.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "Direct Python setup and provider-order examples establish the missing call after installation and connection string are already supplied."
+  },
+  {
+    "id": "ai200-s-020",
+    "question": "A Python process has two valid environment values: ARCHIVE_CONNECTION_STRING targets an archive Application Insights resource, while APPLICATIONINSIGHTS_CONNECTION_STRING targets the live resource. The shown startup still exports to the archive. The deployment must use the standard live-target variable without changing resource identities. Which edit addresses the routing cause?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Set OTEL_SERVICE_NAME to the live resource's display name."
+      },
+      {
+        "id": "B",
+        "text": "Remove the connection_string argument and use configure_azure_monitor()."
+      },
+      {
+        "id": "C",
+        "text": "Set service.instance.id to a new value for each process."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Remove the explicit archive connection string so the standard environment variable can determine the destination.",
+    "deepExplanation": "The supplied argument is not a fallback: code wins over the environment for connection-string selection. A connection string identifies where telemetry is sent; this explanation does not equate it with secret-read permissions or authorization to query telemetry.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The service name changes cloud-role identity, not the ingestion resource. It is appropriate for map naming but cannot override the explicit connection_string value.",
+      "C": "Instance identity distinguishes processes at the same telemetry destination. It is useful for replica diagnostics but does not select an ingestion endpoint."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Trace distributed systems by using OpenTelemetry SDKs",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-otel-3-add-opentelemetry-sdk",
+      "ai200-20260915-observe-doc-otel-config"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/3-add-opentelemetry-sdk",
+      "https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-configuration"
+    ],
+    "documentationTitles": [
+      "Add the OpenTelemetry SDK to an application",
+      "Configure Azure Monitor OpenTelemetry"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.528Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.528Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "codeLanguage": "python",
+    "codeSnippet": "import os\nfrom azure.monitor.opentelemetry import configure_azure_monitor\n\nconfigure_azure_monitor(\n    connection_string=os.environ[\"ARCHIVE_CONNECTION_STRING\"],\n)",
+    "conceptId": "otel.ingestion-connection-target",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:31:47.879Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-otel-3-add-opentelemetry-sdk",
+      "ai200-20260915-observe-doc-otel-config"
+    ],
+    "verificationNotes": "Read the exact code and tested the distinction between destination and role/instance identity. The explicit ARCHIVE_CONNECTION_STRING argument wins, so removing it permits the standard live variable. Neither resource attribute routes telemetry. Python syntax parses; the two environment variables are stipulated valid. Sampler precedence is intentionally not generalized from connection precedence.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The direct startup source expressly gives code priority for connection strings, and resource mapping establishes why both alternatives cannot route."
+  },
+  {
+    "id": "ai200-s-021",
+    "question": "An API service and a worker service each have three replicas and send telemetry to one Application Insights resource. No service.namespace is configured. The team wants two logical service nodes on the Application Map while retaining the ability to distinguish replicas. Which resource-attribute strategy fits?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Use the replica ID as service.name and omit service.instance.id."
+      },
+      {
+        "id": "B",
+        "text": "Use one shared service.name for both services and distinct service.instance.id values."
+      },
+      {
+        "id": "C",
+        "text": "Use one service.name per logical service and distinct service.instance.id values per replica."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Keep service.name stable within each service and vary service.instance.id by replica.",
+    "deepExplanation": "Logical topology and deployment-instance identity answer different diagnostic questions. Neither resource attribute replaces distributed trace context, and choosing different values does not require different Application Insights resources.",
+    "whyOtherAnswersAreWrong": {
+      "A": "service.name defines cloud-role identity, so a distinct replica name creates distinct logical roles. It suits treating each process as a separate component, not the requested two service nodes.",
+      "B": "Instance IDs distinguish processes but the common role name does not separate API from worker. This fits replicas of one logical service rather than two different services."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Trace distributed systems by using OpenTelemetry SDKs",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-observe-otel-3-add-opentelemetry-sdk",
+      "ai200-20260915-observe-doc-otel-config"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/3-add-opentelemetry-sdk",
+      "https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-configuration"
+    ],
+    "documentationTitles": [
+      "Add the OpenTelemetry SDK to an application",
+      "Configure Azure Monitor OpenTelemetry"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.528Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.528Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "otel.service-resource-role-name",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:31:47.879Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-otel-3-add-opentelemetry-sdk",
+      "ai200-20260915-observe-doc-otel-config"
+    ],
+    "verificationNotes": "Counted the intended logical role identities under every strategy. Replica-as-name creates six roles, shared name merges the two services, and C retains two service roles plus separate instance identities. The no-namespace premise removes a potential alternative role-name distinction. Neither identity strategy is mistaken for context propagation.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The Python role/instance mapping directly supports two logical names and independent per-process instance identifiers."
+  },
+  {
+    "id": "ai200-s-023",
+    "question": "A developer queries an Application Insights resource using its requests and dependencies tables. Which two correctly classified OpenTelemetry operations are represented in requests rather than dependencies? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "A SERVER span handling an incoming HTTP request"
+      },
+      {
+        "id": "B",
+        "text": "An INTERNAL span timing a local calculation"
+      },
+      {
+        "id": "C",
+        "text": "A PRODUCER span sending an asynchronous message"
+      },
+      {
+        "id": "D",
+        "text": "A CONSUMER span processing an asynchronous message"
+      }
+    ],
+    "correctAnswer": ["A", "D"],
+    "explanation": "SERVER and CONSUMER spans map to requests.",
+    "deepExplanation": "CLIENT, INTERNAL, and PRODUCER spans map to dependencies in this Application Insights query scope. The choice of kind should describe the operation, not simply force a preferred visualization. The traces table is for log records, not a catch-all table for distributed spans.",
+    "whyOtherAnswersAreWrong": {
+      "B": "INTERNAL is appropriate for local computation, but maps to dependencies, including the default custom InProc span. It is not one of the requested request-table operations.",
+      "C": "PRODUCER fits initiating asynchronous work, but maps to dependencies. It would be correct when selecting outgoing/asynchronous-production operations, not this table set."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Trace distributed systems by using OpenTelemetry SDKs",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-observe-otel-2-explore-opentelemetry-observability",
+      "ai200-20260915-observe-otel-4-configure-spans-traces",
+      "ai200-20260915-observe-otel-5-export-telemetry-azure-monitor"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/2-explore-opentelemetry-observability",
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/4-configure-spans-traces",
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/5-export-telemetry-azure-monitor"
+    ],
+    "documentationTitles": [
+      "Explore OpenTelemetry and its role in observability",
+      "Configure spans and traces",
+      "Export telemetry to Azure Monitor"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.528Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.528Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "otel.span-kind-request-dependency",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:31:47.879Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-otel-2-explore-opentelemetry-observability",
+      "ai200-20260915-observe-otel-4-configure-spans-traces",
+      "ai200-20260915-observe-otel-5-export-telemetry-azure-monitor"
+    ],
+    "verificationNotes": "Enumerated all four offered span kinds against the complete mapping: SERVER and CONSUMER are requests; INTERNAL and PRODUCER are dependencies. A+D is the entire correct set. No inference from async versus sync alone or from the misleading table name traces is used. s027 instead asks workspace schema selection after signal type is known.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The exact five-kind table is corroborated in three admitted substantive units."
+  },
+  {
+    "id": "ai200-s-024",
+    "question": "The Azure Monitor Distro is initialized. This Python handler records details of a caught exception and then continues without retrying the failed operation. The operation should be classified as failed, but its span has no explicit error status. Which additional statement belongs inside the except block?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "span.set_attribute(\"validation.outcome\", \"failed\")"
+      },
+      {
+        "id": "B",
+        "text": "span.set_status(Status(StatusCode.ERROR, \"Validation failed\"))"
+      },
+      {
+        "id": "C",
+        "text": "span.set_status(Status(StatusCode.OK))"
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Set the span status to ERROR; the exception details are already recorded.",
+    "deepExplanation": "Recording an exception and classifying an operation’s status are separate actions. Because the handler catches the exception inside the span and continues, an exception escaping the context manager is not the mechanism being used. An explicit ERROR status represents this failed operation.",
+    "whyOtherAnswersAreWrong": {
+      "A": "An attribute provides custom per-operation context and can be queried later. It is useful for recording business outcomes, but does not replace the span’s status field.",
+      "C": "OK explicitly classifies an operation as successful and is appropriate after successful work. Continuing program execution does not mean the stipulated validation operation succeeded."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Trace distributed systems by using OpenTelemetry SDKs",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-observe-otel-4-configure-spans-traces",
+      "ai200-20260915-observe-doc-otel-spans"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/4-configure-spans-traces",
+      "https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-add-modify"
+    ],
+    "documentationTitles": [
+      "Configure spans and traces",
+      "Add and modify Azure Monitor OpenTelemetry for .NET, Java, Node.js, and Python applications"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.528Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.528Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "codeLanguage": "python",
+    "codeSnippet": "from opentelemetry import trace\nfrom opentelemetry.trace import Status, StatusCode\n\ntracer = trace.get_tracer(\"document-worker\")\nwith tracer.start_as_current_span(\"ValidateBatch\") as span:\n    try:\n        raise ValueError(\"Batch has no documents\")\n    except ValueError as exc:\n        span.record_exception(exc)\n        # Add the operation-status statement here.",
+    "conceptId": "otel.error-status-versus-recorded-exception",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:31:47.879Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-otel-4-configure-spans-traces",
+      "ai200-20260915-observe-doc-otel-spans"
+    ],
+    "verificationNotes": "Tried a business attribute and OK status after the caught error. An attribute adds context but does not write the operation status; continuing the handler does not make the failed validation succeed. Because the exception is caught inside the span, the escaping-exception auto-error route is absent. B supplies the missing explicit status. The complete installed g028 instead investigates failed tool outcome propagation; its future replacement remains unbound.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "O4 explicitly demonstrates separate record_exception and ERROR status calls, and DS corroborates the caught/escaping distinction."
+  },
+  {
+    "id": "ai200-s-025",
+    "question": "A Python Azure Monitor Distro samples only some traces. During a diagnostic window, operators need logs from both sampled and unsampled traces without increasing the fraction of retained traces. The log pipeline and export are otherwise configured correctly. Which change addresses the log-specific filter?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Disable trace-based log sampling with enable_trace_based_sampling_for_logs=False."
+      },
+      {
+        "id": "B",
+        "text": "Set fixed-percentage trace sampling to sampling_ratio=1.0."
+      },
+      {
+        "id": "C",
+        "text": "Enable trace-based log sampling with enable_trace_based_sampling_for_logs=True."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Disable the log filter that follows a trace’s sampled flag while leaving the trace sampler unchanged.",
+    "deepExplanation": "The documented log rule uses valid span context and the trace sampling flag. Opting out permits logs associated with unsampled traces to pass this rule; it does not change the trace sampling policy, recreate missing spans or override other logging filters.",
+    "whyOtherAnswersAreWrong": {
+      "B": "A ratio of 1.0 is appropriate when the goal is to retain all traces rather than a fraction. It changes the trace population, which this diagnostic window explicitly needs to preserve.",
+      "C": "Enabling the rule aligns logs with sampled traces and suppresses correlated logs from unsampled traces. It fits a cost/consistency policy, but conflicts with the diagnostic requirement here."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Trace distributed systems by using OpenTelemetry SDKs",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-observe-doc-otel-config",
+      "ai200-20260915-observe-otel-5-export-telemetry-azure-monitor"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-configuration",
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/5-export-telemetry-azure-monitor"
+    ],
+    "documentationTitles": [
+      "Configure Azure Monitor OpenTelemetry",
+      "Export telemetry to Azure Monitor"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.528Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.528Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "otel.consistent-trace-sampling",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Functional analysis supports disabling the log sampled-flag filter without changing retained traces. However, the frozen record declares GA for this specific Python log-filter feature without a pinned distro version or admitted feature-release support. DC describes behavior, while the enable article delegates detailed release status to a nonadmitted doc-parent FAQ. I independently retain the technical hold; Python Live Metrics Preview is evidence that default/enabled does not imply GA, not proof that this different feature is Preview.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "High confidence in the functional distinction; insufficient approved evidence for the exact feature-maturity assertion and version boundary."
+  },
+  {
+    "id": "ai200-s-026",
+    "question": "A Python service experiences short interruptions reaching Application Insights. Its default exporter cache location is unwritable, but the deployment provides an approved writable directory for telemetry buffering. The team wants the documented offline retry behavior and accepts its time and capacity limits. Which configuration change fits?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Set storage_directory to the writable directory and keep offline storage enabled."
+      },
+      {
+        "id": "B",
+        "text": "Set disable_offline_storage to true and leave the default directory unchanged."
+      },
+      {
+        "id": "C",
+        "text": "Reduce the trace sampling ratio and leave the unwritable directory unchanged."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Override storage_directory with the approved writable location while retaining offline storage.",
+    "deepExplanation": "Offline persistence is resilience against temporary connectivity loss, not a durable audit guarantee. The documentation describes retries for up to 48 hours and possible drops when time or size limits are exceeded. Directory selection does not remove those bounds.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Disabling storage is a documented option when local telemetry persistence is unwanted. It avoids use of a directory but gives up the buffering capability the team requests.",
+      "C": "Lower sampling can reduce telemetry volume and ingestion cost. It can help capacity pressure, but cannot make an unwritable offline-storage location usable."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Trace distributed systems by using OpenTelemetry SDKs",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-doc-otel-config",
+      "ai200-20260915-observe-otel-5-export-telemetry-azure-monitor"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-configuration",
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/5-export-telemetry-azure-monitor"
+    ],
+    "documentationTitles": [
+      "Configure Azure Monitor OpenTelemetry",
+      "Export telemetry to Azure Monitor"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.528Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.528Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "otel.offline-export-retry-boundary",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:31:47.879Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-doc-otel-config",
+      "ai200-20260915-observe-otel-5-export-telemetry-azure-monitor"
+    ],
+    "verificationNotes": "Challenged local buffering with disabling persistence and reducing trace volume. Neither gives write access to the required cache path. A selects the documented writable storage_directory while retaining the feature. The source's 48-hour and size limits remain explicit, so this is not an unlimited durability promise or a general telemetry no-loss claim.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "DC's exact Python parameters and shared retry limits directly support the configuration remedy and both alternative effects."
+  },
+  {
+    "id": "ai200-s-027",
+    "question": "A developer opens Logs directly from a Log Analytics workspace rather than from an Application Insights resource. The workspace receives the application's request telemetry. Which workspace table should the developer select for incoming request records?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "requests"
+      },
+      {
+        "id": "B",
+        "text": "AppRequests"
+      },
+      {
+        "id": "C",
+        "text": "AppDependencies"
+      },
+      {
+        "id": "D",
+        "text": "AppExceptions"
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Use AppRequests in the workspace query scope.",
+    "deepExplanation": "Query scope affects table and column naming. Switching between Application Insights and its workspace requires checking the complete schema, not blindly copying a query or substituting a table name while keeping incompatible columns.",
+    "whyOtherAnswersAreWrong": {
+      "A": "requests is the Application Insights resource-scoped table name. It is appropriate when opening that resource's query scope, rather than the workspace schema explicitly used here.",
+      "C": "AppDependencies contains outbound dependency telemetry in the workspace schema. It is appropriate for downstream calls, not incoming request records.",
+      "D": "AppExceptions is the workspace table for exceptions. It suits error-detail investigation rather than the full set of incoming request records."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Write KQL queries to analyze logs and metrics",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-observe-kql-2-write-basic-kql-queries"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/2-write-basic-kql-queries"
+    ],
+    "documentationTitles": ["Write basic KQL queries"],
+    "generatedAt": "2026-09-15T19:35:12.532Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.532Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "kql.telemetry-table-query-scope",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:34:52.548Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries"
+    ],
+    "verificationNotes": "Challenged requests as if the Application Insights resource schema persisted unchanged at workspace scope. The source explicitly names AppRequests for that scope. Dependencies and exceptions select different signals. B alone satisfies both schema and incoming-request requirements. This is not the separate span-kind mapping in s023.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The actual query-scope section explicitly contrasts requests with AppRequests and the neighboring signal tables."
+  },
+  {
+    "id": "ai200-s-028",
+    "question": "In Application Insights scope, an analyst needs one retained-request count per service for the last two hours. This query tries to filter on timestamp after summarize has removed that column. Which edit preserves both the time window and the requested one-row-per-service result?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Move the timestamp where clause before summarize."
+      },
+      {
+        "id": "B",
+        "text": "Add timestamp to the summarize grouping and leave where last."
+      },
+      {
+        "id": "C",
+        "text": "Remove the timestamp where clause and retain summarize."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Filter by timestamp before aggregating.",
+    "deepExplanation": "A KQL pipeline passes each operator's output to the next. The summarized result contains grouping columns and aggregates, not every original column. Adding timestamp as a grouping key changes the result's granularity instead of preserving the intended total.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Grouping by timestamp retains a timestamp column, but splits each service across distinct event timestamps. That fits per-timestamp results rather than a single two-hour total per service.",
+      "C": "This produces one count per service across all input data. It is suitable for an unrestricted input population, not the explicitly required last-two-hour window."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Write KQL queries to analyze logs and metrics",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["ai200-20260915-observe-kql-2-write-basic-kql-queries"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/2-write-basic-kql-queries"
+    ],
+    "documentationTitles": ["Write basic KQL queries"],
+    "generatedAt": "2026-09-15T19:35:12.532Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.532Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "codeLanguage": "kusto",
+    "codeSnippet": "requests\n| summarize requestCount = count() by cloud_RoleName\n| where timestamp > ago(2h)",
+    "conceptId": "kql.time-filter-before-aggregation",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:34:52.548Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries"
+    ],
+    "verificationNotes": "Traced available columns and output grain through all alternatives. summarize by role removes timestamp; adding raw timestamp back changes grain, and removing the filter changes the population. Moving where first retains the two-hour population and one row per service. Full dp700-monitor-050 instead reduces a materialize cache, and sc200-029 repairs time bucketing; neither has this missing aggregate-output filter column.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The pipe, summarize group/output and where contracts directly support the repair and falsify both superficially valid alternatives."
+  },
+  {
+    "id": "ai200-s-029",
+    "question": "Every retained dependency row in this Application Insights query has a numeric duration and customDimensions['model.name']. The final percentile calculation fails because an earlier step removed its input column. The analyst must retain the model derivation and compute p95 duration, not replace it with a count. Which edit repairs the data flow?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Replace the final summarize with project name, model."
+      },
+      {
+        "id": "B",
+        "text": "Change the final aggregation to summarize retainedRows = count() by model."
+      },
+      {
+        "id": "C",
+        "text": "Change the earlier projection to project name, model, duration."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Include duration in the projected columns.",
+    "deepExplanation": "The defect is column lifetime, not percentile syntax or the JSON-derived model. project can itself calculate columns, but only its selected outputs continue through the pipeline. The repair preserves the intended statistic and grouping rather than making the error disappear by changing the question.",
+    "whyOtherAnswersAreWrong": {
+      "A": "A projection of name and model is valid for inspecting each retained row’s descriptive fields. It does not calculate the required percentile and avoids rather than repairs the missing duration input.",
+      "B": "Counting retained rows is a valid volume analysis and does not need duration. It changes the requested statistic instead of preserving the latency calculation."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Write KQL queries to analyze logs and metrics",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries",
+      "ai200-20260915-observe-otel-6-debug-distributed-flows-trace-data"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/2-write-basic-kql-queries",
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/6-debug-distributed-flows-trace-data"
+    ],
+    "documentationTitles": [
+      "Write basic KQL queries",
+      "Debug distributed flows with trace data"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.532Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.532Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "codeLanguage": "kusto",
+    "codeSnippet": "dependencies\n| where timestamp > ago(2h)\n| extend model = tostring(customDimensions[\"model.name\"])\n| project name, model\n| summarize p95 = percentile(duration, 95) by model",
+    "conceptId": "kql.project-versus-extend",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:34:52.548Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries",
+      "ai200-20260915-observe-otel-6-debug-distributed-flows-trace-data"
+    ],
+    "verificationNotes": "Traced the dynamic model conversion, projection and percentile input. project removes duration, so C restores that column without discarding the model or replacing latency with volume. Both alternatives are valid for different requested outputs but fail this one. Related to s028's column lifetime, yet a different operator repair: retaining the measure rather than moving a population filter before aggregation.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The documented projection output contract and customDimensions percentile example establish the exact required input flow."
+  },
+  {
+    "id": "ai200-s-030",
+    "question": "The filtered Application Insights input contains three rows for service web/result 200, two for web/500, and four for worker/200. There are no other rows, and each represents one request. What result structure does this query produce?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Two groups: web=5 and worker=4."
+      },
+      {
+        "id": "B",
+        "text": "Three groups: web/200=3, web/500=2, and worker/200=4."
+      },
+      {
+        "id": "C",
+        "text": "Nine groups: one row with count 1 for each request."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "It returns one row per role/result-code combination: counts 3, 2, and 4.",
+    "deepExplanation": "The full by clause defines granularity, not only its first column. The scenario deliberately counts retained rows with one event per row; it does not claim count() compensates for telemetry sampling.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Those totals would follow grouping only by cloud_RoleName. The actual query also groups by resultCode, so web's two result codes remain separate.",
+      "C": "Per-request output would require a unique request grouping key or no grouping aggregation. Repeated role/result combinations collapse into shared groups in this query."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Write KQL queries to analyze logs and metrics",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-observe-kql-2-write-basic-kql-queries"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/2-write-basic-kql-queries"
+    ],
+    "documentationTitles": ["Write basic KQL queries"],
+    "generatedAt": "2026-09-15T19:35:12.532Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.532Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "codeLanguage": "kusto",
+    "codeSnippet": "requests\n| where timestamp > ago(1h)\n| summarize requestCount = count() by cloud_RoleName, resultCode",
+    "conceptId": "kql.summarize-count-group",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:34:52.548Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries"
+    ],
+    "verificationNotes": "Independently enumerated the input: three web/200, two web/500 and four worker/200 rows produce three full-tuple groups. A groups by only the first column and C fails to combine repeated tuples. B is the complete result. Full sc200-029 modifies raw timestamps into bins; this item interprets an already supplied grouping without a new operator.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "Both the explicit grouping definition and local arithmetic enumeration give the exact 3/2/4 counts."
+  },
+  {
+    "id": "ai200-s-032",
+    "question": "Sampling is disabled for the dependency data being investigated in Application Insights. An analyst needs the three targets with the highest p95 latency across all calls in the last six hours. The query shown returns a suspicious result based on only a small set of calls. Which pipeline order uses the required population and statistic?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Filter six hours, take the 20 slowest calls, summarize p95 by target, then select the top three p95 values."
+      },
+      {
+        "id": "B",
+        "text": "Filter six hours, summarize average duration by target, then select the top three averages."
+      },
+      {
+        "id": "C",
+        "text": "Filter six hours, summarize p95 by target, then select the top three p95 values."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Compute p95 per target before using top to rank the resulting target summaries.",
+    "deepExplanation": "A percentile describes the input distribution presented to the aggregation. Selecting only the slowest individual calls first changes that distribution and can remove targets. The correct order avoids selection bias while keeping the requested percentile and final result limit.",
+    "whyOtherAnswersAreWrong": {
+      "A": "The early top operation still restricts the population to extreme calls and can exclude entire targets. It fits analyzing the retained worst-call subset, not per-target latency across all calls.",
+      "B": "This uses all calls but ranks mean latency rather than p95. Average duration is useful for a mean-performance question, but can conceal tail behavior the requirement explicitly targets."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Write KQL queries to analyze logs and metrics",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries",
+      "ai200-20260915-observe-kql-3-explore-logs-errors-performance"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/2-write-basic-kql-queries",
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/3-explore-logs-errors-performance"
+    ],
+    "documentationTitles": [
+      "Write basic KQL queries",
+      "Explore logs for errors and performance"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.532Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.532Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "codeLanguage": "kusto",
+    "codeSnippet": "dependencies\n| where timestamp > ago(6h)\n| top 20 by duration desc\n| summarize p95 = percentile(duration, 95) by target",
+    "conceptId": "kql.percentile-dependency-latency",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:34:52.548Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries",
+      "ai200-20260915-observe-kql-3-explore-logs-errors-performance"
+    ],
+    "verificationNotes": "Challenged the premature top with an input containing many normal calls plus a few extreme ones: truncating first changes the duration distribution and can omit targets. Changing to average preserves population but abandons p95. C alone computes per-target p95 from all six-hour calls before ranking targets. The unsampled premise avoids conflating sample bias with this explicit row truncation.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "Documented top selection and per-target percentile aggregation directly establish the population-preserving order."
+  },
+  {
+    "id": "ai200-s-033",
+    "question": "In Application Insights, each selected 'POST /submit' request belongs to a different trace. Dependencies can originate in either that request's service or downstream services in the same trace. Trace context is propagated correctly. What can a matched output row of this query establish without extra parent-span filtering?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "The dependency and request share a trace, but the dependency need not be the request's immediate child."
+      },
+      {
+        "id": "B",
+        "text": "The dependency is an immediate child of the selected request, regardless of how many services the trace crosses."
+      },
+      {
+        "id": "C",
+        "text": "The dependency originated in requestRole, even when dependencyRole has a different value."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "The join establishes shared trace membership, not necessarily a direct parent-child relationship.",
+    "deepExplanation": "Trace identity groups a distributed operation; span identity and parent identity describe its tree. Keeping requestRole and dependencyRole separate also prevents accidentally attributing a downstream call to the request's emitting service merely because they joined.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Immediate parentage requires the parent-span relationship, not only the shared trace ID. This inference could hold in a trace known to contain only direct child dependencies, but the stem explicitly allows downstream services.",
+      "C": "cloud_RoleName identifies the emitting service and the query retains the request and dependency values separately. Equating the origins fits same-service dependencies, not a row whose dependencyRole differs."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Write KQL queries to analyze logs and metrics",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-observe-otel-2-explore-opentelemetry-observability",
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries",
+      "ai200-20260915-observe-kql-3-explore-logs-errors-performance",
+      "ai200-20260915-observe-otel-6-debug-distributed-flows-trace-data"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/2-explore-opentelemetry-observability",
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/2-write-basic-kql-queries",
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/3-explore-logs-errors-performance",
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/6-debug-distributed-flows-trace-data"
+    ],
+    "documentationTitles": [
+      "Explore OpenTelemetry and its role in observability",
+      "Write basic KQL queries",
+      "Explore logs for errors and performance",
+      "Debug distributed flows with trace data"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.532Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.532Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "codeLanguage": "kusto",
+    "codeSnippet": "requests\n| where timestamp > ago(1h)\n| where name == \"POST /submit\"\n| project operation_Id, requestName = name, requestRole = cloud_RoleName\n| join kind=inner (\n    dependencies\n    | where timestamp > ago(1h)\n    | project operation_Id, dependencyName = name, dependencyRole = cloud_RoleName\n) on operation_Id",
+    "conceptId": "kql.operation-id-cross-service-join",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:34:52.548Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-otel-2-explore-opentelemetry-observability",
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries",
+      "ai200-20260915-observe-kql-3-explore-logs-errors-performance",
+      "ai200-20260915-observe-otel-6-debug-distributed-flows-trace-data"
+    ],
+    "verificationNotes": "Constructed a downstream service dependency sharing the request's trace ID but parented to an intervening span and emitted by another role. It legitimately joins yet disproves B and C. A is the maximum justified inference. Explicit inner avoids default left-key deduplication; separately named roles avoid the source's misleading exception-emitter projection. No causation or immediate-child guarantee is inferred.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "Trace/span/parent identity and per-item cloud role semantics directly support the counterexample and the bounded answer."
+  },
+  {
+    "id": "ai200-s-034",
+    "question": "An Application Insights interval contains three TimeoutError records with itemCount=10 each and eight ValueError records with itemCount=1 each. The current query ranks retained records, putting ValueError first. Operations instead needs estimated exception volume represented by the sampling weights. Which aggregation should replace count()?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "max(itemCount)"
+      },
+      {
+        "id": "B",
+        "text": "sum(itemCount)"
+      },
+      {
+        "id": "C",
+        "text": "avg(itemCount)"
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Use sum(itemCount), producing represented totals of 30 and 8 for the supplied records.",
+    "deepExplanation": "count() answers how many rows survived, not how many events those rows represent. The weighted sum supports a sampling-adjusted estimate; it does not reconstruct every dropped exception or guarantee an exact historical event count.",
+    "whyOtherAnswersAreWrong": {
+      "A": "max would show the largest single record weight in each type, useful for inspecting the maximum weight. It does not accumulate the represented volume of all exception records.",
+      "C": "avg describes the average sampling weight of a retained record. It can characterize weight differences but does not include how many records contribute to each exception type's represented total."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Write KQL queries to analyze logs and metrics",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries",
+      "ai200-20260915-observe-kql-3-explore-logs-errors-performance"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/2-write-basic-kql-queries",
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/3-explore-logs-errors-performance"
+    ],
+    "documentationTitles": [
+      "Write basic KQL queries",
+      "Explore logs for errors and performance"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.532Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.532Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "codeLanguage": "kusto",
+    "codeSnippet": "exceptions\n| where timestamp > ago(6h)\n| summarize exceptionCount = count() by type\n| top 5 by exceptionCount desc",
+    "conceptId": "kql.exception-type-frequency",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:34:52.548Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries",
+      "ai200-20260915-observe-kql-3-explore-logs-errors-performance"
+    ],
+    "verificationNotes": "Computed all candidate aggregates: sums are 30 versus 8, maxima 10 versus 1, and averages 10 versus 1. Max/average characterize record weights but do not accumulate represented events; count sees only 3 versus 8 rows. B uniquely estimates the required volume. Full dp800-direct-015 instead reconstructs a weighted mean with a denominator, not this additive event-weight total.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The actual itemCount definition and sum example, plus independently checked arithmetic, support the full distinction."
+  },
+  {
+    "id": "ai200-s-035",
+    "question": "This Application Insights query already produces the desired hourly count per service. The analyst wants Log Analytics to display those results as a time chart without adding another aggregation or reducing the returned time range. Which final operator should be appended?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "| summarize total = sum(requestCount) by cloud_RoleName"
+      },
+      {
+        "id": "B",
+        "text": "| top 5 by requestCount desc"
+      },
+      {
+        "id": "C",
+        "text": "| render timechart"
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Append render timechart.",
+    "deepExplanation": "The aggregate defines the data and the render operator defines its requested presentation. A chart cannot repair an incorrect population or grouping, but those are already correct in this stem.",
+    "whyOtherAnswersAreWrong": {
+      "A": "This would aggregate the hourly rows into a total per service and discard time granularity. It suits period totals, not displaying the existing hourly series.",
+      "B": "top selects the five highest-count rows. It suits finding peaks but reduces the result set rather than merely requesting a time-chart display."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Write KQL queries to analyze logs and metrics",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-observe-kql-2-write-basic-kql-queries"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/2-write-basic-kql-queries"
+    ],
+    "documentationTitles": ["Write basic KQL queries"],
+    "generatedAt": "2026-09-15T19:35:12.532Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.532Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "codeLanguage": "kusto",
+    "codeSnippet": "requests\n| where timestamp > ago(24h)\n| summarize requestCount = count() by bin(timestamp, 1h), cloud_RoleName",
+    "conceptId": "kql.render-versus-row-transformation",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:34:52.548Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries"
+    ],
+    "verificationNotes": "Tried period-total aggregation and peak-row ranking as if they merely changed presentation. Both alter the supplied hourly dataset, whereas render timechart preserves the result while requesting a chart. C uniquely meets the existing-data requirement. Full sc200-029 and absent historical s031 concern binning repair, which this query already has.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The actual render section explicitly separates chart presentation from grouping and row selection."
+  },
+  {
+    "id": "ai200-r-s-001",
+    "question": "Six vaults in one Azure subscription and region each receive 3,900 secret GET requests during the same ten-second window. There are no other transactions. Each vault is below its own published read limit, yet subscription throttling is observed. Which capacity change addresses the aggregate limit without relying on retries to reduce the offered workload?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Keep six vaults and reduce total offered secret reads to at most 20,000 per ten seconds."
+      },
+      {
+        "id": "B",
+        "text": "Split the same read workload evenly across twelve vaults in the same subscription and region."
+      },
+      {
+        "id": "C",
+        "text": "Consolidate the same read workload into a single vault in the same subscription and region."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "The offered total is 23,400 reads; the subscription bound is five times the 4,000-per-vault bound, or 20,000 per ten seconds.",
+    "deepExplanation": "Both scopes matter. All six individual vaults remain under 4,000, but 6 × 3,900 exceeds 20,000 across the subscription. Splitting the same volume among more vaults in the same scope does not reduce that sum. A design should leave operating headroom; the answer identifies the documented ceiling, not guaranteed latency at the limit.",
+    "whyOtherAnswersAreWrong": {
+      "B": "Additional vaults can distribute a workload that is limited by one vault while the subscription still has headroom. They do not increase this subscription’s aggregate transaction budget.",
+      "C": "A single vault is a valid deployment boundary for a small application. At this offered volume it also exceeds the individual 4,000-read ceiling, so consolidation makes the per-vault constraint worse."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Secure secrets by using Azure Key Vault, including rotation and retrieval",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-secrets-5-implement-caching-strategies",
+      "ai200-20260915-observe-doc-kv-limits",
+      "ai200-20260915-observe-secrets-2-store-organize-secrets"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/5-implement-caching-strategies",
+      "https://learn.microsoft.com/en-us/azure/key-vault/general/service-limits",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/2-store-organize-secrets"
+    ],
+    "documentationTitles": [
+      "Implement caching strategies to reduce Key Vault calls",
+      "Azure Key Vault service limits",
+      "Store and organize secrets, keys, and certificates"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.538Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.538Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "keyvault.subscription-and-vault-secret-read-budget",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:37:55.971Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-secrets-5-implement-caching-strategies",
+      "ai200-20260915-observe-doc-kv-limits",
+      "ai200-20260915-observe-secrets-2-store-organize-secrets"
+    ],
+    "verificationNotes": "Recomputed six times 3,900 as 23,400 and the subscription ceiling as five times 4,000, or 20,000 in the stated region/window. More same-scope vaults cannot increase the aggregate ceiling; consolidation also breaches one vault's ceiling. A targets the actual bottleneck. The full r-c012 per-node-fit problem has the opposite capacity direction. Future ai103-rp-002 quota content is still unavailable and must be compared before co-installation.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "Both scopes and exact limits are corroborated by the current direct vault-resource table; independent arithmetic supports the offered-workload diagnosis."
+  },
+  {
+    "id": "ai200-r-s-002",
+    "question": "A recovery job has an encrypted Key Vault backup blob for a secret within the documented backup version limit. The original vault is unavailable. The job must recover usable secret data from the blob rather than obtain values or metadata from the old vault. Which plan uses the supported recovery mechanism?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Call get_secret on the original vault and use the returned value."
+      },
+      {
+        "id": "B",
+        "text": "Restore the blob into a vault in the same Azure subscription and geography."
+      },
+      {
+        "id": "C",
+        "text": "List the secret’s version properties in the original vault and save that inventory."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "Key Vault backup blobs must be restored into a vault in the same subscription and Azure geography.",
+    "deepExplanation": "The service-limits article states that the downloaded backup is encrypted and cannot be decrypted outside Azure. Restoring it within the supported scope is the route to usable data. This is not ordinary get_secret value retrieval or a general cross-subscription migration format.",
+    "whyOtherAnswersAreWrong": {
+      "A": "An authorized get_secret call is appropriate when an application needs a value from an available vault. It neither reads the encrypted backup format nor works around the stipulated original-vault unavailability.",
+      "C": "Version-property listing supports a metadata audit of an available secret. It does not return secret values or restore the encrypted backup, and it also depends on the original vault here."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Secure secrets by using Azure Key Vault, including rotation and retrieval",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "ai200-20260915-observe-doc-kv-limits",
+      "ai200-20260915-observe-secrets-3-retrieve-secrets-sdk",
+      "ai200-20260915-observe-secrets-4-handle-versioning-rotation"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/key-vault/general/service-limits",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/3-retrieve-secrets-sdk",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/4-handle-versioning-rotation"
+    ],
+    "documentationTitles": [
+      "Azure Key Vault service limits",
+      "Retrieve secrets using Azure SDK client libraries",
+      "Handle secret versioning and rotation"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.538Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.538Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "keyvault.encrypted-backup-restore-scope",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:37:55.971Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-doc-kv-limits",
+      "ai200-20260915-observe-secrets-3-retrieve-secrets-sdk",
+      "ai200-20260915-observe-secrets-4-handle-versioning-rotation"
+    ],
+    "verificationNotes": "Tried treating an encrypted backup blob as equivalent to get_secret or metadata inventory from the old vault. Those operations neither consume the blob nor work around the stipulated unavailability. B uses the exact restore mechanism within the same subscription and geography. Version limit is explicitly satisfied; the answer does not claim cross-subscription migration or external decryption.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The direct service-limits backup section expressly identifies the encrypted blob and the required restore scope."
+  },
+  {
+    "id": "ai200-r-s-003",
+    "question": "An asyncio-based Python API uses the asynchronous Key Vault SDK. Vault access is authorized and secret reads succeed, but the application creates new client and credential objects for every request and never closes them. Which lifecycle pattern fits the SDK’s documented high-throughput usage?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Create the async client and credential once for the service, reuse them, and close both asynchronously at shutdown."
+      },
+      {
+        "id": "B",
+        "text": "Use the synchronous SecretClient for every read and call it directly in the asyncio request handler."
+      },
+      {
+        "id": "C",
+        "text": "Create and close a fresh async client and credential for every incoming request."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Reuse the asynchronous client and credential and close their resources when the application shuts down.",
+    "deepExplanation": "The training unit recommends creating the client at application startup and reusing it across requests. It also states that both async client and credential are asynchronous context managers and must be closed when finished. This concerns network-client lifetime, not caching secret values or suppressing permission failures.",
+    "whyOtherAnswersAreWrong": {
+      "B": "The synchronous SecretClient is appropriate for synchronous application code. Calling it directly in an async request handler does not provide the documented nonblocking vault access.",
+      "C": "A scoped async client and credential with cleanup are appropriate for a standalone short-lived operation, as in the unit’s async example. Repeating that setup for every high-throughput request still pays the connection-creation overhead that the documented service-lifetime reuse pattern avoids."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Secure secrets by using Azure Key Vault, including rotation and retrieval",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["ai200-20260915-observe-secrets-3-retrieve-secrets-sdk"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/3-retrieve-secrets-sdk"
+    ],
+    "documentationTitles": [
+      "Retrieve secrets using Azure SDK client libraries"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.538Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.538Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "keyvault.async-client-and-credential-lifecycle",
+    "verificationStatus": "rejected",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "The functional async lifecycle answer is supported, but I independently reject this exact candidate as the same decisive SDK reuse fact as frozen ai200-d-001 and ai200-r-i-008. Full options show only A reuses objects; adding async cleanup does not require an independently discriminating disposal decision, since C also cleans up. Read all three complete snapshots and the parent exact-hash comparison. Preserve the stable d001 identity for its own quality review, with at most one representative; no foreign approval is supplied.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "High confidence in both the functional lifecycle rule and the semantic duplicate: all three keys remove repeated per-request client construction."
+  },
+  {
+    "id": "ai200-r-s-004",
+    "question": "A read-only discovery identity has Key Vault Reader and lists secret properties for an operations report. The report unexpectedly contains an access token that an operator placed in a secret’s tags. Which correction preserves metadata-only discovery while keeping the token out of that metadata surface?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Move the token to a secret value and leave only nonsensitive ownership or rotation labels in tags."
+      },
+      {
+        "id": "B",
+        "text": "Move the token from its existing tag into the secret’s content_type property."
+      },
+      {
+        "id": "C",
+        "text": "Keep the token in tags and assign Key Vault Secrets User to the discovery identity."
+      }
+    ],
+    "correctAnswer": ["A"],
+    "explanation": "Keep the credential in the protected secret value, not in metadata readable by discovery tools.",
+    "deepExplanation": "The storage unit warns that list/get users can read tags and that sensitive data does not belong there. The SDK listing returns properties such as tags and content type without the secret value. Key Vault Reader is deliberately a metadata role; changing value-read permission is not a fix for metadata disclosure.",
+    "whyOtherAnswersAreWrong": {
+      "B": "content_type is useful as a nonsensitive interpretation hint such as text/plain or application/json. It is part of the listed properties, so relocating a token there does not remove it from the metadata surface.",
+      "C": "Secrets User is appropriate for an application that needs actual secret values. Granting that additional access does not redact the existing tag and defeats the discovery-only boundary."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Secure secrets by using Azure Key Vault, including rotation and retrieval",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-secrets-2-store-organize-secrets",
+      "ai200-20260915-observe-secrets-3-retrieve-secrets-sdk"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/2-store-organize-secrets",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-secrets-key-vault/3-retrieve-secrets-sdk"
+    ],
+    "documentationTitles": [
+      "Store and organize secrets, keys, and certificates",
+      "Retrieve secrets using Azure SDK client libraries"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.538Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.538Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "keyvault.secret-tag-visibility-versus-value-authorization",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:37:55.971Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-secrets-2-store-organize-secrets",
+      "ai200-20260915-observe-secrets-3-retrieve-secrets-sdk"
+    ],
+    "verificationNotes": "Challenged moving the token into content_type and granting Secrets User. content_type is still returned metadata, while a broader role cannot redact an existing tag and violates discovery-only scope. A removes the credential from the metadata surface while preserving discovery. This is not s002's API inventory choice: selecting the correct metadata API alone would still expose this mistakenly tagged token.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The direct tag warning, listed property fields and exact Reader/User role definitions establish all option contexts."
+  },
+  {
+    "id": "ai200-r-s-005",
+    "question": "A Python provider loads a versionless Key Vault reference at t=0. Its ordinary refresh interval is 60 seconds and secret_refresh_interval is 300 seconds. The app calls refresh() at t=45,90,135,... seconds. The sentinel never changes, a new enabled secret version is stored at t=200, and every refresh attempt succeeds. At which first listed call is the independent secret refresh interval eligible to re-resolve that value?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "t=225 seconds"
+      },
+      {
+        "id": "B",
+        "text": "t=315 seconds"
+      },
+      {
+        "id": "C",
+        "text": "Only after the sentinel changes"
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "The first call at or after the 300-second secret interval is t=315.",
+    "deepExplanation": "The secret interval is independent of the ordinary-setting interval and sentinel changes. It is checked when the application calls refresh(), not by a background timer at exactly t=300. The versionless reference and successful calls are necessary to make this a bounded timing question; it does not promise prompt update if the application stops calling refresh().",
+    "whyOtherAnswersAreWrong": {
+      "A": "An earlier call could qualify with a shorter secret refresh interval that had elapsed by t=225. The configured 300-second interval has not elapsed, regardless of the 60-second ordinary-setting interval.",
+      "C": "A sentinel change is the trigger for watched ordinary-setting reloads. Independent secret refresh is specifically provided for secret changes that leave the App Configuration reference and sentinel unchanged."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-observe-config-4-reference-key-vault-secrets",
+      "ai200-20260915-observe-config-2-connect-app-configuration"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/4-reference-key-vault-secrets",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration"
+    ],
+    "documentationTitles": [
+      "Reference Key Vault secrets from App Configuration",
+      "Connect to App Configuration from application code"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.538Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.538Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "appconfig.secret-refresh-independent-interval",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "The obvious ceiling calculation gives 315 seconds only if secret eligibility is checked independently before any ordinary-refresh early return. C2 explicitly says refresh returns immediately when its ordinary interval has not elapsed; C4 says secret refresh is independent but does not establish internal ordering for this 45-second cadence. A plausible ordinary-gate-first interpretation yields eligible checks at 90/180/270/360, not 315. This is a countermodel, not an SDK execution claim. Retain pass-two manual review rather than approve an exact unsourced boundary.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The separate timer is documented, but the precise first eligible call under interacting gates is not established by approved evidence."
+  },
+  {
+    "id": "ai200-r-s-006",
+    "question": "A worker has loaded App Configuration with refresh_on=[WatchKey(\"Sentinel\")] and refresh_interval=60. The operator updates an ordinary setting and then the sentinel. The worker now spends ten minutes in a loop that reads the loaded mapping but never calls refresh(). What change makes the running worker participate in the documented refresh mechanism?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Reduce refresh_interval to 1 and leave the processing loop unchanged."
+      },
+      {
+        "id": "B",
+        "text": "Call config.refresh() from the processing loop before reading settings."
+      },
+      {
+        "id": "C",
+        "text": "Add a second WatchKey and leave the processing loop unchanged."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "The application must explicitly call refresh(); the interval is a gate on checks, not an autonomous scheduler.",
+    "deepExplanation": "Reading the current Mapping is not the explicit refresh call shown in the provider pattern. With an eligible interval and changed sentinel, the next call can load the new ordinary settings. There is no claim that this makes publication atomic or guarantees completion during an outage.",
+    "whyOtherAnswersAreWrong": {
+      "A": "A shorter interval can increase checking frequency in an application that already calls refresh regularly. It cannot create calls in this loop.",
+      "C": "Additional watched keys can signal other ordinary-configuration changes. They do not schedule checks when the application never invokes refresh."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-3-organize-labels-feature-flags"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/3-organize-labels-feature-flags"
+    ],
+    "documentationTitles": [
+      "Connect to App Configuration from application code",
+      "Organize settings with labels and feature flags"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.538Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.538Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "appconfig.refresh-interval-not-background-scheduler",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:37:55.971Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-3-organize-labels-feature-flags"
+    ],
+    "verificationNotes": "Challenged shortening the interval and adding a watcher as autonomous schedulers. Neither creates the missing call; the source explicitly requires config.refresh in the application loop. B makes the running worker participate after the already changed sentinel. The full AKS r-c013 concerns startup/subPath consumers requiring rollouts, not an explicit Python provider invocation.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The actual provider example and explicit refresh-call requirement directly disprove both scheduling-by-configuration assumptions."
+  },
+  {
+    "id": "ai200-r-s-007",
+    "question": "A Python service uses Azure Monitor Distro 1.8.6 and passes traces_per_second=2 to configure_azure_monitor(). Its deployment also sets OTEL_TRACES_SAMPLER=microsoft.fixed_percentage and OTEL_TRACES_SAMPLER_ARG=0.25. No other sampler configuration exists. Operators observe volume changing with traffic instead of an approximately two-traces-per-second policy. Which configuration explains the effective policy?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "The code argument selects rate-limited sampling at approximately two traces per second."
+      },
+      {
+        "id": "B",
+        "text": "The environment selects fixed-percentage sampling at approximately 25 percent of traces."
+      },
+      {
+        "id": "C",
+        "text": "The absence of sampling_ratio in code selects the version’s default rate-limited sampler."
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "The configured environment sampler takes precedence and interprets 0.25 as a fraction, not a traces-per-second limit.",
+    "deepExplanation": "The export unit explicitly gives sampling environment settings priority over code options. The current configuration document distinguishes fixed-percentage arguments in 0.0–1.0 from rate-limited traces-per-second arguments and places the Python default change at 1.8.6. An explicitly configured sampler does not fall back to the default.",
+    "whyOtherAnswersAreWrong": {
+      "A": "traces_per_second=2 selects the requested rate-limited policy when overriding sampler environment settings are absent. Those settings are present in this deployment.",
+      "C": "The 1.8.6 default is relevant when neither environment variables nor sampling_ratio/traces_per_second code options configure sampling. This deployment supplies both forms, so absence of one code parameter does not activate that default."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Trace distributed systems by using OpenTelemetry SDKs",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-observe-doc-otel-config",
+      "ai200-20260915-observe-otel-5-export-telemetry-azure-monitor"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-configuration",
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/5-export-telemetry-azure-monitor"
+    ],
+    "documentationTitles": [
+      "Configure Azure Monitor OpenTelemetry",
+      "Export telemetry to Azure Monitor"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.538Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.538Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "conceptId": "otel.python-sampler-environment-precedence-and-units",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Functionally, the explicit environment selects microsoft.fixed_percentage and 0.25 means approximately 25 percent, overriding traces_per_second=2. The direct current page places the default change at Python 1.8.6 and explains when it applies. Those statements do not establish the frozen GA claim for the exact versioned sampler behavior. The admitted release section delegates feature maturity to an unapproved doc-parent FAQ. Retain the technical hold without treating Live Metrics Preview as proof this sampler is Preview.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "The precedence and units are explicit; precise feature-maturity support remains absent from the approved ancestry."
+  },
+  {
+    "id": "ai200-r-s-008",
+    "question": "An Application Insights investigation uses unsampled data from the same fixed interval. One trace has two retained request rows and three retained dependency rows. Analysts need one row per matching operation_Id with requestRows=2 and dependencyRows=3, not the number of request/dependency pairs. The raw tables can contain several rows per trace on either side. Which query design preserves those independent counts?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "Inner-join the raw tables on operation_Id, then use count() to count the joined rows per trace."
+      },
+      {
+        "id": "B",
+        "text": "Summarize count() by cloud_RoleName separately in each table, then inner-join on cloud_RoleName."
+      },
+      {
+        "id": "C",
+        "text": "Summarize count() by operation_Id separately in each table, then inner-join the two summaries."
+      }
+    ],
+    "correctAnswer": ["C"],
+    "explanation": "Aggregate each input to one row per trace before joining so neither input’s rows multiply the other’s count.",
+    "deepExplanation": "An inner join on a key with two request rows and three dependency rows produces six matching pairs. Those are not two independent telemetry counts. Each per-trace summary has a unique key, so their join carries the separately computed 2 and 3. The inner join deliberately excludes traces missing from either table; an outer-join requirement is not implied.",
+    "whyOtherAnswersAreWrong": {
+      "A": "Counting the raw join is appropriate for counting matched request/dependency pairs; here it returns six, not the two independent input counts.",
+      "B": "Grouping by cloud role supports independent per-service request and dependency totals. It combines different traces emitted by that service and cannot provide the stipulated one-row-per-operation_Id result."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "monitor-and-troubleshoot-azure-solutions",
+    "subskill": "Write KQL queries to analyze logs and metrics",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "ai200-20260915-observe-kql-2-write-basic-kql-queries",
+      "ai200-20260915-observe-kql-3-explore-logs-errors-performance",
+      "ai200-20260915-observe-otel-6-debug-distributed-flows-trace-data"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/2-write-basic-kql-queries",
+      "https://learn.microsoft.com/en-us/training/modules/analyze-telemetry-logs-metrics/3-explore-logs-errors-performance",
+      "https://learn.microsoft.com/en-us/training/modules/instrument-app-opentelemetry/6-debug-distributed-flows-trace-data"
+    ],
+    "documentationTitles": [
+      "Write basic KQL queries",
+      "Explore logs for errors and performance",
+      "Debug distributed flows with trace data"
+    ],
+    "generatedAt": "2026-09-15T19:35:12.538Z",
+    "lastValidatedAt": "2026-09-15T19:35:12.538Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "observability-release", "pass-1-candidate"],
+    "codeLanguage": "kusto",
+    "codeSnippet": "requests\n| where timestamp > ago(1h)\n| join kind=inner (\n    dependencies\n    | where timestamp > ago(1h)\n) on operation_Id\n| summarize matchedPairs = count() by operation_Id",
+    "conceptId": "kql.inner-join-multiplicity-preserve-independent-counts",
+    "verificationStatus": "rejected",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "The query logic is sound: raw inner matching gives six pairs from two and three rows, while separate per-operation counts retain 2 and 3. I nevertheless reject the unchanged candidate after independently reading full dp700-ingest-036: both use two-by-three independent detail multiplication and the only decisive preaggregate-both-sides remedy. KQL counts instead of DataFrame sums do not create a new fact. Full sc200-028 fixes default innerunique deduplication against a unique right key, so its distinction does not remove the DP-700 duplicate.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "High confidence in the functional arithmetic and blocking duplication after complete requirements, options and explanations were compared."
+  }
+]

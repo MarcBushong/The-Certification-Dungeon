@@ -1,0 +1,80 @@
+[
+  {
+    "id": "ai200-i-003",
+    "question": "A Service Bus subscription must select inference messages whose application property model_name equals classification-v2. Which filter class has the documented efficiency advantage for this exact-value selection?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "A SQL filter."
+      },
+      {
+        "id": "b",
+        "text": "A correlation filter."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Correlation filters are documented as more efficient than SQL filters for exact property-value matches. The required model_name equality is such a match.",
+    "deepExplanation": "A SQL equality rule can select the same messages, so retaining SQL would not make the routing incorrect. The distinction is the documented efficiency advantage for exact matching. Expression-based filtering can provide a reason to retain SQL; the comparison does not mean that correlation filters replace every SQL predicate.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A SQL filter can express the required equality and is appropriate for SQL-like property predicates. It does not have the documented efficiency advantage over correlation filtering for this exact-value case."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Queue and process back-end operations by using Azure Service Bus, including dead-letter queue handling, messages, topics, and subscriptions",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-integration-sb-patterns"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/queue-process-operations-service-bus/3-choose-queues-topics-subscriptions"
+    ],
+    "documentationTitles": [
+      "Choose between queues and topics with subscriptions"
+    ],
+    "generatedAt": "2026-09-15T21:18:49.681Z",
+    "lastValidatedAt": "2026-09-15T21:18:49.681Z",
+    "featureStatus": "GA",
+    "tags": ["service-bus", "service-integration"],
+    "conceptId": "servicebus.property-subscription-filter",
+    "verificationStatus": "candidate",
+    "requiresManualReview": true
+  },
+  {
+    "id": "ai200-i-013",
+    "question": "An existing Basic Event Grid custom topic accepts CloudEvents 1.0 events containing extension attributes. Its handler can parse both CloudEvents and Event Grid schemas, and the publisher’s input format must remain unchanged. Which subscription delivery schema is supported for these events?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The CloudEvents 1.0 schema."
+      },
+      {
+        "id": "b",
+        "text": "The Event Grid event schema."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "CloudEvents input supports CloudEvents output. Event Grid does not support converting that input to its Event Grid event schema, even when the handler can parse both formats.",
+    "deepExplanation": "Handler compatibility and service conversion support are separate constraints. CloudEvents output preserves the extension-capable envelope. Event Grid output is a supported choice for Event Grid input, but the publisher here uses fixed CloudEvents input; a dual-format handler does not add the unsupported reverse conversion.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Event Grid output is supported when the topic receives Event Grid input. It is not supported for this fixed CloudEvents input because the Event Grid schema cannot represent CloudEvents extension attributes. The handler’s parser capabilities do not change that restriction."
+    },
+    "objectiveDomain": "connect-to-and-consume-azure-services",
+    "skill": "develop-event-and-message-based-ai-solutions",
+    "subskill": "Implement event-driven workflows by using Azure Event Grid, including filters, custom events, and retries",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["ai200-20260915-integration-doc-cloudschema"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/event-grid/cloud-event-schema"
+    ],
+    "documentationTitles": ["CloudEvents v1.0 schema with Azure Event Grid"],
+    "generatedAt": "2026-09-15T21:18:49.681Z",
+    "lastValidatedAt": "2026-09-15T21:18:49.681Z",
+    "featureStatus": "GA",
+    "tags": ["event-grid", "service-integration"],
+    "conceptId": "eventgrid.cloudevents-input-output-schema",
+    "verificationStatus": "candidate",
+    "requiresManualReview": true
+  }
+]

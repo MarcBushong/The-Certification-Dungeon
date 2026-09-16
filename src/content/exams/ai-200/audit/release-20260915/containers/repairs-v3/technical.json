@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "ai200-r-c-013": {
+      "generation": {
+        "questionFingerprint": "07f378079b204ad8bb62db4af63543e0552dc2942268b6606bc92b22752d2545",
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "authorId": "ai200-release-author-containers",
+        "generatedAt": "2026-09-15T20:43:55.477Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+            ],
+            "summary": "Roll out new Pods for A; leave B and C running. — Rolling out A is the documented way to refresh A’s startup-consumed environment, but leaving B unchanged does not refresh its pre-update subPath mount. This exact selective action is appropriate when A alone still needs refreshing and B has already received the current ConfigMap in a replacement Pod, while C is already current. It makes no claim that B’s existing subPath file can update automatically."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+            ],
+            "summary": "Roll out new Pods for B; leave A and C running. — Rolling out B recreates its Pod and configuration mount, but leaving A unchanged preserves A’s pre-update process environment. This exact selective action is appropriate when B alone remains outdated and A has already started replacement Pods with the current ConfigMap, while C is already current. It does not claim that A’s running process environment refreshes itself."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+            ],
+            "summary": "Roll out new Pods for A and B; leave C running. — The frozen ConfigMap unit distinguishes startup environment values and subPath mounts, which do not auto-refresh, from ordinary updating volumes. Replacing the pre-update Pods for A and B obtains current configuration, while C’s observed updated file and per-request reread satisfy the no-C-rollout requirement."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+            ],
+            "summary": "Roll out new Pods for A, B, and C. — A rollout of every Deployment is a valid way to refresh all startup-consumed configuration when every application requires new Pods and no keep-running constraint excludes one. Here C already has and consumes the updated file, and replacing C violates the explicit requirement to keep it running. The action is valid, but its scope is unnecessarily broad for this task."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+        "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+        "review": {
+          "questionId": "ai200-r-c-013",
+          "authorId": "ai200-release-author-containers",
+          "reviewerId": "ai200-release-technical-containers",
+          "questionFingerprint": "07f378079b204ad8bb62db4af63543e0552dc2942268b6606bc92b22752d2545",
+          "reviewedAt": "2026-09-15T20:59:04.300Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps",
+              "url": "https://learn.microsoft.com/en-us/training/modules/configure-apps-azure-kubernetes-service/2-define-configmaps",
+              "evidencePath": ".grounding\\ai200-release\\containers\\raw\\unit-configure-apps-azure-kubernetes-service--2-define-configmaps.json",
+              "retrievedAt": "2026-09-15T19:23:28.823Z",
+              "lastReviewedAt": "2026-09-15T19:28:47.812Z",
+              "supportingSummary": "Freshly reread the complete frozen ConfigMap unit for v3. It explicitly documents startup environment initialization from the current ConfigMap, no automatic environment refresh, the subPath auto-update exception, ordinary volume updates and application-specific consumption. These support refreshing A/B while C needs no refresh. The unit does not equate lack of necessity with a prohibition on C Pod replacement or establish that every full rollout stops an application."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "New Pods for A legitimately refresh its startup environment. Leaving B running preserves its pre-update subPath projection, so this exact partial action does not update all stated consumers. The literal action would suffice if B had already received the current configuration through replacement Pods and only A remained stale; this changes prior state, not B consumption mode or an auto-refresh claim.",
+              "sourceIds": [
+                "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+              ]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "New Pods for B recreate its configuration mount, but leaving pre-update A running retains A startup environment. This exact selective action would fit B as the only remaining stale consumer after A had already started replacement Pods with current configuration. No process-environment auto-update or ordinary-volume substitution is needed to establish that valid context.",
+              "sourceIds": [
+                "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+              ]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "supported",
+              "rationale": "The documented projection rules require new Pods for the stale startup-environment and subPath consumers A/B. C already has the changed ordinary-volume file and rereads it, so leaving C untouched is sufficient and avoids an unnecessary rollout. This is the supported minimal plan; the concern is whether the stem unambiguously excludes the broader d plan, not whether c works.",
+              "sourceIds": [
+                "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+              ]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "ambiguous",
+              "rationale": "Replacing all three Pod sets is a genuine way to reinitialize configuration and is appropriate when all consumers need replacement or a full rollout is permitted. The source proves that C does not need new Pods, not that replacing its Pods necessarily makes the application stop running. The actual stem requires keeping C running but does not explicitly forbid a C Pod rollout or require the existing C Pods to remain untouched. Therefore the authored explanation imports a stronger no-C-rollout constraint than the stem supplies, leaving this alternative insufficiently excluded.",
+              "sourceIds": [
+                "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+              ]
+            }
+          ],
+          "checks": {
+            "answerDefensible": false,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": false,
+            "explanationsSupported": false,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": false,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": false
+          },
+          "verificationNotes": "Fresh same-context pass-2 review of the exact v3 stem, four literal actions, complete explanations and actual ConfigMap evidence. The earlier a/b impossible automatic-refresh defect is resolved: each now has a valid prior-state countercontext without changing environment/subPath mode. Key c is supported as the necessary minimal refresh. Retain a manual hold because keeping C running does not explicitly prohibit new C Pods; the explanation treats an unstated no-C-rollout rule as explicit to reject d. Require a precise existing-C-Pod/no-replacement constraint (or an explicit minimum-required-rollout rule) in the authored stem. No old approval is inherited and no v1/v2 record is changed.",
+          "confidenceReason": "High confidence in the documented ConfigMap refresh mechanics and repaired a/b literal contexts. Complete answer uniqueness remains unresolved because source evidence establishes that C replacement is unnecessary, while the wording does not clearly prohibit it. This is a focused repairable scope hold, not a false-key or source-provenance rejection."
+        }
+      }
+    }
+  }
+}

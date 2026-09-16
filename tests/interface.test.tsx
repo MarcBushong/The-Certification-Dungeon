@@ -322,6 +322,91 @@ describe('accessible challenge interface', () => {
     expect(screen.getByRole('radio', { name: /^Exam mode/ })).toBeDisabled();
   });
 
+  it('preserves an imported exam-mode raid when starting from setup', async () => {
+    const user = userEvent.setup();
+    const raidIds = ['dp-700', 'github-copilot'];
+    const value = game({
+      config: {
+        ...defaultConfig,
+        runMode: 'raid',
+        raidCredentialIds: raidIds,
+        answerMode: 'exam',
+        objectiveDomains: ['ingest'],
+        practiceMode: 'weak',
+      },
+    });
+    mount(value, '/setup');
+    expect(screen.getByRole('radio', { name: /^Grand Raid/ })).toBeChecked();
+    expect(
+      screen.getByRole('radio', { name: /^Boss Gauntlet/ }),
+    ).not.toBeChecked();
+    expect(screen.getByRole('radio', { name: /^Exam mode/ })).toBeEnabled();
+    await user.click(screen.getByRole('button', { name: 'Descend' }));
+    expect(value.startSession).toHaveBeenCalledWith(
+      expect.objectContaining({
+        runMode: 'raid',
+        raidCredentialIds: raidIds,
+        answerMode: 'exam',
+        order: 'balanced',
+        practiceMode: 'all',
+        objectiveDomains: [],
+      }),
+    );
+  });
+
+  it.each(['immediate', 'exam'] as const)(
+    'changes raid answer visibility from %s without selecting a different expedition',
+    async (answerMode) => {
+      const user = userEvent.setup();
+      const raidIds = ['dp-700', 'github-copilot'];
+      const value = game({
+        config: {
+          ...defaultConfig,
+          runMode: 'raid',
+          raidCredentialIds: raidIds,
+          answerMode,
+        },
+      });
+      mount(value, '/setup');
+      const nextMode = answerMode === 'exam' ? 'immediate' : 'exam';
+      await user.click(
+        screen.getByRole('radio', {
+          name: nextMode === 'exam' ? /^Exam mode/ : /^Immediate answers/,
+        }),
+      );
+      expect(value.setConfig).toHaveBeenCalledWith(
+        expect.objectContaining({
+          runMode: 'raid',
+          raidCredentialIds: raidIds,
+          answerMode: nextMode,
+        }),
+      );
+    },
+  );
+
+  it('requires Boss readiness in every dungeon of an exam-mode raid', () => {
+    mount(
+      game({
+        config: {
+          ...defaultConfig,
+          runMode: 'raid',
+          raidCredentialIds: ['dp-700', 'dp-800'],
+          answerMode: 'exam',
+        },
+      }),
+      '/setup',
+    );
+    expect(screen.getByRole('radio', { name: /^Grand Raid/ })).toBeChecked();
+    expect(screen.getByRole('button', { name: 'Descend' })).toBeDisabled();
+    expect(screen.getByRole('radio', { name: /^Exam mode/ })).toBeDisabled();
+    expect(
+      screen.getByRole('radio', { name: /^Immediate answers/ }),
+    ).toBeEnabled();
+    expect(
+      screen.getByText(/Choose at least two Boss-ready dungeons/),
+    ).toBeInTheDocument();
+  });
+
   it('shows boss framing outside the unchanged technical scenario and keeps gauntlets neutral', () => {
     const question = content.questions[1];
     const value = game({

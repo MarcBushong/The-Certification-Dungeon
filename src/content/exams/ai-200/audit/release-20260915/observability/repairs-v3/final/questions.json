@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ai200-r-s-005",
+    "question": "A Python provider’s last secret retrieval and ordinary refresh check both complete at t=0. It uses a versionless Key Vault reference, refresh_interval=60 and secret_refresh_interval=300. The app calls refresh() only at t=120,240,360,..., and each call succeeds within one second. The sentinel stays unchanged; a new enabled secret version is stored at t=200. Which is the first listed call whose timing permits the secret to be re-resolved?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "A",
+        "text": "t=240 seconds"
+      },
+      {
+        "id": "B",
+        "text": "t=360 seconds"
+      },
+      {
+        "id": "C",
+        "text": "Only a call after the sentinel changes"
+      }
+    ],
+    "correctAnswer": ["B"],
+    "explanation": "The t=360 call is the first listed call after the 300-second secret interval, and the ordinary 60-second interval has also elapsed.",
+    "deepExplanation": "The calls are 120 seconds apart and complete within one second, so each later call is more than 60 seconds after the previous ordinary check. At t=120 and t=240 the 300-second secret interval has not elapsed. At t=360 both interval conditions are satisfied. The secret refresh mechanism does not require a sentinel change. This schedule avoids the unresolved SDK ordering question that arises when the secret interval is due but the ordinary interval is not; it does not assert which check the implementation performs first.",
+    "whyOtherAnswersAreWrong": {
+      "A": "t=240 is an ordinary-refresh-eligible call, but only 240 seconds have passed since the secret was retrieved. A shorter secret_refresh_interval could permit that call; the specified value is 300 seconds.",
+      "C": "A changed sentinel is the publication trigger for watched ordinary settings. The documented independent secret refresh exists for rotated secrets whose App Configuration reference and sentinel remain unchanged, so that ordinary-setting condition is not required here."
+    },
+    "objectiveDomain": "secure-monitor-and-troubleshoot-azure-solutions",
+    "skill": "implement-secure-azure-solutions",
+    "subskill": "Store and retrieve app configuration information by using Azure App Configuration",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/2-connect-app-configuration",
+      "https://learn.microsoft.com/en-us/training/modules/manage-app-settings-app-config/4-reference-key-vault-secrets"
+    ],
+    "documentationTitles": [
+      "Connect to App Configuration from application code",
+      "Reference Key Vault secrets from App Configuration"
+    ],
+    "generatedAt": "2026-09-15T20:35:34.264Z",
+    "lastValidatedAt": "2026-09-15T20:35:34.264Z",
+    "featureStatus": "GA",
+    "tags": [
+      "ai-200",
+      "observability-release",
+      "repairs-v3",
+      "pass-1-candidate"
+    ],
+    "conceptId": "appconfig.secret-refresh-independent-interval",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T20:57:17.968Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-observe-config-2-connect-app-configuration",
+      "ai200-20260915-observe-config-4-reference-key-vault-secrets"
+    ],
+    "verificationNotes": "Fresh independent PASS3 approval applies only to v3 hash 322133f4e429dde96d92e90a068e294e7f5da45e84c10a465ac8449f22d1a822, after its actual fresh generation and technical review. I reread the full original two source bodies, current guide and complete objective map, then tried early-call execution drift, the latest preceding ordinary-check completion and a sentinel-only countercondition. Early calls finish by 121 and 241, before secret age 300; at 360 the preceding ordinary check is at least 119 seconds old, so both documented intervals are clear. B alone is defensible without resolving internal SDK ordering. All options have genuine sourced countercontexts and all twelve checks were assessed; there is no candidate code block, and parameter names/units plus arithmetic were reviewed without claiming live SDK execution. The single pronoun warning is resolved by explicit antecedents. Same-ID history remains unchanged; s014 publisher ordering, s016 flag-refresh enablement and r-s006 missing invocation are distinct complete decisions. The three selected source records and six registry nodes are exact original objects; later identical v2 receipts remain audit-only. No v1 verdict/date, other 39 approval, source snapshot, sampling hold, duplicate rejection, canonical package or gameplay status is renewed.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:30:13.919Z",
+    "confidenceReason": "High confidence in the revised bounded eligibility result: the original approved documentation supplies separate interval purposes, and the explicit call/completion margins make the old ambiguous gate ordering irrelevant. Source equality and the prior positive technical verdict were checked but were not substituted for this independent all-option analysis."
+  }
+]

@@ -1,0 +1,819 @@
+{
+  "schemaVersion": 1,
+  "reviewerId": "ai200-release-technical-data",
+  "role": "fresh-same-context-pass2-for-original-author-v2-repairs",
+  "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+  "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+  "taxonomyRetrievedAt": "2026-09-15T19:16:48.603Z",
+  "currentGuideRead": ".grounding\\ai200-release\\guide.json",
+  "authorId": "ai200-release-author-data",
+  "noPriorTechnicalVerdictInherited": true,
+  "allV1ReviewsAndHistoryPreserved": true,
+  "encounters": {
+    "ai200-d-008": {
+      "questionFingerprint": "8e80bce12934bb606021ae6581908e56cf22399a7431384db4049764bf49bb40",
+      "reviewedAt": "2026-09-15T20:55:48.741Z",
+      "verdict": "verified",
+      "conceptId": "cosmos.session-token-versus-strong-read-contract",
+      "priorQuestionFingerprint": "759b6f1948cace12dbab8930fa5963f2dde449bcc2b8368701e377a99c9b3b16",
+      "sameFactRevision": true,
+      "checkJustifications": {
+        "answerDefensible": "The complete answer set is A only: it alone carries the relevant write position to the independent reader. Neither merely selecting Session nor an unrelated token supplies that position.",
+        "correctOptionsSupported": "A: The current raw consistency section explicitly assigns tokens to partitions and requires token propagation between independent SDK clients. The token from the relevant committed write gives B the position needed for this caller’s read-your-writes requirement.",
+        "distractorsIncorrect": "B: A separate tokenless client has no record of A’s observed position. An unrelated session that tolerates replication lag can legitimately read this way; that weaker requirement is not the requested cross-instance caller guarantee. C: The raw source describes session tokens as partition-bound. A different-partition token is appropriate for related reads in that different partition, but does not establish the relevant item partition’s write position here.",
+        "explanationsSupported": "Rechecked both unchanged explanations against the raw session sections. They correctly distinguish caller/partition scope from unrelated sessions, global latest-write guarantees and asynchronous vector-index inclusion.",
+        "directSources": "ai200-20260915-data-cosmos-consistency: exact AI200-approved source snapshots and complete 26-edge ancestor receipt graph checked against actual raw MCP/HTML evidence. No course supports a technical claim and the sole documentation edge is the explicitly linked pgvector article, not a topical or borrowed approval.",
+        "featureStatus": "The claim is ordinary Session point-read consistency across SDK clients, not a preview vector indexing extension or credential-release assertion.",
+        "currentTerminology": "cosmos.session-token-versus-strong-read-contract: No executable SDK fragment is supplied. Session token and partition-bound position use the actual SDK terminology; the source’s stronger-client-setting examples are not relied upon.",
+        "prerequisitesComplete": "Session account consistency, a committed write, an unprimed client B, a point read and no account-wide strengthening are explicit. Existing access is implied by completed operations; the answer grants no permission or vector-index freshness.",
+        "codeReviewed": "No executable SDK fragment is supplied. Session token and partition-bound position use the actual SDK terminology; the source’s stronger-client-setting examples are not relied upon.",
+        "originalContent": "Fresh comparison of this original scenario with technical documentation and its prior same-fact identity: The stable concept remains session-position propagation, not the SDK-lifetime reuse family or asynchronous PostgreSQL replica routing. The v2 change is classification only, not a new fact or another active copy of v1. The learner-facing writing is reviewed independently: Freshly accept Intermediate technical-implementation: this is a directly documented handoff rule applied to two clients, without pretending it is Advanced architecture. The negative account-wide exclusion is a clear scope condition; this caller and that partition have explicit antecedents.",
+        "duplicatesReviewed": "The stable concept remains session-position propagation, not the SDK-lifetime reuse family or asynchronous PostgreSQL replica routing. The v2 change is classification only, not a new fact or another active copy of v1.",
+        "qualityReviewed": "Freshly accept Intermediate technical-implementation: this is a directly documented handoff rule applied to two clients, without pretending it is Advanced architecture. The negative account-wide exclusion is a clear scope condition; this caller and that partition have explicit antecedents."
+      },
+      "optionReviews": [
+        {
+          "choiceId": "A",
+          "assessment": "supported",
+          "rationale": "The current raw consistency section explicitly assigns tokens to partitions and requires token propagation between independent SDK clients. The token from the relevant committed write gives B the position needed for this caller’s read-your-writes requirement.",
+          "sourceIds": ["ai200-20260915-data-cosmos-consistency"]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "contradicted",
+          "rationale": "A separate tokenless client has no record of A’s observed position. An unrelated session that tolerates replication lag can legitimately read this way; that weaker requirement is not the requested cross-instance caller guarantee.",
+          "sourceIds": ["ai200-20260915-data-cosmos-consistency"]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "contradicted",
+          "rationale": "The raw source describes session tokens as partition-bound. A different-partition token is appropriate for related reads in that different partition, but does not establish the relevant item partition’s write position here.",
+          "sourceIds": ["ai200-20260915-data-cosmos-consistency"]
+        }
+      ],
+      "repairAssessment": "The former difficulty overstatement is removed. This approval follows a new full three-option/source review, not conversion of the prior hold.",
+      "warnings": [
+        {
+          "code": "negative-wording",
+          "independentlyReviewedReason": "Freshly accept Intermediate technical-implementation: this is a directly documented handoff rule applied to two clients, without pretending it is Advanced architecture. The negative account-wide exclusion is a clear scope condition; this caller and that partition have explicit antecedents."
+        },
+        {
+          "code": "absolute-wording",
+          "independentlyReviewedReason": "Freshly accept Intermediate technical-implementation: this is a directly documented handoff rule applied to two clients, without pretending it is Advanced architecture. The negative account-wide exclusion is a clear scope condition; this caller and that partition have explicit antecedents."
+        },
+        {
+          "code": "pronoun-review",
+          "independentlyReviewedReason": "Freshly accept Intermediate technical-implementation: this is a directly documented handoff rule applied to two clients, without pretending it is Advanced architecture. The negative account-wide exclusion is a clear scope condition; this caller and that partition have explicit antecedents."
+        }
+      ],
+      "noPriorReviewFieldsCopied": true
+    },
+    "ai200-d-029": {
+      "questionFingerprint": "042db725da465615efca83d946c14e7032f143f3f9bb297720cae300825d1e61",
+      "reviewedAt": "2026-09-15T20:55:48.758Z",
+      "verdict": "verified",
+      "conceptId": "pgvector.storage-index-capacity-budget",
+      "priorQuestionFingerprint": "d1ec277f5fd7facd1aa2cf0977408e45fdb1792ebdf81c9295318484dd4bb2b0",
+      "sameFactRevision": true,
+      "checkJustifications": {
+        "answerDefensible": "C alone covers the requested live and prospective capacity scope. A and B are legitimate narrower measurements, not equivalent complete budgets.",
+        "correctOptionsSupported": "C: Separate table/index measurement, old MVCC row versions and workload-based growth forecasts are all present in the raw sources. Their combination supports a measured live footprint plus projected growth and maintenance allowance without a fixed multiplier.",
+        "distractorsIncorrect": "A: The actual lifecycle source gives dimensions × four bytes × rows for vector payload. That is useful for exporting or measuring those values alone, but does not include the live indexes, future corpus growth or old update versions in this budget. B: The relation-size examples measure the current table/index footprint. Such a present-tense report is valid, but the scale source requires growth planning and the lifecycle source describes update-related retained versions; a future budget cannot stop at current size.",
+        "explanationsSupported": "The statements about old versions and workload-specific headroom are supported. No exact HNSW overhead ratio, fixed spare percentage, backup charge or whole-server memory estimate is introduced.",
+        "directSources": "ai200-20260915-data-pg-lifecycle, ai200-20260915-data-pg-scale: exact AI200-approved source snapshots and complete 26-edge ancestor receipt graph checked against actual raw MCP/HTML evidence. No course supports a technical claim and the sole documentation edge is the explicitly linked pgvector article, not a topical or borrowed approval.",
+        "featureStatus": "Ordinary PostgreSQL MVCC, index storage and capacity planning are the reviewed baseline, independent of preview vector-search algorithms.",
+        "currentTerminology": "pgvector.storage-index-capacity-budget: There is no runnable SQL. The raw-vector arithmetic is valid for standard 32-bit elements but is identified as incomplete; actual table/index size functions support the broader basis.",
+        "prerequisitesComplete": "The task is a live database budget with indexes, frequent replacements and corpus growth, explicitly not payload-only export. Capacity amounts are left to actual workload measurements rather than invented limits.",
+        "codeReviewed": "There is no runnable SQL. The raw-vector arithmetic is valid for standard 32-bit elements but is identified as incomplete; actual table/index size functions support the broader basis.",
+        "originalContent": "Fresh comparison of this original scenario with technical documentation and its prior same-fact identity: Same storage-budget concept and ID as v1. It differs from Redis raw-payload arithmetic, which explicitly excludes overhead, and from r-d-009’s concurrent operation-memory admission calculation. The learner-facing writing is reviewed independently: Intermediate scenario-based is proportionate to selecting a complete budget scope; it is not credited as an Advanced calculation. The three omissions are supplied openly, and the distractors represent payload-only and current-only reporting. The negative export distinction and omitted-consumer pronouns are clear.",
+        "duplicatesReviewed": "Same storage-budget concept and ID as v1. It differs from Redis raw-payload arithmetic, which explicitly excludes overhead, and from r-d-009’s concurrent operation-memory admission calculation.",
+        "qualityReviewed": "Intermediate scenario-based is proportionate to selecting a complete budget scope; it is not credited as an Advanced calculation. The three omissions are supplied openly, and the distractors represent payload-only and current-only reporting. The negative export distinction and omitted-consumer pronouns are clear."
+      },
+      "optionReviews": [
+        {
+          "choiceId": "A",
+          "assessment": "contradicted",
+          "rationale": "The actual lifecycle source gives dimensions × four bytes × rows for vector payload. That is useful for exporting or measuring those values alone, but does not include the live indexes, future corpus growth or old update versions in this budget.",
+          "sourceIds": ["ai200-20260915-data-pg-lifecycle"]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "contradicted",
+          "rationale": "The relation-size examples measure the current table/index footprint. Such a present-tense report is valid, but the scale source requires growth planning and the lifecycle source describes update-related retained versions; a future budget cannot stop at current size.",
+          "sourceIds": [
+            "ai200-20260915-data-pg-lifecycle",
+            "ai200-20260915-data-pg-scale"
+          ]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "supported",
+          "rationale": "Separate table/index measurement, old MVCC row versions and workload-based growth forecasts are all present in the raw sources. Their combination supports a measured live footprint plus projected growth and maintenance allowance without a fixed multiplier.",
+          "sourceIds": [
+            "ai200-20260915-data-pg-lifecycle",
+            "ai200-20260915-data-pg-scale"
+          ]
+        }
+      ],
+      "repairAssessment": "The revised classification removes the earlier Advanced overstatement. All current options and explanatory limits were evaluated afresh.",
+      "warnings": [
+        {
+          "code": "negative-wording",
+          "independentlyReviewedReason": "Intermediate scenario-based is proportionate to selecting a complete budget scope; it is not credited as an Advanced calculation. The three omissions are supplied openly, and the distractors represent payload-only and current-only reporting. The negative export distinction and omitted-consumer pronouns are clear."
+        },
+        {
+          "code": "pronoun-review",
+          "independentlyReviewedReason": "Intermediate scenario-based is proportionate to selecting a complete budget scope; it is not credited as an Advanced calculation. The three omissions are supplied openly, and the distractors represent payload-only and current-only reporting. The negative export distinction and omitted-consumer pronouns are clear."
+        }
+      ],
+      "noPriorReviewFieldsCopied": true
+    },
+    "ai200-d-040": {
+      "questionFingerprint": "2f1248e518e77fd14e0d5c1e6654af900896050ccbff24621774b179dba5938e",
+      "reviewedAt": "2026-09-15T20:55:48.760Z",
+      "verdict": "verified",
+      "conceptId": "redis.same-slot-multikey-policy",
+      "priorQuestionFingerprint": "9e621e4912fbd626420e04464b023c4c1eb67f4252ae5b1b423ae28679763b40",
+      "sameFactRevision": true,
+      "checkJustifications": {
+        "answerDefensible": "A is the only choice that leaves both fixed contracts intact. B changes clustering policy and C changes the multi-key operation into separate commands.",
+        "correctOptionsSupported": "A: The raw multi-key section explicitly requires keys in an OSS-cluster multi-key command to share one hash slot. Same-slot placement preserves both the fixed deployment policy and single MGET.",
+        "distractorsIncorrect": "B: Enterprise clustering explicitly permits cross-slot MGET. This is technically valid when changing policy is allowed, but the present deployment must remain OSS. C: GET is a documented single-string operation and pipelining improves network efficiency. Decomposing the request into GET commands is useful when the interface may change; it no longer satisfies one MGET.",
+        "explanationsSupported": "The new deep explanation correctly states the OSS rule, Enterprise exception and decomposition distinction. It does not imply that all pipelines execute as one atomic transaction or that every Enterprise command works across slots.",
+        "directSources": "ai200-20260915-data-redis-client, ai200-20260915-data-redis-data: exact AI200-approved source snapshots and complete 26-edge ancestor receipt graph checked against actual raw MCP/HTML evidence. No course supports a technical claim and the sole documentation edge is the explicitly linked pgvector article, not a topical or borrowed approval.",
+        "featureStatus": "Baseline Redis clustering/command contracts are reviewed. No new module, preview capability or foreign Redis.io/GitHub source approval is asserted.",
+        "currentTerminology": "redis.same-slot-multikey-policy: MGET, GET and CROSSSLOT are actual Redis names; the answer is a placement design, not an unvalidated client/pipeline script.",
+        "prerequisitesComplete": "OSS clustering, related string keys, known CROSSSLOT distribution and an unchanged one-command interface are explicit. No unverified hash-tag syntax, client class, active-active exception or tier migration is required.",
+        "codeReviewed": "MGET, GET and CROSSSLOT are actual Redis names; the answer is a placement design, not an unvalidated client/pipeline script.",
+        "originalContent": "Fresh comparison of this original scenario with technical documentation and its prior same-fact identity: Same OSS same-slot fact as v1, not a new encounter. Index-prefix membership and key-value invalidation are different operations and do not duplicate this command-distribution constraint. The learner-facing writing is reviewed independently: Intermediate technical-implementation now matches a scoped configuration rule rather than overstating architectural depth. Options remain genuine policy, placement and decomposition alternatives; the new explanation contains no maintenance bookkeeping.",
+        "duplicatesReviewed": "Same OSS same-slot fact as v1, not a new encounter. Index-prefix membership and key-value invalidation are different operations and do not duplicate this command-distribution constraint.",
+        "qualityReviewed": "Intermediate technical-implementation now matches a scoped configuration rule rather than overstating architectural depth. Options remain genuine policy, placement and decomposition alternatives; the new explanation contains no maintenance bookkeeping."
+      },
+      "optionReviews": [
+        {
+          "choiceId": "A",
+          "assessment": "supported",
+          "rationale": "The raw multi-key section explicitly requires keys in an OSS-cluster multi-key command to share one hash slot. Same-slot placement preserves both the fixed deployment policy and single MGET.",
+          "sourceIds": ["ai200-20260915-data-redis-client"]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "contradicted",
+          "rationale": "Enterprise clustering explicitly permits cross-slot MGET. This is technically valid when changing policy is allowed, but the present deployment must remain OSS.",
+          "sourceIds": ["ai200-20260915-data-redis-client"]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "contradicted",
+          "rationale": "GET is a documented single-string operation and pipelining improves network efficiency. Decomposing the request into GET commands is useful when the interface may change; it no longer satisfies one MGET.",
+          "sourceIds": [
+            "ai200-20260915-data-redis-client",
+            "ai200-20260915-data-redis-data"
+          ]
+        }
+      ],
+      "repairAssessment": "Difficulty, complexity and deep explanation are all independently acceptable at the new hash; no prior technical verdict is reused.",
+      "warnings": [],
+      "noPriorReviewFieldsCopied": true
+    },
+    "ai200-r-d-011": {
+      "questionFingerprint": "406b9645644e6a68a81ad516f1d215dfbb132bb5834c6a326395523dadd8eade",
+      "reviewedAt": "2026-09-15T20:55:48.761Z",
+      "verdict": "verified",
+      "conceptId": "redis.hnsw-ef-runtime-query-local-effort",
+      "priorQuestionFingerprint": "e419934758b852b743158821b22a30052fc1a445f6b13b85d8c0764f07a0e066",
+      "sameFactRevision": true,
+      "checkJustifications": {
+        "answerDefensible": "B alone changes request-local exploration while retaining KNN 10 and the existing shared index. A changes the selection rule and C changes the shared data structure.",
+        "correctOptionsSupported": "B: Both raw vector units show EF_RUNTIME within an individual KNN request. Changing it and measuring recall/latency preserves the shared HNSW index and requested neighbor count while adjusting the evaluation request’s effort.",
+        "distractorsIncorrect": "A: VECTOR_RANGE supplies distance-threshold retrieval, a valid design when the threshold rather than a nearest-neighbor count defines results. It changes KNN 10 selection semantics instead of only the requested graph exploration effort. C: FLAT is a legitimate exhaustive-search index for an exact-reference collection. Rebuilding the shared collection changes the algorithm used by both routes, not just the one evaluation request.",
+        "explanationsSupported": "The replacement deep explanation contains only query effort, threshold semantics, shared algorithm and empirical measurement. It does not promise fixed recall/latency or claim range queries have an unbounded returned row count.",
+        "directSources": "ai200-20260915-data-redis-index, ai200-20260915-data-redis-types: exact AI200-approved source snapshots and complete 26-edge ancestor receipt graph checked against actual raw MCP/HTML evidence. No course supports a technical claim and the sole documentation edge is the explicitly linked pgvector article, not a topical or borrowed approval.",
+        "featureStatus": "This is the existing HNSW request-control interface, not a preview index/module entitlement or a GA claim about every optional Redis feature.",
+        "currentTerminology": "redis.hnsw-ef-runtime-query-local-effort: EF_RUNTIME is the exact KNN runtime parameter in the raw examples. No full Python import or incomplete query is presented as runnable, and no nonexistent parameter is proposed.",
+        "prerequisitesComplete": "A provisioned HNSW index with matching vectors/type/dimensions/metric is given, as are extra latency tolerance and the unchanged index/count requirements. This is not a provisioning, query-byte or dialect troubleshooting question.",
+        "codeReviewed": "EF_RUNTIME is the exact KNN runtime parameter in the raw examples. No full Python import or incomplete query is presented as runnable, and no nonexistent parameter is proposed.",
+        "originalContent": "Fresh comparison of this original scenario with technical documentation and its prior same-fact identity: Retains the same request-local effort fact. IVFFlat all-lists fallback r-d-007 requires a specific planner boundary, while PostgreSQL SET LOCAL addresses transaction/backend scope; neither is simply this Redis effort-control choice. The learner-facing writing is reviewed independently: Intermediate implementation is a fair label for selecting the actual request-local control. The evaluation request is the clear referent of that request; the former self-referential baseline commentary is absent.",
+        "duplicatesReviewed": "Retains the same request-local effort fact. IVFFlat all-lists fallback r-d-007 requires a specific planner boundary, while PostgreSQL SET LOCAL addresses transaction/backend scope; neither is simply this Redis effort-control choice.",
+        "qualityReviewed": "Intermediate implementation is a fair label for selecting the actual request-local control. The evaluation request is the clear referent of that request; the former self-referential baseline commentary is absent."
+      },
+      "optionReviews": [
+        {
+          "choiceId": "A",
+          "assessment": "contradicted",
+          "rationale": "VECTOR_RANGE supplies distance-threshold retrieval, a valid design when the threshold rather than a nearest-neighbor count defines results. It changes KNN 10 selection semantics instead of only the requested graph exploration effort.",
+          "sourceIds": ["ai200-20260915-data-redis-index"]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "supported",
+          "rationale": "Both raw vector units show EF_RUNTIME within an individual KNN request. Changing it and measuring recall/latency preserves the shared HNSW index and requested neighbor count while adjusting the evaluation request’s effort.",
+          "sourceIds": [
+            "ai200-20260915-data-redis-index",
+            "ai200-20260915-data-redis-types"
+          ]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "contradicted",
+          "rationale": "FLAT is a legitimate exhaustive-search index for an exact-reference collection. Rebuilding the shared collection changes the algorithm used by both routes, not just the one evaluation request.",
+          "sourceIds": [
+            "ai200-20260915-data-redis-index",
+            "ai200-20260915-data-redis-types"
+          ]
+        }
+      ],
+      "repairAssessment": "The difficulty reduction and rewritten explanation solve the prior defects after fresh option-level checking.",
+      "warnings": [
+        {
+          "code": "pronoun-review",
+          "independentlyReviewedReason": "Intermediate implementation is a fair label for selecting the actual request-local control. The evaluation request is the clear referent of that request; the former self-referential baseline commentary is absent."
+        }
+      ],
+      "noPriorReviewFieldsCopied": true
+    },
+    "ai200-d-010": {
+      "questionFingerprint": "ebf195156d053e5d8a83871ac35aeb3286327fad7f405cb32a045408bfe20ad4",
+      "reviewedAt": "2026-09-15T20:55:48.762Z",
+      "verdict": "verified",
+      "conceptId": "cosmos.vector-index-type-tradeoff",
+      "priorQuestionFingerprint": "4b7a64b8ec0efb92cec113bbd2c3ed10d0afc8cbc69461d0e6c9ebefa16ab896",
+      "sameFactRevision": true,
+      "checkJustifications": {
+        "answerDefensible": "B alone meets both original-vector exhaustive comparison and the supplied dimension requirement. The fixed indexed count removes the other types’ documented under-1,000 scan fallback as an alternate explanation.",
+        "correctOptionsSupported": "B: flat compares indexed original vectors exhaustively, with the documented 505-dimension limit. The specified 384 components fit that limit, and the fixed evaluated population does not depend on a small-population fallback.",
+        "distractorsIncorrect": "A: The raw units describe quantizedFlat as brute-force comparison of compressed vectors. It fits a precision/efficiency tradeoff, not an exhaustive original-vector reference; the 2,500 indexed population is above its stated minimum effective-index threshold. C: diskANN searches approximately through a graph. It suits fast approximate retrieval, especially large corpora, but is not the requested exhaustive original-vector index algorithm at the given effective-index population.",
+        "explanationsSupported": "The new deep explanation correctly states 2,500 > 1,000 and 384 <= 505 and distinguishes original, compressed and graph search. It no longer discusses retained representatives or archived questions.",
+        "directSources": "ai200-20260915-data-cosmos-store, ai200-20260915-data-cosmos-vector-index: exact AI200-approved source snapshots and complete 26-edge ancestor receipt graph checked against actual raw MCP/HTML evidence. No course supports a technical claim and the sole documentation edge is the explicitly linked pgvector article, not a topical or borrowed approval.",
+        "featureStatus": "The question concerns the baseline enabled vector index algorithms and their stated constraints. Optional preview build tunables and the raw unit’s unreliable cosine-score-direction claims are excluded.",
+        "currentTerminology": "cosmos.vector-index-type-tradeoff: flat, quantizedFlat and diskANN match the actual index-type spellings. The arithmetic bounds were independently checked; no malformed container policy or VectorDistance sample is included.",
+        "prerequisitesComplete": "One physical partition, a fixed already indexed population and no writes during evaluation are explicit. No query-time override forcing scans, universal RU cost or live-index freshness guarantee is assumed.",
+        "codeReviewed": "flat, quantizedFlat and diskANN match the actual index-type spellings. The arithmetic bounds were independently checked; no malformed container policy or VectorDistance sample is included.",
+        "originalContent": "Fresh comparison of this original scenario with technical documentation and its prior same-fact identity: Same stable exact-reference fact, not an extra new record. Archived PostgreSQL/Redis exhaustive-baseline variants stay archived; source-language changes do not resurrect them. The learner-facing writing is reviewed independently: Intermediate scenario-based is reasonable for selecting an evaluation algorithm under precision and dimensional bounds. This reference run has a single antecedent; the learner-facing maintenance sentence is fully removed.",
+        "duplicatesReviewed": "Same stable exact-reference fact, not an extra new record. Archived PostgreSQL/Redis exhaustive-baseline variants stay archived; source-language changes do not resurrect them.",
+        "qualityReviewed": "Intermediate scenario-based is reasonable for selecting an evaluation algorithm under precision and dimensional bounds. This reference run has a single antecedent; the learner-facing maintenance sentence is fully removed."
+      },
+      "optionReviews": [
+        {
+          "choiceId": "A",
+          "assessment": "contradicted",
+          "rationale": "The raw units describe quantizedFlat as brute-force comparison of compressed vectors. It fits a precision/efficiency tradeoff, not an exhaustive original-vector reference; the 2,500 indexed population is above its stated minimum effective-index threshold.",
+          "sourceIds": [
+            "ai200-20260915-data-cosmos-store",
+            "ai200-20260915-data-cosmos-vector-index"
+          ]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "supported",
+          "rationale": "flat compares indexed original vectors exhaustively, with the documented 505-dimension limit. The specified 384 components fit that limit, and the fixed evaluated population does not depend on a small-population fallback.",
+          "sourceIds": [
+            "ai200-20260915-data-cosmos-store",
+            "ai200-20260915-data-cosmos-vector-index"
+          ]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "contradicted",
+          "rationale": "diskANN searches approximately through a graph. It suits fast approximate retrieval, especially large corpora, but is not the requested exhaustive original-vector index algorithm at the given effective-index population.",
+          "sourceIds": [
+            "ai200-20260915-data-cosmos-store",
+            "ai200-20260915-data-cosmos-vector-index"
+          ]
+        }
+      ],
+      "repairAssessment": "Fresh review finds no remaining bookkeeping or unsupported statement in the rewritten deep explanation.",
+      "warnings": [
+        {
+          "code": "pronoun-review",
+          "independentlyReviewedReason": "Intermediate scenario-based is reasonable for selecting an evaluation algorithm under precision and dimensional bounds. This reference run has a single antecedent; the learner-facing maintenance sentence is fully removed."
+        }
+      ],
+      "noPriorReviewFieldsCopied": true
+    },
+    "ai200-r-d-001": {
+      "questionFingerprint": "4a82e80e03a918f4bb750f371e43f4fdcad7fa0ceab74d364e67eca8a9296285",
+      "reviewedAt": "2026-09-15T20:55:48.763Z",
+      "verdict": "verified",
+      "conceptId": "cosmos.composite-index-rollout-add-wait-switch-remove",
+      "priorQuestionFingerprint": "00636b9b377c2131b1feacbc7fc662f9fb125421fbb408334efd9769d782f876",
+      "sameFactRevision": true,
+      "checkJustifications": {
+        "answerDefensible": "A alone respects both distinct readiness conditions: replacement completion and old-client drain. B violates completion; C violates the live old-client dependency.",
+        "correctOptionsSupported": "A: The actual index transformation sections require adding and waiting for the replacement before removing an old index. Applying that lifecycle to mixed query versions means waiting for new support, switching traffic, then retaining the old pattern until its callers drain.",
+        "distractorsIncorrect": "B: Both completed composites can support mixed-version traffic. Mere presence of their definitions does not complete the new asynchronous transformation, so immediately using the new ordering lacks the required readiness. C: Removing an unused index can reduce maintenance cost. The old instances still depend on this one, so early removal loses their support even if the team waits before switching new traffic.",
+        "explanationsSupported": "The rewritten deep explanation accurately identifies both conditions and rejects definition-presence as proof of completed transformation. It avoids a universal scan-fallback claim when a required ORDER BY composite is removed.",
+        "directSources": "ai200-20260915-data-cosmos-index, ai200-20260915-data-cosmos-cost: exact AI200-approved source snapshots and complete 26-edge ancestor receipt graph checked against actual raw MCP/HTML evidence. No course supports a technical claim and the sole documentation edge is the explicitly linked pgvector article, not a topical or borrowed approval.",
+        "featureStatus": "Standard Cosmos composite-index transformation is the operative feature; optional vector indexing settings and preview capabilities are outside the scenario.",
+        "currentTerminology": "cosmos.composite-index-rollout-add-wait-switch-remove: The sequence is conceptual deployment ordering, not executable code. Index definition and completed transformation are not conflated.",
+        "prerequisitesComplete": "Old and new query versions coexist, the new transformation is incomplete and removing the old index immediately affects old instances. The task is rollout ordering, not a missing SDK progress API or permission grant.",
+        "codeReviewed": "The sequence is conceptual deployment ordering, not executable code. Index definition and completed transformation are not conflated.",
+        "originalContent": "Fresh comparison of this original scenario with technical documentation and its prior same-fact identity: Same rollout fact as v1. Completed-composite ORDER BY compatibility d-006 and unqueried-field index exclusion d-007 are different decisions, not alternate wordings of this transition. The learner-facing writing is reviewed independently: Advanced architecture-design remains warranted by coordinating two independently necessary conditions across rolling versions. The replacement explanation is factual and no longer identifies an archived nested-path record.",
+        "duplicatesReviewed": "Same rollout fact as v1. Completed-composite ORDER BY compatibility d-006 and unqueried-field index exclusion d-007 are different decisions, not alternate wordings of this transition.",
+        "qualityReviewed": "Advanced architecture-design remains warranted by coordinating two independently necessary conditions across rolling versions. The replacement explanation is factual and no longer identifies an archived nested-path record."
+      },
+      "optionReviews": [
+        {
+          "choiceId": "A",
+          "assessment": "supported",
+          "rationale": "The actual index transformation sections require adding and waiting for the replacement before removing an old index. Applying that lifecycle to mixed query versions means waiting for new support, switching traffic, then retaining the old pattern until its callers drain.",
+          "sourceIds": [
+            "ai200-20260915-data-cosmos-index",
+            "ai200-20260915-data-cosmos-cost"
+          ]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "contradicted",
+          "rationale": "Both completed composites can support mixed-version traffic. Mere presence of their definitions does not complete the new asynchronous transformation, so immediately using the new ordering lacks the required readiness.",
+          "sourceIds": [
+            "ai200-20260915-data-cosmos-index",
+            "ai200-20260915-data-cosmos-cost"
+          ]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "contradicted",
+          "rationale": "Removing an unused index can reduce maintenance cost. The old instances still depend on this one, so early removal loses their support even if the team waits before switching new traffic.",
+          "sourceIds": ["ai200-20260915-data-cosmos-index"]
+        }
+      ],
+      "repairAssessment": "The maintenance aside is removed and the remaining rollout claim is independently supported at the new exact hash.",
+      "warnings": [],
+      "noPriorReviewFieldsCopied": true
+    },
+    "ai200-r-d-004": {
+      "questionFingerprint": "ec5256df49167d01c2a3e631ddb662bdcb6eadb2f765a68a7e95f6c16af3e05b",
+      "reviewedAt": "2026-09-15T20:55:48.764Z",
+      "verdict": "verified",
+      "conceptId": "cosmos.change-feed-pull-scheduled-batch-consumption",
+      "priorQuestionFingerprint": "ad3bfaf33b19e9dc1140285d5e8a7f0bf64794495d8619d2775554c6768dcd85",
+      "sameFactRevision": true,
+      "checkJustifications": {
+        "answerDefensible": "A is the supported model for deliberately invoked reads and application-persisted continuation; both alternatives are genuine automatic push architectures with different ownership.",
+        "correctOptionsSupported": "A: The actual pull-model discussion assigns read timing to the application and describes saving continuation position between runs. That matches the existing orchestrator’s scheduled batch invocation and ownership of progress.",
+        "distractorsIncorrect": "B: The Cosmos Functions trigger is a real push consumer with automatic delivery, partition management and checkpoints. It fits a managed continuous-trigger requirement, not this application-owned scheduled read pattern. C: A continuously running processor with leases is valid for coordinated push processing. It changes the specified responsibility for when the application reads the feed instead of satisfying the scheduled pull model.",
+        "explanationsSupported": "The replacement explanation correctly treats continuation as resumption state, not exactly-once processing of side effects. It contains no duplicate-family or archived-record commentary.",
+        "directSources": "ai200-20260915-data-cosmos-feed: exact AI200-approved source snapshots and complete 26-edge ancestor receipt graph checked against actual raw MCP/HTML evidence. No course supports a technical claim and the sole documentation edge is the explicitly linked pgvector article, not a topical or borrowed approval.",
+        "featureStatus": "Ordinary Python SDK pull consumption and processor/Functions push alternatives are reviewed, not full-fidelity preview change-feed modes or exactly-once delivery.",
+        "currentTerminology": "cosmos.change-feed-pull-scheduled-batch-consumption: No raw sample signature is reproduced. In particular, the source’s illustrative start_time=Beginning and iterator token-access details are not imported into a runnable answer.",
+        "prerequisitesComplete": "An existing batch orchestrator, occasional reading and no requirement for a continuous trigger are explicit. The answer does not grant automatic checkpoint persistence, describe unsupported processor languages or require lease-based push state for pull.",
+        "codeReviewed": "No raw sample signature is reproduced. In particular, the source’s illustrative start_time=Beginning and iterator token-access details are not imported into a runnable answer.",
+        "originalContent": "Fresh comparison of this original scenario with technical documentation and its prior same-fact identity: The same application timing/progress-ownership fact survives the explanation change. Historical d-015/i-007 side-effect redelivery duplicates remain excluded and do not gain clearance from a continuation discussion. The learner-facing writing is reviewed independently: Intermediate architecture selection is proportionate. The negative push exclusion is a precise workload boundary; the new exactly-once negation limits an overclaim rather than posing an ambiguous negative-answer question. Fits/its continuation refer to the scheduled reader.",
+        "duplicatesReviewed": "The same application timing/progress-ownership fact survives the explanation change. Historical d-015/i-007 side-effect redelivery duplicates remain excluded and do not gain clearance from a continuation discussion.",
+        "qualityReviewed": "Intermediate architecture selection is proportionate. The negative push exclusion is a precise workload boundary; the new exactly-once negation limits an overclaim rather than posing an ambiguous negative-answer question. Fits/its continuation refer to the scheduled reader."
+      },
+      "optionReviews": [
+        {
+          "choiceId": "A",
+          "assessment": "supported",
+          "rationale": "The actual pull-model discussion assigns read timing to the application and describes saving continuation position between runs. That matches the existing orchestrator’s scheduled batch invocation and ownership of progress.",
+          "sourceIds": ["ai200-20260915-data-cosmos-feed"]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "contradicted",
+          "rationale": "The Cosmos Functions trigger is a real push consumer with automatic delivery, partition management and checkpoints. It fits a managed continuous-trigger requirement, not this application-owned scheduled read pattern.",
+          "sourceIds": ["ai200-20260915-data-cosmos-feed"]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "contradicted",
+          "rationale": "A continuously running processor with leases is valid for coordinated push processing. It changes the specified responsibility for when the application reads the feed instead of satisfying the scheduled pull model.",
+          "sourceIds": ["ai200-20260915-data-cosmos-feed"]
+        }
+      ],
+      "repairAssessment": "The authored explanation is now learner-facing, bounded and source-backed; all three options were rereviewed rather than inheriting the v1 key.",
+      "warnings": [
+        {
+          "code": "negative-wording",
+          "independentlyReviewedReason": "Intermediate architecture selection is proportionate. The negative push exclusion is a precise workload boundary; the new exactly-once negation limits an overclaim rather than posing an ambiguous negative-answer question. Fits/its continuation refer to the scheduled reader."
+        },
+        {
+          "code": "absolute-wording",
+          "independentlyReviewedReason": "Intermediate architecture selection is proportionate. The negative push exclusion is a precise workload boundary; the new exactly-once negation limits an overclaim rather than posing an ambiguous negative-answer question. Fits/its continuation refer to the scheduled reader."
+        },
+        {
+          "code": "pronoun-review",
+          "independentlyReviewedReason": "Intermediate architecture selection is proportionate. The negative push exclusion is a precise workload boundary; the new exactly-once negation limits an overclaim rather than posing an ambiguous negative-answer question. Fits/its continuation refer to the scheduled reader."
+        }
+      ],
+      "noPriorReviewFieldsCopied": true
+    },
+    "ai200-r-d-007": {
+      "questionFingerprint": "3f25737d91a3cbdbf82301f19478f48f7326c6b47c88b46703d92343e3f4060b",
+      "reviewedAt": "2026-09-15T20:55:48.764Z",
+      "verdict": "verified",
+      "conceptId": "pgvector.ivfflat-all-lists-probes-exact-plan-boundary",
+      "priorQuestionFingerprint": "8d4958620409a07075699f45f2f13d16ac416f139ca0e51450252b508958d8a1",
+      "sameFactRevision": true,
+      "checkJustifications": {
+        "answerDefensible": "C matches the only changed setting and the source’s explicit all-lists boundary. Dimension and metric defects are contradicted by the controlled conditions.",
+        "correctOptionsSupported": "C: The product IVFFlat section explicitly states that probes equal to lists searches all lists and the planner does not use the index. Testing fewer probes against recall and latency examines the documented candidate-reduction tradeoff.",
+        "distractorsIncorrect": "A: The actual product article identifies missing dimensions as an index-creation error. It would explain a failed build, not a known established index whose data/schema stay unchanged while probes alone changes. B: A mismatch between query operator and index class can prevent use, and L2 is a valid different metric. The current experiment explicitly retains the matching cosine pair, so that diagnosis and metric-changing rebuild do not explain it.",
+        "explanationsSupported": "The new explanation correctly relates 100 probes to 100 lists, loss of candidate reduction and empirical retesting. It neither references another question nor claims every larger probe value prevents index use.",
+        "directSources": "ai200-20260915-data-pg-performance, ai200-20260915-data-pg-index: exact AI200-approved source snapshots and complete 26-edge ancestor receipt graph checked against actual raw MCP/HTML evidence. No course supports a technical claim and the sole documentation edge is the explicitly linked pgvector article, not a topical or borrowed approval.",
+        "featureStatus": "Baseline IVFFlat parameter and planner behavior, not Azure-specific preview DiskANN functionality or generalized limits on alternative vector types.",
+        "currentTerminology": "pgvector.ivfflat-all-lists-probes-exact-plan-boundary: lists, probes, vector_cosine_ops and vector_l2_ops match real pgvector configuration concepts. Equality of 100 and 100, rather than a vague high setting, drives the diagnosed boundary.",
+        "prerequisitesComplete": "Established index, unchanged data/query and matching cosine operator class are explicit. This is not advice to change vector dimensions or index construction parameters in an uncontrolled production workload.",
+        "codeReviewed": "lists, probes, vector_cosine_ops and vector_l2_ops match real pgvector configuration concepts. Equality of 100 and 100, rather than a vague high setting, drives the diagnosed boundary.",
+        "originalContent": "Fresh comparison of this original scenario with technical documentation and its prior same-fact identity: Same all-lists planner-boundary fact as v1. Unlike the exact-baseline index choice or Redis request effort, the key explains a specific transition in plan eligibility/effectiveness. The learner-facing writing is reviewed independently: Advanced troubleshooting is supported by reconciling a one-variable experiment with valid schema and metric controls and selecting an appropriate next comparison. The foreign-record bookkeeping is absent.",
+        "duplicatesReviewed": "Same all-lists planner-boundary fact as v1. Unlike the exact-baseline index choice or Redis request effort, the key explains a specific transition in plan eligibility/effectiveness.",
+        "qualityReviewed": "Advanced troubleshooting is supported by reconciling a one-variable experiment with valid schema and metric controls and selecting an appropriate next comparison. The foreign-record bookkeeping is absent."
+      },
+      "optionReviews": [
+        {
+          "choiceId": "A",
+          "assessment": "contradicted",
+          "rationale": "The actual product article identifies missing dimensions as an index-creation error. It would explain a failed build, not a known established index whose data/schema stay unchanged while probes alone changes.",
+          "sourceIds": ["ai200-20260915-data-pg-performance"]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "contradicted",
+          "rationale": "A mismatch between query operator and index class can prevent use, and L2 is a valid different metric. The current experiment explicitly retains the matching cosine pair, so that diagnosis and metric-changing rebuild do not explain it.",
+          "sourceIds": [
+            "ai200-20260915-data-pg-index",
+            "ai200-20260915-data-pg-performance"
+          ]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "supported",
+          "rationale": "The product IVFFlat section explicitly states that probes equal to lists searches all lists and the planner does not use the index. Testing fewer probes against recall and latency examines the documented candidate-reduction tradeoff.",
+          "sourceIds": [
+            "ai200-20260915-data-pg-performance",
+            "ai200-20260915-data-pg-index"
+          ]
+        }
+      ],
+      "repairAssessment": "The rewritten deep explanation is fully technical; fresh source reading supports all its assertions and alternatives.",
+      "warnings": [],
+      "noPriorReviewFieldsCopied": true
+    },
+    "ai200-d-025": {
+      "questionFingerprint": "579ba94fd43d60135807cefa08e3e15ff5dbbeacf7aadd29f4c5322415195b68",
+      "reviewedAt": "2026-09-15T20:55:48.765Z",
+      "verdict": "verified",
+      "conceptId": "pgvector.operator-class-distance-match",
+      "priorQuestionFingerprint": "2cffd9cdf3cc65c62d2cbf9b1f56e2b7591eaa52fc16f8ca819735f786ad4175",
+      "sameFactRevision": true,
+      "checkJustifications": {
+        "answerDefensible": "B is the full unique key. It fixes the concrete query operator; A leaves the mismatch and C solves compatibility by violating the metric contract.",
+        "correctOptionsSupported": "B: The source’s operator table and actual cosine index/query example pair <=> with vector_cosine_ops. Restoring that operator retains both the existing index and the required application metric.",
+        "distractorsIncorrect": "A: IVFFlat probes adjusts which lists are visited when the index is eligible. It is useful for recall/latency tuning, but does not turn the L2 <-> operator into the cosine operation supported by the existing class. C: <-> plus vector_l2_ops is a correct Euclidean pairing. It would be suitable for an application that requires Euclidean distance, but changes this application’s explicitly retained cosine requirement.",
+        "explanationsSupported": "The replacement deep explanation accurately names both pairs and distinguishes compatibility from guaranteed plan selection. No Azure SQL question or release-process commentary remains in learner text.",
+        "directSources": "ai200-20260915-data-pg-index, ai200-20260915-data-pg-performance: exact AI200-approved source snapshots and complete 26-edge ancestor receipt graph checked against actual raw MCP/HTML evidence. No course supports a technical claim and the sole documentation edge is the explicitly linked pgvector article, not a topical or borrowed approval.",
+        "featureStatus": "Standard PostgreSQL/pgvector operator-class matching; the separate Azure SQL Preview feature is not borrowed as a capability or citation.",
+        "currentTerminology": "pgvector.operator-class-distance-match: Verified the exact <=>/vector_cosine_ops and <->/vector_l2_ops mappings against both actual sources. ORDER BY ... LIMIT 8 is query-shape notation, not missing DDL or invented syntax.",
+        "prerequisitesComplete": "A known existing cosine index and an unintended query operator change define the diagnosis. $1 denotes a bound SQL vector; the question does not claim this is a psycopg execute string or promise a particular plan on every dataset.",
+        "codeReviewed": "Verified the exact <=>/vector_cosine_ops and <->/vector_l2_ops mappings against both actual sources. ORDER BY ... LIMIT 8 is query-shape notation, not missing DDL or invented syntax.",
+        "originalContent": "Fresh comparison of this original scenario with technical documentation and its prior same-fact identity: Fresh comparison preserves the concrete operator task: it differs from dp800-direct-048, whose correct query metric is already given and which must create an ANN index on both the required column and metric. This is not a generic metric-agreement rewrite. New AI103 frozen content still needs coordinator-wide screening when available. The learner-facing writing is reviewed independently: Intermediate troubleshooting is now an entirely technical implementation task. That metric means the stated cosine requirement, and the explanations are bounded without cross-bank editorial asides.",
+        "duplicatesReviewed": "Fresh comparison preserves the concrete operator task: it differs from dp800-direct-048, whose correct query metric is already given and which must create an ANN index on both the required column and metric. This is not a generic metric-agreement rewrite. New AI103 frozen content still needs coordinator-wide screening when available.",
+        "qualityReviewed": "Intermediate troubleshooting is now an entirely technical implementation task. That metric means the stated cosine requirement, and the explanations are bounded without cross-bank editorial asides."
+      },
+      "optionReviews": [
+        {
+          "choiceId": "A",
+          "assessment": "contradicted",
+          "rationale": "IVFFlat probes adjusts which lists are visited when the index is eligible. It is useful for recall/latency tuning, but does not turn the L2 <-> operator into the cosine operation supported by the existing class.",
+          "sourceIds": [
+            "ai200-20260915-data-pg-index",
+            "ai200-20260915-data-pg-performance"
+          ]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "supported",
+          "rationale": "The source’s operator table and actual cosine index/query example pair <=> with vector_cosine_ops. Restoring that operator retains both the existing index and the required application metric.",
+          "sourceIds": [
+            "ai200-20260915-data-pg-index",
+            "ai200-20260915-data-pg-performance"
+          ]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "contradicted",
+          "rationale": "<-> plus vector_l2_ops is a correct Euclidean pairing. It would be suitable for an application that requires Euclidean distance, but changes this application’s explicitly retained cosine requirement.",
+          "sourceIds": [
+            "ai200-20260915-data-pg-index",
+            "ai200-20260915-data-pg-performance"
+          ]
+        }
+      ],
+      "repairAssessment": "The maintenance-only hold is resolved at this new hash. The prior narrow semantic distinction is reconsidered from the retained actual task, not inherited as a blanket originality score.",
+      "warnings": [
+        {
+          "code": "pronoun-review",
+          "independentlyReviewedReason": "Intermediate troubleshooting is now an entirely technical implementation task. That metric means the stated cosine requirement, and the explanations are bounded without cross-bank editorial asides."
+        }
+      ],
+      "noPriorReviewFieldsCopied": true
+    },
+    "ai200-r-d-009": {
+      "questionFingerprint": "171f5d1096ea51c7f521e599fa7a98983a6839d3377874bbc2cd35d99fdaeff3",
+      "reviewedAt": "2026-09-15T20:55:48.766Z",
+      "verdict": "verified",
+      "conceptId": "postgres.work-mem-per-operation-concurrency-budget",
+      "priorQuestionFingerprint": "9fada8e55d04ee72c65a326089ab49b4b500d3c38e77bf83967998862a3371d0",
+      "sameFactRevision": true,
+      "checkJustifications": {
+        "answerDefensible": "A alone satisfies both numerical bounds. B fails per-sort minimum and C total potential allowance. The calculation now has no omitted hash multiplier or parallel-worker dimension.",
+        "correctOptionsSupported": "A: work_mem applies to each sort operation; the current stem fixes three simultaneous sorts per transaction and excludes hash operations and parallel plans. Five × three × 64 = 960 MiB is within 1,024 and meets the measured 64-MiB work_mem minimum for every sort.",
+        "distractorsIncorrect": "B: Eight × three × 32 = 768 MiB satisfies the allowance but assigns less than the supplied minimum work_mem. It is a legitimate smaller-memory choice when measured sorts meet their target at 32 MiB, not under these measurements. C: Four × three × 128 = 1,536 MiB exceeds the reserved allowance despite meeting each sort’s minimum. It could be used with a larger dedicated sort budget; the current budget excludes it.",
+        "explanationsSupported": "The replacement clearly limits the estimate to three simultaneous sorts in each nonparallel transaction and calls work_mem a per-operation allowance, not a shared pool or guaranteed immediate allocation. SET LOCAL scopes the parameter, while admission control—not SET LOCAL—bounds transaction count.",
+        "directSources": "ai200-20260915-data-pg-tune, ai200-20260915-data-pg-pool: exact AI200-approved source snapshots and complete 26-edge ancestor receipt graph checked against actual raw MCP/HTML evidence. No course supports a technical claim and the sole documentation edge is the explicitly linked pgvector article, not a topical or borrowed approval.",
+        "featureStatus": "Baseline PostgreSQL sort work_mem, transaction-local setting and application admission control. No preview resource feature, invented hash_mem_multiplier default or newly admitted supplemental article is used.",
+        "currentTerminology": "postgres.work-mem-per-operation-concurrency-budget: Independently recomputed A=960, B=768 and C=1,536 MiB. The raw pool unit explicitly shows SET LOCAL work_mem within transaction scope. MiB describes the budget; no invalid literal SET LOCAL ... MiB SQL is presented.",
+        "prerequisitesComplete": "Exactly three simultaneous sort workspaces, nonparallel execution, no hash-based operations, measured minimum work_mem and separately budgeted other memory are explicit. This computes their configured potential allowance, not a hard cap on all actual PostgreSQL/server memory.",
+        "codeReviewed": "Independently recomputed A=960, B=768 and C=1,536 MiB. The raw pool unit explicitly shows SET LOCAL work_mem within transaction scope. MiB describes the budget; no invalid literal SET LOCAL ... MiB SQL is presented.",
+        "originalContent": "Fresh comparison of this original scenario with technical documentation and its prior same-fact identity: The stable fact remains per-operation memory multiplied by concurrently admitted transactions, narrowed to a supportable sort-only context. It does not become a new identity or duplicate page-cache sizing, storage headroom or packed Redis vector bytes. The learner-facing writing is reviewed independently: Advanced technical-implementation is genuine here: the per-operation minimum and concurrency budget must both be satisfied, and each distractor meets a different partial condition. Explicit scope bounds make the arithmetic intelligible without hidden workers or hash tables.",
+        "duplicatesReviewed": "The stable fact remains per-operation memory multiplied by concurrently admitted transactions, narrowed to a supportable sort-only context. It does not become a new identity or duplicate page-cache sizing, storage headroom or packed Redis vector bytes.",
+        "qualityReviewed": "Advanced technical-implementation is genuine here: the per-operation minimum and concurrency budget must both be satisfied, and each distractor meets a different partial condition. Explicit scope bounds make the arithmetic intelligible without hidden workers or hash tables."
+      },
+      "optionReviews": [
+        {
+          "choiceId": "A",
+          "assessment": "supported",
+          "rationale": "work_mem applies to each sort operation; the current stem fixes three simultaneous sorts per transaction and excludes hash operations and parallel plans. Five × three × 64 = 960 MiB is within 1,024 and meets the measured 64-MiB work_mem minimum for every sort.",
+          "sourceIds": [
+            "ai200-20260915-data-pg-tune",
+            "ai200-20260915-data-pg-pool"
+          ]
+        },
+        {
+          "choiceId": "B",
+          "assessment": "contradicted",
+          "rationale": "Eight × three × 32 = 768 MiB satisfies the allowance but assigns less than the supplied minimum work_mem. It is a legitimate smaller-memory choice when measured sorts meet their target at 32 MiB, not under these measurements.",
+          "sourceIds": [
+            "ai200-20260915-data-pg-tune",
+            "ai200-20260915-data-pg-pool"
+          ]
+        },
+        {
+          "choiceId": "C",
+          "assessment": "contradicted",
+          "rationale": "Four × three × 128 = 1,536 MiB exceeds the reserved allowance despite meeting each sort’s minimum. It could be used with a larger dedicated sort budget; the current budget excludes it.",
+          "sourceIds": [
+            "ai200-20260915-data-pg-tune",
+            "ai200-20260915-data-pg-pool"
+          ]
+        }
+      ],
+      "repairAssessment": "The v1 missing-allocation-model defect is actually repaired by removing hash and parallel ambiguity, not by assuming a multiplier. Fresh raw-source and arithmetic review supports the new answer set.",
+      "warnings": [],
+      "noPriorReviewFieldsCopied": true
+    }
+  },
+  "sources": [
+    {
+      "sourceId": "ai200-20260915-guide",
+      "url": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-200",
+      "title": "Study guide for Exam AI-200: Developing AI Cloud Solutions on Azure",
+      "retrievedAt": "2026-09-15T19:16:48.603Z",
+      "lastReviewedAt": "2026-09-15T19:17:59.425Z",
+      "evidencePath": ".grounding\\ai200-release\\guide.json",
+      "rawSha256": "7d66c95108cbe5e96750fd3bae4c15ad7181a52985a66f1d233e977fed903519",
+      "independentAssessment": "Reread the complete unchanged undated current guide and taxonomy: four domains, nine skills and 27 subskills. The data domain has its three service skills and 4/6/2 subskills. The guide establishes mapping and weights, not implementation accuracy or credential GA.",
+      "supportingRole": false
+    },
+    {
+      "sourceId": "ai200-20260915-data-cosmos-store",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-cosmos-db/2-store-retrieve-embeddings",
+      "title": "Store and retrieve embeddings in Azure Cosmos DB",
+      "retrievedAt": "2026-09-15T19:25:09.754Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-implement-vector-search-azure-cosmos-db-2-store-retrieve-embeddings.json",
+      "rawSha256": "1be5c0ae7092b3216d4072c59933012154d597c24d32b3708cde578f852b1785",
+      "independentAssessment": "Reread the actual vector-index definitions and policy scope. flat compares original vectors and has a 505-dimension limit; quantizedFlat compresses vectors; diskANN is approximate. The explicit 1,000-vector effectiveness note bounds the repaired reference item. No unreliable cosine-score-direction or universal float16 no-loss claim is adopted.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-cosmos-feed",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-cosmos-db/5-change-feed-trigger-embedding-refresh",
+      "title": "Use the change feed to trigger embedding refresh",
+      "retrievedAt": "2026-09-15T19:25:21.970Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-implement-vector-search-azure-cosmos-db-5-change-feed-trigger-embedding-refresh.json",
+      "rawSha256": "502628d7b7171b4f99d95891db03519cd599a170c6cba38d8a6c6ebef9e8ba88",
+      "independentAssessment": "Reread push/pull ownership, separate lease coordination and Python scheduled pull/continuation sections. These support model selection, not exactly-once side effects. The malformed illustrative start flag and token accessor are not adopted as executable APIs.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-cosmos-index",
+      "url": "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/3-configure-range-composite-indexes",
+      "title": "Configure range and composite indexes",
+      "retrievedAt": "2026-09-15T19:25:40.067Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-optimize-query-performance-azure-cosmos-db-3-configure-range-composite-indexes.json",
+      "rawSha256": "d511dcb5012f3ce593c11a9ee4d8e98295444400d135f0ba4202d9d58d0969b0",
+      "independentAssessment": "Reread asynchronous index addition, immediate loss of removed-index support and replacement ordering, alongside write-maintenance cost. Supports the two-stage rollout dependency; does not guarantee every unsupported ORDER BY falls back to a scan.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-cosmos-vector-index",
+      "url": "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/4-tune-vector-indexes-embeddings",
+      "title": "Tune vector indexes for embedding workloads",
+      "retrievedAt": "2026-09-15T19:25:42.906Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-optimize-query-performance-azure-cosmos-db-4-tune-vector-indexes-embeddings.json",
+      "rawSha256": "ea079b86d3f5eb535e9a81e6ef846790f66b67ca25b0305758a145390a954b5f",
+      "independentAssessment": "Reread original/quantized/graph algorithm tradeoffs, flat dimensions and the 1,000-vector boundary. The repaired candidate does not rely on optional index tunable release status, generic speed claims or universal prefiltering.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-cosmos-cost",
+      "url": "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/5-reduce-ru-costs-strategic-indexing",
+      "title": "Reduce RU costs with strategic indexing",
+      "retrievedAt": "2026-09-15T19:25:45.480Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-optimize-query-performance-azure-cosmos-db-5-reduce-ru-costs-strategic-indexing.json",
+      "rawSha256": "888943f27bc9d62d5025b2e6f55a055b2fcc9a3ec1f1afced136138fb2eb39aa",
+      "independentAssessment": "Reread the transformation-monitoring section and explicit add/wait/remove guidance. Definition presence is not completed transformation. The reviewer does not adopt a specific SDK progress API, duration or query-cost guarantee.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-cosmos-consistency",
+      "url": "https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-azure-cosmos-db/6-choose-consistency-levels-performance",
+      "title": "Choose consistency levels for optimal performance",
+      "retrievedAt": "2026-09-15T19:25:49.324Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-optimize-query-performance-azure-cosmos-db-6-choose-consistency-levels-performance.json",
+      "rawSha256": "62dd881285d250618b9d4a92db6f9478f754294999ae682b4b547f53d490a9d6",
+      "independentAssessment": "Reread Session and cross-client application sections: tokens carry partition-specific position, separate clients require handoff, and unrelated sessions may be stale. Support is limited to the stated point read, not stronger-than-account overrides or instantaneous asynchronous vector visibility.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-pg-index",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/3-perform-fast-vector-similarity-search",
+      "title": "Perform fast vector similarity search",
+      "retrievedAt": "2026-09-15T19:25:27.185Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-implement-vector-search-azure-database-postgresql-3-perform-fast-vector-similarity-search.json",
+      "rawSha256": "4259df7f007f8c50cc6fd0120a2fd393c14d5187310d22930e012884a88ab2a3",
+      "independentAssessment": "Reread IVFFlat clustering/probes and the exact operator-class table. <=> pairs with vector_cosine_ops and <-> with vector_l2_ops. Its exact direct product-article link remains present. Fixed performance/recall claims are not used.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-pg-lifecycle",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/4-manage-index-lifecycle-embedding-updates",
+      "title": "Manage index lifecycle and embedding updates",
+      "retrievedAt": "2026-09-15T19:25:28.539Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-implement-vector-search-azure-database-postgresql-4-manage-index-lifecycle-embedding-updates.json",
+      "rawSha256": "ccace6b0d6b5285fcf45752174029d5a5f551606f8aefec73de206fb2b168fad",
+      "independentAssessment": "Reread actual table/index relation-size functions, vector-payload estimate and MVCC old-version storage. These support measured live capacity and update headroom, not a universal HNSW multiplier or immediate space reclamation.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-pg-tune",
+      "url": "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/2-tune-postgresql-pgvector",
+      "title": "Tune PostgreSQL for pgvector",
+      "retrievedAt": "2026-09-15T19:25:52.577Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-optimize-vector-search-azure-database-postgresql-2-tune-postgresql-pgvector.json",
+      "rawSha256": "2c7614a32ba3c6a4abcb891f4fd4fb60be6127c474d7eac988028275d1d47a54",
+      "independentAssessment": "Reread memory-configuration definitions, especially per-operation/per-connection work_mem for sorts. The repaired arithmetic explicitly excludes hashes and parallel workers rather than importing the source’s incomplete mixed-workspace simplification. Quadratic vector-dimension claims remain excluded.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-pg-scale",
+      "url": "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/5-scale-high-volume-workloads",
+      "title": "Scale for high-volume workloads",
+      "retrievedAt": "2026-09-15T19:26:00.158Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-optimize-vector-search-azure-database-postgresql-5-scale-high-volume-workloads.json",
+      "rawSha256": "79e06d7a3a640133c95fdac28e0ba8666a6dbbf9e192f55900df369af2ab1fb2",
+      "independentAssessment": "Reread baseline measurement and growth-planning guidance. The repaired capacity item uses observed structures plus forecasts, not fixed SKU boundaries, arbitrary scale thresholds, legacy Redis endpoints or exact savings.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-pg-pool",
+      "url": "https://learn.microsoft.com/en-us/training/modules/optimize-vector-search-azure-database-postgresql/6-connection-optimization",
+      "title": "Connection optimization",
+      "retrievedAt": "2026-09-15T19:26:03.130Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-optimize-vector-search-azure-database-postgresql-6-connection-optimization.json",
+      "rawSha256": "6e61db124ea100e47a1153a8ee221de38ad83294b2d66c5875a6bcd57a611cfe",
+      "independentAssessment": "Reread transaction-local work_mem and request scoping, with application concurrency bounds as a separate control. SET LOCAL does not allocate one shared pool or independently limit concurrent requests; blanket session-state reset assertions are not used.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-redis-client",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-data-operations-azure-managed-redis/3-client-libraries-best-practices",
+      "title": "Client libraries and development best practices",
+      "retrievedAt": "2026-09-15T19:24:58.660Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-implement-data-operations-azure-managed-redis-3-client-libraries-best-practices.json",
+      "rawSha256": "b128d23cd26372f05a7e444d5466116edc960a24288a9286266fe63ab421191a",
+      "independentAssessment": "Reread OSS same-slot multi-key rule, Enterprise MGET exception and pipeline network-efficiency guidance. Real external documentation links are not transferred into AI200 approvals, and no unconditional pipeline atomicity is claimed.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-redis-data",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-data-operations-azure-managed-redis/4-implement-data-operations",
+      "title": "Implement data operations",
+      "retrievedAt": "2026-09-15T19:25:04.313Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-implement-data-operations-azure-managed-redis-4-implement-data-operations.json",
+      "rawSha256": "76a590bae89d3c6e9cc3bcd483a755e0aa3400ac25f2e3f66f919623a8a06bf1",
+      "independentAssessment": "Reread GET/MGET string operations and multi-command pipeline usage. They support the alternative decomposition context, not an assertion that multiple GETs remain one MGET or that all batched commands are atomic.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-redis-index",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-vector-storage-azure-managed-redis/2-index-query-vector-data",
+      "title": "Index and query vector data",
+      "retrievedAt": "2026-09-15T19:25:32.563Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-implement-vector-storage-azure-managed-redis-2-index-query-vector-data.json",
+      "rawSha256": "7e9133889e4d26b99a04ad07861b0ca4a20181669393dc9e694fd797f3e546d2",
+      "independentAssessment": "Reread KNN runtime effort and VECTOR_RANGE threshold semantics. EF_RUNTIME controls individual HNSW request exploration; a threshold changes result-selection semantics. No unbounded-result guarantee or defective unrelated sample schema is used.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-redis-types",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-vector-storage-azure-managed-redis/3-vector-types-index-strategy",
+      "title": "Choose vector types and indexing strategies",
+      "retrievedAt": "2026-09-15T19:25:33.794Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-implement-vector-storage-azure-managed-redis-3-vector-types-index-strategy.json",
+      "rawSha256": "ba3f436396847e8eaa8cd6ee57e334fa57d6dac70f1a4ad7ad6f8e2280833e91",
+      "independentAssessment": "Reread FLAT exhaustive search and per-query HNSW EF_RUNTIME examples. The candidate preserves the shared index and evaluates latency/recall; no universal speed, quality or precision claim is imported.",
+      "supportingRole": true
+    },
+    {
+      "sourceId": "ai200-20260915-data-pg-performance",
+      "url": "https://learn.microsoft.com/en-us/azure/postgresql/extensions/how-to-optimize-performance-pgvector",
+      "title": "Optimize performance when using pgvector in Azure Database for PostgreSQL flexible server",
+      "retrievedAt": "2026-09-15T19:27:52.973Z",
+      "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+      "evidencePath": ".grounding\\ai200-release\\data\\raw\\doc-pgvector-performance.json",
+      "rawSha256": "9d769794e2af714f85028f87abfe37a7e33ef9eed146193d441570776e656122",
+      "independentAssessment": "Reread the actual linked product article’s dimension-creation error, all-lists IVFFlat exact-plan boundary, SET LOCAL examples and concrete cosine/L2 operator-class examples. The frozen target-to-canonical redirect is unchanged; alternative vector-type limits and unrelated DiskANN claims are not generalized.",
+      "supportingRole": true
+    }
+  ],
+  "unrelatedDispositionsUnchanged": {
+    "d001": "Sole selected SDK-lifetime representative in v1; untouched here.",
+    "d003": "Existing v1 duplicate hold; absent from this repair review.",
+    "finalV1AdversarialContext": "ff748645-834a-484c-9dcb-7d7e2cf45cc3"
+  },
+  "limitations": [
+    "All verdicts are technical pass2 only; no rubric, final attestation or gameplay promotion.",
+    "New AI103 frozen-candidate comparison remains a coordinator-wide pending task; unseen candidates are not cleared.",
+    "No service was mutated or integration-tested. Code and arithmetic were reviewed against actual admitted documentation."
+  ],
+  "sortMemoryReview": {
+    "questionId": "ai200-r-d-009",
+    "boundaries": "Exactly three simultaneous sorts, nonparallel plans, no hashes, other memory separately budgeted; estimate is configured potential allowance, not actual total server memory.",
+    "independentArithmetic": [
+      {
+        "choiceId": "A",
+        "transactions": 5,
+        "simultaneousSorts": 3,
+        "workMemMiB": 64,
+        "allowanceMiB": 960,
+        "meetsMinimum": true,
+        "fitsBudget": true
+      },
+      {
+        "choiceId": "B",
+        "transactions": 8,
+        "simultaneousSorts": 3,
+        "workMemMiB": 32,
+        "allowanceMiB": 768,
+        "meetsMinimum": false,
+        "fitsBudget": true
+      },
+      {
+        "choiceId": "C",
+        "transactions": 4,
+        "simultaneousSorts": 3,
+        "workMemMiB": 128,
+        "allowanceMiB": 1536,
+        "meetsMinimum": true,
+        "fitsBudget": false
+      }
+    ],
+    "hashMultiplierAssumed": false,
+    "newSourceApproved": false,
+    "supplementalV1DefectReferenceNotAdmitted": true
+  },
+  "counts": {
+    "candidates": 10,
+    "options": 30,
+    "verified": 10,
+    "manualReviewRequired": 0,
+    "rejected": 0,
+    "explicitCheckJustifications": 120,
+    "warningsReviewed": 11,
+    "sourceSnapshots": 17,
+    "registryRecords": 27,
+    "actualAncestorEdges": 26,
+    "gameplayPromotions": 0,
+    "finalRubrics": 0,
+    "finalAttestations": 0
+  },
+  "completedAt": "2026-09-15T20:55:48.780Z"
+}

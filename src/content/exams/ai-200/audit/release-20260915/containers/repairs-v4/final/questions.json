@@ -1,0 +1,59 @@
+[
+  {
+    "id": "ai200-r-c-013",
+    "question": "Three AKS Deployments consume one mutable ConfigMap that has just been updated. A reads its value from an environment variable at process startup. B reads a file mounted with subPath. The current Pods for A and B started before the update. C uses an ordinary ConfigMap volume and rereads the file per request; that file already shows the new value. During this configuration change, none of C’s existing Pods may be restarted or replaced. Which rollout plan makes the updated configuration available to all three applications within that restriction?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Roll out new Pods for A; leave B’s and C’s existing Pods unchanged."
+      },
+      {
+        "id": "b",
+        "text": "Roll out new Pods for B; leave A’s and C’s existing Pods unchanged."
+      },
+      {
+        "id": "c",
+        "text": "Roll out new Pods for A and B; leave C’s existing Pods unchanged."
+      },
+      {
+        "id": "d",
+        "text": "Roll out new Pods for A, B, and C."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Roll out new Pods for A and B, leaving C’s existing Pods untouched. A’s process environment and B’s subPath mount do not automatically receive this ConfigMap update. C already has and rereads the updated file.",
+    "deepExplanation": "A new Pod initializes its environment or configuration mount from the current ConfigMap. Updating the ConfigMap does not refresh an existing process environment or an existing subPath projection. Ordinary ConfigMap volumes can receive file updates; the stem separately establishes that C already has the updated file and rereads it. The restriction protects C’s existing Pods from restart or replacement. It is a Pod-identity constraint, not merely a requirement for continuous application availability, so a rollout that replaces C’s Pods is excluded regardless of whether requests could continue to be served.",
+    "whyOtherAnswersAreWrong": {
+      "a": "New Pods for A refresh the startup environment, but leaving B’s pre-update Pods unchanged preserves its old subPath projection. This exact partial rollout is appropriate when only A remains outdated and B has already received current configuration in replacement Pods, with C already current. That context preserves B’s subPath mode and does not promise automatic refresh.",
+      "b": "New Pods for B obtain a fresh configuration mount, but leaving A’s pre-update Pods unchanged retains its startup environment. This exact partial rollout is appropriate when only B remains outdated and A has already received current configuration in replacement Pods, with C already current. It does not require or claim automatic mutation of A’s process environment.",
+      "d": "Replacing every Deployment’s Pods is a real configuration-refresh action and is appropriate when all consumers need new Pods and replacement is permitted for each. Here the action replaces C’s existing Pods, which the stem expressly prohibits. This exclusion does not depend on assuming that a rolling replacement causes an application outage."
+    },
+    "objectiveDomain": "develop-containerized-solutions-on-azure",
+    "skill": "implement-container-orchestrated-solutions",
+    "subskill": "Deploy and manage applications to Azure Kubernetes Service (AKS) by using manifest files",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/configure-apps-azure-kubernetes-service/2-define-configmaps"
+    ],
+    "documentationTitles": ["Define ConfigMaps for application settings"],
+    "generatedAt": "2026-09-15T21:06:39.081Z",
+    "lastValidatedAt": "2026-09-15T21:06:39.081Z",
+    "featureStatus": "GA",
+    "tags": ["ai-200", "containers", "orchestration"],
+    "conceptId": "aks.configmap-refresh-consumption-and-subpath",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-15T21:21:00.657Z",
+    "verifiedAgainstSourceIds": [
+      "ai200-20260915-unit-configure-apps-azure-kubernetes-service-2-define-configmaps"
+    ],
+    "verificationNotes": "Fresh v4 adversarial review challenged every literal action against the complete current ConfigMap evidence. A-only and B-only are valid when the other nonrefreshing consumer already has current replacement Pods, but not under the supplied pre-update state. Full rollout is valid elsewhere but violates the explicit preservation of every existing C Pod, even if it preserves service availability. Selective A+B is uniquely supported. This new-hash verdict does not change the v1/v3 holds or any v2 result, and no earlier rubric or approval was inherited.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-15T19:28:47.812Z",
+    "confidenceReason": "The actual source establishes distinct consumption refresh rules, while the exact v4 text supplies both freshness state and a Pod-identity restriction. All four literal actions now have grounded contexts without impossible waiting or downtime assumptions."
+  }
+]

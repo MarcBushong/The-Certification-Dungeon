@@ -54,6 +54,8 @@ requests; it does not call a model or generate answers in the browser.
 broader verified bank. Their timer is a configurable practice timer, not an
 invented official exam duration. **Raids** mix eligible dungeons without letting
 one large bank dominate, and preserve each encounter's source and floor scores.
+Exam-mode raids retain those selected dungeons, defer answers until completion,
+and require every participating dungeon to meet Boss readiness.
 
 A catalog entry is not an open dungeon. By default, Study Runs require at least
 25 verified encounters and every major floor; Gauntlets require at least 75,
@@ -70,34 +72,41 @@ package remain sealed even when their identity and current outline are verified.
 
 ### Playable content in this revision
 
-| Dungeon                         | Playable verified encounters | Modes                             |
-| ------------------------------- | ---------------------------: | --------------------------------- |
-| DP-700: The Fabric Depths       |                          162 | Study and Boss Gauntlet           |
-| DP-800: The Database Deeps      |                           39 | Study                             |
-| AZ-104: The Infrastructure Keep |                           30 | Study                             |
-| SC-200: The Sentinel Watch      |                           30 | Study                             |
-| AI-103: The AI Workshop         |                            0 | Sealed: availability unverified   |
-| AI-200: The Application Forge   |                            0 | Sealed: availability and coverage |
-| GH-300: The Copilot Spire       |                          149 | Study and Boss Gauntlet           |
-| GH-600: The Agentic Workshop    |                          136 | Beta Study and Boss Gauntlet      |
+| Dungeon                         | Playable verified encounters | Modes                        |
+| ------------------------------- | ---------------------------: | ---------------------------- |
+| DP-700: The Fabric Depths       |                          162 | Study and Boss Gauntlet      |
+| DP-800: The Database Deeps      |                           39 | Study                        |
+| AZ-104: The Infrastructure Keep |                           30 | Study                        |
+| SC-200: The Sentinel Watch      |                           30 | Study                        |
+| AI-103: The AI Workshop         |                          116 | Study and Boss Gauntlet      |
+| AI-200: The Application Forge   |                          150 | Study and Boss Gauntlet      |
+| GH-300: The Copilot Spire       |                          149 | Study and Boss Gauntlet      |
+| GH-600: The Agentic Workshop    |                          136 | Beta Study and Boss Gauntlet |
 
-**546 playable verified encounters**. GH-300 retains three rejected duplicates
+**812 playable verified encounters**. GH-300 retains three rejected duplicates
 and three manual-review records outside gameplay. GH-600 has **136 fully
 three-pass-reviewed questions** available for beta study and 13 rejected
 candidates outside gameplay. Its card, setup, and question metadata retain the
 Beta designation; opening this unofficial study bank does not assert exam GA.
 
-The strict AI review produced **29 verified / 96 manual / 24 rejected** AI-103
-records and **30 verified / 85 manual / 35 rejected** AI-200 records. The target
-of 150 verified questions **each was not achieved**; 29 is not a numeric increase
-over AI-103's earlier 30-record legacy bank. Those original records and completed
-local history are preserved. Both AI credentials remain sealed because current
-exam availability is unverified; additional count/breadth gaps remain. Source
-withdrawals and classification repairs are fully audited rather than waived.
-See the [AI expansion outcome](docs/ai-expansion-report.md) and
-[GH-600 beta evidence](docs/gh600-beta-availability.md) for exact current results
-and limitations. The [earlier GitHub expansion report](docs/github-expansion-report.md)
-preserves its original review snapshot. The
+AI-200 now selects **150 fully reviewed questions** from its independently
+approved pool, with ten additional approved records preserved outside the
+playable selection and six current nonpassing records excluded. Its
+[release report](docs/ai200-verified-release.md) records all current skill and
+subskill coverage, source evidence, review history, and the disclosed difficulty
+mix. AI-103 selects **116 fully reviewed, distinct questions**, with both Study
+and Boss Gauntlet available. One question was withheld from the earlier
+117-question selection because of an unresolved quality concern; its exact
+review histories and the prior selection are preserved. Unselected reserves,
+manual holds and unreviewed authoring attempts remain outside gameplay.
+
+The [current AI availability assessment](docs/ai-release-availability.md) is
+separate from content approval. Original records and completed local history are
+preserved, and source withdrawals or failed reviews are not waived. The
+[earlier AI expansion outcome](docs/ai-expansion-report.md) and
+[earlier GitHub expansion report](docs/github-expansion-report.md) preserve their
+historical review snapshots. See [GH-600 beta evidence](docs/gh600-beta-availability.md)
+for its unchanged beta identity and explicit study authorization. The
 [initial dungeon implementation report](docs/dungeon-implementation-report.md)
 records the earlier platform baseline.
 

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "reviewerId": "ai-release-integration-semantic-860a855d",
+  "reviewedAt": "2026-09-15T19:50:54.5217710Z",
+  "scope": "Independent comparison of complete frozen authored facts, all alternatives, keyed answers, explanations and distractor rationales for the three named candidates. This is a semantic-duplication finding only, not a technical or adversarial content approval.",
+  "technicalSourcesIndependentlyReviewed": false,
+  "candidates": [
+    {
+      "questionId": "ai200-d-001",
+      "questionFingerprint": "c2f4cab787dde4ca4516d8e775255e1b04eba5c0d3b9dc9ad5622a30da05d18d",
+      "batchId": "cosmos-1",
+      "immutableCandidatePath": "C:\\Users\\marcbushong\\temp\\copilot-worktrees\\DP-700-Exam-Prep-Game\\marcbushong-fluffy-enigma\\.grounding\\ai200-release\\data\\immutable\\pass1-20260915\\cosmos-1.json"
+    },
+    {
+      "questionId": "ai200-r-i-008",
+      "questionFingerprint": "faa40465852751f713b4edb8152011261e02134f81233c4fd08992848e8c78f8",
+      "batchId": "ai200-integration-pass1-20260915-v1",
+      "immutableCandidatePath": "C:\\Users\\marcbushong\\temp\\copilot-worktrees\\DP-700-Exam-Prep-Game\\marcbushong-fluffy-enigma\\.grounding\\ai200-release\\integration\\immutable\\ai200-integration-pass1-20260915-v1\\candidates.json"
+    },
+    {
+      "questionId": "ai200-r-s-003",
+      "questionFingerprint": "22c4986f0c9bb641c0e8d2193f8bb8237b36e9c965c23c0f4692cd886a167465",
+      "batchId": "ai200-observability-20260915-v1-05",
+      "immutableCandidatePath": "C:\\Users\\marcbushong\\temp\\copilot-worktrees\\DP-700-Exam-Prep-Game\\marcbushong-fluffy-enigma\\.grounding\\ai200-release\\observability\\immutable-index-v1\\batch-05.json"
+    }
+  ],
+  "finding": "Duplicate core decision across all three inspected candidates.",
+  "sharedDecision": "Repeated per-request SDK-client construction should be replaced with service/application/module-scoped reuse when calls share the configured endpoint.",
+  "pairAnalysis": [
+    {
+      "questionIds": ["ai200-d-001", "ai200-r-i-008"],
+      "reason": "Both stems explicitly identify measured setup cost before a fast remote call and construct the client per request. Both keys move client construction outside that request path. Cosmos resource handles and a warm Functions instance supply product context but no additional decision is needed to solve either item. The distinct alternatives (projection/paging versus cold-start mitigation) do not make the shared keyed diagnosis a different fact."
+    },
+    {
+      "questionIds": ["ai200-d-001", "ai200-r-s-003"],
+      "reason": "The Key Vault key adds asynchronous cleanup of client and credential, but only that option reuses them. Both distractors still construct a client per read/request, so the learner can select the answer from the same lifetime-reuse fact without resolving an independent async-disposal choice. The extra true cleanup statement is not independently discriminating in this authored option set."
+    },
+    {
+      "questionIds": ["ai200-r-i-008", "ai200-r-s-003"],
+      "reason": "Both extend reuse to the credential as well as the SDK client. Changing Functions module scope to Key Vault service startup and adding shutdown wording does not alter the only option that eliminates repeated construction. The Key Vault async context would support a separate question only if its actual alternatives required a distinct decision beyond this shared reuse invariant."
+    }
+  ],
+  "recommendation": {
+    "maximumCurrentRepresentativesOfSharedFact": 1,
+    "preferredExistingIdentityForFurtherReview": "ai200-d-001",
+    "reasonForPreference": "It retains the pre-existing canonical fact identity rather than adding a second renamed representation. This preference does not establish technical correctness, rubric quality or admission.",
+    "otherCandidates": "Keep excluded, or have their original author create a genuinely distinct grounded decision and restart generation, independent technical review and independent adversarial review for the new exact content.",
+    "requiredFollowThrough": "Actual independent reviewers must account for this exact-hash finding. Do not manufacture final rejection attestations, overwrite immutable snapshots, change only concept labels, or count the same decision three times."
+  }
+}

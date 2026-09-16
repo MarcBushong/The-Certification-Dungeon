@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "preservedAt": "2026-09-15T20:24:28.062Z",
+  "previousTechnicalFileSha256": "56c819df56e2510c1a59fcb05baa336702523115fa002453f4e5b1aec46afe48",
+  "previousEncounter": {
+    "generation": {
+      "questionFingerprint": "2cffd9cdf3cc65c62d2cbf9b1f56e2b7591eaa52fc16f8ca819735f786ad4175",
+      "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+      "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+      "authorId": "ai200-release-author-data",
+      "generatedAt": "2026-09-15T19:44:00.739Z",
+      "claims": [
+        {
+          "choiceId": "A",
+          "sourceIds": [
+            "ai200-20260915-data-pg-index",
+            "ai200-20260915-data-pg-performance"
+          ],
+          "summary": "Probes increases the lists searched when IVFFlat is eligible. It adjusts recall/latency, not the mismatch between an L2 operator and a cosine index."
+        },
+        {
+          "choiceId": "B",
+          "sourceIds": [
+            "ai200-20260915-data-pg-index",
+            "ai200-20260915-data-pg-performance"
+          ],
+          "summary": "The sources pair cosine distance <=> with vector_cosine_ops. This restores metric compatibility without changing the required similarity definition."
+        },
+        {
+          "choiceId": "C",
+          "sourceIds": [
+            "ai200-20260915-data-pg-index",
+            "ai200-20260915-data-pg-performance"
+          ],
+          "summary": "This is a documented valid L2 query/index pairing. It would implement Euclidean rather than the required cosine comparison, so it does not preserve the application contract."
+        }
+      ]
+    },
+    "technical": {
+      "objectiveVersion": "Undated published outline; retrieved 2026-09-14T17:46:55.568Z; SHA-256 fd568c11bfe351d28bfb2021e38e21f4a898939c0050235953656d808ef75a44",
+      "objectiveFingerprint": "8b8b077fe5d64a56b329ec16658c08b3b1a3cc51194c0693e0df793e47f2f42e",
+      "review": {
+        "questionId": "ai200-d-025",
+        "authorId": "ai200-release-author-data",
+        "reviewerId": "ai200-release-technical-data",
+        "questionFingerprint": "2cffd9cdf3cc65c62d2cbf9b1f56e2b7591eaa52fc16f8ca819735f786ad4175",
+        "reviewedAt": "2026-09-15T20:07:59.123Z",
+        "verdict": "manual-review-required",
+        "sourceReviews": [
+          {
+            "sourceId": "ai200-20260915-data-pg-index",
+            "url": "https://learn.microsoft.com/en-us/training/modules/implement-vector-search-azure-database-postgresql/3-perform-fast-vector-similarity-search",
+            "evidencePath": ".grounding\\ai200-release\\data\\raw\\unit-implement-vector-search-azure-database-postgresql-3-perform-fast-vector-similarity-search.json",
+            "retrievedAt": "2026-09-15T19:25:27.185Z",
+            "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+            "supportingSummary": "Read IVFFlat k-means prerequisites, HNSW empty-table behavior, exact operator-class table and EXPLAIN diagnostic conditions. The source directly links flexible-server/how-to-optimize-performance-pgvector, with a genuine redirect receipt to its extensions canonical article. Universal millisecond/recall claims are excluded."
+          },
+          {
+            "sourceId": "ai200-20260915-data-pg-performance",
+            "url": "https://learn.microsoft.com/en-us/azure/postgresql/extensions/how-to-optimize-performance-pgvector",
+            "evidencePath": ".grounding\\ai200-release\\data\\raw\\doc-pgvector-performance.json",
+            "retrievedAt": "2026-09-15T19:27:52.973Z",
+            "lastReviewedAt": "2026-09-15T19:31:40.797Z",
+            "supportingSummary": "Read full redirected pgvector performance article, including standard-vector dimension prerequisite, IVFFlat all-lists planner boundary, HNSW training independence, SET LOCAL and operator table. Do not adopt its SET-without-LOCAL HNSW reset example, universal index-force comment or generalize standard-vector limits to every type."
+          }
+        ],
+        "choiceReviews": [
+          {
+            "choiceId": "A",
+            "assessment": "contradicted",
+            "rationale": "probes changes IVFFlat lists visited only when the index is eligible. It is a valid recall/latency adjustment but cannot reconcile an L2 query operator with a cosine operator class.",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ]
+          },
+          {
+            "choiceId": "B",
+            "assessment": "supported",
+            "rationale": "The operator table pairs <=> with vector_cosine_ops. Restoring this operator preserves the stated cosine contract and makes the existing index eligible.",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ]
+          },
+          {
+            "choiceId": "C",
+            "assessment": "contradicted",
+            "rationale": "<-> with vector_l2_ops is a valid Euclidean pairing. It changes the application-required cosine metric, so its eligibility improvement does not satisfy the contract.",
+            "sourceIds": [
+              "ai200-20260915-data-pg-index",
+              "ai200-20260915-data-pg-performance"
+            ]
+          }
+        ],
+        "checks": {
+          "answerDefensible": true,
+          "correctOptionsSupported": true,
+          "distractorsIncorrect": true,
+          "explanationsSupported": true,
+          "directSources": true,
+          "featureStatus": true,
+          "currentTerminology": true,
+          "prerequisitesComplete": true,
+          "codeReviewed": true,
+          "originalContent": true,
+          "duplicatesReviewed": false,
+          "qualityReviewed": false
+        },
+        "verificationNotes": "B is technically unique because cosine, not merely any index use, is required. Explanation review: Accurately separates eligibility from guaranteed optimizer choice. The deep explanation nevertheless references an Azure SQL compatibility-warning item outside its citations and learner context. Scope: Existing index and required metric are specified; the query change, not missing server capacity or privilege, explains the mismatch. Quality: Intermediate troubleshooting is appropriate, but remove the cross-bank bookkeeping sentence from deepExplanation. This correction has a clear referent and no syntax ambiguity. Semantic review: Hold with dp800-direct-048. Both repair an ANN metric compatibility mismatch while preserving a required metric; changing query side versus index side is the strongest difference, but the same invariant resolves both. Exact pairs/hashes are reported for parent semantic adjudication; no product-name-based clearance. Required action: Parent must resolve the metric-pair same-fact concern and remove the foreign-item reference. Prefer a genuinely different PostgreSQL diagnostic rather than only changing which side of the pair is edited. This is independent technical pass 2 only, not a final rubric, ledger approval or gameplay admission.",
+        "confidenceReason": "The option-by-option evidence is recorded, but approval is withheld for these exact reasons: duplicatesReviewed, qualityReviewed. Parent must resolve the metric-pair same-fact concern and remove the foreign-item reference. Prefer a genuinely different PostgreSQL diagnostic rather than only changing which side of the pair is edited."
+      }
+    }
+  },
+  "previousNotes": {
+    "questionFingerprint": "2cffd9cdf3cc65c62d2cbf9b1f56e2b7591eaa52fc16f8ca819735f786ad4175",
+    "verdict": "manual-review-required",
+    "reviewedAt": "2026-09-15T20:07:59.123Z",
+    "failedChecks": ["duplicatesReviewed", "qualityReviewed"],
+    "requiredFix": "Parent must resolve the metric-pair same-fact concern and remove the foreign-item reference. Prefer a genuinely different PostgreSQL diagnostic rather than only changing which side of the pair is edited.",
+    "answerSetReview": "B is technically unique because cosine, not merely any index use, is required.",
+    "optionReviews": [
+      {
+        "choiceId": "A",
+        "assessment": "contradicted",
+        "rationale": "probes changes IVFFlat lists visited only when the index is eligible. It is a valid recall/latency adjustment but cannot reconcile an L2 query operator with a cosine operator class.",
+        "sourceIds": [
+          "ai200-20260915-data-pg-index",
+          "ai200-20260915-data-pg-performance"
+        ]
+      },
+      {
+        "choiceId": "B",
+        "assessment": "supported",
+        "rationale": "The operator table pairs <=> with vector_cosine_ops. Restoring this operator preserves the stated cosine contract and makes the existing index eligible.",
+        "sourceIds": [
+          "ai200-20260915-data-pg-index",
+          "ai200-20260915-data-pg-performance"
+        ]
+      },
+      {
+        "choiceId": "C",
+        "assessment": "contradicted",
+        "rationale": "<-> with vector_l2_ops is a valid Euclidean pairing. It changes the application-required cosine metric, so its eligibility improvement does not satisfy the contract.",
+        "sourceIds": [
+          "ai200-20260915-data-pg-index",
+          "ai200-20260915-data-pg-performance"
+        ]
+      }
+    ],
+    "checkJustifications": {
+      "answerDefensible": "B is technically unique because cosine, not merely any index use, is required.",
+      "correctOptionsSupported": "B (supported): The operator table pairs <=> with vector_cosine_ops. Restoring this operator preserves the stated cosine contract and makes the existing index eligible.",
+      "distractorsIncorrect": "A (contradicted): probes changes IVFFlat lists visited only when the index is eligible. It is a valid recall/latency adjustment but cannot reconcile an L2 query operator with a cosine operator class. C (contradicted): <-> with vector_l2_ops is a valid Euclidean pairing. It changes the application-required cosine metric, so its eligibility improvement does not satisfy the contract.",
+      "explanationsSupported": "Accurately separates eligibility from guaranteed optimizer choice. The deep explanation nevertheless references an Azure SQL compatibility-warning item outside its citations and learner context.",
+      "directSources": "The exact citations ai200-20260915-data-pg-index, ai200-20260915-data-pg-performance have matching frozen raw MCP bodies, AI200 approvals and actual credential/course/path/module/unit ancestry. The pgvector documentation edge is the exact linked article with the preserved flexible-server to extensions redirect receipt.",
+      "featureStatus": "Standard pgvector metric/operator-class matching, without importing Azure SQL Preview release rules.",
+      "currentTerminology": "pgvector.operator-class-distance-match: <-> is L2 and <=> is cosine. $1 is a SQL bound-vector placeholder; no psycopg execute call with an incompatible placeholder is claimed.",
+      "prerequisitesComplete": "Existing index and required metric are specified; the query change, not missing server capacity or privilege, explains the mismatch.",
+      "codeReviewed": "<-> is L2 and <=> is cosine. $1 is a SQL bound-vector placeholder; no psycopg execute call with an incompatible placeholder is claimed.",
+      "originalContent": "Original prose and decision framing were compared with the actual technical training, not assessments. Intermediate troubleshooting is appropriate, but remove the cross-bank bookkeeping sentence from deepExplanation. This correction has a clear referent and no syntax ambiguity. Semantic duplication is adjudicated separately: Hold with dp800-direct-048. Both repair an ANN metric compatibility mismatch while preserving a required metric; changing query side versus index side is the strongest difference, but the same invariant resolves both. Exact pairs/hashes are reported for parent semantic adjudication; no product-name-based clearance.",
+      "duplicatesReviewed": "Hold with dp800-direct-048. Both repair an ANN metric compatibility mismatch while preserving a required metric; changing query side versus index side is the strongest difference, but the same invariant resolves both. Exact pairs/hashes are reported for parent semantic adjudication; no product-name-based clearance.",
+      "qualityReviewed": "Intermediate troubleshooting is appropriate, but remove the cross-bank bookkeeping sentence from deepExplanation. This correction has a clear referent and no syntax ambiguity."
+    },
+    "semanticAssessment": "Hold with dp800-direct-048. Both repair an ANN metric compatibility mismatch while preserving a required metric; changing query side versus index side is the strongest difference, but the same invariant resolves both. Exact pairs/hashes are reported for parent semantic adjudication; no product-name-based clearance.",
+    "qualityAssessment": "Intermediate troubleshooting is appropriate, but remove the cross-bank bookkeeping sentence from deepExplanation. This correction has a clear referent and no syntax ambiguity.",
+    "sourceIds": [
+      "ai200-20260915-data-pg-index",
+      "ai200-20260915-data-pg-performance"
+    ],
+    "warningReviews": [
+      {
+        "code": "pronoun-review",
+        "assessment": "Intermediate troubleshooting is appropriate, but remove the cross-bank bookkeeping sentence from deepExplanation. This correction has a clear referent and no syntax ambiguity.",
+        "blocking": true
+      }
+    ],
+    "additionalSemanticEvidence": {
+      "followupPath": ".grounding\\ai200-release\\data\\technical\\semantic-followup-20260915.json",
+      "relatedQuestionIds": ["dp800-direct-048"],
+      "note": "Full-choice metric/operator versus metric/column comparison preserves the existing manual semantic hold."
+    }
+  },
+  "reason": "Preserve the prior exact-hash semantic hold and independent rationale before a narrowly scoped reconsideration."
+}
