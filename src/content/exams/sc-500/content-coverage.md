@@ -1,0 +1,969 @@
+# Question-bank review and coverage
+
+Unofficial study aid. Deterministic checks validate structure and recorded attestations, not answer semantics, independent reviewer identity, or current feature behavior.
+
+Report created: 2026-09-16T15:32:15.385Z. This is not a retrieval or verification timestamp.
+
+- Total candidate records: **150**; malformed: **0**.
+- Playable verified questions: **150**. Playable coverage below counts only these questions.
+- Fully reviewed records before catalog/mode gates: **150**. A sealed credential still has zero playable encounters; beta study requires explicit catalog authorization.
+- Playable coverage shortfall: 0; playable Advanced/Expert share: 40.7% (target >=40%). This is not an authored-content count.
+- Recorded credential status: **active**; Study Run **enabled**; Boss Gauntlet **enabled**.
+- Fully reviewed content target: 150; reviewed shortfall: 0; reviewed but unavailable: 0.
+- Taxonomy: 4 domains, 12 skills, 87 subskills.
+- Study guide effective date: **Undated published outline; retrieved 2026-09-16T13:32:07.713Z; SHA-256 229424132ef473c8340e918b672d9dbbd97458b59195ec2ea429bd99f140a4fa**; retrieved: 2026-09-16T13:32:07.713Z.
+- Last grounded through Microsoft Learn MCP: 2026-09-16T14:11:57.889Z.
+- Last recorded verification: 2026-09-16T14:54:05.709Z; last playable verification: 2026-09-16T14:54:05.709Z.
+- Source retrieval range: 2026-09-16T13:40:45.736Z to 2026-09-16T14:11:57.889Z.
+- Source review range: 2026-09-16T13:50:23.229Z to 2026-09-16T14:15:48.158Z.
+- Source records: 124 valid / 124 total; malformed: 0.
+- Multiple citations: 39 playable / 39 candidates.
+- Citation errors: 0; duplicate findings: 0; quality warnings: 126.
+
+## Verification status (effective, schema-valid candidates)
+
+| Category | Questions |
+| --- | ---: |
+| candidate | 0 |
+| verified | 150 |
+| manual-review-required | 0 |
+| rejected | 0 |
+| stale | 0 |
+
+## Playable domain counts
+
+| Category | Questions |
+| --- | ---: |
+| manage-identity-access-and-governance | 34 |
+| secure-storage-databases-and-networking | 44 |
+| secure-compute | 36 |
+| manage-and-monitor-security-posture | 36 |
+
+## Playable skill counts
+
+| Category | Questions |
+| --- | ---: |
+| secure-access-to-resources-by-using-microsoft-entra-id | 11 |
+| secure-secrets-and-keys-by-using-azure-key-vault | 11 |
+| implement-governance-to-enforce-security-and-regulatory-compliance | 12 |
+| implement-security-for-storage-accounts | 12 |
+| implement-security-for-databases | 9 |
+| implement-security-for-azure-network-services | 23 |
+| implement-security-for-ai | 14 |
+| implement-security-for-servers-and-virtual-machines | 11 |
+| implement-security-for-application-platform-services | 11 |
+| manage-security-posture-by-using-defender-for-cloud | 12 |
+| implement-activity-and-event-collection-in-microsoft-sentinel | 17 |
+| implement-microsoft-security-copilot | 7 |
+
+## Playable subskill counts
+
+| Category | Questions |
+| --- | ---: |
+| Implement and configure Privileged Identity Management (PIM) | 2 |
+| Implement conditional access policies | 2 |
+| Implement and configure authentication methods, including multifactor authentication (MFA) and passwordless | 2 |
+| Implement and configure identity for applications, including enterprise applications and app registrations | 2 |
+| Manage OAuth permission grants and consent settings | 1 |
+| Implement and configure managed identities for Azure resources | 2 |
+| Deploy Key Vault | 1 |
+| Configure Key Vault settings | 2 |
+| Configure access to Key Vault | 1 |
+| Configure firewall settings on Key Vault | 3 |
+| Manage keys, secrets, and certificates | 2 |
+| Scan for secrets by using Defender Cloud Security Posture Management (Defender CSPM) | 1 |
+| Implement Defender for Key Vault | 1 |
+| Implement and configure security controls by using Azure Policy, including built-in and custom policy definitions | 2 |
+| Evaluate regulatory compliance by using Microsoft Defender for Cloud | 1 |
+| Implement and configure security controls in Defender for Cloud, including security standards and recommendations | 1 |
+| Implement resource locks | 1 |
+| Manage Azure built-in role assignments | 1 |
+| Manage custom roles, including Azure roles and Microsoft Entra roles | 2 |
+| Evaluate and remediate overprivileged access assignments by using Azure role-based access control (RBAC) | 1 |
+| Configure security controls for backup protection by using Azure Backup security features | 2 |
+| Implement and configure security controls by using infrastructure as code | 1 |
+| Implement and configure security for storage accounts | 3 |
+| Configure Azure Storage firewall rules | 3 |
+| Implement Defender for Storage threat protection configurations | 3 |
+| Manage access to storage, including access policies | 3 |
+| Implement platform-level security configurations in Azure SQL | 4 |
+| Configure database auditing for Azure SQL Database and Azure SQL Managed Instance | 3 |
+| Configure Defender for Databases protection across Azure database services | 2 |
+| Implement and manage network security groups (NSGs) and application security groups (ASGs) | 3 |
+| Implement and configure network access policies by using Azure Virtual Network Manager | 2 |
+| Configure security for an Azure Virtual WAN | 3 |
+| Implement and configure security for virtual private network (VPN) connections | 2 |
+| Implement and configure Microsoft Entra Private Access | 3 |
+| Configure Azure private endpoints to secure access to Azure platform as a service (PaaS) resources | 3 |
+| Configure Azure Private Link services to secure access to network resources | 3 |
+| Implement and configure Azure Firewall | 2 |
+| Evaluate effective security rules by using Azure Network Watcher diagnostics | 2 |
+| Identify overexposure of data in SharePoint | 1 |
+| Identify risks related to Microsoft Copilot and AI apps by using Microsoft Purview Data Security Posture Management (DSPM) | 1 |
+| Enable and configure real-time protection for Microsoft Copilot Studio agents | 2 |
+| Implement conditional access for Microsoft Entra Agent ID | 2 |
+| Analyze blast radius for security risks related to Entra Agent ID by using Defender XDR | 1 |
+| Manage Entra Agent ID access | 2 |
+| Configure and deploy AI Gateway in Azure API Management for Microsoft Foundry | 1 |
+| Enable Defender for AI Service in Cloud Workload Protection in Defender for Cloud | 1 |
+| Configure guardrails for agent security in Foundry | 1 |
+| Monitor AI security by using the Data and AI security dashboard in Defender for Cloud | 1 |
+| Manage agents in Microsoft 365 admin center | 1 |
+| Implement and configure disk encryption | 2 |
+| Plan and implement Azure Bastion | 1 |
+| Enable and enforce use of just-in-time (JIT) VM access | 2 |
+| Extend security controls to hybrid and multicloud servers by using Azure Arc | 1 |
+| Onboard servers to Defender for Servers in Defender for Cloud, including hybrid and multicloud scenarios | 1 |
+| Configure Defender for Servers settings, including vulnerability scanning, and endpoint detection and response (EDR) | 1 |
+| Implement and manage agentless scanning for VMs in Defender for Servers | 1 |
+| Configure security features on a VM, including secure boot, virtual Trusted Platform Module (vTPM), integrity monitoring, and security type | 1 |
+| Enforce security configuration of Azure-managed servers by using Azure Machine Configuration | 1 |
+| Detect misconfigurations and runtime risks in container workloads by using Defender for Containers | 1 |
+| Implement and configure security controls for Azure Kubernetes Service (AKS) | 2 |
+| Implement and configure security controls for Azure Container Registry | 1 |
+| Implement and configure security controls for Azure Container Instances and Azure Container Apps | 1 |
+| Implement and configure security controls for Azure Functions, including authentication and network access | 1 |
+| Implement and configure security controls for Azure Logic Apps | 1 |
+| Implement and configure security controls for Azure App Service | 1 |
+| Implement and configure Azure Web Application Firewall | 1 |
+| Implement security policies for back-end API protection by using API Management | 2 |
+| Identify security risks by using Defender CSPM | 2 |
+| Evaluate compliance against security frameworks by using Defender for Cloud | 2 |
+| Enable and configure Defender for Cloud workload protection plans | 2 |
+| Connect hybrid cloud and multicloud environments to Defender for Cloud, including Amazon Web Services (AWS) and Google Cloud Platform (GCP) | 2 |
+| Configure Microsoft Defender Vulnerability Management settings for Azure VMs | 2 |
+| Discover unprotected assets and vulnerabilities by using Microsoft Defender External Attack Surface Management (EASM) | 2 |
+| Create and connect workspaces in Microsoft Sentinel | 2 |
+| Assign roles in Microsoft Sentinel | 1 |
+| Implement and use content hub solutions | 1 |
+| Configure and use Microsoft data connectors for Azure resources | 1 |
+| Implement and configure syslog and Common Event Format (CEF) event collections | 2 |
+| Implement and configure collection of Windows Security events by using data collection rules, including Windows Event Forwarding (WEF) | 3 |
+| Create custom log tables in the workspace to store ingested data | 2 |
+| Implement automation rules and playbooks in Microsoft Sentinel | 2 |
+| Implement data retention in Microsoft Sentinel data stores | 2 |
+| Query Microsoft Purview Audit in Defender XDR | 1 |
+| Configure workspaces for Security Copilot | 2 |
+| Manage permissions and roles in Security Copilot | 2 |
+| Enable and configure plugins | 1 |
+| Enable and configure Microsoft agents and Security Store agents | 2 |
+
+## Playable difficulty counts
+
+| Category | Questions |
+| --- | ---: |
+| beginner | 2 |
+| intermediate | 87 |
+| advanced | 61 |
+| expert | 0 |
+
+## Playable complexity counts
+
+| Category | Questions |
+| --- | ---: |
+| concept-recall | 1 |
+| technical-implementation | 66 |
+| scenario-based | 4 |
+| troubleshooting | 55 |
+| architecture-design | 24 |
+
+## Playable type counts
+
+| Category | Questions |
+| --- | ---: |
+| single-select | 14 |
+| multi-select | 19 |
+| true-false | 2 |
+| scenario | 107 |
+| code | 8 |
+
+## Playable source counts
+
+| Category | Questions |
+| --- | ---: |
+| sc500-identity-pim-settings | 2 |
+| sc500-identity-ca-grant | 2 |
+| sc500-identity-ca-report | 2 |
+| sc500-identity-auth-strength | 2 |
+| sc500-identity-tap | 1 |
+| sc500-identity-app-objects | 1 |
+| sc500-identity-consent-workflow | 0 |
+| sc500-identity-managed-identities | 3 |
+| sc500-identity-federation | 1 |
+| sc500-identity-vault-overview | 1 |
+| sc500-identity-vault-soft-delete | 3 |
+| sc500-identity-vault-rbac | 6 |
+| sc500-identity-vault-network | 3 |
+| sc500-identity-vault-private | 1 |
+| sc500-identity-key-rotation | 1 |
+| sc500-identity-certificates | 1 |
+| sc500-identity-secret-scanning | 1 |
+| sc500-identity-defender-vault | 1 |
+| sc500-identity-policy-effects | 2 |
+| sc500-identity-policy-remediate | 1 |
+| sc500-identity-compliance | 1 |
+| sc500-identity-standards | 2 |
+| sc500-identity-security-policy | 1 |
+| sc500-identity-locks | 1 |
+| sc500-identity-privileged-roles | 2 |
+| sc500-identity-custom-roles | 1 |
+| sc500-identity-entra-custom-roles | 1 |
+| sc500-identity-rbac-overview | 4 |
+| sc500-identity-backup-mua | 1 |
+| sc500-identity-backup-immutable | 1 |
+| sc500-identity-arm-parameters | 1 |
+| sc500-identity-arm-best-practices | 1 |
+| sc500-identity-role-definitions | 1 |
+| sc500-identity-grant-consent | 1 |
+| sc500-identity-federation-trust | 1 |
+| sc500-identity-secret-types | 1 |
+| sc500-network-storage-https | 1 |
+| sc500-network-storage-encryption | 2 |
+| sc500-network-storage-network | 3 |
+| sc500-network-storage-sas | 4 |
+| sc500-network-defender-storage | 3 |
+| sc500-network-sql-firewall | 2 |
+| sc500-network-sql-entra-only | 2 |
+| sc500-network-sql-auditing | 2 |
+| sc500-network-sql-mi-auditing | 1 |
+| sc500-network-defender-databases | 1 |
+| sc500-network-defender-sql | 1 |
+| sc500-network-defender-cosmos | 2 |
+| sc500-network-nsg | 3 |
+| sc500-network-asg | 2 |
+| sc500-network-avnm | 2 |
+| sc500-network-vwan-routing | 3 |
+| sc500-network-vpn-policy | 1 |
+| sc500-network-vpn-entra | 1 |
+| sc500-network-private-access | 1 |
+| sc500-network-private-apps | 3 |
+| sc500-network-storage-private | 4 |
+| sc500-network-private-link | 3 |
+| sc500-network-firewall-rules | 2 |
+| sc500-network-watcher-ipflow | 2 |
+| sc500-network-watcher-effective | 2 |
+| sc500-compute-sharepoint-reports | 1 |
+| sc500-compute-dspm | 1 |
+| sc500-compute-agent-realtime | 2 |
+| sc500-compute-agent-ca | 2 |
+| sc500-compute-agent-blast | 2 |
+| sc500-compute-agent-access | 3 |
+| sc500-compute-foundry-gateway | 1 |
+| sc500-compute-ai-onboarding | 1 |
+| sc500-compute-ai-threat-overview | 1 |
+| sc500-compute-guardrails | 1 |
+| sc500-compute-guardrails-overview | 1 |
+| sc500-compute-ai-dashboard | 1 |
+| sc500-compute-m365-actions | 1 |
+| sc500-compute-agent-policy | 1 |
+| sc500-compute-disk-encryption | 2 |
+| sc500-compute-sse | 2 |
+| sc500-compute-bastion-private | 1 |
+| sc500-compute-bastion-overview | 1 |
+| sc500-compute-jit | 2 |
+| sc500-compute-jit-overview | 1 |
+| sc500-compute-arc | 2 |
+| sc500-compute-servers-plan | 1 |
+| sc500-compute-servers-edr | 1 |
+| sc500-compute-agentless | 1 |
+| sc500-compute-trusted-launch | 1 |
+| sc500-compute-machine-config | 2 |
+| sc500-compute-containers | 1 |
+| sc500-compute-aks-rbac | 2 |
+| sc500-compute-acr-auth | 1 |
+| sc500-compute-aci-identity | 1 |
+| sc500-compute-aca-identity | 1 |
+| sc500-compute-functions | 1 |
+| sc500-compute-logic-apps | 1 |
+| sc500-compute-appservice-network | 2 |
+| sc500-compute-waf | 1 |
+| sc500-compute-apim-jwt | 1 |
+| sc500-compute-apim-identity | 1 |
+| sc500-posture-cspm | 1 |
+| sc500-posture-attack-paths | 1 |
+| sc500-posture-compliance | 2 |
+| sc500-posture-plans | 2 |
+| sc500-posture-aws-current | 1 |
+| sc500-posture-gcp | 1 |
+| sc500-posture-mdvm | 1 |
+| sc500-posture-mdvm-modes | 1 |
+| sc500-posture-easm-discovery | 2 |
+| sc500-posture-sentinel-onboard | 3 |
+| sc500-posture-sentinel-roles | 2 |
+| sc500-posture-content-hub | 1 |
+| sc500-posture-cef-overview | 1 |
+| sc500-posture-cef-ama | 1 |
+| sc500-posture-windows-sentinel | 1 |
+| sc500-posture-windows-dcr | 2 |
+| sc500-posture-custom-table | 2 |
+| sc500-posture-playbooks | 2 |
+| sc500-posture-sentinel-tiers | 2 |
+| sc500-posture-purview-audit | 1 |
+| sc500-posture-copilot-onboarding | 1 |
+| sc500-posture-copilot-settings | 1 |
+| sc500-posture-copilot-permissions | 3 |
+| sc500-posture-copilot-plugins | 2 |
+| sc500-posture-copilot-agents | 1 |
+| sc500-posture-security-store | 1 |
+
+## Reviewed domain counts (not a claim of availability)
+
+| Category | Questions |
+| --- | ---: |
+| manage-identity-access-and-governance | 34 |
+| secure-storage-databases-and-networking | 44 |
+| secure-compute | 36 |
+| manage-and-monitor-security-posture | 36 |
+
+## Reviewed skill counts (not a claim of availability)
+
+| Category | Questions |
+| --- | ---: |
+| secure-access-to-resources-by-using-microsoft-entra-id | 11 |
+| secure-secrets-and-keys-by-using-azure-key-vault | 11 |
+| implement-governance-to-enforce-security-and-regulatory-compliance | 12 |
+| implement-security-for-storage-accounts | 12 |
+| implement-security-for-databases | 9 |
+| implement-security-for-azure-network-services | 23 |
+| implement-security-for-ai | 14 |
+| implement-security-for-servers-and-virtual-machines | 11 |
+| implement-security-for-application-platform-services | 11 |
+| manage-security-posture-by-using-defender-for-cloud | 12 |
+| implement-activity-and-event-collection-in-microsoft-sentinel | 17 |
+| implement-microsoft-security-copilot | 7 |
+
+## Reviewed subskill counts (not a claim of availability)
+
+| Category | Questions |
+| --- | ---: |
+| Implement and configure Privileged Identity Management (PIM) | 2 |
+| Implement conditional access policies | 2 |
+| Implement and configure authentication methods, including multifactor authentication (MFA) and passwordless | 2 |
+| Implement and configure identity for applications, including enterprise applications and app registrations | 2 |
+| Manage OAuth permission grants and consent settings | 1 |
+| Implement and configure managed identities for Azure resources | 2 |
+| Deploy Key Vault | 1 |
+| Configure Key Vault settings | 2 |
+| Configure access to Key Vault | 1 |
+| Configure firewall settings on Key Vault | 3 |
+| Manage keys, secrets, and certificates | 2 |
+| Scan for secrets by using Defender Cloud Security Posture Management (Defender CSPM) | 1 |
+| Implement Defender for Key Vault | 1 |
+| Implement and configure security controls by using Azure Policy, including built-in and custom policy definitions | 2 |
+| Evaluate regulatory compliance by using Microsoft Defender for Cloud | 1 |
+| Implement and configure security controls in Defender for Cloud, including security standards and recommendations | 1 |
+| Implement resource locks | 1 |
+| Manage Azure built-in role assignments | 1 |
+| Manage custom roles, including Azure roles and Microsoft Entra roles | 2 |
+| Evaluate and remediate overprivileged access assignments by using Azure role-based access control (RBAC) | 1 |
+| Configure security controls for backup protection by using Azure Backup security features | 2 |
+| Implement and configure security controls by using infrastructure as code | 1 |
+| Implement and configure security for storage accounts | 3 |
+| Configure Azure Storage firewall rules | 3 |
+| Implement Defender for Storage threat protection configurations | 3 |
+| Manage access to storage, including access policies | 3 |
+| Implement platform-level security configurations in Azure SQL | 4 |
+| Configure database auditing for Azure SQL Database and Azure SQL Managed Instance | 3 |
+| Configure Defender for Databases protection across Azure database services | 2 |
+| Implement and manage network security groups (NSGs) and application security groups (ASGs) | 3 |
+| Implement and configure network access policies by using Azure Virtual Network Manager | 2 |
+| Configure security for an Azure Virtual WAN | 3 |
+| Implement and configure security for virtual private network (VPN) connections | 2 |
+| Implement and configure Microsoft Entra Private Access | 3 |
+| Configure Azure private endpoints to secure access to Azure platform as a service (PaaS) resources | 3 |
+| Configure Azure Private Link services to secure access to network resources | 3 |
+| Implement and configure Azure Firewall | 2 |
+| Evaluate effective security rules by using Azure Network Watcher diagnostics | 2 |
+| Identify overexposure of data in SharePoint | 1 |
+| Identify risks related to Microsoft Copilot and AI apps by using Microsoft Purview Data Security Posture Management (DSPM) | 1 |
+| Enable and configure real-time protection for Microsoft Copilot Studio agents | 2 |
+| Implement conditional access for Microsoft Entra Agent ID | 2 |
+| Analyze blast radius for security risks related to Entra Agent ID by using Defender XDR | 1 |
+| Manage Entra Agent ID access | 2 |
+| Configure and deploy AI Gateway in Azure API Management for Microsoft Foundry | 1 |
+| Enable Defender for AI Service in Cloud Workload Protection in Defender for Cloud | 1 |
+| Configure guardrails for agent security in Foundry | 1 |
+| Monitor AI security by using the Data and AI security dashboard in Defender for Cloud | 1 |
+| Manage agents in Microsoft 365 admin center | 1 |
+| Implement and configure disk encryption | 2 |
+| Plan and implement Azure Bastion | 1 |
+| Enable and enforce use of just-in-time (JIT) VM access | 2 |
+| Extend security controls to hybrid and multicloud servers by using Azure Arc | 1 |
+| Onboard servers to Defender for Servers in Defender for Cloud, including hybrid and multicloud scenarios | 1 |
+| Configure Defender for Servers settings, including vulnerability scanning, and endpoint detection and response (EDR) | 1 |
+| Implement and manage agentless scanning for VMs in Defender for Servers | 1 |
+| Configure security features on a VM, including secure boot, virtual Trusted Platform Module (vTPM), integrity monitoring, and security type | 1 |
+| Enforce security configuration of Azure-managed servers by using Azure Machine Configuration | 1 |
+| Detect misconfigurations and runtime risks in container workloads by using Defender for Containers | 1 |
+| Implement and configure security controls for Azure Kubernetes Service (AKS) | 2 |
+| Implement and configure security controls for Azure Container Registry | 1 |
+| Implement and configure security controls for Azure Container Instances and Azure Container Apps | 1 |
+| Implement and configure security controls for Azure Functions, including authentication and network access | 1 |
+| Implement and configure security controls for Azure Logic Apps | 1 |
+| Implement and configure security controls for Azure App Service | 1 |
+| Implement and configure Azure Web Application Firewall | 1 |
+| Implement security policies for back-end API protection by using API Management | 2 |
+| Identify security risks by using Defender CSPM | 2 |
+| Evaluate compliance against security frameworks by using Defender for Cloud | 2 |
+| Enable and configure Defender for Cloud workload protection plans | 2 |
+| Connect hybrid cloud and multicloud environments to Defender for Cloud, including Amazon Web Services (AWS) and Google Cloud Platform (GCP) | 2 |
+| Configure Microsoft Defender Vulnerability Management settings for Azure VMs | 2 |
+| Discover unprotected assets and vulnerabilities by using Microsoft Defender External Attack Surface Management (EASM) | 2 |
+| Create and connect workspaces in Microsoft Sentinel | 2 |
+| Assign roles in Microsoft Sentinel | 1 |
+| Implement and use content hub solutions | 1 |
+| Configure and use Microsoft data connectors for Azure resources | 1 |
+| Implement and configure syslog and Common Event Format (CEF) event collections | 2 |
+| Implement and configure collection of Windows Security events by using data collection rules, including Windows Event Forwarding (WEF) | 3 |
+| Create custom log tables in the workspace to store ingested data | 2 |
+| Implement automation rules and playbooks in Microsoft Sentinel | 2 |
+| Implement data retention in Microsoft Sentinel data stores | 2 |
+| Query Microsoft Purview Audit in Defender XDR | 1 |
+| Configure workspaces for Security Copilot | 2 |
+| Manage permissions and roles in Security Copilot | 2 |
+| Enable and configure plugins | 1 |
+| Enable and configure Microsoft agents and Security Store agents | 2 |
+
+## Reviewed difficulty counts (not a claim of availability)
+
+| Category | Questions |
+| --- | ---: |
+| beginner | 2 |
+| intermediate | 87 |
+| advanced | 61 |
+| expert | 0 |
+
+## Reviewed complexity counts (not a claim of availability)
+
+| Category | Questions |
+| --- | ---: |
+| concept-recall | 1 |
+| technical-implementation | 66 |
+| scenario-based | 4 |
+| troubleshooting | 55 |
+| architecture-design | 24 |
+
+## Reviewed type counts (not a claim of availability)
+
+| Category | Questions |
+| --- | ---: |
+| single-select | 14 |
+| multi-select | 19 |
+| true-false | 2 |
+| scenario | 107 |
+| code | 8 |
+
+## Reviewed source counts (not a claim of availability)
+
+| Category | Questions |
+| --- | ---: |
+| sc500-identity-pim-settings | 2 |
+| sc500-identity-ca-grant | 2 |
+| sc500-identity-ca-report | 2 |
+| sc500-identity-auth-strength | 2 |
+| sc500-identity-tap | 1 |
+| sc500-identity-app-objects | 1 |
+| sc500-identity-consent-workflow | 0 |
+| sc500-identity-managed-identities | 3 |
+| sc500-identity-federation | 1 |
+| sc500-identity-vault-overview | 1 |
+| sc500-identity-vault-soft-delete | 3 |
+| sc500-identity-vault-rbac | 6 |
+| sc500-identity-vault-network | 3 |
+| sc500-identity-vault-private | 1 |
+| sc500-identity-key-rotation | 1 |
+| sc500-identity-certificates | 1 |
+| sc500-identity-secret-scanning | 1 |
+| sc500-identity-defender-vault | 1 |
+| sc500-identity-policy-effects | 2 |
+| sc500-identity-policy-remediate | 1 |
+| sc500-identity-compliance | 1 |
+| sc500-identity-standards | 2 |
+| sc500-identity-security-policy | 1 |
+| sc500-identity-locks | 1 |
+| sc500-identity-privileged-roles | 2 |
+| sc500-identity-custom-roles | 1 |
+| sc500-identity-entra-custom-roles | 1 |
+| sc500-identity-rbac-overview | 4 |
+| sc500-identity-backup-mua | 1 |
+| sc500-identity-backup-immutable | 1 |
+| sc500-identity-arm-parameters | 1 |
+| sc500-identity-arm-best-practices | 1 |
+| sc500-identity-role-definitions | 1 |
+| sc500-identity-grant-consent | 1 |
+| sc500-identity-federation-trust | 1 |
+| sc500-identity-secret-types | 1 |
+| sc500-network-storage-https | 1 |
+| sc500-network-storage-encryption | 2 |
+| sc500-network-storage-network | 3 |
+| sc500-network-storage-sas | 4 |
+| sc500-network-defender-storage | 3 |
+| sc500-network-sql-firewall | 2 |
+| sc500-network-sql-entra-only | 2 |
+| sc500-network-sql-auditing | 2 |
+| sc500-network-sql-mi-auditing | 1 |
+| sc500-network-defender-databases | 1 |
+| sc500-network-defender-sql | 1 |
+| sc500-network-defender-cosmos | 2 |
+| sc500-network-nsg | 3 |
+| sc500-network-asg | 2 |
+| sc500-network-avnm | 2 |
+| sc500-network-vwan-routing | 3 |
+| sc500-network-vpn-policy | 1 |
+| sc500-network-vpn-entra | 1 |
+| sc500-network-private-access | 1 |
+| sc500-network-private-apps | 3 |
+| sc500-network-storage-private | 4 |
+| sc500-network-private-link | 3 |
+| sc500-network-firewall-rules | 2 |
+| sc500-network-watcher-ipflow | 2 |
+| sc500-network-watcher-effective | 2 |
+| sc500-compute-sharepoint-reports | 1 |
+| sc500-compute-dspm | 1 |
+| sc500-compute-agent-realtime | 2 |
+| sc500-compute-agent-ca | 2 |
+| sc500-compute-agent-blast | 2 |
+| sc500-compute-agent-access | 3 |
+| sc500-compute-foundry-gateway | 1 |
+| sc500-compute-ai-onboarding | 1 |
+| sc500-compute-ai-threat-overview | 1 |
+| sc500-compute-guardrails | 1 |
+| sc500-compute-guardrails-overview | 1 |
+| sc500-compute-ai-dashboard | 1 |
+| sc500-compute-m365-actions | 1 |
+| sc500-compute-agent-policy | 1 |
+| sc500-compute-disk-encryption | 2 |
+| sc500-compute-sse | 2 |
+| sc500-compute-bastion-private | 1 |
+| sc500-compute-bastion-overview | 1 |
+| sc500-compute-jit | 2 |
+| sc500-compute-jit-overview | 1 |
+| sc500-compute-arc | 2 |
+| sc500-compute-servers-plan | 1 |
+| sc500-compute-servers-edr | 1 |
+| sc500-compute-agentless | 1 |
+| sc500-compute-trusted-launch | 1 |
+| sc500-compute-machine-config | 2 |
+| sc500-compute-containers | 1 |
+| sc500-compute-aks-rbac | 2 |
+| sc500-compute-acr-auth | 1 |
+| sc500-compute-aci-identity | 1 |
+| sc500-compute-aca-identity | 1 |
+| sc500-compute-functions | 1 |
+| sc500-compute-logic-apps | 1 |
+| sc500-compute-appservice-network | 2 |
+| sc500-compute-waf | 1 |
+| sc500-compute-apim-jwt | 1 |
+| sc500-compute-apim-identity | 1 |
+| sc500-posture-cspm | 1 |
+| sc500-posture-attack-paths | 1 |
+| sc500-posture-compliance | 2 |
+| sc500-posture-plans | 2 |
+| sc500-posture-aws-current | 1 |
+| sc500-posture-gcp | 1 |
+| sc500-posture-mdvm | 1 |
+| sc500-posture-mdvm-modes | 1 |
+| sc500-posture-easm-discovery | 2 |
+| sc500-posture-sentinel-onboard | 3 |
+| sc500-posture-sentinel-roles | 2 |
+| sc500-posture-content-hub | 1 |
+| sc500-posture-cef-overview | 1 |
+| sc500-posture-cef-ama | 1 |
+| sc500-posture-windows-sentinel | 1 |
+| sc500-posture-windows-dcr | 2 |
+| sc500-posture-custom-table | 2 |
+| sc500-posture-playbooks | 2 |
+| sc500-posture-sentinel-tiers | 2 |
+| sc500-posture-purview-audit | 1 |
+| sc500-posture-copilot-onboarding | 1 |
+| sc500-posture-copilot-settings | 1 |
+| sc500-posture-copilot-permissions | 3 |
+| sc500-posture-copilot-plugins | 2 |
+| sc500-posture-copilot-agents | 1 |
+| sc500-posture-security-store | 1 |
+
+## Published domain weighting
+
+- Manage identity, access, and governance: guide 20–25%; available bank 22.7% (34 playable; 34 fully reviewed).
+- Secure storage, databases, and networking: guide 25–30%; available bank 29.3% (44 playable; 44 fully reviewed).
+- Secure compute: guide 20–25%; available bank 24.0% (36 playable; 36 fully reviewed).
+- Manage and monitor security posture: guide 20–25%; available bank 24.0% (36 playable; 36 fully reviewed).
+
+## Correct-answer positions (before gameplay shuffling; each multi-select key counted)
+
+| Category | Questions |
+| --- | ---: |
+| 1 | 44 |
+| 2 | 42 |
+| 3 | 43 |
+| 4 | 41 |
+
+## Uncovered subskills (playable coverage only)
+
+None. Sampling is not proof of complete depth.
+
+## Uncovered reviewed subskills (before availability gates)
+
+None. Reviewed coverage does not establish credential availability or GA.
+
+## Duplicate, quality, citation, and verification findings
+
+- **warning / pronoun-review** [sc500-002]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-003]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-004]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-004]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-006]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-006]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-007]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-010]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-010]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-012]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-013]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-014]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-015]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / absolute-wording** [sc500-017]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-017]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-020]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-020]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-021]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / absolute-wording** [sc500-023]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-023]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-025]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-026]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-026]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-028]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-028]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-031]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-032]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / absolute-wording** [sc500-034]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-034]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-037]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-038]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-039]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-040]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-040]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-041]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-042]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-042]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-043]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-044]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / negative-wording** [sc500-045]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-045]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-048]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-050]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-056]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / absolute-wording** [sc500-057]: Check absolute claims against documented limitations, including distractors.
+- **warning / absolute-wording** [sc500-059]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-059]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / absolute-wording** [sc500-060]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-061]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / absolute-wording** [sc500-062]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-062]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-067]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-068]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-071]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-072]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-074]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / scenario-constraints** [sc500-074]: Short applied scenario: independently check prerequisites and constraints.
+- **warning / negative-wording** [sc500-075]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-075]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-076]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / absolute-wording** [sc500-077]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-077]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-078]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-080]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / negative-wording** [sc500-081]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-081]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-082]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-084]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-085]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-086]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-086]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-087]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-087]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-091]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-092]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-092]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / absolute-wording** [sc500-093]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-094]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-096]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-097]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-099]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / absolute-wording** [sc500-099]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-099]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-101]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-101]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-102]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-103]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-104]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-105]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-106]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / absolute-wording** [sc500-107]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-107]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-109]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-110]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-110]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-111]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-112]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-113]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-113]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-118]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / absolute-wording** [sc500-118]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-118]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-119]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-119]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-120]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-121]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / absolute-wording** [sc500-122]: Check absolute claims against documented limitations, including distractors.
+- **warning / answer-length-cue** [sc500-123]: A correct option is substantially longer than all distractors.
+- **warning / absolute-wording** [sc500-124]: Check absolute claims against documented limitations, including distractors.
+- **warning / pronoun-review** [sc500-125]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-126]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-127]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-128]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-129]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-129]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-132]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-134]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-136]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-138]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-142]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-143]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-143]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / negative-wording** [sc500-144]: Review negative wording; prefer a positive, unambiguous task.
+- **warning / pronoun-review** [sc500-144]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-145]: Check pronoun references; this heuristic does not establish ambiguity.
+- **warning / pronoun-review** [sc500-146]: Check pronoun references; this heuristic does not establish ambiguity.
+
+## Review queue
+
+Verified entries marked credential-or-mode-gate are reviewed but unavailable, not missing authored content.
+- **sc500-002** (verified; not-excluded): pronoun-review. Review notes: Confirmed that PIM authentication context does not bind subsequent use to the activating device, session, or location. Directly scoped user/resource Conditional Access is needed. The existing compliant-device setup establishes prerequisites; no code or preview agent behavior is tested. Reviewed the pronoun warning and the separate 001 concept; neither is blocking..
+- **sc500-003** (verified; not-excluded): pronoun-review. Review notes: Freshly reviewed the repaired Intermediate snapshot, including the validation-date change. Only b enforces both human-user MFA and compliance; the other options drop a requirement, disable enforcement or propose an unsupported combination. Licensed policy operation and the tested Windows device establish the relevant prerequisites. No code is present; preview agent/custom controls are not tested. Current duplicate helpers found no pair, and the pronoun warning is resolved by the explicit policy antecedent..
+- **sc500-004** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Confirmed a from the User action required row, separately contrasting Not applied, Success, and actual enforcement. No prerequisite for preview policy-impact views is assumed; the item uses established sign-in-log report-only evaluation. There is no code. The pronoun and negative-wording warnings have clear referents and necessary diagnostic context..
+- **sc500-006** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Verified b from TAP enablement and troubleshooting, checking use-count, administrative role, and password alternatives separately. Valid unexpired pass and no other sign-in blocker are given. FIDO2 registration timing is not asked; no code or preview behavior is tested. Pronouns and negative wording resolve to the employee and method-policy scope..
+- **sc500-007** (verified; not-excluded): pronoun-review. Review notes: Confirmed the customer-local application service principal in Enterprise applications, not the home-tenant app object or an unrelated managed identity. Consent-created instance is an explicit premise; this asks object selection rather than authorizing portal administration. No code or preview feature is involved. Pronoun and originality checks found no blocking issue..
+- **sc500-010** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Confirmed b by independently checking system-assigned isolation/deletion and Secrets User data permissions. Control-plane Contributor and secret-managing Officer fail the data requirement; shared user identities fail the explicit lifecycle constraints. RBAC permission model and network prerequisites are stated. No code or preview secret ABAC is tested, and wording/duplicate warnings are resolved..
+- **sc500-012** (verified; not-excluded): pronoun-review. Review notes: Confirmed Premium HSM-protected keys and independently checked the different purposes of purge protection, firewall, and soft-delete retention. The question explicitly concerns managed key protection, avoiding the overview's separate all-vault encryption-at-rest statement. No code or preview feature is tested. Pronoun reference to the deployment team is clear; tier selection is distinct from 013..
+- **sc500-013** (verified; not-excluded): negative-wording. Review notes: Verified the immutable creation-time retention interval and the separate purge-protection barrier, including against a purge-authorized caller. New-vault soft delete supplies the prerequisite to enable purge protection. No code is present and the tested deletion safeguards are established behavior. Negative wording is a necessary design constraint, not an ambiguous reverse question..
+- **sc500-014** (verified; not-excluded): pronoun-review. Review notes: Confirmed preassigning the intended Secrets User data role for RBAC migration and testing application access. Existing access policies are not an authorization fallback; Contributor and Reader cannot read secret contents. Owner satisfies model-change authority. Role propagation must be allowed during preparation; no instantaneous guarantee, code, or preview ABAC operation is claimed. The pronoun and duplicate checks pass..
+- **sc500-015** (verified; not-excluded): pronoun-review. Review notes: Independently confirmed data-plane firewall restriction versus the authorized ARM tag update, rejecting temporary trust and role-propagation bypass. Correct management/data permissions and the excluded workstation are stated; no code is involved. This is established firewall behavior, not network-security-perimeter preview. The pronoun warning and comparison with 021's trusted-service question are resolved..
+- **sc500-017** (verified; not-excluded): absolute-wording, pronoun-review. Review notes: Verified c against the explicit before-expiry prerequisites and the statement that policy expiry does not affect the current key. Crypto Officer authority is directly documented. Notify cannot substitute for rotation, and another role assignment cannot establish the missing expiration date. No code is present. Established key rotation, distinct from certificate exportability, is tested; the absolute-wording warning is resolved..
+- **sc500-020** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Confirmed the recommended initial investigation and owner validation, including the documented stolen-credential and customer-Azure-VM counterexamples. The receipt explicitly states GA; this assumes an existing alert rather than missing onboarding configuration. No code is tested. Negative/pronoun warnings are understandable; categorical distractors weaken but do not invalidate this introductory triage item..
+- **sc500-021** (verified; not-excluded): pronoun-review. Review notes: Independently verified c against the static-IP firewall subsection and the explicit Azure DevOps trusted-services exclusion. This is the documented public IPv4 allowlist configuration with default deny, not an assertion that IP rules override a disabled public endpoint or enforced perimeter. The known static egress is a scenario fact, not a claim about all hosted agents. The valid identity/data permission premise rules out broader roles and rotation as network repairs. No code or unresolved duplicate/pronoun issue remains..
+- **sc500-023** (verified; not-excluded): absolute-wording, pronoun-review. Review notes: Freshly reviewed d and the repaired Intermediate difficulty against effect-basics. Each applicable assignment remains relevant; a narrower audit neither overrides a parent deny nor becomes a block by itself. The absence of exemptions/exclusions prevents an unstated exception. No code or feature-preview claim is involved. The absolute-wording flag belongs to an explicitly contradicted distractor, and the region/subscription pronouns are resolved. No duplicate was found with the RBAC additive-access task..
+- **sc500-025** (verified; not-excluded): pronoun-review. Review notes: Verified the manual assessment/subscription/Attest/evidence sequence and separately rejected unavailable-as-pass and report-download-as-upload. The engineer's authorization and assigned standard are premises, so no role or paid-plan selection is implied. No code or preview view is tested. Pronoun warning is clear, and this is distinct from custom recommendation creation in 026..
+- **sc500-026** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Re-evaluated all options using the direct custom-KQL section and the distinct Azure Policy/RBAC semantics. Only b produces a Defender custom assessment within a standard under the enabled CSPM plan; it does not promise deployment blocking or automatic replacement of other standards. No KQL code is supplied, so no invented query execution is attested. The negative/pronoun warnings have clear scope and antecedents. This is separate from manually recording evidence for a nonautomatic compliance control in 025..
+- **sc500-028** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Confirmed c by reading roleAssignments write/delete and control-plane read in the current built-in definition. Contributor lacks assignment management; both Owner variants exceed direct resource-write duties. This is direct permission selection, not a claim that unrestricted role administration prevents self-elevation. No code/preview feature is tested. The current duplicate run has no answer-length cue; negative/pronoun warnings are resolved..
+- **sc500-031** (verified; not-excluded): pronoun-review. Review notes: Confirmed b after tracing the transitive Contributor grant separately from direct Reader and the proposed custom role. NotActions cannot deny an action granted by another role, and removing the expressly obsolete membership preserves required Reader access. No exact immediate revocation timing, code, or preview feature is claimed. Pronoun and cumulative-model duplicate checks pass..
+- **sc500-032** (verified; not-excluded): negative-wording. Review notes: Verified c and d using the Recovery Services section, including same-region, Reader for enablement, and no standing Contributor/MUA Admin/MUA Operator rights. Separate subscription/tenant is a supported isolation design, not a claim that it is the only topology. Later JIT Operator activation is distinct and governed. No candidate code or preview-only backup behavior is tested; negative wording correctly expresses separation..
+- **sc500-034** (verified; not-excluded): absolute-wording, pronoun-review. Review notes: Inspected and parsed the JSON fragment, then independently evaluated each proposed mutation: only secureString without default preserves the string contract while requiring caller input and secure parameter handling. The placeholder is not a real secret and no deployment is performed. The logging statement is scoped to ARM parameters, not arbitrary consumers. Absolute/pronoun warnings are resolved; no preview behavior is tested..
+- **sc500-037** (verified; not-excluded): pronoun-review. Review notes: The two-algorithm/two-key requirement independently selects infrastructure encryption. Read the stem as a storage design, not a claim that an existing account can be retrofitted in place; no such conversion procedure is asserted. The pronoun refers clearly to the additional infrastructure layer. Source-supported GA behavior and explanations are intact, with no code or semantic duplication of 036..
+- **sc500-038** (verified; not-excluded): pronoun-review. Review notes: Independently traced the source-address transition and required VNet rule in the network receipt. The same-region condition makes Microsoft.Storage appropriate and valid data authorization removes a competing 403 cause. Pronouns have explicit subnet/account antecedents. Unlike 040, this item requires explaining a path change after deployment, not only the general SAS/firewall boundary; no blocking semantic duplicate or unsupported feature claim found..
+- **sc500-039** (verified; not-excluded): pronoun-review. Review notes: Fresh review supports A and B: a supported same-tenant resource instance requires network admission and its own data-role authorization. Cross-subscription placement is explicitly supported, and an IP-scoped SAS cannot override the firewall. The intermediate two-control distinction is sound, but the unnamed resource and generic read-role description reduce implementation realism. Realism 19/20..
+- **sc500-040** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Read both cited receipts for the authorization/network distinction and signed-IP support. Choice d gives the right no with a false explanation, so only c is defensible. Negative wording is essential to testing the proposed bypass, not a hidden NOT instruction; partner pronouns are clear. Scope remains Blob and stable GA. Shared firewall background with 038/039 does not repeat their service-endpoint or resource-instance decision..
+- **sc500-041** (verified; not-excluded): pronoun-review. Review notes: Independently checked the signing table, generateUserDelegationKey permission and least-privilege recommendations. The stem supplies the permission prerequisite and restricts the claim to Blob; expanded support in other source subsections is not treated as part of this question. The broker antecedent is clear, with no code. This signing-key decision is not the stored-policy or validity-time decision in 042/043..
+- **sc500-042** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Fresh review supports A: service SAS tokens associated with a dedicated container stored access policy can be revoked together without account-key rotation. Account and user delegation SAS cannot use stored policies, and an external inventory does not add server-side revocation. The issuance-before-distribution constraint prevents a retroactive-policy ambiguity. Intermediate is appropriate, although two alternatives already violate the required SAS type. Realism 19/20..
+- **sc500-043** (verified; not-excluded): pronoun-review. Review notes: Verified the source recommendation of at least 15 minutes in the past or no start time, rather than inventing a skew tolerance. Correct permissions and firewall admission narrow the symptom sufficiently. The pronoun refers to the issuing broker. No executable code or unlabelled preview appears. This timing diagnosis is semantically distinct from the signing and revocation questions, although its transport distractor is weak..
+- **sc500-044** (verified; not-excluded): negative-wording. Review notes: Read the classic migration note and the malware-versus-hash comparison rather than assuming similarly named protection features are interchangeable. Blob upload scope is supported and the explanation accurately distinguishes sensitivity context from scans. The negative qualifier about inadequate hash coverage is meaningful and clear. This is a plan/capability migration, not the cap or rollout-scope issue in 045/046..
+- **sc500-045** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Fresh repair review of the complete current item, not an inherited approval. Read the actual current undated SC-500 map and the Defender Storage MCP receipt, including monthly capping, stopped-cap alerts, activity monitoring and scan-result behavior. Independently found d uniquely supported. The cap is per account, never per SAS, and no missing result proves content clean. No retrospective rescan behavior is attested. Negative wording and account pronouns are nonblocking; 044/046 test different decisions. Intermediate/technical-implementation now fits at the lower end, with distractor plausibility 1 and difficulty authenticity 1; total 18, all critical criteria 2, no zero. The earlier rejected Advanced snapshot remains historical. Candidate status is still manual-review-required until author integration..
+- **sc500-048** (verified; not-excluded): pronoun-review. Review notes: The explicit cross-customer warning resolves the team proposal independently of the key. Neither managed-identity assignment nor resource-group membership filters this network exception. The pronoun refers to the proposing team, and private/service endpoints are only suggested as alternatives for evaluation, not claimed to have been deployed. The fact being tested differs from database-versus-server additive grants in 047..
+- **sc500-050** (verified; not-excluded): pronoun-review. Review notes: Fresh review supports A: SQL Security Manager can enable Entra-only authentication, while SQL Server Contributor and SQL Managed Instance Contributor lack that control. The stem already supplies the Entra administrator prerequisite. A duplicate provisioning-role assignment and database CONTROL do not grant the Azure management action. This is intermediate separation-of-duties reasoning; the repeated-role distractor is weak. Realism 19/20..
+- **sc500-056** (verified; not-excluded): pronoun-review. Review notes: Independently simulated the first match for Processing and another VNet source in all four rule sequences. The new-flow, single-VNet, port and no-competing-policy constraints remove state and cross-VNet ambiguity. The scenario paraphrases a documented configuration pattern, not an assessment question. This ordering/default-allow reasoning differs from ASG membership in 057 and state preservation in 058..
+- **sc500-057** (verified; not-excluded): absolute-wording. Review notes: Checked the ASG example as well as both same-VNet restrictions. The absolute never in b is intentionally false and directly contradicted by the documented source/destination example. The correct constraint is not broadened to claim peering itself is unsupported. This implementation-planning question is separate from rule order and statefulness; no code, unsupported availability claim or ambiguous antecedent was found..
+- **sc500-059** (verified; not-excluded): absolute-wording, pronoun-review. Review notes: Independently followed each admin action through the evaluation diagram and the corroborating NSG section. Always Allow is a literal action name, not an unqualified editorial absolute. The pronoun has a clear workload-port referent. The proposed ordinary Allow preserves rather than bypasses NSGs. This decision about delegation of control is distinct from endpoint applicability in 060 and from Firewall rule types in 075..
+- **sc500-060** (verified; not-excluded): absolute-wording. Review notes: Performed a new complete technical and quality review against the current undated SC-500 network-policy subskill and both English MCP receipts. Found c uniquely correct: AVNM expressly excludes private endpoints; Storage retains consent and data authorization. Owner-created endpoints may auto-approve, so no universal manual-approval requirement is asserted. The exclusion does not imply a blocked VM can evade its own filtering when connecting to an endpoint. The absolute-wording warning is resolved against the explicit exception. Compared 059 and the 069-071 endpoint stems; no blocking duplicate of this tested decision. Intermediate classification removes the Advanced overclaim but not the easy alternatives: difficulty authenticity 1, distractor plausibility 1, other criteria 2, total 18. Preserve the initial rejection and leave candidate status pending author integration..
+- **sc500-061** (verified; not-excluded): pronoun-review. Review notes: Read the two-secured-hub flow table, public-cloud availability table and symmetric-inspection consideration. Evaluated Internet-only, one-hub and static-route alternatives against that actual topology. Firewalls and absence of prerequisite conflicts are stated; the answer is a routing-intent configuration, not a complete firewall-rule deployment promise. Pronoun references to the involved hubs are clear. This private-path symmetry decision differs from internet default propagation and migration constraints in 062/063..
+- **sc500-062** (verified; not-excluded): absolute-wording, pronoun-review. Review notes: Fresh review supports A: Virtual WAN does not advertise the internet default route across hubs. Local Internet policy can serve attached VNets and branches, but private inter-hub reachability does not supply West with East's egress path. The conclusion is limited to the stated topology, not a claim that no alternative egress architecture exists. The two-hub distinction is a well-formed intermediate reasoning task. Realism 20/20..
+- **sc500-067** (verified; not-excluded): pronoun-review. Review notes: Checked the overlap exception, destination/port/protocol definition and assignment note together. Synchronization is already complete, avoiding a competing propagation explanation. The user and new app antecedents are clear; direct-group wording correctly excludes nesting. The source current per-app feature, not its separate beta Graph routing example, supports this original access-loss diagnosis. The core precedence/assignment fact differs from 066/068..
+- **sc500-068** (verified; not-excluded): pronoun-review. Review notes: Read both Prerequisites and the Important active-connector condition in the creation steps. The stem supplies roles and licensing, so the missing connector is uniquely relevant. The explanation references a documented supported-version requirement without inventing a new version or date. Pronouns clearly identify the group. This is simple prerequisite application, not Advanced content; no semantic duplicate of per-app boundary or assignment-precedence questions..
+- **sc500-071** (verified; not-excluded): pronoun-review. Review notes: Checked the adjacent secondary-read and failover paragraphs and the separate normal-connection-string instruction. The before-failover requirement is essential and the pronoun refers to the storage secondary, not the endpoint. The explanation does not promise write access to the secondary. No code or preview behavior is involved. This temporal instance distinction is semantically different from service-subresource and DNS setup questions..
+- **sc500-072** (verified; not-excluded): pronoun-review. Review notes: Fresh review supports C: both partner subscriptions need visibility, while only the preapproved partner belongs in auto-approval. The other partner's visible request remains pending until provider approval; alias sharing is not approval. The source's Direct Connect public preview is excluded by the conventional load-balancer-backed scope. This is a complete intermediate two-control distinction. Realism 20/20..
+- **sc500-074** (verified; not-excluded): negative-wording, scenario-constraints. Review notes: Read both the conventional limitations list and the explicitly separate Direct Connect preview warning. The short scenario warning is valid editorially, but the essential SKU/backend and non-preview scope are sufficient to decide every option. The negative scope qualifier prevents, rather than introduces, ambiguity. This is an original compatibility-selection task, distinct from 072 visibility and 073 Proxy v2; no implicit claim that all source subsections are GA..
+- **sc500-075** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Read the explicit rule-type-over-inheritance note, full pass-order example and outbound matching section. Excluded threat-intelligence blocking and IDPS keep the scenario focused. The source directly supports the otherwise subtle child-network-before-parent-application outcome. Negative wording describes inactive competing filters, and pronouns identify the policy/subnet. The original hostname-filtering diagnosis is distinct from inbound DNAT in 076 and AVNM admin/NSG control in 059..
+- **sc500-076** (verified; not-excluded): pronoun-review. Review notes: Independently checked DNAT match behavior and the inbound application-rule exclusion. A later network deny cannot undo the existing NAT match, so the correction belongs in the DNAT source condition. The pronoun refers clearly to the publishing DNAT rule. The facts are scoped to this ingress rule path, not a guarantee against every independent protection layer. This is not a duplicate of outbound hostname application filtering in 075..
+- **sc500-077** (verified; not-excluded): absolute-wording, pronoun-review. Review notes: Read both Watcher receipts, including subscription/region, permission, protocol and VM-interface limits. The stem supplies required Watcher placement and permission and asks only rule filtering, not proof the application or route works. Absolute only in the distractor deliberately omits controls; references are clear. This is a single-tuple diagnosis, not the whole-rule baseline comparison in 078. No retired NSG flow-log feature is used..
+- **sc500-078** (verified; not-excluded): pronoun-review. Review notes: Independently read the effective-rules compliance-audit paragraph and aggregation definition, then contrasted it with the IP-flow input/output contract. The interface and baseline references are explicit, and no claim is made that one successful connection proves the whole policy. This directly implements the security-engineer diagnostic objective, not incident analysis. The evidence-view decision is semantically distinct from 077 even though both tools are compared..
+- **sc500-080** (verified; not-excluded): negative-wording. Review notes: Independently confirmed AI observability against the raw current DSPM walkthrough and its explicit Discover exclusion. Key d remains unique. Setup tasks is a comparatively weak alternative. The Purview URL-policy failure is retained independently from this semantic approval..
+- **sc500-081** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Fresh exact-content review confirms a and c after reading the entire runtime-protection receipt. The connector and blocking rule solve separate stated gaps; prompt evidence and the Default rule do not prevent execution. Copilot Studio coverage and the question are correctly Preview. The repaired intermediate difficulty earns 19/20 with no blocking realism issue..
+- **sc500-082** (verified; not-excluded): pronoun-review. Review notes: Independently mapped user-subject OBO and agent-subject client credentials, then confirmed c. The blueprint creation and intermediate-token exclusions were read rather than inferred. The GA assessment is confined to these core flows; separate Preview conditions and agent-user targeting are outside the question..
+- **sc500-084** (verified; not-excluded): pronoun-review. Review notes: Fresh review confirms a using the management article's explicit blueprint-level containment row. The token-issuance and creation scope, individual and tenant alternatives, and sponsorship explanation are supportable. The GA label is restricted to core lifecycle disable, not the page's separately Preview risk features. Intermediate earns 19/20..
+- **sc500-085** (verified; not-excluded): pronoun-review. Review notes: Independently read gateway requirements, multiple-project architecture, and bypass troubleshooting. Key d is supported for the already-associated v2 instance. The distinct resource, project, and quota scopes support advanced classification, despite one weak subscription distractor..
+- **sc500-086** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Read both raw receipts and independently selected b: disable evidence display, not threat analysis. Commercial text scope and subscription Owner are supported by the explicit GA availability table. The redaction alternative is weaker than the two adjacent configuration alternatives..
+- **sc500-087** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Independently read both guardrail receipts, including the Preview action matrix and override example. Key a repairs the specific omitted stages; model edits, annotate-only, and unconditional default inheritance fail. The testing advice is independently supported by the immediate-assignment warning..
+- **sc500-091** (verified; not-excluded): pronoun-review. Review notes: Independently distinguished custom-rule BehaviorInfo telemetry from near-real-time alerts and from the separately scoped Prompt Shields ingestion note. Key a preserves prevention. The successful-block/no-alert inversion supports an advanced troubleshooting assessment rather than a superficial product-name match..
+- **sc500-092** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Independently read the per-resource inheritance table and its limits, confirming c. The future-grant constraint is material and not a trick negative. The topic is adjacent to blueprint containment but tests a separate stable fact; two governance-related alternatives are comparatively weak..
+- **sc500-093** (verified; not-excluded): absolute-wording. Review notes: Independently read both encryption receipts, including the detailed key restrictions and automatic temporary-disk caveat. Key d uniquely satisfies cache/temp coverage and guest CPU limits with the correct key split. This is distinct from 102's prior-ADE migration restriction..
+- **sc500-094** (verified; not-excluded): pronoun-review. Review notes: Independently reconciled the private-only deployment restrictions with the SKU overview. Key b requires replacement, not an in-place public-IP deletion. The ExpressRoute/IP-based/native-client path and suitable-subnet caveat are supported and justify advanced migration reasoning..
+- **sc500-096** (verified; not-excluded): pronoun-review. Review notes: Independently read the full Arc overview and confirmed c provides the resource representation without migration. Monitor Agent and MDE are not substitutes for Connected Machine. The Bastion-as-an-installed-agent option is too easy, reflected in a plausibility deduction..
+- **sc500-097** (verified; not-excluded): pronoun-review. Review notes: Independently read the deployment matrix, Arc representation, and Machine Configuration scope. Key d is required for the stated fuller hybrid baseline design; direct MDE and workspace/DCR changes alone are insufficient. The distinct prerequisites support advanced architecture classification..
+- **sc500-099** (verified; not-excluded): negative-wording, absolute-wording, pronoun-review. Review notes: Independently checked all relevant agentless coverage and exclusion tables before accepting c. The 256-GB OS disk and greater-than-4-TB combined capacity exactly produce OS-only results. Other diagnostic causes are explicitly excluded and the item merits advanced support-matrix reasoning..
+- **sc500-101** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Independently compared all three custom-policy modes and selected d for continuing drift repair. The receipt's client limitations were read and are respected by the supported-target wording. The resource-tag option is a weak distractor but does not create ambiguity..
+- **sc500-102** (verified; not-excluded): pronoun-review. Review notes: Independently rechecked the ever-had-ADE restriction and the September 2028 retirement notice. Key b remains correct after ADE disablement. No blanket assertion that platform disk encryption disappears was accepted, and no migration workaround was fabricated..
+- **sc500-103** (verified; not-excluded): pronoun-review. Review notes: Fresh complete-source review confirms c and checks the request-duration, expiration and AWS distractors separately. A new SSH connection with no request is explained by the stated higher-priority allow, not by a lingering established session. The intermediate repair passes at 18/20, with honest deductions for the supplied diagnosis and weak alternatives. The tested Azure JIT behavior remains scoped GA..
+- **sc500-104** (verified; not-excluded): pronoun-review. Review notes: Independently read the Containers overview including both sensor and agentless runtime statements. Key a/d matches the new detection and privileged-admission controls. The modern image-gating capability does not make vulnerability findings an automatic privileged-pod-spec blocker..
+- **sc500-105** (verified; not-excluded): negative-wording. Review notes: Independently compared Reader, Writer, and Admin against both namespace and permission requirements, confirming b. The no-other-assignments condition matters and is present. Built-in resources are kept separate from the source's Preview custom-resource authorization material..
+- **sc500-106** (verified; not-excluded): pronoun-review. Review notes: Independently read the authentication matrix and admin warning, confirming d. Two admin passwords do not create distinct identities; individual permissions require separate Entra users. One weak local-storage distractor lowers plausibility, but no factual repair is needed..
+- **sc500-107** (verified; not-excluded): absolute-wording, pronoun-review. Review notes: Independently compared ACI and Container Apps identity instructions and read the exact April 11, 2022 exception. Key a matches the identity-only change. The paired services, restart boundary, and preauthorization distinction merit advanced operational planning..
+- **sc500-109** (verified; not-excluded): pronoun-review. Review notes: Independently read the raw 117k receipt's encryption, unsupported-operation, propagation, and designer sections rather than relying on its summary. Key d repairs the Compose-to-HTTP boundary for future runs; no nonexistent Compose Secure Outputs control or retroactive history change was approved..
+- **sc500-110** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Independently read the default/private routing model, header rules, unmatched behavior, and specific Front Door use case. Key c implements both origin constraints. The alternatives each omit a needed boundary or break the only path, providing credible advanced configuration reasoning..
+- **sc500-111** (verified; not-excluded): pronoun-review. Review notes: Independently read WAF modes, actions, and the anomaly severity table, confirming a. A single Warning remains below threshold in Prevention; the scenario properly excludes custom blocks and additional contributions. This is a sound intermediate item..
+- **sc500-112** (verified; not-excluded): pronoun-review. Review notes: Independently inspected policy attributes, elements, claim matching, and usage restrictions, confirming b. The literal scheme distractor was read without treating tool-display masking as content corruption. Audience and exact role checks are separate from signature/issuer and timing validity..
+- **sc500-113** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Independently read and compared the exact custom-role example, every JSON field, empty permission arrays, placeholder subscription, and namespace assignment semantics. Key d supplies the exact DataActions operation. No Azure execution occurred; local JSON parsing only checks syntax, not permission semantics..
+- **sc500-118** (verified; not-excluded): negative-wording, absolute-wording, pronoun-review. Review notes: The documented no-relevant-assessed-resources condition supports c, not a zero-score guarantee. Read all permission and scope alternatives independently. The negative wording describes the observed symptom rather than asking for an incorrect answer, and the pronouns have clear antecedents. One implausible scope distractor lowers realism to 19/20; no code or lifecycle ambiguity is introduced..
+- **sc500-119** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Confirmed the actual enablement guide distinguishes baseline capabilities from additional paid plans and documents individual plan toggles. The answer respects the change-approval boundary; every alternative either over-enables or fails to configure protection. Inspected the negative/pronoun warnings and accepted them. Workspace relocation is an intentionally incorrect but weak distractor; no deployment was executed..
+- **sc500-120** (verified; not-excluded): pronoun-review. Review notes: Read the disablement paragraph and independently judged both truth values. The answer and both explanations accurately distinguish remaining extensions from their subsequent collection stop. This is a simple runbook misconception and is appropriately beginner, with no inferred immediate uninstall or precise unsupported timing. The pronoun warning is benign..
+- **sc500-121** (verified; not-excluded): negative-wording. Review notes: Independently checked the AWS management onboarding authority, account-type effects and management-only exclusions. All three must hold simultaneously; a is uniquely supported. No CloudTrail Preview ingestion or unsupported Terraform assertion is included. The exclusion warning is a meaningful governance constraint; the resource-group naming distractor merits a plausibility deduction..
+- **sc500-122** (verified; not-excluded): absolute-wording. Review notes: Rechecked all alternatives against the GCP authentication architecture and Update GCP connector configuration sections. The plan-specific script fixes missing bindings without replacing federation. Scan frequency has a separate role. The absolute future-permission guarantee is deliberately contradicted by the documentation; no Cloud Logging Preview capability or command execution is claimed..
+- **sc500-123** (verified; not-excluded): answer-length-cue. Review notes: Technical review confirms the exact monitoring-settings path and the roles distinction. The independently rerun quality helper flags an answer-length cue on 123, not the repaired 133; that and weak alternatives reduce realism to the passing floor of 18/20. This is genuine product documentation, but its vulnerability-assessment URL currently fails the generic source schema; semantic approval is not admission..
+- **sc500-124** (verified; not-excluded): absolute-wording. Review notes: Technical semantic verdict only: independently read the entire Configure vulnerability scanning for machines receipt, including hybrid, P1/P2, and BYOL distinctions. VM-A explicitly reports through both methods and VM-B has no agent-based solution, so d matches the two documented cases; the item does not generalize this result to BYOL or scan-failure scenarios. The absolute always in c is contradicted by the both-methods row. The explanations, MDE terminology, established non-preview scanning behavior, and current Azure-VM vulnerability-management objective align; no executable code is present. Intermediate is appropriate for reading two configured states. No current SC-500 duplicate affects this item. IMPORTANT: the unchanged shared URL schema rejects this real vulnerability-assessment product path, so this semantic verification is not structural admission, a source-policy waiver, or gameplay approval..
+- **sc500-125** (verified; not-excluded): pronoun-review. Review notes: Independently read the seed list, recursion process and inventory-state definitions. The proposed discovery-group approach meets the expansion requirement without treating every association as ownership. All alternatives contradict either scope or ownership review. GA usage is not extended to unrelated features; no tools were run against an external attack surface. Pronoun references are clear..
+- **sc500-126** (verified; not-excluded): pronoun-review. Review notes: Re-evaluated each genuine EASM state against the known owner and support relationship. Dependency is uniquely defensible; Candidate would discard already established information, and Monitor Only excludes technical dependency. The direct documentation example is paraphrased as an original question, with no borrowed assessment. No ambiguity arises from the pronoun-reference warning..
+- **sc500-127** (verified; not-excluded): pronoun-review. Review notes: Reviewed the workspace eligibility and relocation restrictions independently of the answer. Selecting the final eligible workspace before enabling Sentinel resolves both stated design defects. Privilege escalation cannot turn an unsupported move into a supported operation. Current Azure-portal availability is not confused with the documented future March 2027 retirement. The pronoun warning does not create ambiguity..
+- **sc500-128** (verified; not-excluded): pronoun-review. Review notes: Independently read the complete onboarding guide, especially all permission bullets rather than treating every Sentinel role as interchangeable. c and d are the two documented task entries. The question deliberately asks for a handoff of guide-matching grants, not the minimum effective simultaneous permission set: subscription Contributor is broad and the explanation correctly refuses to deny cumulative role behavior. An existing subscription/workspace resource group is implicit in the stated deployment target, and no steps for creating a subscription or assigning roles to oneself are claimed. The pronoun It refers to the deployment identity. No executable code is supplied. Content hub is explicitly GA in the supplemental direct Sentinel feature matrix. Current workspace-onboarding alignment and the new intermediate/date fingerprint were checked; no duplicate finding affects this candidate..
+- **sc500-129** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Independently compared every proposed grant against the roles/capabilities table and security-engineer recommendations. Sentinel Contributor and scoped Logic App Contributor address separate authoring resources; Automation Contributor is explicitly not for the human engineers. The negative constraint is meaningful least privilege, not a trick, and the explanation correctly avoids granting role administration. No workflow or assignment was actually deployed..
+- **sc500-132** (verified; not-excluded): pronoun-review. Review notes: Re-evaluated all expressions with the nonconforming-header case and the neither-field-matches case, independently of the key. AND is correct; OR leaks a CEF payload, the single-field filter misses it, and the positive payload test reverses intent. Read the actual AMA 1.41 caveat and transformation. No broad claim that substring matching recognizes every possible CEF variant is made, and no live ingestion was executed..
+- **sc500-134** (verified; not-excluded): pronoun-review. Review notes: I re-read the exact current stem, all four choices, explanations, intermediate difficulty and validation snapshot against the complete windows-sentinel MCP body, not the preceding review. Its table-specific warning directly supports b and excludes query adaptation under this stem. Arc and AMA on the running on-premises WEC collector explain why onboarding alone cannot fix the table mismatch. The question diagnoses compatibility; it does not claim that merely renaming a connector migrates every upstream source or supplies a complete deployment recipe. The source also requires workspace read/write access and the related Content Hub solution, neither of which changes the stipulated table incompatibility. No executable snippet is present, and the unrelated preview REST sample is not used. I independently read the supplemental feature-availability MCP body: Windows Forwarded Events and Windows Security Events via AMA are explicitly GA. The current guide includes this exact WEF/DCR subskill in the 20-25% posture domain. Manual comparison with sc500-135 finds related SecurityEvent compatibility teaching but a different tested route: WEF to WindowsEvent versus a generic DCR to Event. This remains an editorial overlap, scored down for originality, not a false claim that the items are unrelated. sc500-136 instead tests DCR XPath syntax. The 180-item duplicate check finds no target blocker. The pronoun warning resolves unambiguously to the WEC collector; weak Arc-renaming and blanket-forwarding distractors reduce plausibility. Intermediate is an appropriate single-contract applied difficulty..
+- **sc500-136** (verified; not-excluded): pronoun-review. Review notes: Independently reviewed the full Windows-events article and the exact two-line PowerShell snippet. It correctly separates Security in LogName from the XPath in FilterXPath; a restores that channel prefix, b changes the channel, c reverses equality, and d changes the field. The article example using System with event ID 4648 is not evidence for this Security-log scenario. A PowerShell parser check reported zero errors, and synthetic XML/channel fixtures confirmed the distinct option behavior without reading real event logs or deploying a DCR. These checks corroborate syntax, not live ingestion. The stem stipulates successful local validation and asks only for a DCR entry, so no missing audit policy or runtime sample is needed to choose it. The standard GA DCR contract, current WEF/DCR subskill, intermediate label, and updated exact fingerprint are consistent. The pronoun it clearly refers to the locally validated predicate; no duplicate finding affects this item..
+- **sc500-138** (verified; not-excluded): pronoun-review. Review notes: Independently read the complete custom-table receipt, including schema changes, transformation/storage responsibilities, naming, and deletion. The article explicitly says Azure Monitor does not automatically update DCRs, supporting d and the explanation without claiming every unchanged transform necessarily fails identically. The scenario already has a working appliance integration and an authorized schema change; it asks for change-review coordination, not initial endpoint, identity, or ingestion deployment steps. No executable code or Auxiliary-plan feature assertion appears in the candidate. The generic GA schema/DCR contract aligns with the current custom-log-table objective. that field refers to the newly added column. No duplicate finding affects it; sc500-137 tests initial naming and timestamp provisioning rather than a later schema change. Deletion and retention distractors remain technically wrong but editorially weak, scored accordingly. Intermediate and the new validation date are bound in the fresh fingerprint..
+- **sc500-142** (verified; not-excluded): pronoun-review. Review notes: Re-read the source’s change-impact section and confirmed the unchanged total-retention example. Both truth values were evaluated independently; only True matches the stated behavior. This item is technically complete, though its numbers closely follow the documentation example and earn an originality deduction. The pronoun warning is harmless, and no undeclared recovery or deletion timing is inferred..
+- **sc500-143** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Independently checked the listed audited role changes, audit prerequisites and retention ownership. The source’s automatic Defender activity logging does not eliminate its separate instruction to enable Purview auditing before viewing data. View-Only Audit Logs is a supported lower-privilege path. Sentinel retention cannot change this store. The obsolete PowerShell example in the source is not used or endorsed by this code-free candidate..
+- **sc500-144** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Reviewed the nonincluded-license qualification and the complete Azure provisioning flow. The first-prompt assumption is wrong for both billing and readiness, and b supplies the two documented corrections. This does not generalize manual provisioning to included E5/E7 customers. The Copilot documentation is genuine but currently outside the generic URL schema; no playable/admitted status is implied by technical verification..
+- **sc500-145** (verified; not-excluded): pronoun-review. Review notes: Independently reviewed both Copilot articles. Existing-capacity reassociation requires the additional Azure resource grant despite Copilot owner access. The item does not claim the listed Azure role is sufficient for every fresh tenant-provisioning scenario; it is scoped to an already established owner changing an existing capacity association. The actual Copilot URLs remain structurally blocked by the generic source schema, so this verdict is semantic only until gates pass..
+- **sc500-146** (verified; not-excluded): pronoun-review. Review notes: Re-evaluated each grant against the article’s explicit Copilot contributor/Sentinel example and on-behalf-of model. Reader at the relevant workspace is the targeted permission; owner promotion does not grant underlying data. This is an engineering access configuration even though the read object is an incident. The Copilot URL shape remains a structural admission blocker separate from the supported factual content..
+
+## Sources and actual evidence dates
+
+| Source | Playable / reviewed / candidates | Retrieved | Reviewed | Supporting summary |
+| --- | ---: | --- | --- | --- |
+| sc500-identity-pim-settings: [Configure Azure resource role settings in Privileged Identity Management](https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-resource-roles-configure-role-settings) | 2 / 2 / 2 | 2026-09-16T13:41:26.081Z | 2026-09-16T13:52:20.625Z | Azure resource PIM settings are specific to each role and resource, not inherited from a parent scope. Eligible activation can require approval and have a bounded duration. Authentication context constrains activation, not subsequent use of the activated permissions. |
+| sc500-identity-ca-grant: [Conditional Access: Grant](https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-conditional-access-grant) | 2 / 2 / 2 | 2026-09-16T13:41:31.230Z | 2026-09-16T13:52:20.625Z | For human users, Conditional Access combines selected grant controls using AND or OR. Device compliance and authentication are separate controls. This source supports established user controls, not its separately labeled preview agent-user or custom-control sections. |
+| sc500-identity-ca-report: [Analyze Conditional Access Policy Impact](https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-conditional-access-report-only) | 2 / 2 / 2 | 2026-09-16T13:41:36.423Z | 2026-09-16T13:52:20.625Z | Report-only policies evaluate sign-ins without enforcing their grant controls. The documented result categories distinguish unmet interactive requirements, unmet noninteractive controls, and assignments that do not apply. The preview policy-impact view is not used here. |
+| sc500-identity-auth-strength: [Conditional Access authentication strengths](https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-strengths) | 2 / 2 / 2 | 2026-09-16T13:41:41.657Z | 2026-09-16T13:52:20.625Z | Authentication strengths distinguish general MFA, passwordless MFA, and phishing-resistant MFA. The phishing-resistant set includes FIDO2, Windows Hello for Business, and multifactor certificate authentication, not Authenticator phone sign-in or password plus SMS. Conditional Access requires P1. |
+| sc500-identity-tap: [Configure Temporary Access Pass to register passwordless authentication methods](https://learn.microsoft.com/en-us/entra/identity/authentication/howto-authentication-temporary-access-pass) | 1 / 1 / 1 | 2026-09-16T13:41:45.544Z | 2026-09-16T13:52:20.625Z | Temporary Access Pass is a time-limited bootstrap credential for passwordless registration. A pass can be created for a user outside the enabled method policy, but only included users can sign in with it. Policy targeting and pass creation are distinct steps. |
+| sc500-identity-app-objects: [Application and service principal objects in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity-platform/app-objects-and-service-principals) | 1 / 1 / 1 | 2026-09-16T13:41:49.642Z | 2026-09-16T13:52:20.625Z | An application object is the home-tenant blueprint. Service principals are tenant-local application instances defining local access and permissions, managed through Enterprise applications. Managed-identity service principals do not have associated application objects. |
+| sc500-identity-consent-workflow: [Configure the admin consent workflow](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/configure-admin-consent-workflow) | 0 / 0 / 0 | 2026-09-16T13:41:52.469Z | 2026-09-16T13:52:20.625Z | The admin consent workflow routes requests to designated reviewers when users cannot consent. Reviewer designation does not grant consent permissions. Reviewers must independently hold the permissions needed for the requested application. |
+| sc500-identity-managed-identities: [What is managed identities for Azure resources?](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) | 3 / 3 / 3 | 2026-09-16T13:41:56.713Z | 2026-09-16T13:52:20.625Z | System-assigned managed identities share the resource lifecycle and cannot be shared with other resources. User-assigned managed identities are independent resources that can be preauthorized and attached to several hosts. Authentication still requires downstream authorization. |
+| sc500-identity-federation: [Workload identity federation concepts](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation) | 1 / 1 / 1 | 2026-09-16T13:42:00.976Z | 2026-09-16T13:52:20.625Z | Workload identity federation exchanges a trusted external identity-provider token for a Microsoft Entra access token without storing application secrets. Federated issuer, subject and audience must match case-sensitively; trust and resource authorization are separate. |
+| sc500-identity-vault-overview: [About Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/overview) | 1 / 1 / 1 | 2026-09-16T13:41:25.613Z | 2026-09-16T13:52:20.625Z | Key Vault supports secrets, keys and certificates. Its Premium tier provides HSM-protected keys, whereas Standard uses software-based key protection. Authentication and authorization remain necessary independently of the service tier. |
+| sc500-identity-vault-soft-delete: [Azure Key Vault: soft-delete overview](https://learn.microsoft.com/en-us/azure/key-vault/general/soft-delete-overview) | 3 / 3 / 3 | 2026-09-16T13:41:31.093Z | 2026-09-16T13:52:20.625Z | Soft delete retains deleted vaults and objects for a creation-time retention interval of 7 to 90 days. Purge protection prevents early purge. Recovering a deleted vault does not restore its Azure RBAC assignments or Event Grid subscriptions. |
+| sc500-identity-vault-rbac: [Provide access to Key Vault keys, certificates, and secrets with Azure role-based access control](https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide) | 6 / 6 / 6 | 2026-09-16T13:41:35.904Z | 2026-09-16T13:52:20.625Z | Key Vault control-plane management and data-plane permissions are independent. Switching to RBAC invalidates access-policy permissions; equivalent data roles are needed. The built-in roles distinguish metadata, secret reading and secret management. Preview secret ABAC is outside these questions. |
+| sc500-identity-vault-network: [Configure network security for Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/network-security) | 3 / 3 / 3 | 2026-09-16T13:41:40.108Z | 2026-09-16T13:52:20.625Z | Key Vault firewall rules restrict data-plane rather than Resource Manager control-plane requests. Trusted-service bypass is a bounded list and does not include Azure DevOps. Network admission is independent of identity authorization. No network-security-perimeter claims are tested. |
+| sc500-identity-vault-private: [Integrate Key Vault with Azure Private Link](https://learn.microsoft.com/en-us/azure/key-vault/general/private-link-service) | 1 / 1 / 1 | 2026-09-16T13:41:43.736Z | 2026-09-16T13:52:20.625Z | Private Link troubleshooting requires an approved endpoint and a correctly configured private DNS zone linked to the calling virtual network. A missing virtual network link can leave clients resolving the public address. Public DNS visibility alone does not grant data access. |
+| sc500-identity-key-rotation: [Configure cryptographic key auto-rotation in Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/keys/how-to-configure-key-rotation) | 1 / 1 / 1 | 2026-09-16T13:41:48.080Z | 2026-09-16T13:52:20.625Z | A key rotation policy creates new key versions and can notify through Event Grid. Expiry-relative rotation requires expiration on the current key as well as policy expiry. Versionless references adopt new encryption versions, while decryption must preserve the original version reference. |
+| sc500-identity-certificates: [About Azure Key Vault certificates](https://learn.microsoft.com/en-us/azure/key-vault/certificates/about-certificates) | 1 / 1 / 1 | 2026-09-16T13:41:51.821Z | 2026-09-16T13:52:20.625Z | A Key Vault certificate has associated key and secret objects. Exporting its secret includes private key material only when the certificate policy made the key exportable; nonexportable policy omits it. HSM keys are nonexportable. |
+| sc500-identity-secret-scanning: [Machine secrets scanning](https://learn.microsoft.com/en-us/azure/defender-for-cloud/secret-scanning) | 1 / 1 / 1 | 2026-09-16T13:41:56.705Z | 2026-09-16T13:52:20.625Z | Machine secrets scanning uses agentless disk snapshots and cloud APIs. It is available with Defender CSPM or Defender for Servers Plan 2 and reports exposed secrets on supported connected machines. Key Vault threat monitoring is a distinct capability. |
+| sc500-identity-defender-vault: [Overview of Microsoft Defender for Key Vault](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-key-vault-introduction) | 1 / 1 / 1 | 2026-09-16T13:42:00.629Z | 2026-09-16T13:52:20.625Z | Defender for Key Vault is explicitly generally available and detects unusual access attempts. Alerts warrant investigation even when they identify a recognized application or Microsoft-owned IP because stolen credentials can explain apparently familiar traffic. |
+| sc500-identity-policy-effects: [Azure Policy definitions effect basics](https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-basics) | 2 / 2 / 2 | 2026-09-16T13:41:26.586Z | 2026-09-16T13:52:20.625Z | Azure Policy independently evaluates applicable assignments and layers them cumulatively. Deny blocks matching creation or update requests; a narrower audit assignment does not override a parent deny. Existing noncompliance is not automatically repaired by deny. |
+| sc500-identity-policy-remediate: [Remediate non-compliant resources with Azure Policy](https://learn.microsoft.com/en-us/azure/governance/policy/how-to/remediate-resources) | 1 / 1 / 1 | 2026-09-16T13:41:31.009Z | 2026-09-16T13:52:20.625Z | Modify and deployIfNotExists remediate existing resources through tasks using the policy assignment managed identity. The identity needs the listed least-privilege roles. Editing roleDefinitionIds does not automatically update existing identity permissions. |
+| sc500-identity-compliance: [Improve regulatory compliance](https://learn.microsoft.com/en-us/azure/defender-for-cloud/regulatory-compliance-dashboard) | 1 / 1 / 1 | 2026-09-16T13:41:34.708Z | 2026-09-16T13:52:20.625Z | Defender for Cloud separates automated compliance assessments from manual attestations that require customer evidence. Manual assessment remediation attaches information and evidence for the selected subscriptions; a downloaded status report is a summary rather than that attestation. |
+| sc500-identity-standards: [Regulatory compliance standards in Microsoft Defender for Cloud](https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-regulatory-compliance-standards) | 2 / 2 / 2 | 2026-09-16T13:41:39.587Z | 2026-09-16T13:52:20.625Z | Defender for Cloud standards group security recommendations into controls. Controls that cannot be automatically assessed are not proof of compliance. MCSB is enabled by default for Azure, while additional standards and their scope require deliberate configuration. |
+| sc500-identity-security-policy: [Security policies in Defender for Cloud](https://learn.microsoft.com/en-us/azure/defender-for-cloud/security-policy-concept) | 1 / 1 / 1 | 2026-09-16T13:44:58.748Z | 2026-09-16T13:52:20.625Z | Defender for Cloud security standards govern assessments and produce actionable recommendations. Organization-defined custom standards can contain custom KQL recommendations with Defender CSPM enabled; recommendations identify findings rather than making a request-blocking policy. |
+| sc500-identity-locks: [Lock your Azure resources to protect your infrastructure](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources) | 1 / 1 / 1 | 2026-09-16T13:41:44.408Z | 2026-09-16T13:52:20.625Z | Management locks inherit to child resources and apply only to control-plane operations. ReadOnly blocks modifications and deletion; CanNotDelete permits authorized modification. Deleting a resource group containing a delete-locked resource fails as a whole. |
+| sc500-identity-privileged-roles: [Azure built-in roles for Privileged](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/privileged) | 2 / 2 / 2 | 2026-09-16T13:41:49.657Z | 2026-09-16T13:52:20.625Z | Contributor manages resources but excludes Azure RBAC role assignments. Owner includes resource management and role assignment. Role Based Access Control Administrator supplies role-assignment management and control-plane read access without general resource writes. |
+| sc500-identity-custom-roles: [Azure custom roles](https://learn.microsoft.com/en-us/azure/role-based-access-control/custom-roles) | 1 / 1 / 1 | 2026-09-16T13:41:53.212Z | 2026-09-16T13:52:20.625Z | Azure custom roles define allowed control-plane and data-plane operations and separate assignable scopes from actual assignments. A custom role with DataActions cannot be assigned at management-group scope. Explicit actions avoid silently including future wildcard permissions. |
+| sc500-identity-entra-custom-roles: [Overview of role-based access control in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/custom-overview) | 1 / 1 / 1 | 2026-09-16T13:41:58.222Z | 2026-09-16T13:52:20.625Z | Microsoft Entra custom roles govern directory resources and can be assigned at a specific application registration scope. This differs from Azure resource scopes. Each user assigned a custom Entra role requires an Entra ID P1 license. |
+| sc500-identity-rbac-overview: [What is Azure role-based access control (Azure RBAC)?](https://learn.microsoft.com/en-us/azure/role-based-access-control/overview) | 4 / 4 / 4 | 2026-09-16T13:42:02.137Z | 2026-09-16T13:52:20.625Z | Azure RBAC attaches a role to a principal at a scope and combines applicable direct and transitive group grants. Removing a grant revokes that source of access; adding Reader does not subtract an existing broader Contributor grant. |
+| sc500-identity-backup-mua: [Configure Multi-user authorization using Resource Guard in Azure Backup](https://learn.microsoft.com/en-us/azure/backup/multi-user-authorization) | 1 / 1 / 1 | 2026-09-16T13:42:05.224Z | 2026-09-16T13:52:20.625Z | Azure Backup MUA uses Resource Guard to separate security authorization from backup administration. For a Recovery Services vault, Resource Guard must share its region. The backup administrator needs Reader to enable MUA but must not hold standing privileged Resource Guard permissions. |
+| sc500-identity-backup-immutable: [Immutable vault for Azure Backup](https://learn.microsoft.com/en-us/azure/backup/backup-azure-immutable-vault-concept) | 1 / 1 / 1 | 2026-09-16T13:42:09.136Z | 2026-09-16T13:52:20.625Z | Vault immutability can be enabled reversibly or locked irreversibly. Policy-retention-based immutability blocks lowering backup-policy retention and deleting unexpired recovery points, while permitting retention increases. Operational backups are excluded from this vault scenario. |
+| sc500-identity-arm-parameters: [Parameters in ARM templates](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/parameters) | 1 / 1 / 1 | 2026-09-16T13:42:11.619Z | 2026-09-16T13:52:20.625Z | ARM parameters require types; secureString and secureObject values are not saved as ordinary deployment-history parameters. A default value is used when callers omit a parameter. String and object parameter contracts differ. |
+| sc500-identity-arm-best-practices: [ARM template best practices](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/best-practices) | 1 / 1 / 1 | 2026-09-16T13:44:53.345Z | 2026-09-16T13:52:20.625Z | ARM template guidance requires secure types for passwords and secrets and advises against default values for secrets. Deployment-specific secret values should be supplied as parameters rather than encoded as reusable template defaults. |
+| sc500-identity-role-definitions: [Understand Azure role definitions](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-definitions) | 1 / 1 / 1 | 2026-09-16T13:44:55.694Z | 2026-09-16T13:52:20.625Z | NotActions subtracts operations from a role wildcard but is not a deny rule; another assigned role can grant the same operation. DataActions concerns data-plane access. This distinction supports analysis of overlapping grants, not a fabricated deny. |
+| sc500-identity-grant-consent: [Grant tenant-wide admin consent to an application](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/grant-admin-consent) | 1 / 1 / 1 | 2026-09-16T14:11:55.745Z | 2026-09-16T14:15:48.158Z | Tenant-wide admin consent and user sign-in assignment are separate controls. Cloud Application Administrator can grant consent except Microsoft Graph application permissions; Privileged Role Administrator can consent to any API permission. Restricting users requires assignment-required plus user or group assignment. |
+| sc500-identity-federation-trust: [Configure an app to trust an external identity provider](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust) | 1 / 1 / 1 | 2026-09-16T14:11:56.747Z | 2026-09-16T14:15:48.158Z | An app federated identity credential uses exact issuer and subject matching and one matching audience. Wildcards are unsupported. Separate issuer-subject pairs distinguish workloads, while a description is not validated for authorization. |
+| sc500-identity-secret-types: [Protecting secrets in Defender for Cloud](https://learn.microsoft.com/en-us/azure/defender-for-cloud/secrets-scanning) | 1 / 1 / 1 | 2026-09-16T14:11:57.889Z | 2026-09-16T14:15:48.158Z | Defender CSPM supports machine, cloud-deployment and code scanning as distinct scopes. VM discovery includes SSH private keys and Entra client secrets; the supported investigation methods differ. Entra client secrets list inventory and cloud security explorer, while SSH keys also support recommendations and attack paths. |
+| sc500-network-storage-https: [Require secure transfer to ensure secure connections](https://learn.microsoft.com/en-us/azure/storage/common/storage-require-secure-transfer) | 1 / 1 / 1 | 2026-09-16T13:41:09.793Z | 2026-09-16T13:50:23.229Z | Secure transfer required rejects HTTP Azure Storage REST requests and requires HTTPS; the documented PowerShell setting is EnableHttpsTrafficOnly. This source is scoped to REST, not the separately evolving SMB/NFS controls. |
+| sc500-network-storage-encryption: [Azure Storage encryption for data at rest](https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption) | 2 / 2 / 2 | 2026-09-16T13:41:05.889Z | 2026-09-16T13:50:23.229Z | Storage service-side encryption is automatic. Encryption scopes provide container/blob key boundaries; customer-managed keys reside in Key Vault or Managed HSM. Optional infrastructure encryption adds an independent Microsoft-managed-key layer. |
+| sc500-network-storage-network: [Azure Storage firewall rules and network access control](https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security) | 3 / 3 / 3 | 2026-09-16T13:40:46.008Z | 2026-09-16T13:50:23.229Z | Storage public-endpoint network admission is distinct from data authorization. Service endpoints change source addressing, resource-instance rules require the same tenant, and SAS IP restrictions do not override firewall exclusions. |
+| sc500-network-storage-sas: [Grant limited access to Azure Storage resources using shared access signatures (SAS)](https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview) | 4 / 4 / 4 | 2026-09-16T13:40:55.424Z | 2026-09-16T13:50:23.229Z | User delegation SAS uses an Entra-derived delegation key, while service/account SAS use account keys. Stored access policies support service SAS revocation; short-lived ad hoc grants require attention to start-time clock skew. Blob-only scenarios are used here. |
+| sc500-network-defender-storage: [What is Microsoft Defender for Storage](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-storage-introduction) | 3 / 3 / 3 | 2026-09-16T13:41:03.673Z | 2026-09-16T13:50:23.229Z | The current agentless plan includes activity monitoring, configurable sensitive-data threat detection and full malware scanning. Subscription enablement includes future accounts; classic-plan migration and scanning-cap interruptions require explicit configuration decisions. |
+| sc500-network-sql-firewall: [Azure SQL Database IP firewall rules](https://learn.microsoft.com/en-us/azure/azure-sql/database/firewall-configure) | 2 / 2 / 2 | 2026-09-16T13:40:46.284Z | 2026-09-16T13:50:23.229Z | SQL Database evaluates database-level then server-level IP admission; database rules are T-SQL managed and do not subtract a server grant. The Azure-services exception admits network connections from other customers as well. Authentication remains separate. |
+| sc500-network-sql-entra-only: [Microsoft Entra-only authentication with Azure SQL](https://learn.microsoft.com/en-us/azure/azure-sql/database/authentication-azure-ad-only-authentication) | 2 / 2 / 2 | 2026-09-16T13:41:01.409Z | 2026-09-16T13:50:23.229Z | Entra-only authentication blocks SQL credential connections without deleting principals. An Entra administrator must be configured first. SQL Security Manager can change the control, whereas SQL Server Contributor alone cannot. |
+| sc500-network-sql-auditing: [Auditing for Azure SQL Database and Azure Synapse Analytics](https://learn.microsoft.com/en-us/azure/azure-sql/database/auditing-overview) | 2 / 2 / 2 | 2026-09-16T13:40:49.363Z | 2026-09-16T13:50:23.229Z | SQL auditing writes database events to configured destinations. Storage outbound restrictions need the destination FQDN and an audit configuration re-save. Immutable append destinations require compatible append permissions and retention settings. |
+| sc500-network-sql-mi-auditing: [Get started with Azure SQL Managed Instance auditing](https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/auditing-configure) | 1 / 1 / 1 | 2026-09-16T13:40:56.020Z | 2026-09-16T13:50:23.229Z | Managed Instance audit setup uses a private blob container, a URL-named SAS credential with no leading question mark, a URL server audit, and enabled audit specifications. Expiring SAS credentials need renewal. |
+| sc500-network-defender-databases: [Overview of Microsoft Defender for Open-Source Relational Databases](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-databases-introduction) | 1 / 1 / 1 | 2026-09-16T13:41:06.388Z | 2026-09-16T13:50:23.229Z | Defender for Open-Source Relational Databases protects Azure PostgreSQL and MySQL Flexible Server at all pricing tiers and supported AWS RDS databases; Azure Arc-enabled machines are outside this plan scope. |
+| sc500-network-defender-sql: [Overview of Microsoft Defender for Azure SQL Databases](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-sql-introduction) | 1 / 1 / 1 | 2026-09-16T13:42:54.054Z | 2026-09-16T13:50:23.229Z | Defender for Azure SQL Databases protects supported SQL resources including Azure SQL Database and Managed Instance, supplies vulnerability assessment and anomalous activity alerts, and includes future supported subscription resources. |
+| sc500-network-defender-cosmos: [Overview of Microsoft Defender for Azure Cosmos DB](https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-defender-for-cosmos) | 2 / 2 / 2 | 2026-09-16T13:42:57.105Z | 2026-09-16T13:50:23.229Z | Defender for Azure Cosmos DB provides threat detection for the NoSQL API; the captured support table excludes MongoDB, Cassandra, Table and Gremlin APIs. Enabling the plan is not equivalent to every API being supported. |
+| sc500-network-nsg: [Azure network security groups overview](https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview) | 3 / 3 / 3 | 2026-09-16T13:40:46.021Z | 2026-09-16T13:50:23.229Z | NSGs apply ordered, terminating five-tuple rules and preserve established connections after rule removal. Defaults permit VNet traffic; custom higher-priority rules implement segmentation. Admin rules are evaluated before NSGs. |
+| sc500-network-asg: [Application security groups](https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups) | 2 / 2 / 2 | 2026-09-16T13:40:49.803Z | 2026-09-16T13:50:23.229Z | ASGs let NSG rules target application-tier NIC membership instead of maintained address lists. Both membership and source/destination ASG rule relationships have same-VNet constraints; specific allows must precede tier-wide denies. |
+| sc500-network-avnm: [Security admin rules in Azure Virtual Network Manager](https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-security-admins) | 2 / 2 / 2 | 2026-09-16T13:40:55.797Z | 2026-09-16T13:50:23.229Z | Virtual Network Manager admin Allow continues to NSGs, while Always Allow and Deny terminate evaluation. Managed private endpoints are excluded; SQL Managed Instance and other network-intent-policy exceptions require separate consideration. |
+| sc500-network-vwan-routing: [How to configure Virtual WAN Hub routing intent and routing policies](https://learn.microsoft.com/en-us/azure/virtual-wan/how-to-routing-policies) | 3 / 3 / 3 | 2026-09-16T13:41:00.855Z | 2026-09-16T13:50:23.229Z | Virtual WAN routing intent distinguishes Internet and Private policies. Private policies inspect inter-hub paths with symmetric hub configuration; default routes do not propagate between hubs. Custom route tables and static default-table next-hop VNet routes block adoption. |
+| sc500-network-vpn-policy: [Configure custom IPsec/IKE connection policies for S2S VPN and VNet-to-VNet: PowerShell](https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-ipsecikepolicy-rm-powershell) | 1 / 1 / 1 | 2026-09-16T13:41:04.137Z | 2026-09-16T13:50:23.229Z | A custom VPN connection policy specifies a complete IKE/IPsec suite, one per connection. IPsec GCM encryption and integrity must match; on-premises crypto settings must be compatible, while SA lifetimes are local and need not match. |
+| sc500-network-vpn-entra: [Configure P2S VPN Gateway for Microsoft Entra ID authentication](https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-entra-gateway) | 1 / 1 / 1 | 2026-09-16T13:41:07.172Z | 2026-09-16T13:50:23.229Z | Entra-authenticated P2S requires a compatible non-Basic, non-policy-based gateway, OpenVPN and a nonoverlapping client pool. The current Microsoft-registered Azure VPN Client audience avoids the legacy manual app consent workflow. Windows 11 is the scoped client. |
+| sc500-network-private-access: [Learn about Microsoft Entra Private Access](https://learn.microsoft.com/en-us/entra/global-secure-access/concept-private-access) | 1 / 1 / 1 | 2026-09-16T13:40:45.736Z | 2026-09-16T13:50:23.229Z | Private Access provides Quick Access and granular Global Secure Access applications, with private network connectors, user assignments and Conditional Access. Per-app boundaries separate policies for subsets of private resources. |
+| sc500-network-private-apps: [How to configure per-app access using Global Secure Access applications](https://learn.microsoft.com/en-us/entra/global-secure-access/how-to-configure-per-app-access) | 3 / 3 / 3 | 2026-09-16T13:40:48.524Z | 2026-09-16T13:50:23.229Z | Per-app access requires active supported connectors, applicable roles and licenses, client routing and assignments. Application segments use destination, port and protocol. Enterprise-app overlap takes precedence over Quick Access and assignments are not inherited from it. |
+| sc500-network-storage-private: [Use private endpoints for Azure Storage](https://learn.microsoft.com/en-us/azure/storage/common/storage-private-endpoints) | 4 / 4 / 4 | 2026-09-16T13:41:02.272Z | 2026-09-16T13:50:23.229Z | Storage private endpoints are service-specific and preserve normal hostnames and authentication. Blob and DFS endpoints support complementary ADLS operations. Public access must be restricted separately, and secondary read endpoints differ from automatic primary failover. |
+| sc500-network-private-link: [What is Azure Private Link service?](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) | 3 / 3 / 3 | 2026-09-16T13:40:54.124Z | 2026-09-16T13:50:23.229Z | For conventional Standard Load Balancer-backed Private Link service, visibility and approval are separate; provider-side NAT obscures original client addresses unless supported Proxy v2 is configured consistently. This source record covers the established load-balancer-backed feature, not the separately labeled Direct Connect public preview. |
+| sc500-network-firewall-rules: [Configure Azure Firewall rules](https://learn.microsoft.com/en-us/azure/firewall/rule-processing) | 2 / 2 / 2 | 2026-09-16T13:41:02.713Z | 2026-09-16T13:50:23.229Z | Firewall rule processing uses DNAT then network then application rules; matching network rules terminate before application filtering. Parent collections take precedence within a rule type. DNAT source restrictions must be on the NAT rule, not a later network deny. |
+| sc500-network-watcher-ipflow: [IP flow verify overview](https://learn.microsoft.com/en-us/azure/network-watcher/ip-flow-verify-overview) | 2 / 2 / 2 | 2026-09-16T13:41:05.756Z | 2026-09-16T13:50:23.229Z | IP flow verify tests TCP/UDP direction and address/port tuples against applicable NIC/subnet NSGs and VNet admin rules, returning allow/deny and a rule. It requires regional/subscription Network Watcher and does not test ICMP. |
+| sc500-network-watcher-effective: [Effective security rules overview](https://learn.microsoft.com/en-us/azure/network-watcher/network-watcher-security-group-view-overview) | 2 / 2 / 2 | 2026-09-16T13:44:18.353Z | 2026-09-16T13:50:23.229Z | Effective security rules aggregates NIC and subnet NSGs plus Virtual Network Manager admin rules for a network interface. It supports comparison of the aggregate configuration against a security baseline rather than just inspecting one NSG. |
+| sc500-compute-sharepoint-reports: [Data access governance reports for SharePoint and OneDrive sites](https://learn.microsoft.com/en-us/sharepoint/data-access-governance-reports) | 1 / 1 / 1 | 2026-09-16T13:44:58.511Z | 2026-09-16T13:54:29.886Z | Distinguishes current permission snapshots from the last 28 days of sharing activity. Site permission snapshots identify baseline broad access; reporting and remediation entitlements differ for E5-only and SharePoint Advanced Management users. |
+| sc500-compute-dspm: [Learn about Data Security Posture Management](https://learn.microsoft.com/en-us/purview/data-security-posture-management-learn-about) | 1 / 1 / 1 | 2026-09-16T13:46:18.164Z | 2026-09-16T13:54:29.886Z | Describes the current DSPM experience, distinct from classic versions. AI observability includes active Agent 365 agents, whereas Discover Apps and agents excludes Agent 365. Data security objectives group risk metrics and remediation workflows. |
+| sc500-compute-agent-realtime: [Protect AI agents in real time using Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/security-for-ai/ai-agent-real-time-protection) | 2 / 2 / 2 | 2026-09-16T13:42:34.995Z | 2026-09-16T13:54:29.886Z | Copilot Studio runtime protection is explicitly Preview and requires the Microsoft 365 connector plus the Copilot Studio connection. Default rules audit; custom rules block scoped tool actions. Blocking replaces near-real-time alerts for covered agents with queryable behavior records. |
+| sc500-compute-agent-ca: [Conditional Access for agents](https://learn.microsoft.com/en-us/entra/identity/conditional-access/agent-id) | 2 / 2 / 2 | 2026-09-16T13:41:21.662Z | 2026-09-16T13:54:29.886Z | Documents token-subject-based Conditional Access: delegated OBO targets users, app-only access targets agent identities, and agent user accounts need their own scope. Blueprint targeting does not cover agent user accounts or blueprint creation tokens. Core flows are distinct from separately labeled endpoint Preview conditions. |
+| sc500-compute-agent-blast: [Detect and investigate threats to AI agents using Microsoft Defender (Preview)](https://learn.microsoft.com/en-us/defender-xdr/security-for-ai/ai-agent-detection-protection) | 2 / 2 / 2 | 2026-09-16T13:42:42.526Z | 2026-09-16T13:54:29.886Z | Public-preview agent detection correlates alerts and incident entities with Agent 365 observability. CloudAppEvents traces tool actions and data access; AgentsInfo supplies inventory; BehaviorInfo records real-time audit and block events. Published Foundry agents are required for threat detection. |
+| sc500-compute-agent-access: [Manage agent identities in your organization](https://learn.microsoft.com/en-us/entra/agent-id/manage-agent-identities-admin) | 3 / 3 / 3 | 2026-09-16T13:41:26.883Z | 2026-09-16T13:54:29.886Z | Agent management distinguishes individual, blueprint, and tenant-wide disable scope. Blueprint disable prevents new children and blocks existing children. Enumerated inherited delegated scopes constrain a resource app, while All allowed scopes includes newly granted blueprint scopes. Risk-based protection is a separate Preview area, not used for these lifecycle questions. |
+| sc500-compute-foundry-gateway: [Configure AI Gateway in your Foundry resources](https://learn.microsoft.com/en-us/azure/foundry/configuration/enable-ai-api-management-gateway-portal) | 1 / 1 / 1 | 2026-09-16T13:45:04.084Z | 2026-09-16T13:54:29.886Z | Foundry AI Gateway shares one APIM instance across projects in a Foundry resource. Existing projects require explicit onboarding; separate gateways require separate Foundry resources. Reused APIM must be v2, in the same tenant and subscription, with appropriate permissions. |
+| sc500-compute-ai-onboarding: [Enable threat protection for AI services](https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-onboarding) | 1 / 1 / 1 | 2026-09-16T13:47:01.146Z | 2026-09-16T13:54:29.886Z | An authorized subscription administrator enables AI services threat protection under Defender plans. Disabling user prompt evidence masks content in alerts without stopping prompt and response analysis. Purview data security is separately licensed and its older integration path is being deprecated. |
+| sc500-compute-ai-threat-overview: [AI threat protection in Microsoft Defender for Cloud](https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-threat-protection) | 1 / 1 / 1 | 2026-09-16T13:48:16.622Z | 2026-09-16T13:54:29.886Z | The availability table explicitly identifies AI threat protection and prompt evidence as generally available. Coverage is for supported text-token workloads in commercial Azure; image and audio tokens are not scanned. |
+| sc500-compute-guardrails: [How to configure guardrails and controls in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/guardrails/how-to-create-guardrails) | 1 / 1 / 1 | 2026-09-16T13:45:02.846Z | 2026-09-16T13:54:29.886Z | Guardrail creation selects risks, applicable intervention points, actions, and explicit agent/model assignments. Assignments take effect immediately, so the testing flow calls for a nonproduction assignment before Try in Playground. Agent guardrail status is confirmed as Preview by the accompanying overview. |
+| sc500-compute-guardrails-overview: [Guardrails and controls overview in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/guardrails/guardrails-overview) | 1 / 1 / 1 | 2026-09-16T13:47:03.524Z | 2026-09-16T13:54:29.886Z | Agent guardrails and tool-call/tool-response intervention points are explicitly Preview. An assigned agent guardrail overrides the model guardrail rather than merging controls. Agent controls support Annotate and block, not annotate-only; unconfigured tool stages are not scanned for that risk. |
+| sc500-compute-ai-dashboard: [Data and AI security dashboard](https://learn.microsoft.com/en-us/azure/defender-for-cloud/data-aware-security-dashboard-overview) | 1 / 1 / 1 | 2026-09-16T13:47:02.347Z | 2026-09-16T13:54:29.886Z | The Data and AI security dashboard separates estate protection coverage from AI closer look, which includes prompt counts, alert severity, investigation queries, and internet-exposed grounding resources. Coverage depends on subscription plans and sensitive data discovery. |
+| sc500-compute-m365-actions: [Governance and Lifecycle actions for agents available in Microsoft 365 admin center](https://learn.microsoft.com/en-us/microsoft-365/admin/manage/agent-actions) | 1 / 1 / 1 | 2026-09-16T13:45:01.728Z | 2026-09-16T13:54:29.886Z | The Microsoft 365 agent registry distinguishes blocking access, uninstalling distribution, irreversible Agent Builder deletion, and Foundry infrastructure stop/start. Blocking Foundry or SharePoint agents affects Copilot Chat only; it is not a shutdown of underlying compute. |
+| sc500-compute-agent-policy: [Recommended policies for autonomous agents](https://learn.microsoft.com/en-us/entra/identity/conditional-access/policy-autonomous-agents) | 1 / 1 / 1 | 2026-09-16T13:48:13.741Z | 2026-09-16T13:54:29.886Z | Risk-block policies use the explicitly Preview Agent risk condition, Block grant, and Report-only evaluation followed by On. Autonomous agents have no interactive remediation; agent-user targeting and endpoint execution conditions are separately scoped. |
+| sc500-compute-disk-encryption: [Overview of managed disk encryption options](https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption-overview) | 2 / 2 / 2 | 2026-09-16T13:41:21.861Z | 2026-09-16T13:54:29.886Z | The encryption comparison distinguishes managed-disk SSE from encryption at host and guest ADE. Host encryption covers caches and temporary disks without consuming guest CPU; SSE alone does not. ADE retirement is explicitly September 15, 2028, not immediate unavailability. |
+| sc500-compute-sse: [Server-side encryption of Azure Disk Storage](https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption) | 2 / 2 / 2 | 2026-09-16T13:47:04.757Z | 2026-09-16T13:54:29.886Z | Host encryption uses platform-managed keys for temporary disks and ephemeral OS disks while cache key ownership follows the managed disk. Host encryption excludes VMs that currently or previously used ADE, requires supported sizes, and existing VMs need deallocation/reallocation. Double encryption has its own disk-type restrictions. |
+| sc500-compute-bastion-private: [Deploy Bastion as private-only](https://learn.microsoft.com/en-us/azure/bastion/private-only-deployment) | 1 / 1 / 1 | 2026-09-16T13:48:15.402Z | 2026-09-16T13:54:29.886Z | Private-only Bastion requires Premium at initial deployment, cannot be converted from a regular deployment, and requires a dedicated /26 or larger AzureBastionSubnet. On-premises private clients use ExpressRoute/VPN and IP-based connections; native clients provide end-to-end private connectivity. |
+| sc500-compute-bastion-overview: [What is Azure Bastion?](https://learn.microsoft.com/en-us/azure/bastion/bastion-overview) | 1 / 1 / 1 | 2026-09-16T13:46:20.625Z | 2026-09-16T13:54:29.886Z | The SKU comparison distinguishes Standard native-client/custom-port support from Premium private-only deployment and session recording. Bastion connects to target VM private IPs; target VMs need no public IP. |
+| sc500-compute-jit: [Enable just-in-time access](https://learn.microsoft.com/en-us/azure/defender-for-cloud/just-in-time-access-usage) | 2 / 2 / 2 | 2026-09-16T13:41:30.954Z | 2026-09-16T13:54:29.886Z | Azure JIT requires Defender for Servers Plan 2 and a supported NSG or firewall topology. Configure allowed source ranges and maximum duration separately from requesting a particular port and window. The cited scope is Azure VMs, not the separately labeled AWS Preview. |
+| sc500-compute-jit-overview: [Just-in-time machine access in Microsoft Defender for Cloud](https://learn.microsoft.com/en-us/azure/defender-for-cloud/just-in-time-access-overview) | 1 / 1 / 1 | 2026-09-16T13:46:19.311Z | 2026-09-16T13:54:29.886Z | JIT creates deny rules for selected management ports but pre-existing rules take priority. Approved requests temporarily permit scoped traffic; expiration restores NSG state without terminating established connections. Azure Firewall policy-managed topologies are unsupported. |
+| sc500-compute-arc: [What is Azure Arc-enabled servers?](https://learn.microsoft.com/en-us/azure/azure-arc/servers/overview) | 2 / 2 / 2 | 2026-09-16T13:41:35.473Z | 2026-09-16T13:54:29.886Z | Azure Arc-enabled servers represents supported non-Azure physical or virtual servers as Azure resources through the Connected Machine agent. Machine Configuration, extensions, and Defender protection can then be applied. Native Azure VMs are not the Arc-enabled servers target. |
+| sc500-compute-servers-plan: [Plan Defender for Servers deployment](https://learn.microsoft.com/en-us/azure/defender-for-cloud/plan-defender-for-servers) | 1 / 1 / 1 | 2026-09-16T13:41:40.196Z | 2026-09-16T13:54:29.886Z | Full Defender for Servers capabilities for hybrid machines use Azure Arc onboarding; direct MDE onboarding does not provide every Plan 2 capability. OS baseline assessment additionally requires the Machine Configuration extension. |
+| sc500-compute-servers-edr: [Defender for Endpoint/Defender for Vulnerability Management integration](https://learn.microsoft.com/en-us/azure/defender-for-cloud/integration-defender-for-endpoint) | 1 / 1 / 1 | 2026-09-16T13:43:57.488Z | 2026-09-16T13:54:29.886Z | Defender for Endpoint integration supplies EDR and vulnerability-management insights. Native resource discovery can show a machine as Can be onboarded before the sensor exists; actual MDE onboarding requires a deployed sensor successfully reporting. |
+| sc500-compute-agentless: [Enable agentless machine scanning](https://learn.microsoft.com/en-us/azure/defender-for-cloud/enable-agentless-scanning-vms) | 1 / 1 / 1 | 2026-09-16T13:42:53.994Z | 2026-09-16T13:54:29.886Z | Agentless machine scanning is daily, not continuous, and requires a running supported machine. Disk totals above 4 TB limit supported scans to an OS disk below 4 TB. Certain disk types and filesystems exclude the whole VM; CMK disks require additional scanner Key Vault access. |
+| sc500-compute-trusted-launch: [Trusted Launch for Azure virtual machines](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch) | 1 / 1 / 1 | 2026-09-16T13:42:57.126Z | 2026-09-16T13:54:29.886Z | Trusted Launch integrates Secure Boot, vTPM measurement and Guest Attestation for boot-integrity monitoring. vTPM and Guest Attestation can report failure with Secure Boot disabled. The article explicitly marks Trusted Launch as Default generally available; no unsupported VM size is assumed. |
+| sc500-compute-machine-config: [What is Azure Machine Configuration?](https://learn.microsoft.com/en-us/azure/governance/machine-configuration/overview) | 2 / 2 / 2 | 2026-09-16T13:42:59.233Z | 2026-09-16T13:54:29.886Z | Machine Configuration distinguishes Audit, Apply and Monitor, and Apply and Autocorrect. Only the last mode brings drift back into conformance. It operates inside supported Azure and Arc guest operating systems rather than just checking resource metadata. |
+| sc500-compute-containers: [Introduction to Microsoft Defender for Containers](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction) | 1 / 1 / 1 | 2026-09-16T13:42:35.488Z | 2026-09-16T13:54:29.886Z | Defender for Containers combines agentless posture and image vulnerability assessment with sensor-based runtime capabilities and audit-log analysis. Kubernetes data-plane enforcement uses Azure Policy for Kubernetes. The selected Azure runtime controls do not rely on preview multicloud scanning. |
+| sc500-compute-aks-rbac: [Use Microsoft Entra ID authorization for the Kubernetes API in Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/manage-azure-rbac) | 2 / 2 / 2 | 2026-09-16T13:42:43.525Z | 2026-09-16T13:54:29.886Z | With managed Entra integration and Azure RBAC authorization, built-in Kubernetes roles can be namespace scoped. Reader excludes Secrets, Writer allows Secrets and pod service-account access. Custom DataActions can grant deployments/read without granting other Kubernetes objects; CRD ABAC Preview is not used. |
+| sc500-compute-acr-auth: [Authenticate with Azure Container Registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication) | 1 / 1 / 1 | 2026-09-16T13:42:47.185Z | 2026-09-16T13:54:29.886Z | Individual identities preserve user accountability while shared registry admin credentials appear as a single push/pull user. Managed identities and service principals cover unattended scenarios; distributing the admin account passwords does not produce separate audited identities. |
+| sc500-compute-aci-identity: [Use managed identities with Azure Container Instances](https://learn.microsoft.com/en-us/azure/container-instances/container-instances-managed-identity) | 1 / 1 / 1 | 2026-09-16T13:42:53.769Z | 2026-09-16T13:54:29.886Z | ACI supports managed identities but enabling or updating identities on a running container group restarts the group. Authentication also requires granting the identity access to the target resource; assigning an identity alone is not authorization. |
+| sc500-compute-aca-identity: [Managed identities in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/managed-identity) | 1 / 1 / 1 | 2026-09-16T13:42:56.209Z | 2026-09-16T13:54:29.886Z | Container Apps supports system and user-assigned identities; changes to an identity on a modern running app neither automatically restart it nor create a revision. User-assigned identities are independent resources suitable for preauthorization. Runtime permissions still require RBAC. |
+| sc500-compute-functions: [Securing Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/security-concepts) | 1 / 1 / 1 | 2026-09-16T13:42:58.252Z | 2026-09-16T13:54:29.886Z | Function keys are not positive client authentication. App Service Authentication supports Entra identity; network restrictions and private endpoints add separate controls. Private endpoints are supported in Flex Consumption, Elastic Premium, and Dedicated plans; correct private DNS is required. |
+| sc500-compute-logic-apps: [Secure access and data for workflows in Azure Logic Apps](https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-securing-a-logic-app) | 1 / 1 / 1 | 2026-09-16T13:43:42.139Z | 2026-09-16T13:54:29.886Z | Secure Inputs/Outputs obscure sensitive run history, with important propagation limits. Compose has Secure Inputs only; hidden Compose outputs do not automatically hide downstream actions. Secured values are excluded from Log Analytics and workflow history output APIs. |
+| sc500-compute-appservice-network: [Azure App Service access restrictions](https://learn.microsoft.com/en-us/azure/app-service/overview-access-restrictions) | 2 / 2 / 2 | 2026-09-16T13:43:45.367Z | 2026-09-16T13:54:29.886Z | App Service evaluates default endpoint app access then per-site rules, but private-endpoint traffic bypasses those site restrictions. Main and SCM sites have independent rules. AzureFrontDoor.Backend plus X-Azure-FDID constrains access to one Front Door instance. |
+| sc500-compute-waf: [What is Azure Web Application Firewall on Azure Application Gateway?](https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/ag-overview) | 1 / 1 / 1 | 2026-09-16T13:43:49.004Z | 2026-09-16T13:54:29.886Z | Application Gateway WAF Detection logs but does not block; Prevention enforces blocking. CRS anomaly scoring sums severities and blocks at five, with warnings contributing three. A match alone need not block when below threshold. |
+| sc500-compute-apim-jwt: [Validate JWT](https://learn.microsoft.com/en-us/azure/api-management/validate-jwt-policy) | 1 / 1 / 1 | 2026-09-16T13:43:52.623Z | 2026-09-16T13:54:29.886Z | JWT validation supports signature and expiration checks plus explicit issuer, audience, and required claims. The bearer scheme verifies the authorization header scheme, not API authorization. The question uses a non-Entra issuer and no Preview identity-provider feature. |
+| sc500-compute-apim-identity: [Authenticate with managed identity](https://learn.microsoft.com/en-us/azure/api-management/authentication-managed-identity-policy) | 1 / 1 / 1 | 2026-09-16T13:43:55.258Z | 2026-09-16T13:54:29.886Z | The managed-identity policy acquires an Entra token for a backend and defaults to system-assigned identity when client-id is omitted. client-id selects a user-assigned identity. It does not validate client JWTs or constrain token forwarding to trusted backends automatically. |
+| sc500-posture-cspm: [What is Cloud Security Posture Management (CSPM)](https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-cloud-security-posture-management) | 1 / 1 / 1 | 2026-09-16T13:41:01.373Z | 2026-09-16T13:53:25.609Z | Foundational CSPM supplies baseline inventory, recommendations and secure score; paid Defender CSPM adds attack paths, security explorer and risk prioritization. The announced October 27, 2026 opt-in change is future guidance, not an assertion that it already happened. |
+| sc500-posture-attack-paths: [Identify and remediate attack paths in Microsoft Defender for Cloud](https://learn.microsoft.com/en-us/azure/defender-for-cloud/how-to-manage-attack-path) | 1 / 1 / 1 | 2026-09-16T13:47:25.318Z | 2026-09-16T13:53:25.609Z | Attack path analysis requires Defender CSPM and agentless scanning, distinguishes path-remediating recommendations from additional risk reductions, and can withhold node details when cross-subscription permissions are incomplete. |
+| sc500-posture-compliance: [Assign regulatory compliance standards in Microsoft Defender for Cloud](https://learn.microsoft.com/en-us/azure/defender-for-cloud/update-regulatory-compliance-packages) | 2 / 2 / 2 | 2026-09-16T13:41:04.841Z | 2026-09-16T13:53:25.609Z | Regulatory standards are scoped initiatives; assigning them requires Owner or Policy Contributor and a qualifying Defender plan. A standard without relevant assessed resources does not appear on the compliance dashboard. |
+| sc500-posture-plans: [Connect your Azure subscriptions](https://learn.microsoft.com/en-us/azure/defender-for-cloud/enable-enhanced-security) | 2 / 2 / 2 | 2026-09-16T13:41:53.723Z | 2026-09-16T13:53:25.609Z | Environment settings controls paid workload plans separately from foundational posture. Plans can be individually disabled; their extensions are not automatically uninstalled and stop collecting after a short time. |
+| sc500-posture-aws-current: [Connect AWS accounts to Microsoft Defender for Cloud](https://learn.microsoft.com/en-us/azure/defender-for-cloud/quickstart-onboard-aws) | 1 / 1 / 1 | 2026-09-16T13:44:44.939Z | 2026-09-16T13:53:25.609Z | Native AWS onboarding distinguishes management accounts from single accounts; delegated administrators cannot substitute for the management account. Management onboarding discovers new member accounts and supports exclusions. |
+| sc500-posture-gcp: [Connect your GCP project to Microsoft Defender for Cloud](https://learn.microsoft.com/en-us/azure/defender-for-cloud/quickstart-onboard-gcp) | 1 / 1 / 1 | 2026-09-16T13:41:50.038Z | 2026-09-16T13:53:25.609Z | GCP onboarding uses workload identity federation and service account impersonation. Least-privilege access covers current capabilities; plan or permission changes require generating and rerunning the updated scope-specific onboarding script. |
+| sc500-posture-mdvm: [Enable vulnerability scanning with Microsoft Defender Vulnerability Management](https://learn.microsoft.com/en-us/azure/defender-for-cloud/deploy-vulnerability-assessment-defender-vulnerability-management) | 1 / 1 / 1 | 2026-09-16T13:41:45.108Z | 2026-09-16T13:53:25.609Z | Subscription vulnerability assessment is configured through Defender for Servers monitoring coverage and Settings and monitoring. The selected assessment solution is applied and saved; findings access differs from scanner deployment permissions. Only portal behavior is used, not the preview REST example. |
+| sc500-posture-mdvm-modes: [Configure vulnerability scanning for machines](https://learn.microsoft.com/en-us/azure/defender-for-cloud/auto-deploy-vulnerability-assessment) | 1 / 1 / 1 | 2026-09-16T13:47:24.258Z | 2026-09-16T13:53:25.609Z | Defender for Servers supports agent-based MDE scanning in P1 and P2 and agentless scanning in P2. Its unified VM findings prefer agent-based results for freshness when both methods report, while agentless-only VMs show agentless findings. |
+| sc500-posture-easm-discovery: [What is discovery?](https://learn.microsoft.com/en-us/azure/external-attack-surface-management/what-is-discovery) | 2 / 2 / 2 | 2026-09-16T13:41:49.741Z | 2026-09-16T13:53:25.609Z | EASM recursively expands known discovery seeds into an external inventory. Candidate ownership needs validation, dependencies are third-party infrastructure supporting owned assets, and monitor-only assets are relevant without direct control or technical dependency. |
+| sc500-posture-sentinel-onboard: [Onboard Microsoft Sentinel to a Log Analytics workspace](https://learn.microsoft.com/en-us/azure/sentinel/quickstart-onboard) | 3 / 3 / 3 | 2026-09-16T13:44:54.006Z | 2026-09-16T13:53:25.609Z | Sentinel is enabled on a Log Analytics workspace with subscription Contributor permission. Defender for Cloud default workspaces are ineligible and moving an enabled workspace across resource groups or subscriptions is unsupported. Azure Activity onboarding uses a scoped Azure Policy assignment and a destination workspace parameter. |
+| sc500-posture-sentinel-roles: [Roles and permissions in the Microsoft Sentinel platform](https://learn.microsoft.com/en-us/azure/sentinel/roles) | 2 / 2 / 2 | 2026-09-16T13:41:50.298Z | 2026-09-16T13:53:25.609Z | Sentinel Contributor manages SIEM resources and content, while Logic App Contributor manages playbooks. Automation Contributor is a service permission for Sentinel rather than a human role. Role assignments are cumulative. |
+| sc500-posture-content-hub: [Discover and manage Microsoft Sentinel out-of-the-box content](https://learn.microsoft.com/en-us/azure/sentinel/sentinel-solutions-deploy) | 1 / 1 / 1 | 2026-09-16T13:41:53.374Z | 2026-09-16T13:53:25.609Z | Installing content hub solutions can install dependencies and templates but connectors require configuration and analytics rules require activation. Updates preserve active or customized content created from templates. |
+| sc500-posture-cef-overview: [Syslog and Common Event Format (CEF) via AMA connectors for Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/cef-syslog-ama-overview) | 1 / 1 / 1 | 2026-09-16T13:44:48.367Z | 2026-09-16T13:53:25.609Z | Syslog and CEF via AMA use a Linux daemon and a DCR. Syslog targets Syslog and CEF targets CommonSecurityLog; shared facilities can duplicate messages. For AMA 1.41 nonconforming headers, duplication filters check both ProcessName and SyslogMessage. |
+| sc500-posture-cef-ama: [Ingest syslog and CEF messages to Microsoft Sentinel with the Azure Monitor Agent](https://learn.microsoft.com/en-us/azure/sentinel/connect-cef-syslog-ama) | 1 / 1 / 1 | 2026-09-16T13:44:03.268Z | 2026-09-16T13:53:25.609Z | Non-Azure Linux forwarders require Arc before AMA onboarding; source devices send to the forwarding daemon. Portal DCR severity is a minimum threshold, while API logLevels can enumerate specific levels. |
+| sc500-posture-windows-sentinel: [Connect Microsoft Sentinel to other Microsoft services with a Windows agent-based data connector](https://learn.microsoft.com/en-us/azure/sentinel/connect-services-windows-based) | 1 / 1 / 1 | 2026-09-16T13:47:23.216Z | 2026-09-16T13:53:25.609Z | WEF requires WEC with AMA on the collector and Arc for non-Azure machines. Forwarded security events land in WindowsEvent, not SecurityEvent; unmodified SecurityEvent-based content instead needs the Windows Security Events via AMA connector. Only these named connector behaviors are used, not the article’s preview API sample. |
+| sc500-posture-windows-dcr: [Collect Windows events from virtual machine with Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/vm/data-collection-windows-events) | 2 / 2 / 2 | 2026-09-16T13:45:37.609Z | 2026-09-16T13:53:25.609Z | Generic Azure Monitor Windows events use the Event table, unlike the Sentinel SecurityEvent connector. DCR XPath combines a log name and expression with an exclamation mark; Get-WinEvent takes the log separately and a no-match result does not prove invalid syntax. |
+| sc500-posture-custom-table: [Add or delete tables and columns in Azure Monitor Logs](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/create-custom-table) | 2 / 2 / 2 | 2026-09-16T13:42:43.906Z | 2026-09-16T13:53:25.609Z | Custom log tables require the _CL suffix, a TimeGenerated column and matching DCR output/schema. Portal creation adds the suffix and can add a timestamp transformation; schema changes require coordinated DCR changes. |
+| sc500-posture-playbooks: [Automate and run Microsoft Sentinel playbooks](https://learn.microsoft.com/en-us/azure/sentinel/automation/run-playbooks) | 2 / 2 / 2 | 2026-09-16T13:42:22.141Z | 2026-09-16T13:53:25.609Z | Incident automation uses the Sentinel service account with Automation Contributor on the playbook resource group. An automation rule can select only a playbook with a matching trigger type; a grayed playbook indicates missing Sentinel service permission. |
+| sc500-posture-sentinel-tiers: [Manage data tiers and retention in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/manage-data-overview) | 2 / 2 / 2 | 2026-09-16T13:43:58.487Z | 2026-09-16T13:53:25.609Z | Analytics retention supports real-time Sentinel features; lake-only data does not. Reducing analytics retention while retaining total retention keeps older data in the lake. Lowering total retention has a 30-day removal delay, and expansion cannot recover removed data. |
+| sc500-posture-purview-audit: [Search the audit log for events in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/microsoft-xdr-auditing) | 1 / 1 / 1 | 2026-09-16T13:44:52.193Z | 2026-09-16T13:53:25.609Z | The Defender portal Audit page uses Purview auditing. Access needs Exchange Online View-Only Audit Logs or Audit Logs and Purview auditing enabled; searches filter activities, dates and users. Retention is governed by Purview rather than Sentinel table settings. |
+| sc500-posture-copilot-onboarding: [Onboarding to Security Copilot for non-Microsoft 365 E5 and E7 customers](https://learn.microsoft.com/en-us/copilot/security/manual-onboarding) | 1 / 1 / 1 | 2026-09-16T13:46:36.663Z | 2026-09-16T13:53:25.609Z | Non-included customers provision SCU capacity and finish Security Copilot workspace onboarding. Azure-created capacity bills from creation even before association; the workspace is tenant-bound and setup selects evaluation location and permissions. |
+| sc500-posture-copilot-settings: [Configure Copilot settings with the owner role](https://learn.microsoft.com/en-us/copilot/security/owner-settings) | 1 / 1 / 1 | 2026-09-16T13:46:39.197Z | 2026-09-16T13:53:25.609Z | Copilot owner settings manage capacity association and data controls. Purchasing, changing or reassociating capacity additionally needs Azure Owner or Contributor on the capacity resource. |
+| sc500-posture-copilot-permissions: [Understand authentication in Microsoft Security Copilot](https://learn.microsoft.com/en-us/copilot/security/authentication) | 3 / 3 / 3 | 2026-09-16T13:44:07.915Z | 2026-09-16T13:53:25.609Z | Copilot platform roles do not grant underlying service data access; Microsoft plugins use on-behalf-of authorization. Shared session recipients can read already generated responses without the original plugin data permissions, but forwarding a link alone does not grant access. |
+| sc500-posture-copilot-plugins: [Manage plugins in Microsoft Security Copilot](https://learn.microsoft.com/en-us/copilot/security/manage-plugins) | 2 / 2 / 2 | 2026-09-16T13:43:58.342Z | 2026-09-16T13:53:25.609Z | Owners can permit personal custom plugins while restricting organization publishing, and preinstalled setup is per user. Owner-created custom plugins cannot be edited by contributors; plugin restriction also affects embedded experiences. |
+| sc500-posture-copilot-agents: [Setup and Manage Security Copilot agents](https://learn.microsoft.com/en-us/copilot/security/agents-manage) | 1 / 1 / 1 | 2026-09-16T13:44:00.924Z | 2026-09-16T13:53:25.609Z | The prerelease agent setup guidance distinguishes Microsoft agent identities from partner agent setup. Partner agents using Microsoft product permissions require Global Administrator consent before owners or contributors finish identity, trigger and parameter setup. |
+| sc500-posture-security-store: [Microsoft Security Store in Microsoft Security Copilot](https://learn.microsoft.com/en-us/copilot/security/security-store-integration) | 1 / 1 / 1 | 2026-09-16T13:44:03.380Z | 2026-09-16T13:53:25.609Z | The prerelease Security Store integration separates procurement and billing from Copilot operations. Required dependent plugins are enabled but not configured automatically; removing an agent does not end its separately managed subscription. |
+
+## Freshness and review limitations
+
+Change-driven: any newer cited source review invalidates the question snapshot. No calendar-based expiry; re-retrieve and independently review after documentation/taxonomy changes. Fresh is relative to checked-in evidence, not a claim of perpetual correctness.
+
+Blocking deterministic duplicates must be removed or revised before verification. Lexical, same-concept, and quality warnings require editorial judgment; they neither prove semantic duplication nor establish that distractors are plausible.
+URL reachability is a separate bounded network check (`npm run validate:sources -- --online`), not answer verification. Code examples are not executed against a Fabric tenant by these tools.

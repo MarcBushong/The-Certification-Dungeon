@@ -1,0 +1,534 @@
+[
+  {
+    "id": "sc500-036",
+    "question": "A shared Blob Storage account holds data for two business units in separate containers. Both units must keep server-side encryption, but each needs a distinct customer-managed encryption key and independent rotation ownership without creating another account. Which design meets the key-boundary requirement?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use one account-scoped Microsoft-managed key and rotate each container name."
+      },
+      {
+        "id": "b",
+        "text": "Enable infrastructure encryption and assign a different infrastructure key per container."
+      },
+      {
+        "id": "c",
+        "text": "Send a customer-provided key only when reading each container listing."
+      },
+      {
+        "id": "d",
+        "text": "Use separate encryption scopes with customer-managed keys for the containers."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Encryption scopes provide container or blob key boundaries within one account and can use customer-managed keys.",
+    "deepExplanation": "The required boundary is narrower than the default account-wide encryption key. Customer-managed keys are maintained in Key Vault or Managed HSM, while infrastructure encryption uses its own Microsoft-managed key. An encryption boundary does not replace data-access authorization.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A single Microsoft-managed account key does not provide independently customer-managed container keys.",
+      "b": "Infrastructure encryption uses Microsoft-managed keys rather than customer-selected container-specific infrastructure keys.",
+      "c": "Customer-provided keys are supplied on blob data operations; a listing-only change does not establish container encryption scopes."
+    },
+    "objectiveDomain": "secure-storage-databases-and-networking",
+    "skill": "implement-security-for-storage-accounts",
+    "subskill": "Implement and configure security for storage accounts",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": ["sc500-network-storage-encryption"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption"
+    ],
+    "documentationTitles": ["Azure Storage encryption for data at rest"],
+    "generatedAt": "2026-09-16T13:50:23.229Z",
+    "lastValidatedAt": "2026-09-16T13:50:23.229Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sc-500",
+      "security-engineering",
+      "storage-container-encryption-scope-key-boundaries"
+    ],
+    "conceptId": "storage-container-encryption-scope-key-boundaries",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["sc500-network-storage-encryption"],
+    "verificationNotes": "Checked the scope paragraph, key-management table and infrastructure paragraph independently. Separate CMK scopes satisfy the one-account, container-boundary and ownership constraints; Key Vault/Managed HSM is correctly stated in the explanation. This is a distinct key-scope decision from 037, not a second encryption-layer question. Advanced difficulty is only partially convincing, and renaming a container is a weak alternative; the rubric records both deductions.",
+    "requiresManualReview": false,
+    "confidenceReason": "Container/blob scope and customer-managed key support are explicit, rather than inferred from account-level encryption.",
+    "sourceLastReviewedAt": "2026-09-16T13:50:23.229Z",
+    "verifiedAt": "2026-09-16T14:06:01.786Z"
+  },
+  {
+    "id": "sc500-039",
+    "question": "A supported Azure resource cannot be isolated with a VNet or IP rule. It belongs to a different subscription but the same tenant as a locked-down storage account. The resource instance needs read-only data access. Which two controls must the engineer combine? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "A resource instance network rule for that resource."
+      },
+      {
+        "id": "b",
+        "text": "An Azure role assignment granting the required data operations."
+      },
+      {
+        "id": "c",
+        "text": "A move into the storage account subscription as a prerequisite."
+      },
+      {
+        "id": "d",
+        "text": "An IP-scoped SAS that overrides the account network deny."
+      }
+    ],
+    "correctAnswer": ["a", "b"],
+    "explanation": "Use a resource instance network rule for network admission and an appropriate role assignment for read access.",
+    "deepExplanation": "Resource instance rules permit supported resources in the same tenant, including another subscription. They do not themselves select which data operations the resource may perform; its role assignments determine those operations.",
+    "whyOtherAnswersAreWrong": {
+      "c": "The documented tenant boundary does not require the resource and storage account to share a subscription.",
+      "d": "A SAS can constrain a token holder but cannot override the storage firewall."
+    },
+    "objectiveDomain": "secure-storage-databases-and-networking",
+    "skill": "implement-security-for-storage-accounts",
+    "subskill": "Configure Azure Storage firewall rules",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["sc500-network-storage-network"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security"
+    ],
+    "documentationTitles": [
+      "Azure Storage firewall rules and network access control"
+    ],
+    "generatedAt": "2026-09-16T13:50:23.229Z",
+    "lastValidatedAt": "2026-09-16T13:50:23.229Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sc-500",
+      "security-engineering",
+      "storage-resource-instance-network-and-data-authorization"
+    ],
+    "conceptId": "storage-resource-instance-network-and-data-authorization",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["sc500-network-storage-network"],
+    "verificationNotes": "Evaluated network admission and data permission as two distinct controls, without deriving the pair from the author key. Same tenant, supported resource and cross-subscription placement are explicit prerequisites. The pronouns identify that resource unambiguously. The item is a configuration decision rather than a rich troubleshooting exercise; difficulty scores 1. Its core same-tenant/resource-instance boundary differs from the source-IP transition in 038 and SAS-only proposal in 040.",
+    "requiresManualReview": false,
+    "confidenceReason": "Both the cross-subscription allowance and role-determined operations are stated together in the resource-instance section.",
+    "sourceLastReviewedAt": "2026-09-16T13:50:23.229Z",
+    "verifiedAt": "2026-09-16T14:06:01.786Z"
+  },
+  {
+    "id": "sc500-042",
+    "question": "A legacy integration must continue using service SAS tokens. Several tokens for one blob container must be revocable together without rotating the account key or disrupting unrelated SAS grants. The tokens have not yet been issued. Which issuance design supports that control?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Associate those service SAS tokens with a dedicated stored access policy."
+      },
+      {
+        "id": "b",
+        "text": "Issue account SAS tokens with the same container policy identifier."
+      },
+      {
+        "id": "c",
+        "text": "Issue ad hoc service SAS tokens and maintain only an external token list."
+      },
+      {
+        "id": "d",
+        "text": "Associate user delegation SAS tokens with a stored access policy."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "A stored access policy can manage and revoke the permissions of the associated service SAS tokens without key rotation.",
+    "deepExplanation": "The policy association must be part of the issuance design. Account SAS and user delegation SAS are ad hoc and do not support stored access policies. Merely tracking ad hoc tokens externally does not create a server-side revocation control.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Account SAS does not support a stored access policy.",
+      "c": "An external list does not bind the ad hoc tokens to a revocable storage policy.",
+      "d": "User delegation SAS does not support stored access policies and would also change the required SAS type."
+    },
+    "objectiveDomain": "secure-storage-databases-and-networking",
+    "skill": "implement-security-for-storage-accounts",
+    "subskill": "Manage access to storage, including access policies",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["sc500-network-storage-sas"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview"
+    ],
+    "documentationTitles": [
+      "Grant limited access to Azure Storage resources using shared access signatures (SAS)"
+    ],
+    "generatedAt": "2026-09-16T13:50:23.229Z",
+    "lastValidatedAt": "2026-09-16T13:50:23.229Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sc-500",
+      "security-engineering",
+      "storage-service-sas-policy-targeted-revocation"
+    ],
+    "conceptId": "storage-service-sas-policy-targeted-revocation",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["sc500-network-storage-sas"],
+    "verificationNotes": "The yet-to-be-issued constraint is material: it allows establishing the policy association at issuance rather than falsely promising retroactive revocation of ad hoc tokens. Checked every SAS type and the account-key independence claim in the receipt. Negative phrasing identifies operational constraints, and token references are clear. This original design decision is different from Entra signing in 041. Advanced is a partial fit, not a maximal score.",
+    "requiresManualReview": false,
+    "confidenceReason": "Stored policy eligibility and revocation without key rotation are expressly documented for service SAS only.",
+    "sourceLastReviewedAt": "2026-09-16T13:50:23.229Z",
+    "verifiedAt": "2026-09-16T14:06:01.786Z"
+  },
+  {
+    "id": "sc500-050",
+    "question": "A SQL Server Contributor provisions a logical server and configures its Entra administrator but cannot enable Entra-only authentication. The organization wants security-control management separated from routine server provisioning. Which built-in assignment should go to the security operator for this control?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "SQL Security Manager at the appropriate scope."
+      },
+      {
+        "id": "b",
+        "text": "SQL Server Contributor again, through a second group."
+      },
+      {
+        "id": "c",
+        "text": "SQL Managed Instance Contributor on the logical server."
+      },
+      {
+        "id": "d",
+        "text": "Only database CONTROL permission, with no Azure management assignment."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "SQL Security Manager includes management of Entra-only authentication; SQL Server Contributor does not.",
+    "deepExplanation": "The configured Entra administrator satisfies a prerequisite but does not give the provisioning role the missing Azure management action. The documented separation allows security operators to manage this control independently of server provisioning.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Duplicating the same role does not add its excluded Entra-only management permission.",
+      "c": "SQL Managed Instance Contributor also lacks permission to enable or disable this feature.",
+      "d": "Database permission does not supply the Azure resource management action for this server-level control."
+    },
+    "objectiveDomain": "secure-storage-databases-and-networking",
+    "skill": "implement-security-for-databases",
+    "subskill": "Implement platform-level security configurations in Azure SQL",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["sc500-network-sql-entra-only"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-sql/database/authentication-azure-ad-only-authentication"
+    ],
+    "documentationTitles": [
+      "Microsoft Entra-only authentication with Azure SQL"
+    ],
+    "generatedAt": "2026-09-16T13:50:23.229Z",
+    "lastValidatedAt": "2026-09-16T13:50:23.229Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sc-500",
+      "security-engineering",
+      "sql-entra-only-security-control-separation-of-duties"
+    ],
+    "conceptId": "sql-entra-only-security-control-separation-of-duties",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["sc500-network-sql-entra-only"],
+    "verificationNotes": "Independently checked the permissions and Actions required sections, not just the similar role names. A configured Entra administrator satisfies the feature prerequisite without supplying the provisioning operator missing management permission. The pronoun clearly references the provisioned server. This original authorization-of-management question differs from authentication behavior in 049. Advanced authenticity is partial because the problem reduces to one documented role distinction.",
+    "requiresManualReview": false,
+    "confidenceReason": "Both the included SQL Security Manager action and excluded Contributor roles are explicitly listed in the receipt.",
+    "sourceLastReviewedAt": "2026-09-16T13:50:23.229Z",
+    "verifiedAt": "2026-09-16T14:06:01.786Z"
+  },
+  {
+    "id": "sc500-051",
+    "question": "SQL Database auditing to a storage account worked until outbound networking restrictions were introduced on the logical server. Storage authorization is unchanged, but the audit storage endpoint is absent from the outbound allowlist. Which two steps address the documented recovery procedure? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Disable database authentication so audit traffic bypasses outbound restrictions."
+      },
+      {
+        "id": "b",
+        "text": "Allowlist the auditing storage account FQDNs."
+      },
+      {
+        "id": "c",
+        "text": "Re-save the auditing configuration after allowing the destination."
+      },
+      {
+        "id": "d",
+        "text": "Increase the audit statement character limit in the database."
+      }
+    ],
+    "correctAnswer": ["b", "c"],
+    "explanation": "Allow the audit storage destination FQDNs and then re-save the auditing configuration.",
+    "deepExplanation": "Audit output needs an allowed outbound destination as well as valid storage authorization. The documentation explicitly calls for re-saving the audit settings after adding the destination so event flow resumes.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Database authentication settings do not supply outbound network access to the audit destination.",
+      "d": "Statement truncation is unrelated to a blocked destination, and this is not the documented recovery operation."
+    },
+    "objectiveDomain": "secure-storage-databases-and-networking",
+    "skill": "implement-security-for-databases",
+    "subskill": "Configure database auditing for Azure SQL Database and Azure SQL Managed Instance",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["sc500-network-sql-auditing"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-sql/database/auditing-overview"
+    ],
+    "documentationTitles": [
+      "Auditing for Azure SQL Database and Azure Synapse Analytics"
+    ],
+    "generatedAt": "2026-09-16T13:50:23.229Z",
+    "lastValidatedAt": "2026-09-16T13:50:23.229Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sc-500",
+      "security-engineering",
+      "sql-audit-outbound-destination-resave-recovery"
+    ],
+    "conceptId": "sql-audit-outbound-destination-resave-recovery",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["sc500-network-sql-auditing"],
+    "verificationNotes": "Read the actual outbound allowlist and re-save paragraph and confirmed both selected actions are necessary in its stated procedure. Authorization is stipulated unchanged and the missing destination is explicit. No new code or feature-status inference is involved. This recovery sequence is distinct from immutable retention and MI SAS credential formatting. The cause is largely supplied and the alternatives are remote, so difficulty and plausibility each lose one point.",
+    "requiresManualReview": false,
+    "confidenceReason": "The current receipt explicitly calls for both FQDN admission and a subsequent audit-settings re-save.",
+    "sourceLastReviewedAt": "2026-09-16T13:50:23.229Z",
+    "verifiedAt": "2026-09-16T14:06:01.786Z"
+  },
+  {
+    "id": "sc500-062",
+    "question": "A Virtual WAN has Hub East with Azure Firewall and an Internet Traffic routing policy. Hub West has no security appliance or routing policies. A design assumes West-connected spokes can use East’s firewall for internet egress merely through inter-hub connectivity. What invalidates this assumption?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The default route is not propagated between hubs, so this configuration does not provide that remote-hub internet path."
+      },
+      {
+        "id": "b",
+        "text": "Internet policy advertises only individual website prefixes, not a default route."
+      },
+      {
+        "id": "c",
+        "text": "Internet Traffic routing policies apply only to ExpressRoute branches, never VNet connections."
+      },
+      {
+        "id": "d",
+        "text": "A Private Traffic policy in East automatically propagates its internet default route to West."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "The routing-intent design does not propagate the default route across hubs.",
+    "deepExplanation": "Internet policy sends connected spokes and branches to the local security solution. A hub lacking that configured local path cannot assume it inherits another hub’s internet egress simply because private inter-hub connectivity exists.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Internet routing policy advertises a 0.0.0.0/0 default route to connected resources.",
+      "c": "The documented Internet policy includes VNet connections and multiple branch types.",
+      "d": "A Private policy does not make the default route propagate between hubs."
+    },
+    "objectiveDomain": "secure-storage-databases-and-networking",
+    "skill": "implement-security-for-azure-network-services",
+    "subskill": "Configure security for an Azure Virtual WAN",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["sc500-network-vwan-routing"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/virtual-wan/how-to-routing-policies"
+    ],
+    "documentationTitles": [
+      "How to configure Virtual WAN Hub routing intent and routing policies"
+    ],
+    "generatedAt": "2026-09-16T13:50:23.229Z",
+    "lastValidatedAt": "2026-09-16T13:50:23.229Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sc-500",
+      "security-engineering",
+      "vwan-default-route-not-propagated-between-hubs"
+    ],
+    "conceptId": "vwan-default-route-not-propagated-between-hubs",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["sc500-network-vwan-routing"],
+    "verificationNotes": "Independently compared this configuration with the regular-plus-secured-hub table and default-route statements. The never/only distractor is directly contradicted by supported connection types. The key is limited to the stated mere-inter-hub assumption, not a claim that no separately engineered egress architecture could ever exist. Pronouns have hub antecedents. Related to 061 but tests a different routing fact; Advanced difficulty is only partial.",
+    "requiresManualReview": false,
+    "confidenceReason": "The mixed-hub official example directly rejects inheriting internet egress through another hub solely through inter-hub connectivity.",
+    "sourceLastReviewedAt": "2026-09-16T13:50:23.229Z",
+    "verifiedAt": "2026-09-16T14:06:01.786Z"
+  },
+  {
+    "id": "sc500-065",
+    "question": "A team is configuring Microsoft Entra ID authentication for P2S users on supported Windows 11 Azure VPN Clients. Its proposed design incorrectly selects a Basic policy-based gateway and a client address pool overlapping the destination VNet. Which configuration revision resolves the documented prerequisites?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the gateway, choose SSTP, and manually register the old Azure VPN Client audience."
+      },
+      {
+        "id": "b",
+        "text": "Keep the overlapping pool but switch only the authentication label to Microsoft Entra ID."
+      },
+      {
+        "id": "c",
+        "text": "Use a compatible gateway but retain policy-based VPN type and the overlapping pool."
+      },
+      {
+        "id": "d",
+        "text": "Use a compatible non-Basic route-based gateway, OpenVPN, and a nonoverlapping private client pool."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Entra-authenticated P2S needs compatible gateway options, OpenVPN and a private client pool that does not overlap the VNet or connecting on-premises network.",
+    "deepExplanation": "Changing authentication alone cannot correct incompatible network prerequisites. The current Microsoft-registered Azure VPN Client audience can be used without the legacy manual app registration and consent process; the scenario is intentionally limited to supported Windows clients.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Basic and policy-based options are incompatible with this Entra P2S setup; SSTP is not the documented tunnel type.",
+      "b": "The client pool must not overlap the destination VNet.",
+      "c": "Policy-based VPN type and overlapping addressing remain incompatible after changing the SKU."
+    },
+    "objectiveDomain": "secure-storage-databases-and-networking",
+    "skill": "implement-security-for-azure-network-services",
+    "subskill": "Implement and configure security for virtual private network (VPN) connections",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["sc500-network-vpn-entra"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-entra-gateway"
+    ],
+    "documentationTitles": [
+      "Configure P2S VPN Gateway for Microsoft Entra ID authentication"
+    ],
+    "generatedAt": "2026-09-16T13:50:23.229Z",
+    "lastValidatedAt": "2026-09-16T14:09:53.050Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sc-500",
+      "security-engineering",
+      "vpn-p2s-entra-compatible-gateway-client-pool"
+    ],
+    "conceptId": "vpn-p2s-entra-compatible-gateway-client-pool",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["sc500-network-vpn-entra"],
+    "verificationNotes": "Independently reread the complete repaired 065, the actual undated map and the P2S Entra MCP article, including Windows support, Linux-preview retirement, gateway prerequisites, pool, tunnel and audience/consent sections. The new opening is explicitly an incorrect proposed design, not an assertion of an impossible formerly working Basic policy-based P2S deployment. d alone satisfies the listed prerequisite revision. An Entra tenant and client profile remain required setup, not replaced by this answer. Older manually registered Windows audiences can still be supported before their future retirement; a fails because its gateway and SSTP remain incompatible. Compared 064 and the batch stems: no blocking duplicate. Multiple independent compatibility decisions justify only lower-bound Advanced troubleshooting; independently scored difficulty 1 and distractor plausibility 1, other criteria 2, total 18. No exam lifecycle conclusion or target-driven difficulty approval is made. Candidate status remains manual-review-required for author integration.",
+    "requiresManualReview": false,
+    "confidenceReason": "High technical confidence: the gateway exclusion, tunnel choice, address nonoverlap, Windows support and Microsoft-registered consent distinction are explicit in one current receipt. The framing repair removes the prior ambiguity. Difficulty confidence is intentionally qualified because the listed defects make the multi-setting repair easier than a strong advanced diagnostic item.",
+    "sourceLastReviewedAt": "2026-09-16T13:50:23.229Z",
+    "verifiedAt": "2026-09-16T14:17:27.227Z"
+  },
+  {
+    "id": "sc500-072",
+    "question": "A conventional load-balancer-backed Private Link service must accept connection requests from two partner subscriptions. One partner is preapproved; the other requires manual security approval. Which combination preserves this distinction?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Put both subscriptions in auto-approval and rely on visibility for manual review."
+      },
+      {
+        "id": "b",
+        "text": "Share the alias and assume every visible requester is automatically approved."
+      },
+      {
+        "id": "c",
+        "text": "Include both subscriptions in visibility, but only the preapproved subscription in auto-approval."
+      },
+      {
+        "id": "d",
+        "text": "Put the manual-review subscription outside visibility and approve it after it connects."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Visibility controls who can request a connection; auto-approval controls which visible subscriptions are approved without manual action.",
+    "deepExplanation": "The auto-approval set is a subset of the visibility set. The second partner can submit a pending request but cannot send service traffic until the provider approves it. Sharing an alias alone is not approval.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Putting both partners in auto-approval removes the required manual approval distinction.",
+      "b": "Visible subscriptions not in auto-approval still require provider action.",
+      "d": "Excluding the partner from visibility prevents the intended request path rather than creating a manual-approval workflow."
+    },
+    "objectiveDomain": "secure-storage-databases-and-networking",
+    "skill": "implement-security-for-azure-network-services",
+    "subskill": "Configure Azure Private Link services to secure access to network resources",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["sc500-network-private-link"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview"
+    ],
+    "documentationTitles": ["What is Azure Private Link service?"],
+    "generatedAt": "2026-09-16T13:50:23.229Z",
+    "lastValidatedAt": "2026-09-16T13:50:23.229Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sc-500",
+      "security-engineering",
+      "private-link-service-visibility-not-autoapproval"
+    ],
+    "conceptId": "private-link-service-visibility-not-autoapproval",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["sc500-network-private-link"],
+    "verificationNotes": "Read Control service exposure and Control service access, including the subset condition and pending-state traffic restriction. The scenario concerns conventional load-balancer-backed service, not the article explicitly separate Direct Connect preview. Its partner references are clear and there is no assumption that sharing an alias grants access. This request/approval-set design is distinct from Proxy v2 and backend eligibility in 073/074.",
+    "requiresManualReview": false,
+    "confidenceReason": "The receipt explicitly describes requests from visible but non-autoapproved subscriptions reaching the provider for manual approval.",
+    "sourceLastReviewedAt": "2026-09-16T13:50:23.229Z",
+    "verifiedAt": "2026-09-16T14:06:01.786Z"
+  },
+  {
+    "id": "sc500-139",
+    "question": "An MSSP calls a customer-tenant incident playbook from an automation rule created while signed into the provider tenant. The customer already grants its Sentinel service account permission on the playbook resource group. The existing Azure Lighthouse delegation covers the human operator but omits the provider-side service application. Which value belongs in principalId in the additional authorization entry?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The Object ID of the human operator in the provider tenant"
+      },
+      {
+        "id": "b",
+        "text": "The Object ID of Azure Security Insights under Microsoft Applications in the provider tenant"
+      },
+      {
+        "id": "c",
+        "text": "The directory tenant ID of the customer that owns the playbook"
+      },
+      {
+        "id": "d",
+        "text": "The Azure resource ID of the Logic App workflow in the customer tenant"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Use the provider tenant’s Azure Security Insights application Object ID in the additional Azure Lighthouse authorization.",
+    "deepExplanation": "The documented MSSP configuration requires authorization in both tenants. The customer-side playbook permission is already present here; the remaining provider-side step is to locate Azure Security Insights in Enterprise applications, filtered to Microsoft Applications, and add that application’s Object ID to the Lighthouse delegation with the Microsoft Sentinel Automation Contributor role. A human delegate, a tenant identifier and a workflow resource identifier are different objects and do not identify that service application.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The operator is already delegated. The documented extra authorization is for Azure Security Insights, not another human assignment.",
+      "c": "The instructions require the Object ID of the service application, not the customer directory identifier.",
+      "d": "The workflow is the target resource; the documented principal is the provider-side service application."
+    },
+    "objectiveDomain": "manage-and-monitor-security-posture",
+    "skill": "implement-activity-and-event-collection-in-microsoft-sentinel",
+    "subskill": "Implement automation rules and playbooks in Microsoft Sentinel",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": ["sc500-posture-playbooks", "sc500-posture-sentinel-roles"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/sentinel/automation/run-playbooks",
+      "https://learn.microsoft.com/en-us/azure/sentinel/roles"
+    ],
+    "documentationTitles": [
+      "Automate and run Microsoft Sentinel playbooks",
+      "Roles and permissions in the Microsoft Sentinel platform"
+    ],
+    "generatedAt": "2026-09-16T13:53:25.609Z",
+    "lastValidatedAt": "2026-09-16T14:24:24.475Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sc-500",
+      "security-engineering",
+      "sentinel-lighthouse-provider-security-insights-delegation"
+    ],
+    "conceptId": "sentinel-lighthouse-provider-security-insights-delegation",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "sc500-posture-playbooks",
+      "sc500-posture-sentinel-roles"
+    ],
+    "verificationNotes": "This is a fresh content review of the replacement identity-field problem, not an inherited approval of the former resource-group permission question. I read the complete playbooks and sentinel-roles MCP bodies, including the precise multitenant procedure and JSON example. The provider sign-in, customer playbook, customer permission already granted, and missing provider service application reproduce the documented MSSP boundary and independently establish b. The snippet is a valid JSON authorization entry, not a complete deployment template; its role GUID and principalIdDisplayName match the actual source example. principalId must be the enterprise application Object ID in the provider tenant, not a human, customer directory ID or target resource ID. The question asks which identifier to place, not for permission to self-deploy the template; existing human delegation does not assert Owner rights or replace administrator prerequisites for assignment. The incident-trigger context avoids alert/manual-execution differences. The source legacy direct-from-analytics-rule deprecation is unrelated, and the 2027 Azure-portal retirement is not asserted to have occurred. I independently inspected the supplemental feature matrix, which explicitly marks automation rules and running playbooks on incidents GA; no preview template-gallery or URBAC behavior is claimed. The full current guide supports automation/playbook implementation. Compared with canonical sc200-002, the already-satisfied customer grant moves the tested fact from service-role/resource-group authorization to the provider-side Lighthouse enterprise-application Object ID. sc500-129 concerns human authoring roles and sc500-140 trigger compatibility, not this extra delegation identity. No target duplicate or automated quality finding appears in the current 180-question comparison. The prompt and distinct identifier types make advanced difficulty marginal despite its specialized cross-tenant subject; both difficulty and distractor plausibility receive only 1.",
+    "requiresManualReview": false,
+    "confidenceReason": "The exact MSSP paragraph and adjacent official JSON example supply the provider-side application lookup, principalId semantics and fixed role GUID. The separate roles article corroborates why the human and target-resource alternatives cannot substitute for that service identity.",
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"principalId\": \"<value-to-select>\",\n  \"roleDefinitionId\": \"f4c81013-99ee-4d62-a7ee-b3f1f648599a\",\n  \"principalIdDisplayName\": \"Microsoft Sentinel Automation Contributors\"\n}",
+    "verifiedAt": "2026-09-16T14:30:48.819Z",
+    "sourceLastReviewedAt": "2026-09-16T13:53:25.609Z"
+  }
+]

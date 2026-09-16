@@ -1,0 +1,228 @@
+[
+  {
+    "id": "sc200-037",
+    "conceptId": "sc200-windows-file-indicator-hash-computation-prerequisite",
+    "question": "An Endpoint administrator prepares Windows 11 devices for indicators that block a known malicious PE executable. Defender Antivirus is active, behavior monitoring and cloud protection are enabled, cloud connectivity works, and Allow or block file is on. File hash computation is disabled. Which configuration addresses the remaining documented prerequisite?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Enable Show user details in the Endpoint advanced features."
+      },
+      {
+        "id": "b",
+        "text": "Enable File Hash Computation in the Defender Antivirus policy."
+      },
+      {
+        "id": "c",
+        "text": "Enable Automatically resolve alerts in the Endpoint advanced features."
+      },
+      {
+        "id": "d",
+        "text": "Enable Hide potential duplicate device records in advanced features."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Enable the Defender Antivirus File Hash Computation setting.",
+    "deepExplanation": "The Windows file-indicator prerequisites explicitly include enabled file hash computation in addition to active antivirus and cloud protection. The target is a PE executable, within the documented Windows file-type scope. Presentation and alert-resolution settings do not enable this antivirus prerequisite.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Show user details displays information such as names, titles and departments from Entra ID; it does not configure file hash computation.",
+      "c": "Automatically resolve alerts concerns alerts whose threats were remediated or absent, not the file-indicator hashing prerequisite.",
+      "d": "Hiding duplicate device records changes inventory visibility, not file hash computation on Windows devices."
+    },
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "featureStatus": "GA",
+    "tags": ["file-indicators", "hash-computation"],
+    "objectiveDomain": "manage-a-security-operations-environment",
+    "skill": "configure-automation-for-microsoft-defender-xdr-and-microsoft-sentinel",
+    "subskill": "Configure rules settings in Microsoft Defender for Endpoint",
+    "sourceIds": [
+      "sc200-exp-a-file-indicators",
+      "sc200-exp-a-advanced-features"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/defender-endpoint/indicator-file",
+      "https://learn.microsoft.com/en-us/defender-endpoint/advanced-features"
+    ],
+    "documentationTitles": [
+      "Create file indicators in Microsoft Defender for Endpoint",
+      "Configure advanced features in Defender for Endpoint"
+    ],
+    "generatedAt": "2026-09-16T13:53:53.936Z",
+    "lastValidatedAt": "2026-09-16T13:53:53.936Z",
+    "verificationStatus": "manual-review-required",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Technical key b independently confirmed, including Windows PE prerequisites and each unrelated advanced-feature control. GA claims do not rely on the file-alerting preview sections. No code exists. Withheld: realism 17/20 and distractorPlausibility 0; the stem gives away the setting and all alternatives are unrelated UI controls. Author must rewrite the discrimination, then a separate fresh review must assess the exact changed content. No hypothetical repair is approved.",
+    "confidenceReason": "Technical evidence is decisive, but factual correctness alone cannot meet the mandatory realism gate with these distractors."
+  },
+  {
+    "id": "sc200-054",
+    "conceptId": "sc200-workbook-asim-parser-multivendor-portability",
+    "question": "A Sentinel workbook must continue visualizing the same security event category as the organization adds vendors. The current and planned sources have appropriate ASIM normalization support. The author is choosing between a vendor-specific raw table and the category's ASIM parser for the workbook query. Which design best preserves source portability?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use only the current vendor's raw table and rely on the workbook save location to normalize later sources."
+      },
+      {
+        "id": "b",
+        "text": "Use the appropriate ASIM parser so the query can support current and future relevant data sources."
+      },
+      {
+        "id": "c",
+        "text": "Create a workbook clone for each vendor and assume each clone rewrites its own source query automatically."
+      },
+      {
+        "id": "d",
+        "text": "Increase the refresh frequency so vendor-specific column names become a shared schema."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "The workbook guidance recommends an ASIM parser rather than a built-in table to support relevant current and future sources.",
+    "deepExplanation": "The problem is source-schema coupling, not refresh latency or workbook placement. Under the stated normalization prerequisites, the parser supplies the appropriate source abstraction. A clone retains a workbook configuration for editing; neither cloning nor a faster refresh automatically rewrites vendor-specific logic.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A raw vendor table remains source-specific; the workbook's save location stores its JSON and does not normalize source schemas.",
+      "c": "Save as clones the workbook, but the documented workflow still requires editing its queries rather than automatically adapting them to another vendor.",
+      "d": "Refresh controls when data is re-queried, not the schema used by the query."
+    },
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "featureStatus": "GA",
+    "tags": ["workbook-query", "asim", "source-portability"],
+    "objectiveDomain": "manage-a-security-operations-environment",
+    "skill": "configure-the-microsoft-sentinel-siem-and-platform",
+    "subskill": "Create and configure Microsoft Sentinel workbooks",
+    "sourceIds": ["sc200-exp-a-workbooks"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/sentinel/monitor-your-data"
+    ],
+    "documentationTitles": [
+      "Visualize and monitor your data by using workbooks in Microsoft Sentinel"
+    ],
+    "generatedAt": "2026-09-16T13:53:53.936Z",
+    "lastValidatedAt": "2026-09-16T13:53:53.936Z",
+    "verificationStatus": "manual-review-required",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independently selected b from the raw new-workbook guidance, then checked cloning, refresh and save semantics against the full receipt. The correct technical claim and GA scope are sound, and there is no code. Withheld at 17/20 with distractorPlausibility 0: all wrong options invent automatic normalization unrelated to a viable query design. Author must replace the discrimination, and the repaired exact content needs a separate fresh review. No repaired version is approved.",
+    "confidenceReason": "The answer is well documented, but three noncredible alternatives prevent this version from meeting the mandatory realism standard."
+  },
+  {
+    "id": "sc200-060",
+    "question": "During a Sentinel onboarding investigation, a Windows host is added to a new targeted WEF subscription at 14:00. The relevant events from 13:00 are still present in its local log, and permissions and connectivity are correct. The collector receives new matching events but not that retained history. Which subscription choice addresses this boundary?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Reduce the delivery latency so events created before the subscription are automatically selected."
+      },
+      {
+        "id": "b",
+        "text": "Enable the targeted subscription’s read existing events option to include retained matching history."
+      },
+      {
+        "id": "c",
+        "text": "Increase the collector’s heartbeat interval so the client starts from the beginning of its log."
+      },
+      {
+        "id": "d",
+        "text": "Recreate the subscription with its default existing-event behavior and keep the query unchanged."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "WEF subscriptions forward events generated after the client receives the subscription by default. Reading existing events must be enabled for the retained history.",
+    "deepExplanation": "Microsoft recommends this option for a targeted subscription used in investigation. It allows the subscription to collect already-recorded matching events; it cannot recover events that were never generated or have been overwritten. Delivery latency and heartbeat settings solve transport-timing problems, not the historical selection boundary.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Delivery latency changes when selected events are sent; it does not enable selection of pre-subscription history.",
+      "c": "A heartbeat reports client activity and is not the switch for reading earlier log records.",
+      "d": "The default behavior remains future-event forwarding, so recreating without changing the historical option leaves the same boundary."
+    },
+    "objectiveDomain": "manage-a-security-operations-environment",
+    "skill": "ingest-data-into-the-microsoft-sentinel-siem-and-platform",
+    "subskill": "Plan and configure collection of Windows Security events by using Windows Event Forwarding (WEF)",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["sc200-exp-b-wef-design"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/windows/security/operating-system-security/device-management/use-windows-event-forwarding-to-assist-in-intrusion-detection"
+    ],
+    "documentationTitles": [
+      "Use Windows Event Forwarding to help with intrusion detection"
+    ],
+    "generatedAt": "2026-09-16T13:54:32.610Z",
+    "lastValidatedAt": "2026-09-16T13:54:32.610Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sc-200",
+      "data-ingestion",
+      "wef-targeted-subscription-retained-preexisting-events"
+    ],
+    "conceptId": "sc200-wef-targeted-subscription-retained-preexisting-events",
+    "verificationStatus": "manual-review-required",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "sourceLastReviewedAt": "2026-09-16T13:46:54.415Z",
+    "verificationNotes": "Withheld exact authored item, not its hypothetical repaired version. The raw WEF article documents read-existing at targeted subscription setup and bookmark-based progress. Because the stem already receives newer matching events, option b's sufficiency for replaying older history is not established. Author must scope the choice before first subscription receipt/no existing bookmark or ground an explicit supported replay procedure; a fresh independent review is required. Separately the exact Windows source currently fails the shared URL-shape schema.",
+    "confidenceReason": "Evidence supports the initial historical-reading switch but does not resolve the running subscription's bookmark boundary, so no uniquely sufficient current repair can be attested."
+  },
+  {
+    "id": "sc200-120",
+    "conceptId": "sc200-ediscovery-sensitivetype-excludes-mailbox-content",
+    "question": "A responder uses the correct GUID for a custom sensitive information type in an eDiscovery SensitiveType restriction. The search is scoped only to Exchange Online mailboxes containing email and Teams message compliance records. A known message contains the relevant sensitive data, but the query returns no hits. Which documented limitation prevents treating this result as proof that the data is absent?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "SensitiveType searching is not supported for sensitive content at rest in Exchange mailboxes, including Teams messages stored there."
+      },
+      {
+        "id": "b",
+        "text": "Custom sensitive information types require their display name rather than their GUID in a SensitiveType restriction."
+      },
+      {
+        "id": "c",
+        "text": "SensitiveType searching applies only to Exchange mailboxes and excludes SharePoint and OneDrive documents."
+      },
+      {
+        "id": "d",
+        "text": "Teams message compliance records are searched in SharePoint sites rather than mailboxes."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "SensitiveType search is documented for classified site content, not for content at rest in Exchange mailboxes.",
+    "deepExplanation": "Using the correct custom-type GUID addresses the custom identifier requirement, but not the content-location limitation. Teams message compliance copies in mailboxes share that limitation. A no-hit result from an unsupported property/location combination cannot establish absence of sensitive data.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The documentation requires an ID for custom sensitive information types; using their names is the unsupported alternative.",
+      "c": "This reverses the documented boundary: SharePoint and OneDrive support the property, while Exchange content at rest does not.",
+      "d": "The documentation explicitly includes mailbox-stored Teams 1:1, group-chat, and channel-message content in the limitation."
+    },
+    "skill": "investigate-microsoft-365-activities-to-identify-threats",
+    "subskill": "Investigate threats by using Content search in Microsoft Purview eDiscovery",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["sc200-exp-d-edisc-sites"],
+    "featureStatus": "GA",
+    "tags": [
+      "purview-ediscovery",
+      "sensitivetype",
+      "mailbox",
+      "search-limitations"
+    ],
+    "objectiveDomain": "respond-to-security-incidents",
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/purview/edisc-search-sites"
+    ],
+    "documentationTitles": ["Finding content in sites in eDiscovery"],
+    "generatedAt": "2026-09-16T13:51:14.857Z",
+    "lastValidatedAt": "2026-09-16T13:51:14.857Z",
+    "verificationStatus": "manual-review-required",
+    "requiresManualReview": true,
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent key a is supported and all four options can be assessed, but this exact authored record is NOT approved. whyOtherAnswersAreWrong.b says that using custom-type names is unsupported, and deepExplanation calls the GUID an identifier requirement. The cited raw edisc-sites receipt states ID-only under Limitations, yet later Sensitive type - required says a custom name can be used, and the complex-query table repeats that allowance. The narrower fact that GUIDs are supported disproves b without resolving the broader naming claim. Require author repair or additional authoritative reconciliation and a fresh independent review of the changed exact record; no authored text has been repaired here.",
+    "confidenceReason": "The mailbox limitation uniquely supports a, but conflicting custom-name guidance prevents an evidence-complete approval of the authored explanations.",
+    "sourceLastReviewedAt": "2026-09-16T13:46:41.443Z"
+  }
+]

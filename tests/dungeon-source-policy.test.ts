@@ -139,6 +139,13 @@ describe('credential-specific official source policies', () => {
       'defender-xdr',
       'defender-endpoint',
       'defender-cloud-apps',
+      'defender-office-365',
+      'defender-for-identity',
+      'purview',
+      'graph',
+      'sharepoint',
+      'windows/security',
+      'copilot/security',
       'security',
       'microsoft-365',
     ]) {
@@ -168,9 +175,62 @@ describe('credential-specific official source policies', () => {
       'https://learn.microsoft.com/en-us/private/internal-document',
       'https://learn.microsoft.com/en-us/entra/assessment/test',
       'https://learn.microsoft.com/en-us/security/search',
+      'https://learn.microsoft.com/en-us/windows/fixture-document',
+      'https://learn.microsoft.com/en-us/copilot/fixture-document',
+      'https://learn.microsoft.com/en-us/purview/assessment/test',
+      'https://learn.microsoft.com/en-us/copilot/security/knowledge-check',
+      'https://learn.microsoft.com/en-us/graph/search',
     ])
       expect(officialSourceUrlSchema.safeParse(url).success).toBe(false);
   });
+  it.each([
+    'deploy-vulnerability-assessment-defender-vulnerability-management',
+    'auto-deploy-vulnerability-assessment',
+  ])(
+    'recognizes the captured Defender product article %s, not exam assessments',
+    (article) => {
+      const url = `https://learn.microsoft.com/en-us/azure/defender-for-cloud/${article}`;
+      const policy: SourcePolicyContext = {
+        credentialId: 'sc-500',
+        provider: 'Microsoft',
+        sourceAllowlist: [
+          {
+            host: 'learn.microsoft.com',
+            pathPrefixes: [],
+            exactUrls: [url],
+          },
+        ],
+      };
+      expect(officialSourceUrlSchema.safeParse(url).success).toBe(true);
+      expect(isAllowedSourceUrl(url, policy)).toBe(true);
+      expect(safeSourceUrl(url, false, policy).href).toBe(url);
+      expect(learnUrlSchema.safeParse(url).success).toBe(false);
+      expect(() => safeSourceUrl(url)).toThrow();
+      expect(
+        isAllowedSourceUrl(url, { ...policy, credentialId: 'dp-700' }),
+      ).toBe(false);
+      expect(isAllowedSourceUrl(url, { ...policy, sourceAllowlist: [] })).toBe(
+        false,
+      );
+      for (const candidate of [
+        `${url}/assessment`,
+        `${url}/practice-test`,
+        `${url}?view=assessment`,
+        `${url}-practice-assessment`,
+        url.replace('/en-us/', '/fr-fr/'),
+        url.replace('learn.microsoft.com', 'learn.microsoft.com.example.test'),
+        url.replace('https:', 'http:'),
+        'https://learn.microsoft.com/en-us/azure/defender-for-cloud/assessment',
+        'https://learn.microsoft.com/en-us/azure/defender-for-cloud/other-vulnerability-assessment',
+        'https://learn.microsoft.com/en-us/training/modules/security/practice-assessment',
+      ]) {
+        expect(officialSourceUrlSchema.safeParse(candidate).success).toBe(
+          false,
+        );
+        expect(() => safeSourceUrl(candidate, false, policy)).toThrow();
+      }
+    },
+  );
   it('permits an exact GitHub competency API as taxonomy/context metadata but never as an implementation citation', () => {
     const { raw } = dungeonFixture();
     const outline = 'https://learn.github.com/api/certifications/COPILOT';

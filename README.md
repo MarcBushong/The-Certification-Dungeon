@@ -77,13 +77,14 @@ package remain sealed even when their identity and current outline are verified.
 | DP-700: The Fabric Depths       |                          162 | Study and Boss Gauntlet      |
 | DP-800: The Database Deeps      |                           39 | Study                        |
 | AZ-104: The Infrastructure Keep |                           30 | Study                        |
-| SC-200: The Sentinel Watch      |                           30 | Study                        |
+| SC-200: The Sentinel Watch      |                          150 | Study and Boss Gauntlet      |
+| SC-500: The Security Citadel    |                          150 | Study and Boss Gauntlet      |
 | AI-103: The AI Workshop         |                          116 | Study and Boss Gauntlet      |
 | AI-200: The Application Forge   |                          150 | Study and Boss Gauntlet      |
 | GH-300: The Copilot Spire       |                          149 | Study and Boss Gauntlet      |
 | GH-600: The Agentic Workshop    |                          136 | Beta Study and Boss Gauntlet |
 
-**812 playable verified encounters**. GH-300 retains three rejected duplicates
+**1,082 playable verified encounters**. GH-300 retains three rejected duplicates
 and three manual-review records outside gameplay. GH-600 has **136 fully
 three-pass-reviewed questions** available for beta study and 13 rejected
 candidates outside gameplay. Its card, setup, and question metadata retain the
@@ -109,6 +110,31 @@ historical review snapshots. See [GH-600 beta evidence](docs/gh600-beta-availabi
 for its unchanged beta identity and explicit study authorization. The
 [initial dungeon implementation report](docs/dungeon-implementation-report.md)
 records the earlier platform baseline.
+
+### SC-200 and SC-500 security banks
+
+Both security dungeons contain **150 independently reviewed original questions**
+and support Study, Boss Gauntlets, filtered practice and eligible multi-dungeon
+raids. SC-200 preserves its original 30 encounters and adds 120; SC-500 adds a
+new 150-question package. Existing completed results and local progress are not
+reset.
+
+SC-200 covers all **nine skills and 54 subskills** in its **July 28, 2026**
+objective map, with 96 Advanced/Expert questions. SC-500 covers all **12 skills
+and 87 subskills**, with 61 Advanced questions. Its published outline is undated:
+the version records the actual **September 16, 2026** retrieval and content
+hash, not an invented effective date. Current-offering evidence and the
+maintainer's confirmation that SC-500 has completed beta are recorded separately
+from technical question review; neither a scheduling link nor that confirmation
+approves question content.
+
+Both packages use actual Microsoft Learn MCP retrievals, credential-specific
+official source approvals, independent per-option attestations and
+objective-bound realism rubrics. Preview features are labelled. Repaired
+versions and earlier review decisions remain in each package's authoring
+history. See the [SC-200 coverage report](src/content/exams/sc-200/content-coverage.md)
+and [SC-500 coverage report](src/content/exams/sc-500/content-coverage.md) for
+source/review dates, distributions and retained editorial warnings.
 
 ### DP-800 limited Study release
 
