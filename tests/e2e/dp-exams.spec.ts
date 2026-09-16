@@ -1,7 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
 import { loadTestDungeonPackage } from './dungeon-fixtures';
+import AxeBuilder from '@axe-core/playwright';
 import { validationMetadataSchema } from '../../src/features/dungeons/threePass';
 import { scoreSession } from '../../src/features/results/scoring';
+import { result as savedHistoryFixture } from '../fixtures';
 import {
   freshData,
   savedDataSchema,
@@ -34,7 +36,7 @@ test('DP-800 Advanced Study uses reviewed facts, exact tomes, objective scores a
   const runCount = Math.min(requestedCount, advancedConcepts);
   expect(runCount).toBeGreaterThan(0);
   const stages = validationMetadataSchema.parse(dungeon.validationMetadata);
-  await page.goto('./');
+  await page.goto('./', { waitUntil: 'networkidle' });
   await page
     .locator('#dungeon-dp-800')
     .getByRole('button', { name: 'Descend', exact: true })
@@ -167,7 +169,8 @@ test('DP-800 Advanced Study uses reviewed facts, exact tomes, objective scores a
     (await saved(page)).recentQuestionIdsByCredential['dp-420'] ?? [],
   ).toEqual([]);
 
-  await page.goto('./');
+  await page.getByRole('link', { name: 'Dungeon map', exact: true }).click();
+  await page.waitForURL(/#\/$/);
   await page
     .locator('#dungeon-dp-700')
     .getByRole('button', { name: 'Descend', exact: true })
@@ -187,7 +190,7 @@ test('DP-800 Boss mode enforces real readiness and defers answers', async ({
   page,
 }) => {
   const dungeon = loadDp800();
-  await page.goto('./');
+  await page.goto('./', { waitUntil: 'networkidle' });
   const boss = page
     .locator('#dungeon-dp-800')
     .getByRole('button', { name: 'Boss Gauntlet', exact: true });
@@ -215,10 +218,51 @@ test('DP-800 Boss mode enforces real readiness and defers answers', async ({
   await expect(page.locator('.question-feedback')).toHaveCount(0);
 });
 
+test('DP-420 shows an accessible future-outline disclaimer without opening gameplay', async ({
+  page,
+}, testInfo) => {
+  await page.goto('./', { waitUntil: 'networkidle' });
+  await expect(page.locator('#dungeon-dp-420')).toBeVisible();
+  const notice = page.getByRole('complementary', {
+    name: 'DP-420 exam update',
+  });
+  await expect(notice).toContainText('October 6, 2026');
+  await expect(notice).toContainText('not a verified current exam outline');
+  await expect(notice).toContainText('no automatic unlock');
+  const guide = notice.getByRole('link', {
+    name: /^Official DP-420 study guide/,
+  });
+  await expect(guide).toHaveAttribute(
+    'href',
+    'https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-420',
+  );
+  await expect(guide).toHaveAttribute('target', '_blank');
+  await expect(guide).toHaveAttribute('rel', 'noopener noreferrer');
+  expect(
+    await notice.evaluate(
+      (element) => element.scrollWidth <= element.clientWidth,
+    ),
+  ).toBe(true);
+  const accessibility = await new AxeBuilder({ page })
+    .include('#dungeon-dp-420')
+    .analyze();
+  expect(accessibility.violations).toEqual([]);
+  await page.locator('#dungeon-dp-420').screenshot({
+    path: testInfo.outputPath('dp420-disclaimer.png'),
+  });
+  const card = page.locator('#dungeon-dp-420');
+  await expect(
+    card.getByRole('button', { name: 'Sealed', exact: true }),
+  ).toBeDisabled();
+  await expect(
+    card.getByRole('button', { name: 'Boss Gauntlet', exact: true }),
+  ).toBeDisabled();
+});
+
 test('DP-420 cannot be opened by persisted setup configuration or keyboard navigation', async ({
   page,
 }) => {
-  await page.goto('./');
+  await page.goto('./', { waitUntil: 'networkidle' });
   await expect(page.locator('#dungeon-dp-420')).toBeVisible();
   const before = freshData();
   await page.evaluate(
@@ -240,7 +284,13 @@ test('DP-420 cannot be opened by persisted setup configuration or keyboard navig
     { key: STORAGE_KEY, data: before },
   );
   await page.goto('#/setup');
-  await page.reload();
+  await page.clock.setFixedTime(new Date('2026-10-06T12:00:00Z'));
+  await page.reload({ waitUntil: 'networkidle' });
+  const notice = page.getByRole('complementary', {
+    name: 'DP-420 exam update',
+  });
+  await expect(notice).toContainText('October 6, 2026');
+  await expect(notice).toContainText('DP-420 has no reviewed questions');
   await expect(
     page.getByText('This expedition is sealed.', { exact: false }),
   ).toBeVisible();
@@ -251,4 +301,96 @@ test('DP-420 cannot be opened by persisted setup configuration or keyboard navig
   await page.keyboard.press('Enter');
   await expect(page.locator('.question-panel')).toHaveCount(0);
   expect((await saved(page)).history).toEqual(before.history);
+});
+
+test('DP-420 upcoming preview supports keyboard exploration and refresh without changing study data', async ({
+  page,
+}, testInfo) => {
+  const initial = freshData();
+  const history = savedHistoryFixture();
+  const seed = savedDataSchema.parse({
+    ...initial,
+    config: { ...initial.config, questionCount: 10 },
+    history: [history],
+    recentQuestionIds: history.questions.map((question) => question.id),
+    favoriteCredentialIds: ['dp-700', 'dp-800'],
+  });
+  await page.addInitScript(
+    ({ key, data }) => {
+      if (localStorage.getItem(key) === null)
+        localStorage.setItem(key, JSON.stringify(data));
+    },
+    { key: STORAGE_KEY, data: seed },
+  );
+  await page.goto('./', { waitUntil: 'networkidle' });
+  const before = await saved(page);
+  await page
+    .locator('#dungeon-dp-420')
+    .getByRole('link', { name: 'Preview upcoming outline', exact: true })
+    .click();
+  await page.waitForURL(/#\/dungeons\/dp-420\/preview$/);
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'The Cosmos Vault' }),
+  ).toBeVisible();
+  await expect(
+    page.getByText('Read-only preview', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('complementary', { name: 'DP-420 exam update' }),
+  ).toContainText('not a verified current exam outline');
+  const firstSkill = page.locator('.preview-skill').first();
+  await firstSkill.locator('summary').focus();
+  await page.keyboard.press('Enter');
+  await expect(firstSkill).toHaveAttribute('open', '');
+  await expect(
+    firstSkill.getByText('Evaluate consistency levels', { exact: true }),
+  ).toBeVisible();
+  await page.keyboard.press('Tab');
+  await expect(page.locator('.preview-skill summary').nth(1)).toBeFocused();
+  await expect(page.locator('.preview-domain')).toHaveCount(3);
+  await expect(page.locator('.preview-skill')).toHaveCount(12);
+  await expect(page.locator('.preview-skill li')).toHaveCount(56);
+  const resources = page.getByRole('complementary', {
+    name: 'Official study resources',
+  });
+  await expect(resources).toContainText('October 6, 2026');
+  await expect(resources).toContainText('2026-09-14T18:19:19.756Z');
+  await expect(resources.getByRole('link')).toHaveCount(3);
+  for (const link of await resources.getByRole('link').all()) {
+    await expect(link).toHaveAttribute(
+      'href',
+      /^https:\/\/learn\.microsoft\.com\/en-us\//,
+    );
+    await expect(link).toHaveAttribute('target', '_blank');
+    await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  }
+  const accessibility = await new AxeBuilder({ page })
+    .include('#main-content')
+    .analyze();
+  expect(accessibility.violations).toEqual([]);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({
+    path: testInfo.outputPath('dp420-outline-preview.png'),
+    fullPage: true,
+  });
+  await page.clock.setFixedTime(new Date('2026-10-06T12:00:00Z'));
+  await page.reload({ waitUntil: 'networkidle' });
+  await expect(
+    page.getByText('Read-only preview', { exact: true }),
+  ).toBeVisible();
+  await expect(page.locator('.question-panel')).toHaveCount(0);
+  await page.getByRole('link', { name: 'Back to DP-420', exact: true }).click();
+  const card = page.locator('#dungeon-dp-420');
+  await expect(
+    card.getByRole('button', { name: 'Sealed', exact: true }),
+  ).toBeDisabled();
+  await expect(
+    card.getByRole('button', { name: 'Boss Gauntlet', exact: true }),
+  ).toBeDisabled();
+  const after = await saved(page);
+  expect(after).toEqual(before);
 });

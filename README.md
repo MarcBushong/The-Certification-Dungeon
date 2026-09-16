@@ -132,11 +132,25 @@ minimum; filtered runs are visibly capped to their real eligible pool.
 Earlier rejected and manual-review versions remain archived; their authored
 repairs restarted all three passes rather than inheriting approval.
 
-**DP-420 content is deferred.** It retains a null current objective version.
-Its retrieved **October 6,
-2026** outline is prospective and stored outside gameplay; both modes remain
-locked. This is an unresolved current-map/content gap, not a claim that the
-credential itself is future-only.
+**DP-420 has an accessible, unscored upcoming-outline preview.** Choose
+**Preview upcoming outline** on its card, or visit `#/dungeons/dp-420/preview`,
+to browse the **October 6, 2026** curriculum and official study resources.
+The preview presents 3 objective areas, 12 skills and 56 subskills. Its saved
+outline retrieval date is shown separately from the announced effective date.
+Browsing or refreshing does not create a quiz, change your selected dungeon,
+or modify saved scores, history or recent-question lists.
+
+**The DP-420 question bank remains deferred.** The credential is active, but its
+current objective version remains null and there are no reviewed questions.
+The prospective snapshot stays outside the gameplay registry; Study and Boss
+remain locked. This is a current-map/content gap, not a future-only credential.
+
+An exam-update disclaimer on the DP-420 card, preview, setup and forge explains that the
+guide captured on **September 15, 2026** provides a complete outline only for the
+**October 6, 2026** update and links to the official guide. The disclaimer does
+not authorize unreviewed gameplay or unlock either mode automatically on that
+date; a verified current map and independently reviewed encounters are still
+required.
 
 See the [expansion progress and historical blocked report](docs/dp-expansion-report.md) for exact
 counts, executed checks, outstanding acceptance gates and source evidence, and

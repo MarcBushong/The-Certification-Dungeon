@@ -81,6 +81,7 @@ export const credentialSchema = z.object({
   minimumPlayableQuestionCount: z.number().int().min(25),
   contentReadiness: z.enum(contentReadinessValues),
   disclaimer: text,
+  examUpdateNotice: text.optional(),
   themeMetadata: z.object({
     biome: text,
     bossName: text,

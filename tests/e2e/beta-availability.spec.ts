@@ -169,7 +169,7 @@ for (const mode of modes) {
     expect(score.byDungeon.map((entry) => entry.id).sort()).toEqual(
       mode.runMode === 'raid' ? ['dp-700', betaId].sort() : [betaId],
     );
-    await page.reload();
+    await page.reload({ waitUntil: 'networkidle' });
     await expect(
       page.getByRole('heading', { name: 'Expedition complete.' }),
     ).toBeVisible();

@@ -360,7 +360,7 @@ for (const run of importedRuns) {
       expect(result.objectiveSnapshots?.[id]).toEqual(dungeon.taxonomy);
       expect(state.recentQuestionIdsByCredential[id].length).toBeGreaterThan(0);
     }
-    await page.reload();
+    await page.reload({ waitUntil: 'networkidle' });
     await expect(
       page.getByRole('heading', { name: 'Expedition complete.' }),
     ).toBeVisible();
