@@ -22,465 +22,465 @@ Report created: 2026-09-16T15:09:29.191Z. This is not a retrieval or verificatio
 
 ## Verification status (effective, schema-valid candidates)
 
-| Category | Questions |
-| --- | ---: |
-| candidate | 0 |
-| verified | 150 |
-| manual-review-required | 0 |
-| rejected | 0 |
-| stale | 0 |
+| Category               | Questions |
+| ---------------------- | --------: |
+| candidate              |         0 |
+| verified               |       150 |
+| manual-review-required |         0 |
+| rejected               |         0 |
+| stale                  |         0 |
 
 ## Playable domain counts
 
-| Category | Questions |
-| --- | ---: |
-| manage-a-security-operations-environment | 62 |
-| respond-to-security-incidents | 55 |
-| perform-threat-hunting | 33 |
+| Category                                 | Questions |
+| ---------------------------------------- | --------: |
+| manage-a-security-operations-environment |        62 |
+| respond-to-security-incidents            |        55 |
+| perform-threat-hunting                   |        33 |
 
 ## Playable skill counts
 
-| Category | Questions |
-| --- | ---: |
-| configure-automation-for-microsoft-defender-xdr-and-microsoft-sentinel | 23 |
-| configure-the-microsoft-sentinel-siem-and-platform | 7 |
-| ingest-data-into-the-microsoft-sentinel-siem-and-platform | 18 |
-| configure-detections | 14 |
-| respond-to-alerts-and-incidents-in-microsoft-defender-xdr | 26 |
-| respond-to-alerts-and-incidents-in-microsoft-defender-for-endpoint | 15 |
-| investigate-microsoft-365-activities-to-identify-threats | 14 |
-| detect-threats-by-using-microsoft-defender-xdr | 19 |
-| detect-threats-by-using-the-microsoft-sentinel-platform | 14 |
+| Category                                                               | Questions |
+| ---------------------------------------------------------------------- | --------: |
+| configure-automation-for-microsoft-defender-xdr-and-microsoft-sentinel |        23 |
+| configure-the-microsoft-sentinel-siem-and-platform                     |         7 |
+| ingest-data-into-the-microsoft-sentinel-siem-and-platform              |        18 |
+| configure-detections                                                   |        14 |
+| respond-to-alerts-and-incidents-in-microsoft-defender-xdr              |        26 |
+| respond-to-alerts-and-incidents-in-microsoft-defender-for-endpoint     |        15 |
+| investigate-microsoft-365-activities-to-identify-threats               |        14 |
+| detect-threats-by-using-microsoft-defender-xdr                         |        19 |
+| detect-threats-by-using-the-microsoft-sentinel-platform                |        14 |
 
 ## Playable subskill counts
 
-| Category | Questions |
-| --- | ---: |
-| Configure email notifications in Microsoft Defender XDR, including incidents, actions, and threat analytics | 3 |
-| Configure alert notifications in Microsoft Defender XDR, including tuning, suppression, and correlation | 2 |
-| Configure Microsoft Defender for Endpoint advanced features | 1 |
-| Configure rules settings in Microsoft Defender for Endpoint | 2 |
-| Configure custom data collection in Microsoft Defender for Endpoint | 2 |
-| Configure security policies for Microsoft Defender for Endpoint, including attack surface reduction (ASR) rules | 2 |
-| Manage automated investigation and response capabilities in Microsoft Defender XDR | 2 |
-| Configure automatic attack disruption in Microsoft Defender XDR | 1 |
-| Configure and manage device groups, permissions, and automation levels in Microsoft Defender for Endpoint | 2 |
-| Create and configure automation rules in Microsoft Sentinel | 3 |
-| Create and configure Microsoft Sentinel playbooks | 3 |
-| Specify Microsoft Sentinel roles | 2 |
-| Manage data retention for XDR and Microsoft Sentinel tables, including Analytics, Data lake, and XDR tiers | 2 |
-| Create and configure Microsoft Sentinel workbooks | 2 |
-| Optimize the Microsoft Sentinel platform, including SOC optimization recommendations | 1 |
-| Select data connectors based on data source requirements, including Windows logs and security events | 2 |
-| Configure collection of Windows Security events by using Windows Security Events via AMA, including data collection rules | 2 |
-| Plan and configure collection of Windows Security events by using Windows Event Forwarding (WEF) | 2 |
-| Plan and configure Syslog via AMA and Common Event Format (CEF) via AMA connectors | 5 |
-| Configure collection of Azure activities by using Azure Policy and resource diagnostic settings | 2 |
-| Ingest threat indicators into Microsoft Sentinel | 3 |
-| Create custom log tables in the workspace to store ingested data | 2 |
-| Create custom detection rules by using Advanced Hunting in Microsoft Defender XDR | 3 |
-| Manage custom detection rules in Microsoft Defender XDR | 3 |
-| Configure and manage analytics rules in Microsoft Sentinel SIEM, including scheduled, near-real time (NRT), threat intelligence, and machine learning | 4 |
-| Analyze attack vector coverage by using the MITRE ATT&CK matrix | 2 |
-| Configure anomalies in Microsoft Sentinel | 2 |
-| Investigate and remediate threats by using Microsoft Defender for Office 365, including automatic attack disruption | 4 |
-| Investigate and remediate threats or compromised entities identified by Microsoft Purview | 3 |
-| Investigate and remediate alerts and incidents identified by Microsoft Defender for Cloud workload protections | 2 |
-| Investigate and remediate security risks identified by Microsoft Defender for Cloud Apps | 3 |
-| Investigate and remediate compromised identities that are identified by Microsoft Entra ID | 3 |
-| Investigate and remediate security alerts from Microsoft Defender for Identity | 2 |
-| Investigate and remediate alerts and incidents identified by Microsoft Sentinel | 2 |
-| Investigate incidents by using agentic AI, including embedded Microsoft Security Copilot | 2 |
-| Investigate complex attacks, such as multi-stage, multi-domain, and lateral movement | 3 |
-| Manage security incidents by using case management | 2 |
-| Investigate device timelines | 2 |
-| Perform actions on the device, including live response and collecting investigation packages | 10 |
-| Perform evidence and entity investigation | 2 |
-| Investigate and remediate incidents identified by automatic attack disruption | 1 |
-| Investigate threats by using Microsoft Purview Audit | 5 |
-| Investigate threats by using Content search in Microsoft Purview eDiscovery | 5 |
-| Investigate threats by using Microsoft Graph activity logs | 4 |
-| Identify the appropriate table to use in a KQL query | 3 |
-| Identify threats by using Kusto Query Language (KQL) | 4 |
-| Create Advanced Hunting queries | 6 |
-| Interpret threat analytics in Microsoft Defender XDR | 2 |
-| Create hunting graphs, including blast radius | 2 |
-| Analyze relationships between entities by using Sentinel Graph | 2 |
-| Create and monitor hunting queries | 3 |
-| Create and manage KQL jobs in Data lake | 4 |
-| Create and manage Summary rule tables for querying | 3 |
-| Hunt for threats by using Notebooks, including connection to the Sentinel MCP Server | 4 |
+| Category                                                                                                                                              | Questions |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------: |
+| Configure email notifications in Microsoft Defender XDR, including incidents, actions, and threat analytics                                           |         3 |
+| Configure alert notifications in Microsoft Defender XDR, including tuning, suppression, and correlation                                               |         2 |
+| Configure Microsoft Defender for Endpoint advanced features                                                                                           |         1 |
+| Configure rules settings in Microsoft Defender for Endpoint                                                                                           |         2 |
+| Configure custom data collection in Microsoft Defender for Endpoint                                                                                   |         2 |
+| Configure security policies for Microsoft Defender for Endpoint, including attack surface reduction (ASR) rules                                       |         2 |
+| Manage automated investigation and response capabilities in Microsoft Defender XDR                                                                    |         2 |
+| Configure automatic attack disruption in Microsoft Defender XDR                                                                                       |         1 |
+| Configure and manage device groups, permissions, and automation levels in Microsoft Defender for Endpoint                                             |         2 |
+| Create and configure automation rules in Microsoft Sentinel                                                                                           |         3 |
+| Create and configure Microsoft Sentinel playbooks                                                                                                     |         3 |
+| Specify Microsoft Sentinel roles                                                                                                                      |         2 |
+| Manage data retention for XDR and Microsoft Sentinel tables, including Analytics, Data lake, and XDR tiers                                            |         2 |
+| Create and configure Microsoft Sentinel workbooks                                                                                                     |         2 |
+| Optimize the Microsoft Sentinel platform, including SOC optimization recommendations                                                                  |         1 |
+| Select data connectors based on data source requirements, including Windows logs and security events                                                  |         2 |
+| Configure collection of Windows Security events by using Windows Security Events via AMA, including data collection rules                             |         2 |
+| Plan and configure collection of Windows Security events by using Windows Event Forwarding (WEF)                                                      |         2 |
+| Plan and configure Syslog via AMA and Common Event Format (CEF) via AMA connectors                                                                    |         5 |
+| Configure collection of Azure activities by using Azure Policy and resource diagnostic settings                                                       |         2 |
+| Ingest threat indicators into Microsoft Sentinel                                                                                                      |         3 |
+| Create custom log tables in the workspace to store ingested data                                                                                      |         2 |
+| Create custom detection rules by using Advanced Hunting in Microsoft Defender XDR                                                                     |         3 |
+| Manage custom detection rules in Microsoft Defender XDR                                                                                               |         3 |
+| Configure and manage analytics rules in Microsoft Sentinel SIEM, including scheduled, near-real time (NRT), threat intelligence, and machine learning |         4 |
+| Analyze attack vector coverage by using the MITRE ATT&CK matrix                                                                                       |         2 |
+| Configure anomalies in Microsoft Sentinel                                                                                                             |         2 |
+| Investigate and remediate threats by using Microsoft Defender for Office 365, including automatic attack disruption                                   |         4 |
+| Investigate and remediate threats or compromised entities identified by Microsoft Purview                                                             |         3 |
+| Investigate and remediate alerts and incidents identified by Microsoft Defender for Cloud workload protections                                        |         2 |
+| Investigate and remediate security risks identified by Microsoft Defender for Cloud Apps                                                              |         3 |
+| Investigate and remediate compromised identities that are identified by Microsoft Entra ID                                                            |         3 |
+| Investigate and remediate security alerts from Microsoft Defender for Identity                                                                        |         2 |
+| Investigate and remediate alerts and incidents identified by Microsoft Sentinel                                                                       |         2 |
+| Investigate incidents by using agentic AI, including embedded Microsoft Security Copilot                                                              |         2 |
+| Investigate complex attacks, such as multi-stage, multi-domain, and lateral movement                                                                  |         3 |
+| Manage security incidents by using case management                                                                                                    |         2 |
+| Investigate device timelines                                                                                                                          |         2 |
+| Perform actions on the device, including live response and collecting investigation packages                                                          |        10 |
+| Perform evidence and entity investigation                                                                                                             |         2 |
+| Investigate and remediate incidents identified by automatic attack disruption                                                                         |         1 |
+| Investigate threats by using Microsoft Purview Audit                                                                                                  |         5 |
+| Investigate threats by using Content search in Microsoft Purview eDiscovery                                                                           |         5 |
+| Investigate threats by using Microsoft Graph activity logs                                                                                            |         4 |
+| Identify the appropriate table to use in a KQL query                                                                                                  |         3 |
+| Identify threats by using Kusto Query Language (KQL)                                                                                                  |         4 |
+| Create Advanced Hunting queries                                                                                                                       |         6 |
+| Interpret threat analytics in Microsoft Defender XDR                                                                                                  |         2 |
+| Create hunting graphs, including blast radius                                                                                                         |         2 |
+| Analyze relationships between entities by using Sentinel Graph                                                                                        |         2 |
+| Create and monitor hunting queries                                                                                                                    |         3 |
+| Create and manage KQL jobs in Data lake                                                                                                               |         4 |
+| Create and manage Summary rule tables for querying                                                                                                    |         3 |
+| Hunt for threats by using Notebooks, including connection to the Sentinel MCP Server                                                                  |         4 |
 
 ## Playable difficulty counts
 
-| Category | Questions |
-| --- | ---: |
-| beginner | 6 |
-| intermediate | 48 |
-| advanced | 91 |
-| expert | 5 |
+| Category     | Questions |
+| ------------ | --------: |
+| beginner     |         6 |
+| intermediate |        48 |
+| advanced     |        91 |
+| expert       |         5 |
 
 ## Playable complexity counts
 
-| Category | Questions |
-| --- | ---: |
-| concept-recall | 1 |
-| technical-implementation | 50 |
-| scenario-based | 31 |
-| troubleshooting | 55 |
-| architecture-design | 13 |
+| Category                 | Questions |
+| ------------------------ | --------: |
+| concept-recall           |         1 |
+| technical-implementation |        50 |
+| scenario-based           |        31 |
+| troubleshooting          |        55 |
+| architecture-design      |        13 |
 
 ## Playable type counts
 
-| Category | Questions |
-| --- | ---: |
-| single-select | 33 |
-| multi-select | 21 |
-| true-false | 0 |
-| scenario | 81 |
-| code | 15 |
+| Category      | Questions |
+| ------------- | --------: |
+| single-select |        33 |
+| multi-select  |        21 |
+| true-false    |         0 |
+| scenario      |        81 |
+| code          |        15 |
 
 ## Playable source counts
 
-| Category | Questions |
-| --- | ---: |
-| sc200-sentinel-roles | 4 |
-| sc200-playbooks | 2 |
-| sc200-automation | 2 |
-| sc200-nrt | 3 |
-| sc200-custom-detections | 3 |
-| sc200-ama-architecture | 3 |
-| sc200-ama-collection | 1 |
-| sc200-device-response | 5 |
-| sc200-live-response | 4 |
-| sc200-action-center | 2 |
-| sc200-process-events | 3 |
-| sc200-network-events | 4 |
-| sc200-innerunique | 1 |
-| sc200-inner | 1 |
-| sc200-arg-max | 1 |
-| sc200-summarize | 3 |
-| sc200-sentinel-hunting | 1 |
-| sc200-high-value-response | 1 |
-| sc200-logical-operators | 1 |
-| sc200-exp-a-incident-notifications | 2 |
-| sc200-exp-a-response-notifications | 2 |
-| sc200-exp-a-threat-notifications | 1 |
-| sc200-exp-a-alert-tuning | 1 |
-| sc200-exp-a-advanced-features | 3 |
-| sc200-exp-a-file-indicators | 2 |
-| sc200-exp-a-custom-collection-rules | 2 |
-| sc200-exp-a-custom-collection | 2 |
-| sc200-exp-a-asr-test | 1 |
-| sc200-exp-a-asr-reference | 1 |
-| sc200-exp-a-endpoint-air | 1 |
-| sc200-exp-a-office-air | 2 |
-| sc200-exp-a-attack-disruption | 2 |
-| sc200-exp-a-device-groups | 2 |
-| sc200-exp-a-automation-rules | 1 |
-| sc200-exp-a-playbook-triggers | 1 |
-| sc200-exp-a-roles | 1 |
-| sc200-exp-a-data-tiers | 2 |
-| sc200-exp-a-retention | 2 |
-| sc200-exp-a-workbooks | 3 |
-| sc200-exp-a-soc-access | 1 |
-| sc200-exp-b-windows-eventsets | 3 |
-| sc200-exp-b-windows-xpath | 4 |
-| sc200-exp-b-wef-design | 2 |
-| sc200-exp-b-syslog-overview | 3 |
-| sc200-exp-b-activity-log | 1 |
-| sc200-exp-b-diagnostic-policy | 1 |
-| sc200-exp-b-taxii | 2 |
-| sc200-exp-b-ti-upload | 1 |
-| sc200-exp-b-ti-management | 1 |
-| sc200-exp-b-custom-table | 2 |
-| sc200-exp-b-custom-detections | 2 |
-| sc200-exp-b-detection-management | 1 |
-| sc200-exp-b-scheduled-rules | 2 |
-| sc200-exp-b-mitre | 2 |
-| sc200-exp-b-anomalies | 2 |
-| sc200-exp-c-incident-investigation | 1 |
-| sc200-exp-c-office-air | 2 |
-| sc200-exp-c-office-air-expansion | 1 |
-| sc200-exp-c-attack-disruption | 1 |
-| sc200-exp-c-dlp-incidents | 3 |
-| sc200-exp-c-cloud-incidents | 2 |
-| sc200-exp-c-cloud-app-governance | 3 |
-| sc200-exp-c-entra-risk-remediation | 3 |
-| sc200-exp-c-identity-alert-classification | 1 |
-| sc200-exp-c-identity-remediation | 2 |
-| sc200-exp-c-sentinel-xdr-sync | 2 |
-| sc200-exp-c-phishing-agent | 1 |
-| sc200-exp-c-copilot-summary-settings | 1 |
-| sc200-exp-c-incident-correlation | 4 |
-| sc200-exp-c-incident-export | 2 |
-| sc200-exp-c-case-management | 2 |
-| sc200-exp-d-device-timeline | 2 |
-| sc200-exp-d-file-investigation | 2 |
-| sc200-exp-d-device-actions | 2 |
-| sc200-exp-d-disruption-results | 1 |
-| sc200-exp-d-audit-search | 4 |
-| sc200-exp-d-audit-properties | 2 |
-| sc200-exp-d-edisc-search | 3 |
-| sc200-exp-d-edisc-teams | 1 |
-| sc200-exp-d-edisc-sites | 1 |
-| sc200-exp-d-edisc-partial-items | 1 |
-| sc200-exp-d-graph-activity | 4 |
-| sc200-exp-d-graph-schema | 2 |
-| sc200-exp-d-count-distinct | 1 |
-| sc200-exp-d-leftouter | 1 |
-| sc200-exp-e-email-postdelivery | 1 |
-| sc200-exp-e-url-clicks | 3 |
-| sc200-exp-e-cloud-app-events | 4 |
-| sc200-exp-e-hunting-schema | 2 |
-| sc200-exp-e-hunting-query-practices | 1 |
-| sc200-exp-e-dynamic-access | 2 |
-| sc200-exp-e-long-conversion | 2 |
-| sc200-exp-e-where-filter | 4 |
-| sc200-exp-e-logical-precedence | 1 |
-| sc200-exp-e-dynamic-expansion | 1 |
-| sc200-exp-e-threat-analytics | 2 |
-| sc200-exp-e-hunting-graph | 2 |
-| sc200-exp-e-graph-semantics | 1 |
-| sc200-exp-e-sentinel-graph | 1 |
-| sc200-exp-e-blast-radius | 1 |
-| sc200-exp-e-custom-graphs | 1 |
-| sc200-exp-f-hunting-queries | 3 |
-| sc200-exp-f-custom-queries | 1 |
-| sc200-exp-f-kql-jobs | 4 |
-| sc200-exp-f-job-selection | 1 |
-| sc200-exp-f-job-management | 2 |
-| sc200-exp-f-sentinel-summaries | 1 |
-| sc200-exp-f-summary-execution | 4 |
-| sc200-exp-f-notebook-runtime | 3 |
-| sc200-exp-f-mcp-exploration | 1 |
-| sc200-exp-f-mcp-vscode | 1 |
+| Category                                  | Questions |
+| ----------------------------------------- | --------: |
+| sc200-sentinel-roles                      |         4 |
+| sc200-playbooks                           |         2 |
+| sc200-automation                          |         2 |
+| sc200-nrt                                 |         3 |
+| sc200-custom-detections                   |         3 |
+| sc200-ama-architecture                    |         3 |
+| sc200-ama-collection                      |         1 |
+| sc200-device-response                     |         5 |
+| sc200-live-response                       |         4 |
+| sc200-action-center                       |         2 |
+| sc200-process-events                      |         3 |
+| sc200-network-events                      |         4 |
+| sc200-innerunique                         |         1 |
+| sc200-inner                               |         1 |
+| sc200-arg-max                             |         1 |
+| sc200-summarize                           |         3 |
+| sc200-sentinel-hunting                    |         1 |
+| sc200-high-value-response                 |         1 |
+| sc200-logical-operators                   |         1 |
+| sc200-exp-a-incident-notifications        |         2 |
+| sc200-exp-a-response-notifications        |         2 |
+| sc200-exp-a-threat-notifications          |         1 |
+| sc200-exp-a-alert-tuning                  |         1 |
+| sc200-exp-a-advanced-features             |         3 |
+| sc200-exp-a-file-indicators               |         2 |
+| sc200-exp-a-custom-collection-rules       |         2 |
+| sc200-exp-a-custom-collection             |         2 |
+| sc200-exp-a-asr-test                      |         1 |
+| sc200-exp-a-asr-reference                 |         1 |
+| sc200-exp-a-endpoint-air                  |         1 |
+| sc200-exp-a-office-air                    |         2 |
+| sc200-exp-a-attack-disruption             |         2 |
+| sc200-exp-a-device-groups                 |         2 |
+| sc200-exp-a-automation-rules              |         1 |
+| sc200-exp-a-playbook-triggers             |         1 |
+| sc200-exp-a-roles                         |         1 |
+| sc200-exp-a-data-tiers                    |         2 |
+| sc200-exp-a-retention                     |         2 |
+| sc200-exp-a-workbooks                     |         3 |
+| sc200-exp-a-soc-access                    |         1 |
+| sc200-exp-b-windows-eventsets             |         3 |
+| sc200-exp-b-windows-xpath                 |         4 |
+| sc200-exp-b-wef-design                    |         2 |
+| sc200-exp-b-syslog-overview               |         3 |
+| sc200-exp-b-activity-log                  |         1 |
+| sc200-exp-b-diagnostic-policy             |         1 |
+| sc200-exp-b-taxii                         |         2 |
+| sc200-exp-b-ti-upload                     |         1 |
+| sc200-exp-b-ti-management                 |         1 |
+| sc200-exp-b-custom-table                  |         2 |
+| sc200-exp-b-custom-detections             |         2 |
+| sc200-exp-b-detection-management          |         1 |
+| sc200-exp-b-scheduled-rules               |         2 |
+| sc200-exp-b-mitre                         |         2 |
+| sc200-exp-b-anomalies                     |         2 |
+| sc200-exp-c-incident-investigation        |         1 |
+| sc200-exp-c-office-air                    |         2 |
+| sc200-exp-c-office-air-expansion          |         1 |
+| sc200-exp-c-attack-disruption             |         1 |
+| sc200-exp-c-dlp-incidents                 |         3 |
+| sc200-exp-c-cloud-incidents               |         2 |
+| sc200-exp-c-cloud-app-governance          |         3 |
+| sc200-exp-c-entra-risk-remediation        |         3 |
+| sc200-exp-c-identity-alert-classification |         1 |
+| sc200-exp-c-identity-remediation          |         2 |
+| sc200-exp-c-sentinel-xdr-sync             |         2 |
+| sc200-exp-c-phishing-agent                |         1 |
+| sc200-exp-c-copilot-summary-settings      |         1 |
+| sc200-exp-c-incident-correlation          |         4 |
+| sc200-exp-c-incident-export               |         2 |
+| sc200-exp-c-case-management               |         2 |
+| sc200-exp-d-device-timeline               |         2 |
+| sc200-exp-d-file-investigation            |         2 |
+| sc200-exp-d-device-actions                |         2 |
+| sc200-exp-d-disruption-results            |         1 |
+| sc200-exp-d-audit-search                  |         4 |
+| sc200-exp-d-audit-properties              |         2 |
+| sc200-exp-d-edisc-search                  |         3 |
+| sc200-exp-d-edisc-teams                   |         1 |
+| sc200-exp-d-edisc-sites                   |         1 |
+| sc200-exp-d-edisc-partial-items           |         1 |
+| sc200-exp-d-graph-activity                |         4 |
+| sc200-exp-d-graph-schema                  |         2 |
+| sc200-exp-d-count-distinct                |         1 |
+| sc200-exp-d-leftouter                     |         1 |
+| sc200-exp-e-email-postdelivery            |         1 |
+| sc200-exp-e-url-clicks                    |         3 |
+| sc200-exp-e-cloud-app-events              |         4 |
+| sc200-exp-e-hunting-schema                |         2 |
+| sc200-exp-e-hunting-query-practices       |         1 |
+| sc200-exp-e-dynamic-access                |         2 |
+| sc200-exp-e-long-conversion               |         2 |
+| sc200-exp-e-where-filter                  |         4 |
+| sc200-exp-e-logical-precedence            |         1 |
+| sc200-exp-e-dynamic-expansion             |         1 |
+| sc200-exp-e-threat-analytics              |         2 |
+| sc200-exp-e-hunting-graph                 |         2 |
+| sc200-exp-e-graph-semantics               |         1 |
+| sc200-exp-e-sentinel-graph                |         1 |
+| sc200-exp-e-blast-radius                  |         1 |
+| sc200-exp-e-custom-graphs                 |         1 |
+| sc200-exp-f-hunting-queries               |         3 |
+| sc200-exp-f-custom-queries                |         1 |
+| sc200-exp-f-kql-jobs                      |         4 |
+| sc200-exp-f-job-selection                 |         1 |
+| sc200-exp-f-job-management                |         2 |
+| sc200-exp-f-sentinel-summaries            |         1 |
+| sc200-exp-f-summary-execution             |         4 |
+| sc200-exp-f-notebook-runtime              |         3 |
+| sc200-exp-f-mcp-exploration               |         1 |
+| sc200-exp-f-mcp-vscode                    |         1 |
 
 ## Reviewed domain counts (not a claim of availability)
 
-| Category | Questions |
-| --- | ---: |
-| manage-a-security-operations-environment | 62 |
-| respond-to-security-incidents | 55 |
-| perform-threat-hunting | 33 |
+| Category                                 | Questions |
+| ---------------------------------------- | --------: |
+| manage-a-security-operations-environment |        62 |
+| respond-to-security-incidents            |        55 |
+| perform-threat-hunting                   |        33 |
 
 ## Reviewed skill counts (not a claim of availability)
 
-| Category | Questions |
-| --- | ---: |
-| configure-automation-for-microsoft-defender-xdr-and-microsoft-sentinel | 23 |
-| configure-the-microsoft-sentinel-siem-and-platform | 7 |
-| ingest-data-into-the-microsoft-sentinel-siem-and-platform | 18 |
-| configure-detections | 14 |
-| respond-to-alerts-and-incidents-in-microsoft-defender-xdr | 26 |
-| respond-to-alerts-and-incidents-in-microsoft-defender-for-endpoint | 15 |
-| investigate-microsoft-365-activities-to-identify-threats | 14 |
-| detect-threats-by-using-microsoft-defender-xdr | 19 |
-| detect-threats-by-using-the-microsoft-sentinel-platform | 14 |
+| Category                                                               | Questions |
+| ---------------------------------------------------------------------- | --------: |
+| configure-automation-for-microsoft-defender-xdr-and-microsoft-sentinel |        23 |
+| configure-the-microsoft-sentinel-siem-and-platform                     |         7 |
+| ingest-data-into-the-microsoft-sentinel-siem-and-platform              |        18 |
+| configure-detections                                                   |        14 |
+| respond-to-alerts-and-incidents-in-microsoft-defender-xdr              |        26 |
+| respond-to-alerts-and-incidents-in-microsoft-defender-for-endpoint     |        15 |
+| investigate-microsoft-365-activities-to-identify-threats               |        14 |
+| detect-threats-by-using-microsoft-defender-xdr                         |        19 |
+| detect-threats-by-using-the-microsoft-sentinel-platform                |        14 |
 
 ## Reviewed subskill counts (not a claim of availability)
 
-| Category | Questions |
-| --- | ---: |
-| Configure email notifications in Microsoft Defender XDR, including incidents, actions, and threat analytics | 3 |
-| Configure alert notifications in Microsoft Defender XDR, including tuning, suppression, and correlation | 2 |
-| Configure Microsoft Defender for Endpoint advanced features | 1 |
-| Configure rules settings in Microsoft Defender for Endpoint | 2 |
-| Configure custom data collection in Microsoft Defender for Endpoint | 2 |
-| Configure security policies for Microsoft Defender for Endpoint, including attack surface reduction (ASR) rules | 2 |
-| Manage automated investigation and response capabilities in Microsoft Defender XDR | 2 |
-| Configure automatic attack disruption in Microsoft Defender XDR | 1 |
-| Configure and manage device groups, permissions, and automation levels in Microsoft Defender for Endpoint | 2 |
-| Create and configure automation rules in Microsoft Sentinel | 3 |
-| Create and configure Microsoft Sentinel playbooks | 3 |
-| Specify Microsoft Sentinel roles | 2 |
-| Manage data retention for XDR and Microsoft Sentinel tables, including Analytics, Data lake, and XDR tiers | 2 |
-| Create and configure Microsoft Sentinel workbooks | 2 |
-| Optimize the Microsoft Sentinel platform, including SOC optimization recommendations | 1 |
-| Select data connectors based on data source requirements, including Windows logs and security events | 2 |
-| Configure collection of Windows Security events by using Windows Security Events via AMA, including data collection rules | 2 |
-| Plan and configure collection of Windows Security events by using Windows Event Forwarding (WEF) | 2 |
-| Plan and configure Syslog via AMA and Common Event Format (CEF) via AMA connectors | 5 |
-| Configure collection of Azure activities by using Azure Policy and resource diagnostic settings | 2 |
-| Ingest threat indicators into Microsoft Sentinel | 3 |
-| Create custom log tables in the workspace to store ingested data | 2 |
-| Create custom detection rules by using Advanced Hunting in Microsoft Defender XDR | 3 |
-| Manage custom detection rules in Microsoft Defender XDR | 3 |
-| Configure and manage analytics rules in Microsoft Sentinel SIEM, including scheduled, near-real time (NRT), threat intelligence, and machine learning | 4 |
-| Analyze attack vector coverage by using the MITRE ATT&CK matrix | 2 |
-| Configure anomalies in Microsoft Sentinel | 2 |
-| Investigate and remediate threats by using Microsoft Defender for Office 365, including automatic attack disruption | 4 |
-| Investigate and remediate threats or compromised entities identified by Microsoft Purview | 3 |
-| Investigate and remediate alerts and incidents identified by Microsoft Defender for Cloud workload protections | 2 |
-| Investigate and remediate security risks identified by Microsoft Defender for Cloud Apps | 3 |
-| Investigate and remediate compromised identities that are identified by Microsoft Entra ID | 3 |
-| Investigate and remediate security alerts from Microsoft Defender for Identity | 2 |
-| Investigate and remediate alerts and incidents identified by Microsoft Sentinel | 2 |
-| Investigate incidents by using agentic AI, including embedded Microsoft Security Copilot | 2 |
-| Investigate complex attacks, such as multi-stage, multi-domain, and lateral movement | 3 |
-| Manage security incidents by using case management | 2 |
-| Investigate device timelines | 2 |
-| Perform actions on the device, including live response and collecting investigation packages | 10 |
-| Perform evidence and entity investigation | 2 |
-| Investigate and remediate incidents identified by automatic attack disruption | 1 |
-| Investigate threats by using Microsoft Purview Audit | 5 |
-| Investigate threats by using Content search in Microsoft Purview eDiscovery | 5 |
-| Investigate threats by using Microsoft Graph activity logs | 4 |
-| Identify the appropriate table to use in a KQL query | 3 |
-| Identify threats by using Kusto Query Language (KQL) | 4 |
-| Create Advanced Hunting queries | 6 |
-| Interpret threat analytics in Microsoft Defender XDR | 2 |
-| Create hunting graphs, including blast radius | 2 |
-| Analyze relationships between entities by using Sentinel Graph | 2 |
-| Create and monitor hunting queries | 3 |
-| Create and manage KQL jobs in Data lake | 4 |
-| Create and manage Summary rule tables for querying | 3 |
-| Hunt for threats by using Notebooks, including connection to the Sentinel MCP Server | 4 |
+| Category                                                                                                                                              | Questions |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------: |
+| Configure email notifications in Microsoft Defender XDR, including incidents, actions, and threat analytics                                           |         3 |
+| Configure alert notifications in Microsoft Defender XDR, including tuning, suppression, and correlation                                               |         2 |
+| Configure Microsoft Defender for Endpoint advanced features                                                                                           |         1 |
+| Configure rules settings in Microsoft Defender for Endpoint                                                                                           |         2 |
+| Configure custom data collection in Microsoft Defender for Endpoint                                                                                   |         2 |
+| Configure security policies for Microsoft Defender for Endpoint, including attack surface reduction (ASR) rules                                       |         2 |
+| Manage automated investigation and response capabilities in Microsoft Defender XDR                                                                    |         2 |
+| Configure automatic attack disruption in Microsoft Defender XDR                                                                                       |         1 |
+| Configure and manage device groups, permissions, and automation levels in Microsoft Defender for Endpoint                                             |         2 |
+| Create and configure automation rules in Microsoft Sentinel                                                                                           |         3 |
+| Create and configure Microsoft Sentinel playbooks                                                                                                     |         3 |
+| Specify Microsoft Sentinel roles                                                                                                                      |         2 |
+| Manage data retention for XDR and Microsoft Sentinel tables, including Analytics, Data lake, and XDR tiers                                            |         2 |
+| Create and configure Microsoft Sentinel workbooks                                                                                                     |         2 |
+| Optimize the Microsoft Sentinel platform, including SOC optimization recommendations                                                                  |         1 |
+| Select data connectors based on data source requirements, including Windows logs and security events                                                  |         2 |
+| Configure collection of Windows Security events by using Windows Security Events via AMA, including data collection rules                             |         2 |
+| Plan and configure collection of Windows Security events by using Windows Event Forwarding (WEF)                                                      |         2 |
+| Plan and configure Syslog via AMA and Common Event Format (CEF) via AMA connectors                                                                    |         5 |
+| Configure collection of Azure activities by using Azure Policy and resource diagnostic settings                                                       |         2 |
+| Ingest threat indicators into Microsoft Sentinel                                                                                                      |         3 |
+| Create custom log tables in the workspace to store ingested data                                                                                      |         2 |
+| Create custom detection rules by using Advanced Hunting in Microsoft Defender XDR                                                                     |         3 |
+| Manage custom detection rules in Microsoft Defender XDR                                                                                               |         3 |
+| Configure and manage analytics rules in Microsoft Sentinel SIEM, including scheduled, near-real time (NRT), threat intelligence, and machine learning |         4 |
+| Analyze attack vector coverage by using the MITRE ATT&CK matrix                                                                                       |         2 |
+| Configure anomalies in Microsoft Sentinel                                                                                                             |         2 |
+| Investigate and remediate threats by using Microsoft Defender for Office 365, including automatic attack disruption                                   |         4 |
+| Investigate and remediate threats or compromised entities identified by Microsoft Purview                                                             |         3 |
+| Investigate and remediate alerts and incidents identified by Microsoft Defender for Cloud workload protections                                        |         2 |
+| Investigate and remediate security risks identified by Microsoft Defender for Cloud Apps                                                              |         3 |
+| Investigate and remediate compromised identities that are identified by Microsoft Entra ID                                                            |         3 |
+| Investigate and remediate security alerts from Microsoft Defender for Identity                                                                        |         2 |
+| Investigate and remediate alerts and incidents identified by Microsoft Sentinel                                                                       |         2 |
+| Investigate incidents by using agentic AI, including embedded Microsoft Security Copilot                                                              |         2 |
+| Investigate complex attacks, such as multi-stage, multi-domain, and lateral movement                                                                  |         3 |
+| Manage security incidents by using case management                                                                                                    |         2 |
+| Investigate device timelines                                                                                                                          |         2 |
+| Perform actions on the device, including live response and collecting investigation packages                                                          |        10 |
+| Perform evidence and entity investigation                                                                                                             |         2 |
+| Investigate and remediate incidents identified by automatic attack disruption                                                                         |         1 |
+| Investigate threats by using Microsoft Purview Audit                                                                                                  |         5 |
+| Investigate threats by using Content search in Microsoft Purview eDiscovery                                                                           |         5 |
+| Investigate threats by using Microsoft Graph activity logs                                                                                            |         4 |
+| Identify the appropriate table to use in a KQL query                                                                                                  |         3 |
+| Identify threats by using Kusto Query Language (KQL)                                                                                                  |         4 |
+| Create Advanced Hunting queries                                                                                                                       |         6 |
+| Interpret threat analytics in Microsoft Defender XDR                                                                                                  |         2 |
+| Create hunting graphs, including blast radius                                                                                                         |         2 |
+| Analyze relationships between entities by using Sentinel Graph                                                                                        |         2 |
+| Create and monitor hunting queries                                                                                                                    |         3 |
+| Create and manage KQL jobs in Data lake                                                                                                               |         4 |
+| Create and manage Summary rule tables for querying                                                                                                    |         3 |
+| Hunt for threats by using Notebooks, including connection to the Sentinel MCP Server                                                                  |         4 |
 
 ## Reviewed difficulty counts (not a claim of availability)
 
-| Category | Questions |
-| --- | ---: |
-| beginner | 6 |
-| intermediate | 48 |
-| advanced | 91 |
-| expert | 5 |
+| Category     | Questions |
+| ------------ | --------: |
+| beginner     |         6 |
+| intermediate |        48 |
+| advanced     |        91 |
+| expert       |         5 |
 
 ## Reviewed complexity counts (not a claim of availability)
 
-| Category | Questions |
-| --- | ---: |
-| concept-recall | 1 |
-| technical-implementation | 50 |
-| scenario-based | 31 |
-| troubleshooting | 55 |
-| architecture-design | 13 |
+| Category                 | Questions |
+| ------------------------ | --------: |
+| concept-recall           |         1 |
+| technical-implementation |        50 |
+| scenario-based           |        31 |
+| troubleshooting          |        55 |
+| architecture-design      |        13 |
 
 ## Reviewed type counts (not a claim of availability)
 
-| Category | Questions |
-| --- | ---: |
-| single-select | 33 |
-| multi-select | 21 |
-| true-false | 0 |
-| scenario | 81 |
-| code | 15 |
+| Category      | Questions |
+| ------------- | --------: |
+| single-select |        33 |
+| multi-select  |        21 |
+| true-false    |         0 |
+| scenario      |        81 |
+| code          |        15 |
 
 ## Reviewed source counts (not a claim of availability)
 
-| Category | Questions |
-| --- | ---: |
-| sc200-sentinel-roles | 4 |
-| sc200-playbooks | 2 |
-| sc200-automation | 2 |
-| sc200-nrt | 3 |
-| sc200-custom-detections | 3 |
-| sc200-ama-architecture | 3 |
-| sc200-ama-collection | 1 |
-| sc200-device-response | 5 |
-| sc200-live-response | 4 |
-| sc200-action-center | 2 |
-| sc200-process-events | 3 |
-| sc200-network-events | 4 |
-| sc200-innerunique | 1 |
-| sc200-inner | 1 |
-| sc200-arg-max | 1 |
-| sc200-summarize | 3 |
-| sc200-sentinel-hunting | 1 |
-| sc200-high-value-response | 1 |
-| sc200-logical-operators | 1 |
-| sc200-exp-a-incident-notifications | 2 |
-| sc200-exp-a-response-notifications | 2 |
-| sc200-exp-a-threat-notifications | 1 |
-| sc200-exp-a-alert-tuning | 1 |
-| sc200-exp-a-advanced-features | 3 |
-| sc200-exp-a-file-indicators | 2 |
-| sc200-exp-a-custom-collection-rules | 2 |
-| sc200-exp-a-custom-collection | 2 |
-| sc200-exp-a-asr-test | 1 |
-| sc200-exp-a-asr-reference | 1 |
-| sc200-exp-a-endpoint-air | 1 |
-| sc200-exp-a-office-air | 2 |
-| sc200-exp-a-attack-disruption | 2 |
-| sc200-exp-a-device-groups | 2 |
-| sc200-exp-a-automation-rules | 1 |
-| sc200-exp-a-playbook-triggers | 1 |
-| sc200-exp-a-roles | 1 |
-| sc200-exp-a-data-tiers | 2 |
-| sc200-exp-a-retention | 2 |
-| sc200-exp-a-workbooks | 3 |
-| sc200-exp-a-soc-access | 1 |
-| sc200-exp-b-windows-eventsets | 3 |
-| sc200-exp-b-windows-xpath | 4 |
-| sc200-exp-b-wef-design | 2 |
-| sc200-exp-b-syslog-overview | 3 |
-| sc200-exp-b-activity-log | 1 |
-| sc200-exp-b-diagnostic-policy | 1 |
-| sc200-exp-b-taxii | 2 |
-| sc200-exp-b-ti-upload | 1 |
-| sc200-exp-b-ti-management | 1 |
-| sc200-exp-b-custom-table | 2 |
-| sc200-exp-b-custom-detections | 2 |
-| sc200-exp-b-detection-management | 1 |
-| sc200-exp-b-scheduled-rules | 2 |
-| sc200-exp-b-mitre | 2 |
-| sc200-exp-b-anomalies | 2 |
-| sc200-exp-c-incident-investigation | 1 |
-| sc200-exp-c-office-air | 2 |
-| sc200-exp-c-office-air-expansion | 1 |
-| sc200-exp-c-attack-disruption | 1 |
-| sc200-exp-c-dlp-incidents | 3 |
-| sc200-exp-c-cloud-incidents | 2 |
-| sc200-exp-c-cloud-app-governance | 3 |
-| sc200-exp-c-entra-risk-remediation | 3 |
-| sc200-exp-c-identity-alert-classification | 1 |
-| sc200-exp-c-identity-remediation | 2 |
-| sc200-exp-c-sentinel-xdr-sync | 2 |
-| sc200-exp-c-phishing-agent | 1 |
-| sc200-exp-c-copilot-summary-settings | 1 |
-| sc200-exp-c-incident-correlation | 4 |
-| sc200-exp-c-incident-export | 2 |
-| sc200-exp-c-case-management | 2 |
-| sc200-exp-d-device-timeline | 2 |
-| sc200-exp-d-file-investigation | 2 |
-| sc200-exp-d-device-actions | 2 |
-| sc200-exp-d-disruption-results | 1 |
-| sc200-exp-d-audit-search | 4 |
-| sc200-exp-d-audit-properties | 2 |
-| sc200-exp-d-edisc-search | 3 |
-| sc200-exp-d-edisc-teams | 1 |
-| sc200-exp-d-edisc-sites | 1 |
-| sc200-exp-d-edisc-partial-items | 1 |
-| sc200-exp-d-graph-activity | 4 |
-| sc200-exp-d-graph-schema | 2 |
-| sc200-exp-d-count-distinct | 1 |
-| sc200-exp-d-leftouter | 1 |
-| sc200-exp-e-email-postdelivery | 1 |
-| sc200-exp-e-url-clicks | 3 |
-| sc200-exp-e-cloud-app-events | 4 |
-| sc200-exp-e-hunting-schema | 2 |
-| sc200-exp-e-hunting-query-practices | 1 |
-| sc200-exp-e-dynamic-access | 2 |
-| sc200-exp-e-long-conversion | 2 |
-| sc200-exp-e-where-filter | 4 |
-| sc200-exp-e-logical-precedence | 1 |
-| sc200-exp-e-dynamic-expansion | 1 |
-| sc200-exp-e-threat-analytics | 2 |
-| sc200-exp-e-hunting-graph | 2 |
-| sc200-exp-e-graph-semantics | 1 |
-| sc200-exp-e-sentinel-graph | 1 |
-| sc200-exp-e-blast-radius | 1 |
-| sc200-exp-e-custom-graphs | 1 |
-| sc200-exp-f-hunting-queries | 3 |
-| sc200-exp-f-custom-queries | 1 |
-| sc200-exp-f-kql-jobs | 4 |
-| sc200-exp-f-job-selection | 1 |
-| sc200-exp-f-job-management | 2 |
-| sc200-exp-f-sentinel-summaries | 1 |
-| sc200-exp-f-summary-execution | 4 |
-| sc200-exp-f-notebook-runtime | 3 |
-| sc200-exp-f-mcp-exploration | 1 |
-| sc200-exp-f-mcp-vscode | 1 |
+| Category                                  | Questions |
+| ----------------------------------------- | --------: |
+| sc200-sentinel-roles                      |         4 |
+| sc200-playbooks                           |         2 |
+| sc200-automation                          |         2 |
+| sc200-nrt                                 |         3 |
+| sc200-custom-detections                   |         3 |
+| sc200-ama-architecture                    |         3 |
+| sc200-ama-collection                      |         1 |
+| sc200-device-response                     |         5 |
+| sc200-live-response                       |         4 |
+| sc200-action-center                       |         2 |
+| sc200-process-events                      |         3 |
+| sc200-network-events                      |         4 |
+| sc200-innerunique                         |         1 |
+| sc200-inner                               |         1 |
+| sc200-arg-max                             |         1 |
+| sc200-summarize                           |         3 |
+| sc200-sentinel-hunting                    |         1 |
+| sc200-high-value-response                 |         1 |
+| sc200-logical-operators                   |         1 |
+| sc200-exp-a-incident-notifications        |         2 |
+| sc200-exp-a-response-notifications        |         2 |
+| sc200-exp-a-threat-notifications          |         1 |
+| sc200-exp-a-alert-tuning                  |         1 |
+| sc200-exp-a-advanced-features             |         3 |
+| sc200-exp-a-file-indicators               |         2 |
+| sc200-exp-a-custom-collection-rules       |         2 |
+| sc200-exp-a-custom-collection             |         2 |
+| sc200-exp-a-asr-test                      |         1 |
+| sc200-exp-a-asr-reference                 |         1 |
+| sc200-exp-a-endpoint-air                  |         1 |
+| sc200-exp-a-office-air                    |         2 |
+| sc200-exp-a-attack-disruption             |         2 |
+| sc200-exp-a-device-groups                 |         2 |
+| sc200-exp-a-automation-rules              |         1 |
+| sc200-exp-a-playbook-triggers             |         1 |
+| sc200-exp-a-roles                         |         1 |
+| sc200-exp-a-data-tiers                    |         2 |
+| sc200-exp-a-retention                     |         2 |
+| sc200-exp-a-workbooks                     |         3 |
+| sc200-exp-a-soc-access                    |         1 |
+| sc200-exp-b-windows-eventsets             |         3 |
+| sc200-exp-b-windows-xpath                 |         4 |
+| sc200-exp-b-wef-design                    |         2 |
+| sc200-exp-b-syslog-overview               |         3 |
+| sc200-exp-b-activity-log                  |         1 |
+| sc200-exp-b-diagnostic-policy             |         1 |
+| sc200-exp-b-taxii                         |         2 |
+| sc200-exp-b-ti-upload                     |         1 |
+| sc200-exp-b-ti-management                 |         1 |
+| sc200-exp-b-custom-table                  |         2 |
+| sc200-exp-b-custom-detections             |         2 |
+| sc200-exp-b-detection-management          |         1 |
+| sc200-exp-b-scheduled-rules               |         2 |
+| sc200-exp-b-mitre                         |         2 |
+| sc200-exp-b-anomalies                     |         2 |
+| sc200-exp-c-incident-investigation        |         1 |
+| sc200-exp-c-office-air                    |         2 |
+| sc200-exp-c-office-air-expansion          |         1 |
+| sc200-exp-c-attack-disruption             |         1 |
+| sc200-exp-c-dlp-incidents                 |         3 |
+| sc200-exp-c-cloud-incidents               |         2 |
+| sc200-exp-c-cloud-app-governance          |         3 |
+| sc200-exp-c-entra-risk-remediation        |         3 |
+| sc200-exp-c-identity-alert-classification |         1 |
+| sc200-exp-c-identity-remediation          |         2 |
+| sc200-exp-c-sentinel-xdr-sync             |         2 |
+| sc200-exp-c-phishing-agent                |         1 |
+| sc200-exp-c-copilot-summary-settings      |         1 |
+| sc200-exp-c-incident-correlation          |         4 |
+| sc200-exp-c-incident-export               |         2 |
+| sc200-exp-c-case-management               |         2 |
+| sc200-exp-d-device-timeline               |         2 |
+| sc200-exp-d-file-investigation            |         2 |
+| sc200-exp-d-device-actions                |         2 |
+| sc200-exp-d-disruption-results            |         1 |
+| sc200-exp-d-audit-search                  |         4 |
+| sc200-exp-d-audit-properties              |         2 |
+| sc200-exp-d-edisc-search                  |         3 |
+| sc200-exp-d-edisc-teams                   |         1 |
+| sc200-exp-d-edisc-sites                   |         1 |
+| sc200-exp-d-edisc-partial-items           |         1 |
+| sc200-exp-d-graph-activity                |         4 |
+| sc200-exp-d-graph-schema                  |         2 |
+| sc200-exp-d-count-distinct                |         1 |
+| sc200-exp-d-leftouter                     |         1 |
+| sc200-exp-e-email-postdelivery            |         1 |
+| sc200-exp-e-url-clicks                    |         3 |
+| sc200-exp-e-cloud-app-events              |         4 |
+| sc200-exp-e-hunting-schema                |         2 |
+| sc200-exp-e-hunting-query-practices       |         1 |
+| sc200-exp-e-dynamic-access                |         2 |
+| sc200-exp-e-long-conversion               |         2 |
+| sc200-exp-e-where-filter                  |         4 |
+| sc200-exp-e-logical-precedence            |         1 |
+| sc200-exp-e-dynamic-expansion             |         1 |
+| sc200-exp-e-threat-analytics              |         2 |
+| sc200-exp-e-hunting-graph                 |         2 |
+| sc200-exp-e-graph-semantics               |         1 |
+| sc200-exp-e-sentinel-graph                |         1 |
+| sc200-exp-e-blast-radius                  |         1 |
+| sc200-exp-e-custom-graphs                 |         1 |
+| sc200-exp-f-hunting-queries               |         3 |
+| sc200-exp-f-custom-queries                |         1 |
+| sc200-exp-f-kql-jobs                      |         4 |
+| sc200-exp-f-job-selection                 |         1 |
+| sc200-exp-f-job-management                |         2 |
+| sc200-exp-f-sentinel-summaries            |         1 |
+| sc200-exp-f-summary-execution             |         4 |
+| sc200-exp-f-notebook-runtime              |         3 |
+| sc200-exp-f-mcp-exploration               |         1 |
+| sc200-exp-f-mcp-vscode                    |         1 |
 
 ## Published domain weighting
 
@@ -491,11 +491,11 @@ Report created: 2026-09-16T15:09:29.191Z. This is not a retrieval or verificatio
 ## Correct-answer positions (before gameplay shuffling; each multi-select key counted)
 
 | Category | Questions |
-| --- | ---: |
-| 1 | 43 |
-| 2 | 42 |
-| 3 | 45 |
-| 4 | 41 |
+| -------- | --------: |
+| 1        |        43 |
+| 2        |        42 |
+| 3        |        45 |
+| 4        |        41 |
 
 ## Uncovered subskills (playable coverage only)
 
@@ -641,6 +641,7 @@ None. Reviewed coverage does not establish credential availability or GA.
 ## Review queue
 
 Verified entries marked credential-or-mode-gate are reviewed but unavailable, not missing authored content.
+
 - **sc200-001** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Independent read of raw/sentinel-roles.json confirms the built-in role matrix: Responder = Reader plus manage incidents, without analytics-rule or playbook editing. The task-matrix row for Contributor adds create/edit analytics rules, and Playbook Operator only lists/views/runs playbooks. Answer key b is uniquely defensible..
 - **sc200-002** (verified; not-excluded): absolute-wording. Review notes: Independent read of raw/playbooks.json confirms that Microsoft Sentinel's service account requires Automation Contributor on the resource group where the playbook resides, and raw/sentinel-roles.json confirms the human maintainer's role is unrelated to the execution identity. Answer d fixes exactly the scoped service-account authorization the scenario removed..
 - **sc200-003** (verified; not-excluded): negative-wording, pronoun-review. Review notes: Independent read of raw/playbooks.json Playbook Operator description ("Lets you run a playbook manually") and Logic App Contributor ("Edit and manage logic apps") supports a as the least-privilege human role. The scenario supplies service-account permissions separately, so Automation Contributor and Reader are excluded..
@@ -739,119 +740,119 @@ Verified entries marked credential-or-mode-gate are reviewed but unavailable, no
 
 ## Sources and actual evidence dates
 
-| Source | Playable / reviewed / candidates | Retrieved | Reviewed | Supporting summary |
-| --- | ---: | --- | --- | --- |
-| sc200-sentinel-roles: [Roles and permissions in the Microsoft Sentinel platform](https://learn.microsoft.com/en-us/azure/sentinel/roles) | 4 / 4 / 4 | 2026-09-11T19:19:11.176Z | 2026-09-11T19:59:59.756Z | Sentinel Reader views resources, Responder also manages incidents, Contributor edits resources, and Playbook Operator manually runs playbooks. Automation uses a separately authorized service account. Sentinel read roles do not confer Defender workload detection-management permissions. |
-| sc200-playbooks: [Automate threat response with playbooks in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/automate-responses-with-playbooks) | 2 / 2 / 2 | 2026-09-11T19:19:11.953Z | 2026-09-11T19:59:59.756Z | Playbooks use Logic Apps. User permissions and the Sentinel service account's Automation Contributor permission on the playbook resource group are separate. The cited role behavior does not use the page's Preview playbook templates. |
-| sc200-automation: [Automate threat response in Microsoft Sentinel with automation rules](https://learn.microsoft.com/en-us/azure/sentinel/automate-incident-handling-with-automation-rules) | 2 / 2 / 2 | 2026-09-11T19:23:59.135Z | 2026-09-11T19:59:59.756Z | Automation evaluates the current incident state, runs sequentially, and completes applicable creation-trigger rules before update-trigger rules. Negative tag conditions distinguish individual tags from the collection. Preview Simple Flows are outside the cited claims. |
-| sc200-nrt: [Quick threat detection with near-real-time (NRT) analytics rules in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/near-real-time-rules) | 3 / 3 / 3 | 2026-09-11T19:19:15.103Z | 2026-09-11T19:59:59.756Z | NRT analytics run every minute over ingestion-time windows with a two-minute delay. Single-event grouping produces at most 30 alerts; above 30 results, the final alert summarizes all applicable events. |
-| sc200-custom-detections: [Create custom detection rules in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/custom-detection-rules) | 3 / 3 / 3 | 2026-09-11T19:19:05.568Z | 2026-09-11T19:59:59.756Z | Custom detections require permissions for each targeted service. Recommended event identifiers preserve alert enrichment. Continuous frequency requires one supported table, supported operators, GA columns, no joins/unions/externaldata, and no comments. |
-| sc200-ama-architecture: [Syslog and Common Event Format (CEF) via AMA connectors for Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/cef-syslog-ama-overview) | 3 / 3 / 3 | 2026-09-11T19:23:51.736Z | 2026-09-11T19:59:59.756Z | CEF messages are ingested into CommonSecurityLog and plain Syslog into Syslog. Shared facilities can duplicate ingestion; if facilities cannot be changed, filter CEF from the Syslog stream, checking both ProcessName and SyslogMessage for affected AMA versions. |
-| sc200-ama-collection: [Ingest syslog and CEF messages to Microsoft Sentinel with the Azure Monitor Agent](https://learn.microsoft.com/en-us/azure/sentinel/connect-cef-syslog-ama) | 1 / 1 / 1 | 2026-09-11T19:23:00.262Z | 2026-09-11T19:59:59.756Z | The portal's collection rule selects a minimum severity per facility. Choosing LOG_ERR also collects LOG_CRIT, LOG_ALERT, and LOG_EMERG. Non-Azure forwarders require Azure Arc Connected Machine agent. |
-| sc200-device-response: [Take response actions on a device](https://learn.microsoft.com/en-us/defender-endpoint/respond-machine-alerts) | 5 / 5 / 5 | 2026-09-11T19:19:10.801Z | 2026-09-11T19:59:59.756Z | Manual device isolation, app restriction, evidence collection, and antivirus scans have distinct purposes and prerequisites. Full-tunnel VPNs can block cloud connectivity after isolation. High-value asset configuration can restrict live response. Automatic isolation Preview and the outdated manual-AIR section are excluded. |
-| sc200-live-response: [Investigate entities on devices using live response](https://learn.microsoft.com/en-us/defender-endpoint/live-response) | 4 / 4 / 4 | 2026-09-11T19:19:14.587Z | 2026-09-11T19:59:59.756Z | Live response distinguishes file metadata from file download, records command status, and supports background downloads. Ctrl+C cancels the portal command rather than stopping the agent-side operation. Uploading through a live session requires Manage Security Settings. |
-| sc200-action-center: [View and manage actions in the Action center](https://learn.microsoft.com/en-us/defender-xdr/m365d-autoir-actions) | 2 / 2 / 2 | 2026-09-11T19:19:56.244Z | 2026-09-11T19:59:59.756Z | Pending actions can be approved or rejected; supported completed actions can be undone from History. Bulk undo requires the same action type. The article announces September 1, 2026 retirement of the separate Endpoint AIR experience; Office 365 AIR remains available. |
-| sc200-process-events: [DeviceProcessEvents](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-deviceprocessevents-table) | 3 / 3 / 3 | 2026-09-11T19:19:52.161Z | 2026-09-11T19:59:59.756Z | Process-creation records distinguish the created process from the initiating process. Created-process signing information is obtained through its SHA1 and certificate information, not initiating-process signature or version metadata. ProcessUniqueId is the Windows Process Start Key. |
-| sc200-network-events: [DeviceNetworkEvents](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-devicenetworkevents-table) | 4 / 4 / 4 | 2026-09-11T19:19:56.198Z | 2026-09-11T19:59:59.756Z | Network events contain remote destinations and initiating-process fields. InitiatingProcessSHA256 is usually unpopulated; use available SHA1. InitiatingProcessUniqueId identifies a process instance, while ReportId is a repeating event counter. |
-| sc200-innerunique: [innerunique join](https://learn.microsoft.com/en-us/kusto/query/join-innerunique) | 1 / 1 / 1 | 2026-09-11T19:20:01.111Z | 2026-09-11T19:59:59.756Z | An unspecified KQL join kind defaults to innerunique, which deduplicates left-side keys before matching. Which duplicate left row survives is not a reliable selection contract. |
-| sc200-inner: [inner join](https://learn.microsoft.com/en-us/kusto/query/join-inner) | 1 / 1 / 1 | 2026-09-11T19:23:02.578Z | 2026-09-11T19:59:59.756Z | An explicit inner join produces each matching left/right pair and does not perform the default innerunique left-key deduplication. |
-| sc200-arg-max: [arg_max() (aggregation function)](https://learn.microsoft.com/en-us/kusto/query/arg-max-aggregation-function) | 1 / 1 / 1 | 2026-09-11T19:22:50.334Z | 2026-09-11T19:59:59.756Z | Within summarize, arg_max returns the maximizing row and specified columns from that same row. Separate max expressions do not preserve a row association. |
-| sc200-summarize: [summarize operator](https://learn.microsoft.com/en-us/kusto/query/summarize-operator) | 3 / 3 / 3 | 2026-09-11T19:23:13.051Z | 2026-09-11T19:59:59.756Z | Summarize produces one row for each combination of grouping values, computing aggregates per group. Time buckets require explicit bin expressions; grouping by raw Timestamp keeps distinct timestamps separate. |
-| sc200-sentinel-hunting: [Threat hunting in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/hunting) | 1 / 1 / 1 | 2026-09-11T19:20:01.127Z | 2026-09-11T19:59:59.756Z | In Sentinel-specific Hunting, bookmarks preserve selected result rows, the originating query, notes, and tags. Bookmarks are not available in unified Advanced hunting. Preview Hunts and unavailable livestreams are excluded. |
-| sc200-high-value-response: [Restrict response actions on high-value assets](https://learn.microsoft.com/en-us/defender-endpoint/restrict-response-actions-high-value-assets) | 1 / 1 / 1 | 2026-09-11T19:31:28.344Z | 2026-09-11T19:59:59.756Z | Selective Response Actions can disallow live-response sessions on a supported high-value asset despite broader tenant permissions. Device security-operations information exposes enabled and disabled capabilities. No Preview designation appears for this restriction in the fetched article; an older linked deployment-tool label should be independently assessed. |
-| sc200-logical-operators: [Logical (binary) operators](https://learn.microsoft.com/en-us/kusto/query/logical-operators) | 1 / 1 / 1 | 2026-09-11T19:36:56.258Z | 2026-09-11T19:59:59.756Z | KQL equality compares operands; and requires both predicates, while or accepts either predicate. A compound hunting filter must use conjunction when both image identity and destination must match. |
-| sc200-exp-a-incident-notifications: [Get incident notifications by email in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/m365d-notifications-incidents) | 2 / 2 / 2 | 2026-09-16T13:41:24.218Z | 2026-09-16T13:45:59.053Z | Incident notification rules support per-source severity choices, device-group scope and a one-notification-per-incident setting. The retrieved article carries a prerelease notice, so these notification claims are conservatively labeled Preview. |
-| sc200-exp-a-response-notifications: [Get email notifications for response actions in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/m365d-response-actions-notifications) | 2 / 2 / 2 | 2026-09-16T13:42:29.510Z | 2026-09-16T13:45:59.053Z | Response-action notifications distinguish manual and automated sources, action types, completion or failure status and current/future device-group scope. Response actions from custom detections are not supported by this notification feature. The article carries a prerelease notice. |
-| sc200-exp-a-threat-notifications: [Get email notifications for Threat analytics updates in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/m365d-threat-analytics-notifications) | 1 / 1 / 1 | 2026-09-16T13:42:37.425Z | 2026-09-16T13:45:59.053Z | Threat analytics email rules track newly published or updated reports, optionally restricted by report type or tag, without depending on an incident having occurred in the tenant. Rules require a name and at least one recipient. |
-| sc200-exp-a-alert-tuning: [Investigate alerts in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/investigate-alerts) | 1 / 1 / 1 | 2026-09-16T13:41:27.494Z | 2026-09-16T13:45:59.053Z | The inspected custom alert-tuning section distinguishes hiding Endpoint alerts, resolving alerts and converting supported signals to behaviors. Hide preserves AlertInfo and AlertEvidence without incident creation; resolve creates resolved alerts and associated incidents. No agentic or Preview feature is tested. |
-| sc200-exp-a-advanced-features: [Configure advanced features in Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/advanced-features) | 3 / 3 / 3 | 2026-09-16T13:41:30.659Z | 2026-09-16T13:45:59.053Z | Scoped device-group correlation affects future correlations and splits cross-group incidents for local visibility. EDR in block mode remediates post-breach artifacts with passive antivirus, whereas file allow/block requires active Defender Antivirus and cloud protection. Preview switches and deprecated integrations are outside scope. |
-| sc200-exp-a-file-indicators: [Create file indicators in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/indicator-file) | 2 / 2 / 2 | 2026-09-16T13:42:48.259Z | 2026-09-16T13:45:59.053Z | Windows file indicators require active Defender Antivirus, cloud protection, behavior monitoring and enabled file hash computation, and support PE files. A certificate block cannot be overridden by a file-hash allow indicator. The separately labeled Preview file-block alerting and hunting sections are not used. |
-| sc200-exp-a-custom-collection-rules: [Create and manage custom data collection rules in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/create-custom-data-collection-rules) | 2 / 2 / 2 | 2026-09-16T13:41:34.947Z | 2026-09-16T13:45:59.053Z | Custom collection requires Endpoint Plan 2, a selected connected Sentinel workspace and dynamic tags whose asset rule has run. Rules are limited to 75000 events per device in a rolling 24-hour window; reaching the cap pauses that rule until reset. The prerelease notice applies. |
-| sc200-exp-a-custom-collection: [Custom data collection in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/custom-data-collection) | 2 / 2 / 2 | 2026-09-16T13:41:38.187Z | 2026-09-16T13:45:59.053Z | Custom Endpoint telemetry adds to, rather than replaces, standard telemetry. Collection targets dynamic tags and writes dedicated DeviceCustom event tables to Sentinel. The event cap affects the specific rule, not other rules on the same device. The feature is prerelease. |
-| sc200-exp-a-asr-test: [Test your attack surface reduction (ASR) rules deployment](https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-deployment-test) | 1 / 1 / 1 | 2026-09-16T13:41:42.273Z | 2026-09-16T13:45:59.053Z | A controlled ASR pilot in Audit mode records impact without blocking users. Review detailed audit events before broad blocking; Windows Defender Operational event 1122 records audit activity. Deployment tooling does not determine report availability for enrolled devices. |
-| sc200-exp-a-asr-reference: [Attack surface reduction (ASR) rules reference](https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference) | 1 / 1 / 1 | 2026-09-16T13:43:59.421Z | 2026-09-16T13:45:59.053Z | The LSASS credential-stealing ASR rule blocks access to LSASS memory, not process execution, does not support Warn mode, and does not justify an exclusion solely because a working application enumerates LSASS. Other rule-specific and newly introduced capabilities are outside the tested scope. |
-| sc200-exp-a-endpoint-air: [Overview of automated investigations](https://learn.microsoft.com/en-us/defender-endpoint/automated-investigations) | 1 / 1 / 1 | 2026-09-16T13:41:24.612Z | 2026-09-16T13:45:59.053Z | The current lifecycle notice states that from September 1, 2026 Endpoint AIR is no longer a separate or manually triggered investigation experience; its detection/response remains in the default antivirus stack and a full antivirus scan is the on-demand alternative. Older manual-AIR instructions lower on the page are superseded and not relied upon. |
-| sc200-exp-a-office-air: [Automated investigation and response (AIR) in Microsoft Defender for Office 365 Plan 2](https://learn.microsoft.com/en-us/defender-office-365/air-about) | 2 / 2 / 2 | 2026-09-16T13:41:29.721Z | 2026-09-16T13:45:59.053Z | Office 365 Plan 2 AIR remains documented independently of Endpoint AIR retirement. It requires audit logging and designated built-in alert policies; replacing an AIR-triggering alert with a custom alert prevents that trigger path. No blanket claim that every remediation always needs approval is made. |
-| sc200-exp-a-attack-disruption: [Configure automatic attack disruption in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/configure-attack-disruption) | 2 / 2 / 2 | 2026-09-16T13:41:33.636Z | 2026-09-16T13:45:59.053Z | Automatic containment of unmanaged devices requires Endpoint deployment and Standard discovery. Semi automation still permits automatic attack disruption without approval, while No automated response excludes a device group from automated containment. Preview automatic isolation and external-platform actions are outside scope. |
-| sc200-exp-a-device-groups: [Create and manage device groups in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/machine-groups) | 2 / 2 / 2 | 2026-09-16T13:41:37.177Z | 2026-09-16T13:45:59.053Z | Device-group membership uses the highest-ranked matching group, with rank 1 highest. Device group assignments govern access; deleting a group removes it from notification rules and deletes a notification rule when that was its sole configured group. No retired standalone AIR execution is assumed. |
-| sc200-exp-a-automation-rules: [Create and use Microsoft Sentinel automation rules to manage response](https://learn.microsoft.com/en-us/azure/sentinel/create-manage-use-automation-rules) | 1 / 1 / 1 | 2026-09-16T13:43:57.773Z | 2026-09-16T13:45:59.053Z | Classic Sentinel automation rules have trigger-specific actions and explicit expiration. An action invoking a playbook lasting more than two minutes advances after two minutes regardless of completion, so sequential rule actions do not guarantee completion of a long-running playbook. Simple Flows Preview is not tested. |
-| sc200-exp-a-playbook-triggers: [Supported triggers and actions in Microsoft Sentinel playbooks](https://learn.microsoft.com/en-us/azure/sentinel/playbook-triggers-actions) | 1 / 1 / 1 | 2026-09-16T13:41:28.443Z | 2026-09-16T13:45:59.053Z | The incident-triggered Sentinel playbook receives an incident with arrays of alerts and entities. Selecting an alert property generates a for-each loop, and entity-specific actions parse the matching entity subset. These incident-trigger claims do not rely on the separately marked alert-trigger Preview. |
-| sc200-exp-a-roles: [Roles and permissions in the Microsoft Sentinel platform](https://learn.microsoft.com/en-us/azure/sentinel/roles) | 1 / 1 / 1 | 2026-09-16T13:41:31.203Z | 2026-09-16T13:45:59.053Z | For workbook editing without broader Sentinel resource management, Workbook Contributor can complement a lesser Sentinel role such as Reader. Sentinel Contributor additionally permits analytics-rule changes; Playbook Operator and Logic App Contributor concern playbooks, not workbook editing. Data-lake/URBAC Preview claims are not used. |
-| sc200-exp-a-data-tiers: [Manage data tiers and retention in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/manage-data-overview) | 2 / 2 / 2 | 2026-09-16T13:41:21.941Z | 2026-09-16T13:45:59.053Z | Analytics retention and total retention are distinct: reducing hot retention immediately leaves older retained data in the lake when total retention is unchanged. Supported XDR data sent directly to the lake still has its default 30-day XDR hunting window; lake ingestion, storage and processing charges are distinct from that included window. |
-| sc200-exp-a-retention: [Configure table settings in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/manage-table-tiers-retention) | 2 / 2 / 2 | 2026-09-16T13:41:27.066Z | 2026-09-16T13:45:59.053Z | The Defender portal configures table analytics and total retention separately, with warnings when moving a table entirely to the lake disables Analytics-dependent detections. This source is scoped to table configuration, not unrelated newer Table insights monitoring claims. |
-| sc200-exp-a-workbooks: [Visualize and monitor your data by using workbooks in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/monitor-your-data) | 3 / 3 / 3 | 2026-09-16T13:41:36.357Z | 2026-09-16T13:45:59.053Z | Saving a Sentinel workbook in a location stores its JSON resource, not the underlying log data. Query-based workbooks use Logs and Log Analytics data sources; using an ASIM parser instead of a vendor-specific table supports relevant current and future sources. |
-| sc200-exp-a-soc-access: [Optimize your security operations](https://learn.microsoft.com/en-us/azure/sentinel/soc-optimization/soc-optimization-access) | 1 / 1 / 1 | 2026-09-16T13:44:52.311Z | 2026-09-16T13:45:59.053Z | SOC optimization recommendations are recalculated every 24 hours. Environmental changes such as using a formerly unused table in an analytics rule can automatically complete an obsolete recommendation. Reactivation recalculates relevance and may return an obsolete recommendation directly to Completed. No Preview API is used. |
-| sc200-exp-b-windows-eventsets: [Windows security event sets that can be sent to Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/windows-security-event-id-reference) | 3 / 3 / 3 | 2026-09-16T13:41:04.596Z | 2026-09-16T13:46:54.415Z | Windows Security Events via AMA writes SecurityEvent. Common retains sign-in and sign-out auditing, Minimal omits sign-out, and All events covers Security and AppLocker rather than Application or System logs. |
-| sc200-exp-b-windows-xpath: [Collect Windows events from virtual machine with Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/agents/data-collection-windows-events) | 4 / 4 / 4 | 2026-09-16T13:41:07.747Z | 2026-09-16T13:46:54.415Z | Generic Windows event DCRs send to Event, whereas the Sentinel security connector sends to SecurityEvent. Custom filters use LogName!XPathQuery; local Get-WinEvent supports 23 expressions while a DCR supports 20. Source-side XPath syntax and channel restrictions are documented. |
-| sc200-exp-b-wef-design: [Use Windows Event Forwarding to help with intrusion detection](https://learn.microsoft.com/en-us/windows/security/operating-system-security/device-management/use-windows-event-forwarding-to-assist-in-intrusion-detection) | 2 / 2 / 2 | 2026-09-16T13:44:12.660Z | 2026-09-16T13:46:54.415Z | WEF subscriptions forward existing generated events to a WEC server. Targeted subscriptions need ReadExistingEvents enabled to collect retained events predating receipt; WEF does not enable audit policies, event channels, permissions or larger event logs. Only these Windows WEF behaviors are used, not the article’s example downstream products or capacity estimates. |
-| sc200-exp-b-syslog-overview: [Syslog and Common Event Format (CEF) via AMA connectors for Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/cef-syslog-ama-overview) | 3 / 3 / 3 | 2026-09-16T13:41:02.276Z | 2026-09-16T13:46:54.415Z | For AMA 1.28.11 and later the forwarder daemon receives device traffic on its configured listener and passes logs locally over TCP 28330. A timezone-free Syslog header is converted using the forwarder timezone for EventTime, while TimeGenerated reflects collector processing. Existing CEF table, duplicate-filter and severity-threshold facts are deliberately not reused. |
-| sc200-exp-b-activity-log: [Activity log in Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/activity-log) | 1 / 1 / 1 | 2026-09-16T13:42:50.293Z | 2026-09-16T13:46:54.415Z | Activity logs capture control-plane changes; resource logs capture data-plane operations and require diagnostic settings. Export activity logs to a Log Analytics workspace for correlation in AzureActivity. The scoped claims do not depend on the article’s retention or timing estimates. |
-| sc200-exp-b-diagnostic-policy: [Create diagnostic settings at scale by using custom Azure policies](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/diagnostic-settings-policy) | 1 / 1 / 1 | 2026-09-16T13:53:43.360Z | 2026-09-16T13:54:32.370Z | Diagnostic-settings policy initiatives can target common destinations at scale. Existing resources require remediation tasks; deployIfNotExists remediation uses the assignment managed identity with permission to create diagnostic settings. Resource creator permissions alone do not authorize that identity. |
-| sc200-exp-b-taxii: [Use STIX/TAXII to import and export threat intelligence in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/connect-threat-intelligence-taxii) | 2 / 2 / 2 | 2026-09-16T13:41:02.352Z | 2026-09-16T13:46:54.415Z | The TAXII import connector pulls from TAXII 2.0 or 2.1 using an API root URL, collection ID, optional credentials and polling settings. A discovery endpoint can be queried to obtain the API root; import and export connectors have distinct directions. Only documented import configuration is used. |
-| sc200-exp-b-ti-upload: [Connect your threat intelligence platform to Microsoft Sentinel with the upload API (Preview)](https://learn.microsoft.com/en-us/azure/sentinel/connect-threat-intelligence-upload-api) | 1 / 1 / 1 | 2026-09-16T13:41:06.453Z | 2026-09-16T13:46:54.415Z | The threat intelligence upload API explicitly remains Preview. It ingests STIX objects without a data connector; its Entra application needs Microsoft Sentinel Contributor or equivalent at the target workspace, plus OAuth access token and workspace ID. |
-| sc200-exp-b-ti-management: [Work with Microsoft Sentinel threat intelligence](https://learn.microsoft.com/en-us/azure/sentinel/work-with-threat-indicators) | 1 / 1 / 1 | 2026-09-16T13:41:09.400Z | 2026-09-16T13:46:54.415Z | Indicator ingestion rules can condition on source and confidence, select Indicator/Edit, extend Valid until and add a tag. Rules execute in ascending order and do not update the object’s Modified field. The scoped ingestion-rule claims exclude the separately Preview GeoLocation/WhoIs enrichment and obsolete workbook sample. |
-| sc200-exp-b-custom-table: [Add or delete tables and columns in Azure Monitor Logs](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/create-custom-table) | 2 / 2 / 2 | 2026-09-16T13:41:14.295Z | 2026-09-16T13:46:54.415Z | Custom Log Analytics tables need the _CL suffix, a TimeGenerated column and a matching DCR destination stream. The portal appends _CL; nonportal creation must supply it. Adding a table column does not automatically update DCRs. Only Analytics-plan schema behavior is used, not Auxiliary/Lake precision claims. |
-| sc200-exp-b-custom-detections: [Create custom detection rules in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/custom-detection-rules) | 2 / 2 / 2 | 2026-09-16T13:41:02.214Z | 2026-09-16T13:46:54.415Z | Email response actions require NetworkMessageId and RecipientEmailAddress in the query output. Custom alert details allow up to 20 key-value pairs but their combined 4-KB alert limit drops the whole array when exceeded. These claims exclude Preview SaaS governance and the retired Endpoint AIR action still listed elsewhere on the page. |
-| sc200-exp-b-detection-management: [Manage existing custom detection rules](https://learn.microsoft.com/en-us/defender-xdr/custom-detection-manage) | 1 / 1 / 1 | 2026-09-16T13:41:05.483Z | 2026-09-16T13:46:54.415Z | The Run action immediately executes an existing Defender custom detection and resets its next-run interval. Modify query, Edit, Turn off and Delete are separate actions. The Run behavior is explicitly scoped to custom detections rather than Sentinel analytics rules. |
-| sc200-exp-b-scheduled-rules: [Create a scheduled analytics rule from scratch](https://learn.microsoft.com/en-us/azure/sentinel/detect-threats-custom) | 2 / 2 / 2 | 2026-09-16T13:41:09.041Z | 2026-09-16T13:46:54.415Z | Scheduled analytics use returned TimeGenerated for the lookback window, and the lookback must be at least the run interval. Stop running query after alert is generated suppresses subsequent query execution; event grouping changes events-to-alert packaging instead. Claims exclude the Preview specific-start-time scheduling option. |
-| sc200-exp-b-mitre: [View MITRE ATT&CK framework coverage in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/mitre-coverage) | 2 / 2 / 2 | 2026-09-16T13:41:02.679Z | 2026-09-16T13:46:54.415Z | The Sentinel MITRE coverage page is explicitly Preview. Current coverage reflects active scheduled and NRT rules; simulated coverage adds available but unconfigured detections. Technique selections in analytics rules also propagate to generated alerts/incidents. Simulation is not enabling a rule or testing its effectiveness. |
-| sc200-exp-b-anomalies: [Work with anomaly detection analytics rules in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/work-with-anomaly-rules) | 2 / 2 / 2 | 2026-09-16T13:41:06.539Z | 2026-09-16T13:46:54.415Z | Out-of-box anomaly parameters require one customized duplicate, initially Disabled and Flighting. Promoting the customized version to Production moves the original to Flighting. AnomalyTemplateId links original and duplicate for comparison, whereas RuleId identifies one rule and AnomalyReasons explains an individual anomaly. |
-| sc200-exp-c-incident-investigation: [Investigate incidents in the Microsoft Defender portal](https://learn.microsoft.com/en-us/defender-xdr/investigate-incidents) | 1 / 1 / 1 | 2026-09-16T13:41:14.220Z | 2026-09-16T13:45:45.416Z | The Office 365 investigations count is zero on the incident Investigations tab by design; the associated alert links to the investigation. Evidence and Response retains its evidence. Scope excludes blast radius, Preview graph filters, Preview user anomalies, and legacy Endpoint AIR claims. |
-| sc200-exp-c-office-air: [Automated investigation and response (AIR) in Microsoft Defender for Office 365 Plan 2](https://learn.microsoft.com/en-us/defender-office-365/air-about) | 2 / 2 / 2 | 2026-09-16T13:40:29.092Z | 2026-09-16T13:45:45.416Z | Office 365 Plan 2 AIR requires audit logging and investigates messages and related evidence. Authorized analysts can initiate it from Threat Explorer. The investigation can expand as evidence is discovered; this is Office 365 AIR, not retired Endpoint AIR. |
-| sc200-exp-c-office-air-expansion: [Automated investigation and response (AIR) examples in Microsoft Defender for Office 365 Plan 2](https://learn.microsoft.com/en-us/defender-office-365/air-examples) | 1 / 1 / 1 | 2026-09-16T13:43:57.944Z | 2026-09-16T13:45:45.416Z | A Threat Explorer investigation starts from selected email using Take action and Initiate automated investigation. It includes root and related-entity investigation, searches for similar messages, and assesses recipients who clicked malicious links. |
-| sc200-exp-c-attack-disruption: [Automatic attack disruption in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/automatic-attack-disruption) | 1 / 1 / 1 | 2026-09-16T13:42:11.477Z | 2026-09-16T13:45:45.416Z | Attack disruption contains active attacks using cross-workload incident correlation, leaving full remediation to responders. For a synchronized hybrid user, disable-user acts on on-premises AD through onboarded domain controllers and also disables the Entra account. Scope excludes Preview AWS/Okta, policy-status UI, predictive shielding and automatic device isolation. |
-| sc200-exp-c-dlp-incidents: [Investigate data loss prevention alerts with Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/dlp-investigate-alerts-defender) | 3 / 3 / 3 | 2026-09-16T13:42:09.361Z | 2026-09-16T13:45:45.416Z | DLP incident investigation preserves administrative-unit restrictions. DLP-only roles differ from Manage Alerts permissions, which include security alerts. SharePoint and OneDrive file responses include Unshare, Delete and labels. The early-October-2026 tuning notice is prospective at retrieval; Preview Copilot, policy-search and built-in hunting controls are excluded. |
-| sc200-exp-c-cloud-incidents: [Microsoft Defender for Cloud alerts and incidents in Microsoft Defender XDR](https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-integration-365) | 2 / 2 / 2 | 2026-09-16T13:40:31.719Z | 2026-09-16T13:45:45.416Z | Defender for Cloud alert status synchronizes bidirectionally with XDR, unlike Defender for Endpoint alerts on cloud resources. Informational Defender for Cloud alerts are not integrated. Scope excludes the Preview tenant-based Sentinel connector and unrelated hunting-table claims. |
-| sc200-exp-c-cloud-app-governance: [Govern actions for connected apps in Defender for Cloud Apps](https://learn.microsoft.com/en-us/defender-cloud-apps/governance-actions) | 3 / 3 / 3 | 2026-09-16T13:43:52.948Z | 2026-09-16T13:45:45.416Z | For connected Google Workspace apps, revocation removes current OAuth grants once while banning prevents future grants. Hybrid directory synchronization can revert cloud suspension. Nested file actions use the stronger action; unrelated notification actions also run. File-policy retirement is January 6, 2027, not current; Preview malware governance is excluded. |
-| sc200-exp-c-entra-risk-remediation: [Remediate risks and unblock users](https://learn.microsoft.com/en-us/entra/id-protection/howto-identity-protection-remediate-unblock) | 3 / 3 / 3 | 2026-09-16T13:40:25.205Z | 2026-09-16T13:45:45.416Z | Risk-based user remediation requires MFA followed by a secure password change, not the SSPR recovery flow. Token-theft detections are not dismissed merely by an MFA claim. Confirming compromise still requires containment and remediation, including blocking when the attacker can perform MFA and revoking refresh tokens. Preview PowerShell is excluded. |
-| sc200-exp-c-identity-alert-classification: [View and manage security alerts](https://learn.microsoft.com/en-us/defender-for-identity/manage-security-alerts) | 1 / 1 / 1 | 2026-09-16T13:41:20.884Z | 2026-09-16T13:45:45.416Z | Defender for Identity distinguishes malicious true positives, real but nonmalicious benign true positives such as authorized tests, and false positives where the reported activity did not occur. Classification and workflow status are separate investigative decisions. |
-| sc200-exp-c-identity-remediation: [Remediation actions in Microsoft Defender for Identity](https://learn.microsoft.com/en-us/defender-for-identity/remediation-actions) | 2 / 2 / 2 | 2026-09-16T13:43:00.428Z | 2026-09-16T13:45:45.416Z | Disabling an identity prevents access without deleting its profile or associated data. AD remediation executes through domain-controller sensors using local system; AD FS, AD CS and Entra Connect sensors do not execute remediation. The local-system setting is required for v3.x, separate from initiating-user RBAC. |
-| sc200-exp-c-sentinel-xdr-sync: [Microsoft Defender XDR integration with Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/microsoft-365-defender-sentinel-integration) | 2 / 2 / 2 | 2026-09-16T13:43:55.538Z | 2026-09-16T13:45:45.416Z | Sentinel incidents show 150+ when a synchronized Defender incident exceeds 150 alerts, linking to the complete Defender incident. A merge transfers alerts to the surviving incident and closes the source with a redirected tag; this closure does not represent completed threat remediation. |
-| sc200-exp-c-phishing-agent: [Microsoft Security Copilot Phishing Triage Agent in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/phishing-triage-agent) | 1 / 1 / 1 | 2026-09-16T13:42:13.640Z | 2026-09-16T13:45:45.416Z | The phishing agent provides classification reasoning and leaves malicious incidents open for analysts. A classification-change reason is audited but is not a teaching lesson without explicit opt-in, evaluation and saving; analysts must inspect the generated lesson. Scope excludes Preview expanded identity/cloud triage and Agent ID setup. |
-| sc200-exp-c-copilot-summary-settings: [Summarize an incident with Microsoft Copilot in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/security-copilot-m365d-incident-summary) | 1 / 1 / 1 | 2026-09-16T13:41:11.614Z | 2026-09-16T13:45:45.416Z | Preview incident-summary preferences select automatic generation by minimum severity or on-demand generation. An unchanged incident summary cached within one week is redisplayed at no cost regardless of these settings. This record deliberately scopes its lifecycle to the Preview preferences. |
-| sc200-exp-c-incident-correlation: [Alert correlation and incident merging in the Microsoft Defender portal](https://learn.microsoft.com/en-us/defender-xdr/alerts-incidents-correlation) | 4 / 4 / 4 | 2026-09-16T13:45:11.123Z | 2026-09-16T13:45:45.416Z | Only primary-workspace Sentinel alerts correlate with Defender alerts; secondary workspaces remain separate correlation sources. All associated incidents changes graph context without merging incidents or sharing their ownership, status and lifecycle. Preview manual merge and comment migration are excluded. |
-| sc200-exp-c-incident-export: [Manage incidents in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/manage-incidents) | 2 / 2 / 2 | 2026-09-16T13:45:12.777Z | 2026-09-16T13:45:45.416Z | Incident PDF export includes at most ten assets per asset type and one hundred evidence items, and immediate repeat exports can return cached reports. An incident has one assigned user or group, while tags categorize and filter rather than create tasks. AI analyst notes are outside this evidence scope. |
-| sc200-exp-c-case-management: [Manage security operations cases natively in the Microsoft Defender portal](https://learn.microsoft.com/en-us/defender-xdr/cases-overview) | 2 / 2 / 2 | 2026-09-16T13:42:58.202Z | 2026-09-16T13:45:45.416Z | Defender-native cases require a connected Sentinel workspace and can link multiple incidents while assigning granular tasks with owners and due dates. Case attachments are scanned before download becomes available. Preview indicator links, comment attachments and deletion are excluded. |
-| sc200-exp-d-device-timeline: [Investigate devices in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/investigate-machines) | 2 / 2 / 2 | 2026-09-16T13:39:52.275Z | 2026-09-16T13:46:41.443Z | Device timelines distinguish raw events from MITRE technique entries, support related-event pivots, and record EDR resource-critical mode. Technique pivots omit the technique entry itself; critical mode temporarily stops new-event processing. Scoped to these GA investigation behaviors, excluding Exposure Management Preview and obsolete automated-investigation menu references. |
-| sc200-exp-d-file-investigation: [Investigate a file](https://learn.microsoft.com/en-us/defender-endpoint/investigate-files) | 2 / 2 / 2 | 2026-09-16T13:39:56.489Z | 2026-09-16T13:46:41.443Z | File prevalence is scoped to the analyst RBAC device visibility. Observed in organization exposes per-device execution status, initiating process, first and last observations, and timeline pivots; file names alone do not establish execution. Cloud-app visibility requires the Cloud Apps workload. |
-| sc200-exp-d-device-actions: [Take response actions on a device](https://learn.microsoft.com/en-us/defender-endpoint/respond-machine-alerts) | 2 / 2 / 2 | 2026-09-16T13:39:59.979Z | 2026-09-16T13:46:41.443Z | Windows investigation packages provide registry autostart artifacts, scheduled tasks, installed programs, and running processes with distinct investigative purposes. Automatic contain-user enforcement blocks attack-related endpoint protocols without disabling the identity-provider account. Scope excludes retired Endpoint AIR, Preview automatic isolation, and predictive-shielding behaviors. |
-| sc200-exp-d-disruption-results: [Details and results of an automatic attack disruption action](https://learn.microsoft.com/en-us/defender-xdr/autoad-results) | 1 / 1 / 1 | 2026-09-16T13:43:09.277Z | 2026-09-16T13:46:41.443Z | DeviceEvents containment-related rows record individual blocked activities, not the initial containment action. Action center records action history. Scope is GA containment investigation; the Preview Activities Policy status column and the separately documented DisruptionAndResponseEvents table are not used. |
-| sc200-exp-d-audit-search: [Search the audit log](https://learn.microsoft.com/en-us/purview/audit-search) | 4 / 4 / 4 | 2026-09-16T13:39:56.448Z | 2026-09-16T13:46:41.443Z | Purview Audit search distinguishes Exchange Online from Security and Compliance PowerShell ingestion-setting output, one-year eligible E5 audit retention from the 180-day per-query window, administrative-unit restrictions, and indexed-common-schema keyword scope. Search/export roles and runtime limits are described separately. |
-| sc200-exp-d-audit-properties: [Detailed activity properties in the audit log](https://learn.microsoft.com/en-us/purview/audit-log-detailed-properties) | 2 / 2 / 2 | 2026-09-16T13:40:00.443Z | 2026-09-16T13:46:41.443Z | AuditData contains workload-specific event properties. Mailbox LogonType, UserId, MailboxOwnerUPN, and ExternalAccess have distinct meanings; an internal delegate is not necessarily the mailbox owner. Exported detail properties can be parsed for investigation rather than relying on common-schema keyword search. |
-| sc200-exp-d-edisc-search: [Create a search for a case in eDiscovery](https://learn.microsoft.com/en-us/purview/edisc-search-query) | 3 / 3 / 3 | 2026-09-16T13:43:07.406Z | 2026-09-16T13:46:41.443Z | Current commercial eDiscovery case searches use explicit selected data sources and KeyQL conditions. Boolean operators belong in KeyQL rather than Keyword, values are case-insensitive, and case-sensitive analysis requires downstream exported-content filtering. Partial-index search options do not configure subsequent exports. Copilot natural-language query Preview is excluded. |
-| sc200-exp-d-edisc-teams: [Finding content in Microsoft Teams in eDiscovery](https://learn.microsoft.com/en-us/purview/edisc-search-teams) | 1 / 1 / 1 | 2026-09-16T13:43:08.887Z | 2026-09-16T13:46:41.443Z | Shared-channel message compliance records are searched through the parent team mailbox, while shared-channel files are in the channel-specific SharePoint site. Standard-channel and participant-mailbox storage differ. Scope excludes contradictory private-channel mailbox descriptions and meeting-recording ownership details. |
-| sc200-exp-d-edisc-sites: [Finding content in sites in eDiscovery](https://learn.microsoft.com/en-us/purview/edisc-search-sites) | 1 / 1 / 1 | 2026-09-16T13:43:10.502Z | 2026-09-16T13:46:41.443Z | Current site-search documentation permits SensitiveType searches for classified SharePoint and OneDrive content, with IDs required for custom sensitive types. SensitiveType cannot search sensitive content at rest in Exchange mailboxes, including Teams message compliance copies. |
-| sc200-exp-d-edisc-partial-items: [Partially indexed items in eDiscovery](https://learn.microsoft.com/en-us/purview/edisc-ref-partially-indexed-items) | 1 / 1 / 1 | 2026-09-16T13:44:48.902Z | 2026-09-16T13:46:41.443Z | Partial-index inclusion is configured independently at export; its location boundary is a whole mailbox or site rather than a folder. Without advanced indexing, partial items are not constrained by a DocumentLink path restriction. Advanced indexing at export applies query conditions; no Preview feature is used. |
-| sc200-exp-d-graph-activity: [Access Microsoft Graph activity logs](https://learn.microsoft.com/en-us/graph/microsoft-graph-activity-logs-overview) | 4 / 4 / 4 | 2026-09-16T13:43:07.462Z | 2026-09-16T13:46:41.443Z | Microsoft Graph activity logs record HTTP requests in the resource tenant. The schema distinguishes request and batch IDs, token claims, client authentication methods, and sign-in correlation. The documented correlation uses SignInActivityId to sign-in UniqueTokenIdentifier and warns that some Microsoft application requests lack matching sign-ins. The example use of Preview count_distinct is grounded separately, not labeled GA here. |
-| sc200-exp-d-graph-schema: [MicrosoftGraphActivityLogs](https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/microsoftgraphactivitylogs) | 2 / 2 / 2 | 2026-09-16T13:40:00.656Z | 2026-09-16T13:46:41.443Z | MicrosoftGraphActivityLogs defines RequestId per request, OperationId shared by batched requests, client-supplied or fallback ClientRequestId, AppId and ServicePrincipalId, and ClientAuthMethod values for public clients, secrets, and certificates. This is field interpretation, not proof of malicious intent or successful resource changes. |
-| sc200-exp-d-count-distinct: [count_distinct() (aggregation function) - (preview)](https://learn.microsoft.com/en-us/kusto/query/count-distinct-aggregation-function) | 1 / 1 / 1 | 2026-09-16T13:44:51.826Z | 2026-09-16T13:46:41.443Z | The explicitly Preview count_distinct aggregation counts exact distinct scalar values per group, unlike row counts or approximate dcount. Its 100-million unique-value limit is retained in author evidence; the candidate uses a small stipulated dataset and labels the feature Preview. |
-| sc200-exp-d-leftouter: [leftouter join](https://learn.microsoft.com/en-us/kusto/query/join-leftouter) | 1 / 1 / 1 | 2026-09-16T13:44:53.776Z | 2026-09-16T13:46:41.443Z | The leftouter KQL join retains every left input row and matching right rows. Its documented unequal-column key syntax supports preserving Graph requests while enriching available sign-in matches; absent matches do not imply an absent request. |
-| sc200-exp-e-email-postdelivery: [EmailPostDeliveryEvents](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-emailpostdeliveryevents-table) | 1 / 1 / 1 | 2026-09-16T13:40:41.487Z | 2026-09-16T13:46:43.276Z | EmailPostDeliveryEvents records actions after message delivery, including manual remediation, Phish ZAP and Malware ZAP. ActionTrigger distinguishes administrator-triggered actions from mechanisms such as ZAP; administrator-triggered actions include approval of pending automated actions. Scope excludes any unnamed prerelease columns. |
-| sc200-exp-e-url-clicks: [UrlClickEvents](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-urlclickevents-table) | 3 / 3 / 3 | 2026-09-16T13:40:45.863Z | 2026-09-16T13:46:43.276Z | UrlClickEvents records Safe Links clicks across Email, Office and Teams. ActionType and IsClickedThrough distinguish allowed clicks and warning-page continuation; ReportId correlates a clickthrough. Drafts and Sent-item clicks can lack usable message metadata, preventing email-table correlation by NetworkMessageId. |
-| sc200-exp-e-cloud-app-events: [CloudAppEvents](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-cloudappevents-table) | 4 / 4 / 4 | 2026-09-16T13:40:38.240Z | 2026-09-16T13:46:43.276Z | CloudAppEvents supplies Defender for Cloud Apps activity involving SaaS accounts and objects, including impersonation and external-user flags and source JSON. LastSeenForUser uses negative values for first-seen attributes, zero for today, and positive days for previously seen values. UncommonForUser empty text means unenriched, not a clean bill of health. |
-| sc200-exp-e-hunting-schema: [Understand the advanced hunting schema](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-schema-tables) | 2 / 2 / 2 | 2026-09-16T13:42:35.301Z | 2026-09-16T13:46:43.276Z | The schema catalog separates post-delivery email security actions, URL content, Safe Links clicks, SaaS object activity, directory queries, account information and endpoint file events. Scope is the established tables used in this batch; explicitly Preview tables in the catalog are not used. |
-| sc200-exp-e-hunting-query-practices: [Advanced hunting query best practices](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-best-practices) | 1 / 1 / 1 | 2026-09-16T13:40:40.921Z | 2026-09-16T13:46:43.276Z | Advanced hunting guidance recommends early time and source-column filters before expensive parsing, selective projection and explicit search scope. Performance tuning must retain investigative results; take/limit bounds result rows rather than guaranteeing complete search coverage. Process correlation and time-bucket examples are outside this batch. |
-| sc200-exp-e-dynamic-access: [The dynamic data type](https://learn.microsoft.com/en-us/kusto/query/scalar-data-types/dynamic) | 2 / 2 / 2 | 2026-09-16T13:43:55.460Z | 2026-09-16T13:46:43.276Z | Dynamic property bags support named-key access, not a reliable positional order. Accessed values remain dynamic and should be cast to the desired scalar type. Arrays use zero-based indexes; missing or nonmatching data must not be treated as evidence of maliciousness. |
-| sc200-exp-e-long-conversion: [tolong()](https://learn.microsoft.com/en-us/kusto/query/tolong-function) | 2 / 2 / 2 | 2026-09-16T13:42:46.951Z | 2026-09-16T13:46:43.276Z | tolong converts a scalar, including a numeric string, to a signed 64-bit integer; failed conversions yield null. This supports numeric interpretation of documented LastSeenForUser values rather than lexical comparisons. |
-| sc200-exp-e-where-filter: [where operator](https://learn.microsoft.com/en-us/kusto/query/where-operator) | 4 / 4 / 4 | 2026-09-16T13:43:59.587Z | 2026-09-16T13:46:43.276Z | The where operator retains only rows whose predicate is true. Null comparisons do not select a row. Direct column-to-constant comparisons and simple predicates before more complex work support efficient filtering. |
-| sc200-exp-e-logical-precedence: [Logical (binary) operators](https://learn.microsoft.com/en-us/kusto/query/logical-operators) | 1 / 1 / 1 | 2026-09-16T13:43:57.692Z | 2026-09-16T13:46:43.276Z | KQL and has higher precedence than or. Parentheses are necessary when a shared scope restriction must apply to both alternatives in a disjunction. The source provides Boolean conjunction, disjunction and equality semantics. |
-| sc200-exp-e-dynamic-expansion: [mv-expand operator](https://learn.microsoft.com/en-us/kusto/query/mv-expand-operator) | 1 / 1 / 1 | 2026-09-16T13:42:42.335Z | 2026-09-16T13:46:43.276Z | mv-expand repeats nonexpanded event fields for each array or bag element. kind=array expands a bag into key/value pairs. Explicit to typeof is cast-only rather than string parsing; empty arrays and bags produce no rows, and null produces one null row. |
-| sc200-exp-e-threat-analytics: [Threat analytics in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/threat-analytics) | 2 / 2 / 2 | 2026-09-16T13:40:38.753Z | 2026-09-16T13:46:43.276Z | High-impact threat ranking reflects active and resolved alerts; highest exposure considers vulnerability severity and exploitable-device population. Recommended actions tracks Secure Score mitigations, while Analyst report may contain additional recommendations. Not available vulnerability/configuration counts can mean researchers linked no such items, and completed recommendations never guarantee resilience. Scope excludes Preview Indicators and agent features. |
-| sc200-exp-e-hunting-graph: [Hunt for threats using the hunting graph](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-graph) | 2 / 2 / 2 | 2026-09-16T13:42:35.158Z | 2026-09-16T13:46:43.276Z | Predefined hunting graph scenarios have distinct inputs and purpose: SQL-data-store choke points finds nodes occurring on the most access paths without a target input; paths between two entities needs both endpoints; an entity relationship map explores direct incoming/outgoing connections. Requires Sentinel data lake and Exposure Management read access. December 2025 release receipt explicitly establishes hunting graph GA. |
-| sc200-exp-e-graph-semantics: [Understanding graphs and visualizations in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/understand-graph-icons) | 1 / 1 / 1 | 2026-09-16T13:42:46.512Z | 2026-09-16T13:46:43.276Z | Graph nodes represent assets and identities; edges describe relationships such as permission or membership. A number on an edge means multiple relationships, not event frequency. Inspect its side panel for relationship details; a crown denotes business criticality, while a separate bug denotes vulnerability. Claims here apply to GA hunting graph visualizations. |
-| sc200-exp-e-sentinel-graph: [What is Microsoft Sentinel graph?](https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-graph-overview) | 1 / 1 / 1 | 2026-09-16T13:42:42.504Z | 2026-09-16T13:46:43.276Z | Sentinel graph powers relationship exploration across assets, identities, activity and threat intelligence. Its embedded hunting experience supports connected-asset reasoning. Scope is the established graph model and hunting integration, not the separately labeled Preview custom-graph creation capability. |
-| sc200-exp-e-blast-radius: [Investigate incidents in the Microsoft Defender portal](https://learn.microsoft.com/en-us/defender-xdr/investigate-incidents) | 1 / 1 / 1 | 2026-09-16T13:43:58.040Z | 2026-09-16T13:46:43.276Z | Blast radius shows potential propagation from a selected incident node to critical targets within user scope; the initial display contains eight top-rated paths and a full list can be opened. Paths do not prove traversal, out-of-scope nodes hide paths, and incomplete environment data limits conclusions. Preview classification follows the captured September 2025 release entry; no later blast-radius GA entry was found. Inconsistent numeric hop wording is deliberately not tested. |
-| sc200-exp-e-custom-graphs: [Custom Graph overview (preview)](https://learn.microsoft.com/en-us/azure/sentinel/datalake/custom-graphs-overview) | 1 / 1 / 1 | 2026-09-16T13:44:00.575Z | 2026-09-16T13:46:43.276Z | Sentinel custom graphs are explicitly Preview. Interactive notebook graphs exist only for the session; on-demand jobs materialize graphs for 30 days; scheduled jobs rebuild on a configured refresh schedule. Materialized graphs support shared graph exploration and GQL queries; creation and queries use the graph billing meter. |
-| sc200-exp-f-hunting-queries: [Threat hunting in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/hunting) | 3 / 3 / 3 | 2026-09-16T13:40:57.930Z | 2026-09-16T13:46:27.228Z | Hunting query result counts and deltas compare adjacent 24-hour windows; N/A can identify missing sources. Query favorites rerun on page access. Scope excludes Preview Hunts, bookmarks already tested in the existing bank, and retired livestream behavior. The current article says livestream is no longer available, despite an older availability table still listing it. |
-| sc200-exp-f-custom-queries: [Create custom hunting queries in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/hunts-custom-queries) | 1 / 1 / 1 | 2026-09-16T13:41:06.428Z | 2026-09-16T13:46:27.228Z | Custom hunting queries support entity and ATT&CK mappings. Built-in or custom queries can be cloned; direct editing in Hunting is restricted to custom content, while source-owned content must be edited at its source. |
-| sc200-exp-f-kql-jobs: [Create KQL jobs in the Microsoft Sentinel data lake](https://learn.microsoft.com/en-us/azure/sentinel/datalake/kql-jobs) | 4 / 4 / 4 | 2026-09-16T13:40:59.285Z | 2026-09-16T13:46:27.228Z | Analytics-output KQL jobs support multi-table investigations, preserve historical event time through a separate column, and need latency-aware windows. Existing-table output must match its schema; several operators and user-defined functions are unsupported. Scope excludes Preview writes into System tables, federated-table lifecycle claims, and contradictory comparison-page cadence/template details. |
-| sc200-exp-f-job-selection: [Compare KQL jobs, summary rules, and search jobs in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/datalake/kql-jobs-summary-rules-search-jobs) | 1 / 1 / 1 | 2026-09-16T13:41:02.991Z | 2026-09-16T13:46:27.228Z | The comparison assigns archive data predating data-lake onboarding to search jobs, and data available from onboarding onward to KQL jobs. Search jobs query one table without joins; KQL jobs support multi-table historical analysis. Only these consistent tier/time-scope distinctions are used; its outdated cadence, template, and health-monitoring cells are not evidence for candidates. |
-| sc200-exp-f-job-management: [Manage jobs in the Microsoft Sentinel data lake](https://learn.microsoft.com/en-us/azure/sentinel/datalake/kql-manage-jobs) | 2 / 2 / 2 | 2026-09-16T13:41:06.672Z | 2026-09-16T13:46:27.228Z | KQL job edits preserve output schema; editing a one-time job executes it again. Disabling prevents future unscheduled runs but does not cancel work already running. Notebook and graph jobs are view-only on the Jobs page and must be edited and republished in the Sentinel VS Code extension. No claim is made that quota-exceeded KQL submissions are queued. |
-| sc200-exp-f-sentinel-summaries: [Aggregate Microsoft Sentinel data with summary rules](https://learn.microsoft.com/en-us/azure/sentinel/summary-rules) | 1 / 1 / 1 | 2026-09-16T13:40:58.053Z | 2026-09-16T13:46:27.228Z | Sentinel summary rules create Analytics-plan custom tables from background aggregations. The wizard offers a bin schedule, optional delay, preview of query results, and SummaryLogs diagnostics; summaries can then be queried for hunting. No deprecated threat-intelligence-table sample or questionable sample aggregation is reused. |
-| sc200-exp-f-summary-execution: [Aggregate data in a Log Analytics workspace by using summary rules](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules) | 4 / 4 / 4 | 2026-09-16T13:43:31.827Z | 2026-09-16T13:46:27.228Z | Summary-rule bin size supplies the query window; explicit time filters intersect that window. Summary Logs diagnostics populate LASummaryLogs and exhausted failed bins can be retried manually. Destination schemas are established at creation/update, so wildcard expansion does not automatically persist new columns; removed query columns remain subject to table retention. |
-| sc200-exp-f-notebook-runtime: [Run notebooks on the Microsoft Sentinel data lake](https://learn.microsoft.com/en-us/azure/sentinel/datalake/notebooks) | 3 / 3 / 3 | 2026-09-16T13:42:18.071Z | 2026-09-16T13:46:27.228Z | Data-lake notebooks use Sentinel VS Code Spark sessions and the MicrosoftSentinelProvider library. Only the documented runtime libraries and provider are supported; pip/custom libraries are not supported. Creating Analytics custom tables requires Log Analytics Contributor on the destination workspace for the data-lake managed identity. Scope excludes Preview row-level scoping and internally inconsistent timeout/startup figures. |
-| sc200-exp-f-mcp-exploration: [Explore Microsoft Sentinel data lake with data exploration collection](https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-mcp-data-exploration-tool) | 1 / 1 / 1 | 2026-09-16T13:42:29.686Z | 2026-09-16T13:46:27.228Z | The prerelease-marked data-exploration collection exposes an HTTPS MCP endpoint, workspace discovery, schema-oriented search_tables and result-oriented query_lake. Supported roles and onboarding apply; the agent must retrieve data rather than treat catalog search as query results. Graph and entity-analyzer capabilities are not tested here. |
-| sc200-exp-f-mcp-vscode: [Use an MCP tool in Visual Studio Code](https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-mcp-use-tool-visual-studio-code) | 1 / 1 / 1 | 2026-09-16T13:44:52.803Z | 2026-09-16T13:46:27.228Z | VS Code connects to a Sentinel MCP collection through MCP: Add Server with HTTP transport, the collection URL, authenticated access of at least Security Reader, and Agent-mode Configure Tools. This record scopes the setup procedure; the candidate separately labels the prerelease data-exploration collection Preview. |
+| Source                                                                                                                                                                                                                                                | Playable / reviewed / candidates | Retrieved                | Reviewed                 | Supporting summary                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------: | ------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| sc200-sentinel-roles: [Roles and permissions in the Microsoft Sentinel platform](https://learn.microsoft.com/en-us/azure/sentinel/roles)                                                                                                              |                        4 / 4 / 4 | 2026-09-11T19:19:11.176Z | 2026-09-11T19:59:59.756Z | Sentinel Reader views resources, Responder also manages incidents, Contributor edits resources, and Playbook Operator manually runs playbooks. Automation uses a separately authorized service account. Sentinel read roles do not confer Defender workload detection-management permissions.                                                                                                                                                                                                     |
+| sc200-playbooks: [Automate threat response with playbooks in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/automate-responses-with-playbooks)                                                                                  |                        2 / 2 / 2 | 2026-09-11T19:19:11.953Z | 2026-09-11T19:59:59.756Z | Playbooks use Logic Apps. User permissions and the Sentinel service account's Automation Contributor permission on the playbook resource group are separate. The cited role behavior does not use the page's Preview playbook templates.                                                                                                                                                                                                                                                          |
+| sc200-automation: [Automate threat response in Microsoft Sentinel with automation rules](https://learn.microsoft.com/en-us/azure/sentinel/automate-incident-handling-with-automation-rules)                                                           |                        2 / 2 / 2 | 2026-09-11T19:23:59.135Z | 2026-09-11T19:59:59.756Z | Automation evaluates the current incident state, runs sequentially, and completes applicable creation-trigger rules before update-trigger rules. Negative tag conditions distinguish individual tags from the collection. Preview Simple Flows are outside the cited claims.                                                                                                                                                                                                                      |
+| sc200-nrt: [Quick threat detection with near-real-time (NRT) analytics rules in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/near-real-time-rules)                                                                            |                        3 / 3 / 3 | 2026-09-11T19:19:15.103Z | 2026-09-11T19:59:59.756Z | NRT analytics run every minute over ingestion-time windows with a two-minute delay. Single-event grouping produces at most 30 alerts; above 30 results, the final alert summarizes all applicable events.                                                                                                                                                                                                                                                                                         |
+| sc200-custom-detections: [Create custom detection rules in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/custom-detection-rules)                                                                                             |                        3 / 3 / 3 | 2026-09-11T19:19:05.568Z | 2026-09-11T19:59:59.756Z | Custom detections require permissions for each targeted service. Recommended event identifiers preserve alert enrichment. Continuous frequency requires one supported table, supported operators, GA columns, no joins/unions/externaldata, and no comments.                                                                                                                                                                                                                                      |
+| sc200-ama-architecture: [Syslog and Common Event Format (CEF) via AMA connectors for Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/cef-syslog-ama-overview)                                                                    |                        3 / 3 / 3 | 2026-09-11T19:23:51.736Z | 2026-09-11T19:59:59.756Z | CEF messages are ingested into CommonSecurityLog and plain Syslog into Syslog. Shared facilities can duplicate ingestion; if facilities cannot be changed, filter CEF from the Syslog stream, checking both ProcessName and SyslogMessage for affected AMA versions.                                                                                                                                                                                                                              |
+| sc200-ama-collection: [Ingest syslog and CEF messages to Microsoft Sentinel with the Azure Monitor Agent](https://learn.microsoft.com/en-us/azure/sentinel/connect-cef-syslog-ama)                                                                    |                        1 / 1 / 1 | 2026-09-11T19:23:00.262Z | 2026-09-11T19:59:59.756Z | The portal's collection rule selects a minimum severity per facility. Choosing LOG_ERR also collects LOG_CRIT, LOG_ALERT, and LOG_EMERG. Non-Azure forwarders require Azure Arc Connected Machine agent.                                                                                                                                                                                                                                                                                          |
+| sc200-device-response: [Take response actions on a device](https://learn.microsoft.com/en-us/defender-endpoint/respond-machine-alerts)                                                                                                                |                        5 / 5 / 5 | 2026-09-11T19:19:10.801Z | 2026-09-11T19:59:59.756Z | Manual device isolation, app restriction, evidence collection, and antivirus scans have distinct purposes and prerequisites. Full-tunnel VPNs can block cloud connectivity after isolation. High-value asset configuration can restrict live response. Automatic isolation Preview and the outdated manual-AIR section are excluded.                                                                                                                                                              |
+| sc200-live-response: [Investigate entities on devices using live response](https://learn.microsoft.com/en-us/defender-endpoint/live-response)                                                                                                         |                        4 / 4 / 4 | 2026-09-11T19:19:14.587Z | 2026-09-11T19:59:59.756Z | Live response distinguishes file metadata from file download, records command status, and supports background downloads. Ctrl+C cancels the portal command rather than stopping the agent-side operation. Uploading through a live session requires Manage Security Settings.                                                                                                                                                                                                                     |
+| sc200-action-center: [View and manage actions in the Action center](https://learn.microsoft.com/en-us/defender-xdr/m365d-autoir-actions)                                                                                                              |                        2 / 2 / 2 | 2026-09-11T19:19:56.244Z | 2026-09-11T19:59:59.756Z | Pending actions can be approved or rejected; supported completed actions can be undone from History. Bulk undo requires the same action type. The article announces September 1, 2026 retirement of the separate Endpoint AIR experience; Office 365 AIR remains available.                                                                                                                                                                                                                       |
+| sc200-process-events: [DeviceProcessEvents](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-deviceprocessevents-table)                                                                                                                |                        3 / 3 / 3 | 2026-09-11T19:19:52.161Z | 2026-09-11T19:59:59.756Z | Process-creation records distinguish the created process from the initiating process. Created-process signing information is obtained through its SHA1 and certificate information, not initiating-process signature or version metadata. ProcessUniqueId is the Windows Process Start Key.                                                                                                                                                                                                       |
+| sc200-network-events: [DeviceNetworkEvents](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-devicenetworkevents-table)                                                                                                                |                        4 / 4 / 4 | 2026-09-11T19:19:56.198Z | 2026-09-11T19:59:59.756Z | Network events contain remote destinations and initiating-process fields. InitiatingProcessSHA256 is usually unpopulated; use available SHA1. InitiatingProcessUniqueId identifies a process instance, while ReportId is a repeating event counter.                                                                                                                                                                                                                                               |
+| sc200-innerunique: [innerunique join](https://learn.microsoft.com/en-us/kusto/query/join-innerunique)                                                                                                                                                 |                        1 / 1 / 1 | 2026-09-11T19:20:01.111Z | 2026-09-11T19:59:59.756Z | An unspecified KQL join kind defaults to innerunique, which deduplicates left-side keys before matching. Which duplicate left row survives is not a reliable selection contract.                                                                                                                                                                                                                                                                                                                  |
+| sc200-inner: [inner join](https://learn.microsoft.com/en-us/kusto/query/join-inner)                                                                                                                                                                   |                        1 / 1 / 1 | 2026-09-11T19:23:02.578Z | 2026-09-11T19:59:59.756Z | An explicit inner join produces each matching left/right pair and does not perform the default innerunique left-key deduplication.                                                                                                                                                                                                                                                                                                                                                                |
+| sc200-arg-max: [arg_max() (aggregation function)](https://learn.microsoft.com/en-us/kusto/query/arg-max-aggregation-function)                                                                                                                         |                        1 / 1 / 1 | 2026-09-11T19:22:50.334Z | 2026-09-11T19:59:59.756Z | Within summarize, arg_max returns the maximizing row and specified columns from that same row. Separate max expressions do not preserve a row association.                                                                                                                                                                                                                                                                                                                                        |
+| sc200-summarize: [summarize operator](https://learn.microsoft.com/en-us/kusto/query/summarize-operator)                                                                                                                                               |                        3 / 3 / 3 | 2026-09-11T19:23:13.051Z | 2026-09-11T19:59:59.756Z | Summarize produces one row for each combination of grouping values, computing aggregates per group. Time buckets require explicit bin expressions; grouping by raw Timestamp keeps distinct timestamps separate.                                                                                                                                                                                                                                                                                  |
+| sc200-sentinel-hunting: [Threat hunting in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/hunting)                                                                                                                              |                        1 / 1 / 1 | 2026-09-11T19:20:01.127Z | 2026-09-11T19:59:59.756Z | In Sentinel-specific Hunting, bookmarks preserve selected result rows, the originating query, notes, and tags. Bookmarks are not available in unified Advanced hunting. Preview Hunts and unavailable livestreams are excluded.                                                                                                                                                                                                                                                                   |
+| sc200-high-value-response: [Restrict response actions on high-value assets](https://learn.microsoft.com/en-us/defender-endpoint/restrict-response-actions-high-value-assets)                                                                          |                        1 / 1 / 1 | 2026-09-11T19:31:28.344Z | 2026-09-11T19:59:59.756Z | Selective Response Actions can disallow live-response sessions on a supported high-value asset despite broader tenant permissions. Device security-operations information exposes enabled and disabled capabilities. No Preview designation appears for this restriction in the fetched article; an older linked deployment-tool label should be independently assessed.                                                                                                                          |
+| sc200-logical-operators: [Logical (binary) operators](https://learn.microsoft.com/en-us/kusto/query/logical-operators)                                                                                                                                |                        1 / 1 / 1 | 2026-09-11T19:36:56.258Z | 2026-09-11T19:59:59.756Z | KQL equality compares operands; and requires both predicates, while or accepts either predicate. A compound hunting filter must use conjunction when both image identity and destination must match.                                                                                                                                                                                                                                                                                              |
+| sc200-exp-a-incident-notifications: [Get incident notifications by email in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/m365d-notifications-incidents)                                                                     |                        2 / 2 / 2 | 2026-09-16T13:41:24.218Z | 2026-09-16T13:45:59.053Z | Incident notification rules support per-source severity choices, device-group scope and a one-notification-per-incident setting. The retrieved article carries a prerelease notice, so these notification claims are conservatively labeled Preview.                                                                                                                                                                                                                                              |
+| sc200-exp-a-response-notifications: [Get email notifications for response actions in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/m365d-response-actions-notifications)                                                     |                        2 / 2 / 2 | 2026-09-16T13:42:29.510Z | 2026-09-16T13:45:59.053Z | Response-action notifications distinguish manual and automated sources, action types, completion or failure status and current/future device-group scope. Response actions from custom detections are not supported by this notification feature. The article carries a prerelease notice.                                                                                                                                                                                                        |
+| sc200-exp-a-threat-notifications: [Get email notifications for Threat analytics updates in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/m365d-threat-analytics-notifications)                                               |                        1 / 1 / 1 | 2026-09-16T13:42:37.425Z | 2026-09-16T13:45:59.053Z | Threat analytics email rules track newly published or updated reports, optionally restricted by report type or tag, without depending on an incident having occurred in the tenant. Rules require a name and at least one recipient.                                                                                                                                                                                                                                                              |
+| sc200-exp-a-alert-tuning: [Investigate alerts in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/investigate-alerts)                                                                                                           |                        1 / 1 / 1 | 2026-09-16T13:41:27.494Z | 2026-09-16T13:45:59.053Z | The inspected custom alert-tuning section distinguishes hiding Endpoint alerts, resolving alerts and converting supported signals to behaviors. Hide preserves AlertInfo and AlertEvidence without incident creation; resolve creates resolved alerts and associated incidents. No agentic or Preview feature is tested.                                                                                                                                                                          |
+| sc200-exp-a-advanced-features: [Configure advanced features in Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/advanced-features)                                                                                          |                        3 / 3 / 3 | 2026-09-16T13:41:30.659Z | 2026-09-16T13:45:59.053Z | Scoped device-group correlation affects future correlations and splits cross-group incidents for local visibility. EDR in block mode remediates post-breach artifacts with passive antivirus, whereas file allow/block requires active Defender Antivirus and cloud protection. Preview switches and deprecated integrations are outside scope.                                                                                                                                                   |
+| sc200-exp-a-file-indicators: [Create file indicators in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/indicator-file)                                                                                          |                        2 / 2 / 2 | 2026-09-16T13:42:48.259Z | 2026-09-16T13:45:59.053Z | Windows file indicators require active Defender Antivirus, cloud protection, behavior monitoring and enabled file hash computation, and support PE files. A certificate block cannot be overridden by a file-hash allow indicator. The separately labeled Preview file-block alerting and hunting sections are not used.                                                                                                                                                                          |
+| sc200-exp-a-custom-collection-rules: [Create and manage custom data collection rules in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/create-custom-data-collection-rules)                                     |                        2 / 2 / 2 | 2026-09-16T13:41:34.947Z | 2026-09-16T13:45:59.053Z | Custom collection requires Endpoint Plan 2, a selected connected Sentinel workspace and dynamic tags whose asset rule has run. Rules are limited to 75000 events per device in a rolling 24-hour window; reaching the cap pauses that rule until reset. The prerelease notice applies.                                                                                                                                                                                                            |
+| sc200-exp-a-custom-collection: [Custom data collection in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/custom-data-collection)                                                                                |                        2 / 2 / 2 | 2026-09-16T13:41:38.187Z | 2026-09-16T13:45:59.053Z | Custom Endpoint telemetry adds to, rather than replaces, standard telemetry. Collection targets dynamic tags and writes dedicated DeviceCustom event tables to Sentinel. The event cap affects the specific rule, not other rules on the same device. The feature is prerelease.                                                                                                                                                                                                                  |
+| sc200-exp-a-asr-test: [Test your attack surface reduction (ASR) rules deployment](https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-deployment-test)                                                                 |                        1 / 1 / 1 | 2026-09-16T13:41:42.273Z | 2026-09-16T13:45:59.053Z | A controlled ASR pilot in Audit mode records impact without blocking users. Review detailed audit events before broad blocking; Windows Defender Operational event 1122 records audit activity. Deployment tooling does not determine report availability for enrolled devices.                                                                                                                                                                                                                   |
+| sc200-exp-a-asr-reference: [Attack surface reduction (ASR) rules reference](https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference)                                                                             |                        1 / 1 / 1 | 2026-09-16T13:43:59.421Z | 2026-09-16T13:45:59.053Z | The LSASS credential-stealing ASR rule blocks access to LSASS memory, not process execution, does not support Warn mode, and does not justify an exclusion solely because a working application enumerates LSASS. Other rule-specific and newly introduced capabilities are outside the tested scope.                                                                                                                                                                                             |
+| sc200-exp-a-endpoint-air: [Overview of automated investigations](https://learn.microsoft.com/en-us/defender-endpoint/automated-investigations)                                                                                                        |                        1 / 1 / 1 | 2026-09-16T13:41:24.612Z | 2026-09-16T13:45:59.053Z | The current lifecycle notice states that from September 1, 2026 Endpoint AIR is no longer a separate or manually triggered investigation experience; its detection/response remains in the default antivirus stack and a full antivirus scan is the on-demand alternative. Older manual-AIR instructions lower on the page are superseded and not relied upon.                                                                                                                                    |
+| sc200-exp-a-office-air: [Automated investigation and response (AIR) in Microsoft Defender for Office 365 Plan 2](https://learn.microsoft.com/en-us/defender-office-365/air-about)                                                                     |                        2 / 2 / 2 | 2026-09-16T13:41:29.721Z | 2026-09-16T13:45:59.053Z | Office 365 Plan 2 AIR remains documented independently of Endpoint AIR retirement. It requires audit logging and designated built-in alert policies; replacing an AIR-triggering alert with a custom alert prevents that trigger path. No blanket claim that every remediation always needs approval is made.                                                                                                                                                                                     |
+| sc200-exp-a-attack-disruption: [Configure automatic attack disruption in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/configure-attack-disruption)                                                                          |                        2 / 2 / 2 | 2026-09-16T13:41:33.636Z | 2026-09-16T13:45:59.053Z | Automatic containment of unmanaged devices requires Endpoint deployment and Standard discovery. Semi automation still permits automatic attack disruption without approval, while No automated response excludes a device group from automated containment. Preview automatic isolation and external-platform actions are outside scope.                                                                                                                                                          |
+| sc200-exp-a-device-groups: [Create and manage device groups in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/machine-groups)                                                                                   |                        2 / 2 / 2 | 2026-09-16T13:41:37.177Z | 2026-09-16T13:45:59.053Z | Device-group membership uses the highest-ranked matching group, with rank 1 highest. Device group assignments govern access; deleting a group removes it from notification rules and deletes a notification rule when that was its sole configured group. No retired standalone AIR execution is assumed.                                                                                                                                                                                         |
+| sc200-exp-a-automation-rules: [Create and use Microsoft Sentinel automation rules to manage response](https://learn.microsoft.com/en-us/azure/sentinel/create-manage-use-automation-rules)                                                            |                        1 / 1 / 1 | 2026-09-16T13:43:57.773Z | 2026-09-16T13:45:59.053Z | Classic Sentinel automation rules have trigger-specific actions and explicit expiration. An action invoking a playbook lasting more than two minutes advances after two minutes regardless of completion, so sequential rule actions do not guarantee completion of a long-running playbook. Simple Flows Preview is not tested.                                                                                                                                                                  |
+| sc200-exp-a-playbook-triggers: [Supported triggers and actions in Microsoft Sentinel playbooks](https://learn.microsoft.com/en-us/azure/sentinel/playbook-triggers-actions)                                                                           |                        1 / 1 / 1 | 2026-09-16T13:41:28.443Z | 2026-09-16T13:45:59.053Z | The incident-triggered Sentinel playbook receives an incident with arrays of alerts and entities. Selecting an alert property generates a for-each loop, and entity-specific actions parse the matching entity subset. These incident-trigger claims do not rely on the separately marked alert-trigger Preview.                                                                                                                                                                                  |
+| sc200-exp-a-roles: [Roles and permissions in the Microsoft Sentinel platform](https://learn.microsoft.com/en-us/azure/sentinel/roles)                                                                                                                 |                        1 / 1 / 1 | 2026-09-16T13:41:31.203Z | 2026-09-16T13:45:59.053Z | For workbook editing without broader Sentinel resource management, Workbook Contributor can complement a lesser Sentinel role such as Reader. Sentinel Contributor additionally permits analytics-rule changes; Playbook Operator and Logic App Contributor concern playbooks, not workbook editing. Data-lake/URBAC Preview claims are not used.                                                                                                                                                 |
+| sc200-exp-a-data-tiers: [Manage data tiers and retention in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/manage-data-overview)                                                                                                |                        2 / 2 / 2 | 2026-09-16T13:41:21.941Z | 2026-09-16T13:45:59.053Z | Analytics retention and total retention are distinct: reducing hot retention immediately leaves older retained data in the lake when total retention is unchanged. Supported XDR data sent directly to the lake still has its default 30-day XDR hunting window; lake ingestion, storage and processing charges are distinct from that included window.                                                                                                                                           |
+| sc200-exp-a-retention: [Configure table settings in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/manage-table-tiers-retention)                                                                                                |                        2 / 2 / 2 | 2026-09-16T13:41:27.066Z | 2026-09-16T13:45:59.053Z | The Defender portal configures table analytics and total retention separately, with warnings when moving a table entirely to the lake disables Analytics-dependent detections. This source is scoped to table configuration, not unrelated newer Table insights monitoring claims.                                                                                                                                                                                                                |
+| sc200-exp-a-workbooks: [Visualize and monitor your data by using workbooks in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/monitor-your-data)                                                                                 |                        3 / 3 / 3 | 2026-09-16T13:41:36.357Z | 2026-09-16T13:45:59.053Z | Saving a Sentinel workbook in a location stores its JSON resource, not the underlying log data. Query-based workbooks use Logs and Log Analytics data sources; using an ASIM parser instead of a vendor-specific table supports relevant current and future sources.                                                                                                                                                                                                                              |
+| sc200-exp-a-soc-access: [Optimize your security operations](https://learn.microsoft.com/en-us/azure/sentinel/soc-optimization/soc-optimization-access)                                                                                                |                        1 / 1 / 1 | 2026-09-16T13:44:52.311Z | 2026-09-16T13:45:59.053Z | SOC optimization recommendations are recalculated every 24 hours. Environmental changes such as using a formerly unused table in an analytics rule can automatically complete an obsolete recommendation. Reactivation recalculates relevance and may return an obsolete recommendation directly to Completed. No Preview API is used.                                                                                                                                                            |
+| sc200-exp-b-windows-eventsets: [Windows security event sets that can be sent to Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/windows-security-event-id-reference)                                                             |                        3 / 3 / 3 | 2026-09-16T13:41:04.596Z | 2026-09-16T13:46:54.415Z | Windows Security Events via AMA writes SecurityEvent. Common retains sign-in and sign-out auditing, Minimal omits sign-out, and All events covers Security and AppLocker rather than Application or System logs.                                                                                                                                                                                                                                                                                  |
+| sc200-exp-b-windows-xpath: [Collect Windows events from virtual machine with Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/agents/data-collection-windows-events)                                                              |                        4 / 4 / 4 | 2026-09-16T13:41:07.747Z | 2026-09-16T13:46:54.415Z | Generic Windows event DCRs send to Event, whereas the Sentinel security connector sends to SecurityEvent. Custom filters use LogName!XPathQuery; local Get-WinEvent supports 23 expressions while a DCR supports 20. Source-side XPath syntax and channel restrictions are documented.                                                                                                                                                                                                            |
+| sc200-exp-b-wef-design: [Use Windows Event Forwarding to help with intrusion detection](https://learn.microsoft.com/en-us/windows/security/operating-system-security/device-management/use-windows-event-forwarding-to-assist-in-intrusion-detection) |                        2 / 2 / 2 | 2026-09-16T13:44:12.660Z | 2026-09-16T13:46:54.415Z | WEF subscriptions forward existing generated events to a WEC server. Targeted subscriptions need ReadExistingEvents enabled to collect retained events predating receipt; WEF does not enable audit policies, event channels, permissions or larger event logs. Only these Windows WEF behaviors are used, not the article’s example downstream products or capacity estimates.                                                                                                                   |
+| sc200-exp-b-syslog-overview: [Syslog and Common Event Format (CEF) via AMA connectors for Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/cef-syslog-ama-overview)                                                               |                        3 / 3 / 3 | 2026-09-16T13:41:02.276Z | 2026-09-16T13:46:54.415Z | For AMA 1.28.11 and later the forwarder daemon receives device traffic on its configured listener and passes logs locally over TCP 28330. A timezone-free Syslog header is converted using the forwarder timezone for EventTime, while TimeGenerated reflects collector processing. Existing CEF table, duplicate-filter and severity-threshold facts are deliberately not reused.                                                                                                                |
+| sc200-exp-b-activity-log: [Activity log in Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/activity-log)                                                                                                              |                        1 / 1 / 1 | 2026-09-16T13:42:50.293Z | 2026-09-16T13:46:54.415Z | Activity logs capture control-plane changes; resource logs capture data-plane operations and require diagnostic settings. Export activity logs to a Log Analytics workspace for correlation in AzureActivity. The scoped claims do not depend on the article’s retention or timing estimates.                                                                                                                                                                                                     |
+| sc200-exp-b-diagnostic-policy: [Create diagnostic settings at scale by using custom Azure policies](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/diagnostic-settings-policy)                                                      |                        1 / 1 / 1 | 2026-09-16T13:53:43.360Z | 2026-09-16T13:54:32.370Z | Diagnostic-settings policy initiatives can target common destinations at scale. Existing resources require remediation tasks; deployIfNotExists remediation uses the assignment managed identity with permission to create diagnostic settings. Resource creator permissions alone do not authorize that identity.                                                                                                                                                                                |
+| sc200-exp-b-taxii: [Use STIX/TAXII to import and export threat intelligence in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/connect-threat-intelligence-taxii)                                                                |                        2 / 2 / 2 | 2026-09-16T13:41:02.352Z | 2026-09-16T13:46:54.415Z | The TAXII import connector pulls from TAXII 2.0 or 2.1 using an API root URL, collection ID, optional credentials and polling settings. A discovery endpoint can be queried to obtain the API root; import and export connectors have distinct directions. Only documented import configuration is used.                                                                                                                                                                                          |
+| sc200-exp-b-ti-upload: [Connect your threat intelligence platform to Microsoft Sentinel with the upload API (Preview)](https://learn.microsoft.com/en-us/azure/sentinel/connect-threat-intelligence-upload-api)                                       |                        1 / 1 / 1 | 2026-09-16T13:41:06.453Z | 2026-09-16T13:46:54.415Z | The threat intelligence upload API explicitly remains Preview. It ingests STIX objects without a data connector; its Entra application needs Microsoft Sentinel Contributor or equivalent at the target workspace, plus OAuth access token and workspace ID.                                                                                                                                                                                                                                      |
+| sc200-exp-b-ti-management: [Work with Microsoft Sentinel threat intelligence](https://learn.microsoft.com/en-us/azure/sentinel/work-with-threat-indicators)                                                                                           |                        1 / 1 / 1 | 2026-09-16T13:41:09.400Z | 2026-09-16T13:46:54.415Z | Indicator ingestion rules can condition on source and confidence, select Indicator/Edit, extend Valid until and add a tag. Rules execute in ascending order and do not update the object’s Modified field. The scoped ingestion-rule claims exclude the separately Preview GeoLocation/WhoIs enrichment and obsolete workbook sample.                                                                                                                                                             |
+| sc200-exp-b-custom-table: [Add or delete tables and columns in Azure Monitor Logs](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/create-custom-table)                                                                                    |                        2 / 2 / 2 | 2026-09-16T13:41:14.295Z | 2026-09-16T13:46:54.415Z | Custom Log Analytics tables need the _CL suffix, a TimeGenerated column and a matching DCR destination stream. The portal appends _CL; nonportal creation must supply it. Adding a table column does not automatically update DCRs. Only Analytics-plan schema behavior is used, not Auxiliary/Lake precision claims.                                                                                                                                                                             |
+| sc200-exp-b-custom-detections: [Create custom detection rules in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/custom-detection-rules)                                                                                       |                        2 / 2 / 2 | 2026-09-16T13:41:02.214Z | 2026-09-16T13:46:54.415Z | Email response actions require NetworkMessageId and RecipientEmailAddress in the query output. Custom alert details allow up to 20 key-value pairs but their combined 4-KB alert limit drops the whole array when exceeded. These claims exclude Preview SaaS governance and the retired Endpoint AIR action still listed elsewhere on the page.                                                                                                                                                  |
+| sc200-exp-b-detection-management: [Manage existing custom detection rules](https://learn.microsoft.com/en-us/defender-xdr/custom-detection-manage)                                                                                                    |                        1 / 1 / 1 | 2026-09-16T13:41:05.483Z | 2026-09-16T13:46:54.415Z | The Run action immediately executes an existing Defender custom detection and resets its next-run interval. Modify query, Edit, Turn off and Delete are separate actions. The Run behavior is explicitly scoped to custom detections rather than Sentinel analytics rules.                                                                                                                                                                                                                        |
+| sc200-exp-b-scheduled-rules: [Create a scheduled analytics rule from scratch](https://learn.microsoft.com/en-us/azure/sentinel/detect-threats-custom)                                                                                                 |                        2 / 2 / 2 | 2026-09-16T13:41:09.041Z | 2026-09-16T13:46:54.415Z | Scheduled analytics use returned TimeGenerated for the lookback window, and the lookback must be at least the run interval. Stop running query after alert is generated suppresses subsequent query execution; event grouping changes events-to-alert packaging instead. Claims exclude the Preview specific-start-time scheduling option.                                                                                                                                                        |
+| sc200-exp-b-mitre: [View MITRE ATT&CK framework coverage in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/mitre-coverage)                                                                                                      |                        2 / 2 / 2 | 2026-09-16T13:41:02.679Z | 2026-09-16T13:46:54.415Z | The Sentinel MITRE coverage page is explicitly Preview. Current coverage reflects active scheduled and NRT rules; simulated coverage adds available but unconfigured detections. Technique selections in analytics rules also propagate to generated alerts/incidents. Simulation is not enabling a rule or testing its effectiveness.                                                                                                                                                            |
+| sc200-exp-b-anomalies: [Work with anomaly detection analytics rules in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/work-with-anomaly-rules)                                                                                  |                        2 / 2 / 2 | 2026-09-16T13:41:06.539Z | 2026-09-16T13:46:54.415Z | Out-of-box anomaly parameters require one customized duplicate, initially Disabled and Flighting. Promoting the customized version to Production moves the original to Flighting. AnomalyTemplateId links original and duplicate for comparison, whereas RuleId identifies one rule and AnomalyReasons explains an individual anomaly.                                                                                                                                                            |
+| sc200-exp-c-incident-investigation: [Investigate incidents in the Microsoft Defender portal](https://learn.microsoft.com/en-us/defender-xdr/investigate-incidents)                                                                                    |                        1 / 1 / 1 | 2026-09-16T13:41:14.220Z | 2026-09-16T13:45:45.416Z | The Office 365 investigations count is zero on the incident Investigations tab by design; the associated alert links to the investigation. Evidence and Response retains its evidence. Scope excludes blast radius, Preview graph filters, Preview user anomalies, and legacy Endpoint AIR claims.                                                                                                                                                                                                |
+| sc200-exp-c-office-air: [Automated investigation and response (AIR) in Microsoft Defender for Office 365 Plan 2](https://learn.microsoft.com/en-us/defender-office-365/air-about)                                                                     |                        2 / 2 / 2 | 2026-09-16T13:40:29.092Z | 2026-09-16T13:45:45.416Z | Office 365 Plan 2 AIR requires audit logging and investigates messages and related evidence. Authorized analysts can initiate it from Threat Explorer. The investigation can expand as evidence is discovered; this is Office 365 AIR, not retired Endpoint AIR.                                                                                                                                                                                                                                  |
+| sc200-exp-c-office-air-expansion: [Automated investigation and response (AIR) examples in Microsoft Defender for Office 365 Plan 2](https://learn.microsoft.com/en-us/defender-office-365/air-examples)                                               |                        1 / 1 / 1 | 2026-09-16T13:43:57.944Z | 2026-09-16T13:45:45.416Z | A Threat Explorer investigation starts from selected email using Take action and Initiate automated investigation. It includes root and related-entity investigation, searches for similar messages, and assesses recipients who clicked malicious links.                                                                                                                                                                                                                                         |
+| sc200-exp-c-attack-disruption: [Automatic attack disruption in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/automatic-attack-disruption)                                                                                        |                        1 / 1 / 1 | 2026-09-16T13:42:11.477Z | 2026-09-16T13:45:45.416Z | Attack disruption contains active attacks using cross-workload incident correlation, leaving full remediation to responders. For a synchronized hybrid user, disable-user acts on on-premises AD through onboarded domain controllers and also disables the Entra account. Scope excludes Preview AWS/Okta, policy-status UI, predictive shielding and automatic device isolation.                                                                                                                |
+| sc200-exp-c-dlp-incidents: [Investigate data loss prevention alerts with Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/dlp-investigate-alerts-defender)                                                                      |                        3 / 3 / 3 | 2026-09-16T13:42:09.361Z | 2026-09-16T13:45:45.416Z | DLP incident investigation preserves administrative-unit restrictions. DLP-only roles differ from Manage Alerts permissions, which include security alerts. SharePoint and OneDrive file responses include Unshare, Delete and labels. The early-October-2026 tuning notice is prospective at retrieval; Preview Copilot, policy-search and built-in hunting controls are excluded.                                                                                                               |
+| sc200-exp-c-cloud-incidents: [Microsoft Defender for Cloud alerts and incidents in Microsoft Defender XDR](https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-integration-365)                                                        |                        2 / 2 / 2 | 2026-09-16T13:40:31.719Z | 2026-09-16T13:45:45.416Z | Defender for Cloud alert status synchronizes bidirectionally with XDR, unlike Defender for Endpoint alerts on cloud resources. Informational Defender for Cloud alerts are not integrated. Scope excludes the Preview tenant-based Sentinel connector and unrelated hunting-table claims.                                                                                                                                                                                                         |
+| sc200-exp-c-cloud-app-governance: [Govern actions for connected apps in Defender for Cloud Apps](https://learn.microsoft.com/en-us/defender-cloud-apps/governance-actions)                                                                            |                        3 / 3 / 3 | 2026-09-16T13:43:52.948Z | 2026-09-16T13:45:45.416Z | For connected Google Workspace apps, revocation removes current OAuth grants once while banning prevents future grants. Hybrid directory synchronization can revert cloud suspension. Nested file actions use the stronger action; unrelated notification actions also run. File-policy retirement is January 6, 2027, not current; Preview malware governance is excluded.                                                                                                                       |
+| sc200-exp-c-entra-risk-remediation: [Remediate risks and unblock users](https://learn.microsoft.com/en-us/entra/id-protection/howto-identity-protection-remediate-unblock)                                                                            |                        3 / 3 / 3 | 2026-09-16T13:40:25.205Z | 2026-09-16T13:45:45.416Z | Risk-based user remediation requires MFA followed by a secure password change, not the SSPR recovery flow. Token-theft detections are not dismissed merely by an MFA claim. Confirming compromise still requires containment and remediation, including blocking when the attacker can perform MFA and revoking refresh tokens. Preview PowerShell is excluded.                                                                                                                                   |
+| sc200-exp-c-identity-alert-classification: [View and manage security alerts](https://learn.microsoft.com/en-us/defender-for-identity/manage-security-alerts)                                                                                          |                        1 / 1 / 1 | 2026-09-16T13:41:20.884Z | 2026-09-16T13:45:45.416Z | Defender for Identity distinguishes malicious true positives, real but nonmalicious benign true positives such as authorized tests, and false positives where the reported activity did not occur. Classification and workflow status are separate investigative decisions.                                                                                                                                                                                                                       |
+| sc200-exp-c-identity-remediation: [Remediation actions in Microsoft Defender for Identity](https://learn.microsoft.com/en-us/defender-for-identity/remediation-actions)                                                                               |                        2 / 2 / 2 | 2026-09-16T13:43:00.428Z | 2026-09-16T13:45:45.416Z | Disabling an identity prevents access without deleting its profile or associated data. AD remediation executes through domain-controller sensors using local system; AD FS, AD CS and Entra Connect sensors do not execute remediation. The local-system setting is required for v3.x, separate from initiating-user RBAC.                                                                                                                                                                        |
+| sc200-exp-c-sentinel-xdr-sync: [Microsoft Defender XDR integration with Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/microsoft-365-defender-sentinel-integration)                                                             |                        2 / 2 / 2 | 2026-09-16T13:43:55.538Z | 2026-09-16T13:45:45.416Z | Sentinel incidents show 150+ when a synchronized Defender incident exceeds 150 alerts, linking to the complete Defender incident. A merge transfers alerts to the surviving incident and closes the source with a redirected tag; this closure does not represent completed threat remediation.                                                                                                                                                                                                   |
+| sc200-exp-c-phishing-agent: [Microsoft Security Copilot Phishing Triage Agent in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/phishing-triage-agent)                                                                            |                        1 / 1 / 1 | 2026-09-16T13:42:13.640Z | 2026-09-16T13:45:45.416Z | The phishing agent provides classification reasoning and leaves malicious incidents open for analysts. A classification-change reason is audited but is not a teaching lesson without explicit opt-in, evaluation and saving; analysts must inspect the generated lesson. Scope excludes Preview expanded identity/cloud triage and Agent ID setup.                                                                                                                                               |
+| sc200-exp-c-copilot-summary-settings: [Summarize an incident with Microsoft Copilot in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/security-copilot-m365d-incident-summary)                                                    |                        1 / 1 / 1 | 2026-09-16T13:41:11.614Z | 2026-09-16T13:45:45.416Z | Preview incident-summary preferences select automatic generation by minimum severity or on-demand generation. An unchanged incident summary cached within one week is redisplayed at no cost regardless of these settings. This record deliberately scopes its lifecycle to the Preview preferences.                                                                                                                                                                                              |
+| sc200-exp-c-incident-correlation: [Alert correlation and incident merging in the Microsoft Defender portal](https://learn.microsoft.com/en-us/defender-xdr/alerts-incidents-correlation)                                                              |                        4 / 4 / 4 | 2026-09-16T13:45:11.123Z | 2026-09-16T13:45:45.416Z | Only primary-workspace Sentinel alerts correlate with Defender alerts; secondary workspaces remain separate correlation sources. All associated incidents changes graph context without merging incidents or sharing their ownership, status and lifecycle. Preview manual merge and comment migration are excluded.                                                                                                                                                                              |
+| sc200-exp-c-incident-export: [Manage incidents in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/manage-incidents)                                                                                                                |                        2 / 2 / 2 | 2026-09-16T13:45:12.777Z | 2026-09-16T13:45:45.416Z | Incident PDF export includes at most ten assets per asset type and one hundred evidence items, and immediate repeat exports can return cached reports. An incident has one assigned user or group, while tags categorize and filter rather than create tasks. AI analyst notes are outside this evidence scope.                                                                                                                                                                                   |
+| sc200-exp-c-case-management: [Manage security operations cases natively in the Microsoft Defender portal](https://learn.microsoft.com/en-us/defender-xdr/cases-overview)                                                                              |                        2 / 2 / 2 | 2026-09-16T13:42:58.202Z | 2026-09-16T13:45:45.416Z | Defender-native cases require a connected Sentinel workspace and can link multiple incidents while assigning granular tasks with owners and due dates. Case attachments are scanned before download becomes available. Preview indicator links, comment attachments and deletion are excluded.                                                                                                                                                                                                    |
+| sc200-exp-d-device-timeline: [Investigate devices in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/defender-endpoint/investigate-machines)                                                                                       |                        2 / 2 / 2 | 2026-09-16T13:39:52.275Z | 2026-09-16T13:46:41.443Z | Device timelines distinguish raw events from MITRE technique entries, support related-event pivots, and record EDR resource-critical mode. Technique pivots omit the technique entry itself; critical mode temporarily stops new-event processing. Scoped to these GA investigation behaviors, excluding Exposure Management Preview and obsolete automated-investigation menu references.                                                                                                        |
+| sc200-exp-d-file-investigation: [Investigate a file](https://learn.microsoft.com/en-us/defender-endpoint/investigate-files)                                                                                                                           |                        2 / 2 / 2 | 2026-09-16T13:39:56.489Z | 2026-09-16T13:46:41.443Z | File prevalence is scoped to the analyst RBAC device visibility. Observed in organization exposes per-device execution status, initiating process, first and last observations, and timeline pivots; file names alone do not establish execution. Cloud-app visibility requires the Cloud Apps workload.                                                                                                                                                                                          |
+| sc200-exp-d-device-actions: [Take response actions on a device](https://learn.microsoft.com/en-us/defender-endpoint/respond-machine-alerts)                                                                                                           |                        2 / 2 / 2 | 2026-09-16T13:39:59.979Z | 2026-09-16T13:46:41.443Z | Windows investigation packages provide registry autostart artifacts, scheduled tasks, installed programs, and running processes with distinct investigative purposes. Automatic contain-user enforcement blocks attack-related endpoint protocols without disabling the identity-provider account. Scope excludes retired Endpoint AIR, Preview automatic isolation, and predictive-shielding behaviors.                                                                                          |
+| sc200-exp-d-disruption-results: [Details and results of an automatic attack disruption action](https://learn.microsoft.com/en-us/defender-xdr/autoad-results)                                                                                         |                        1 / 1 / 1 | 2026-09-16T13:43:09.277Z | 2026-09-16T13:46:41.443Z | DeviceEvents containment-related rows record individual blocked activities, not the initial containment action. Action center records action history. Scope is GA containment investigation; the Preview Activities Policy status column and the separately documented DisruptionAndResponseEvents table are not used.                                                                                                                                                                            |
+| sc200-exp-d-audit-search: [Search the audit log](https://learn.microsoft.com/en-us/purview/audit-search)                                                                                                                                              |                        4 / 4 / 4 | 2026-09-16T13:39:56.448Z | 2026-09-16T13:46:41.443Z | Purview Audit search distinguishes Exchange Online from Security and Compliance PowerShell ingestion-setting output, one-year eligible E5 audit retention from the 180-day per-query window, administrative-unit restrictions, and indexed-common-schema keyword scope. Search/export roles and runtime limits are described separately.                                                                                                                                                          |
+| sc200-exp-d-audit-properties: [Detailed activity properties in the audit log](https://learn.microsoft.com/en-us/purview/audit-log-detailed-properties)                                                                                                |                        2 / 2 / 2 | 2026-09-16T13:40:00.443Z | 2026-09-16T13:46:41.443Z | AuditData contains workload-specific event properties. Mailbox LogonType, UserId, MailboxOwnerUPN, and ExternalAccess have distinct meanings; an internal delegate is not necessarily the mailbox owner. Exported detail properties can be parsed for investigation rather than relying on common-schema keyword search.                                                                                                                                                                          |
+| sc200-exp-d-edisc-search: [Create a search for a case in eDiscovery](https://learn.microsoft.com/en-us/purview/edisc-search-query)                                                                                                                    |                        3 / 3 / 3 | 2026-09-16T13:43:07.406Z | 2026-09-16T13:46:41.443Z | Current commercial eDiscovery case searches use explicit selected data sources and KeyQL conditions. Boolean operators belong in KeyQL rather than Keyword, values are case-insensitive, and case-sensitive analysis requires downstream exported-content filtering. Partial-index search options do not configure subsequent exports. Copilot natural-language query Preview is excluded.                                                                                                        |
+| sc200-exp-d-edisc-teams: [Finding content in Microsoft Teams in eDiscovery](https://learn.microsoft.com/en-us/purview/edisc-search-teams)                                                                                                             |                        1 / 1 / 1 | 2026-09-16T13:43:08.887Z | 2026-09-16T13:46:41.443Z | Shared-channel message compliance records are searched through the parent team mailbox, while shared-channel files are in the channel-specific SharePoint site. Standard-channel and participant-mailbox storage differ. Scope excludes contradictory private-channel mailbox descriptions and meeting-recording ownership details.                                                                                                                                                               |
+| sc200-exp-d-edisc-sites: [Finding content in sites in eDiscovery](https://learn.microsoft.com/en-us/purview/edisc-search-sites)                                                                                                                       |                        1 / 1 / 1 | 2026-09-16T13:43:10.502Z | 2026-09-16T13:46:41.443Z | Current site-search documentation permits SensitiveType searches for classified SharePoint and OneDrive content, with IDs required for custom sensitive types. SensitiveType cannot search sensitive content at rest in Exchange mailboxes, including Teams message compliance copies.                                                                                                                                                                                                            |
+| sc200-exp-d-edisc-partial-items: [Partially indexed items in eDiscovery](https://learn.microsoft.com/en-us/purview/edisc-ref-partially-indexed-items)                                                                                                 |                        1 / 1 / 1 | 2026-09-16T13:44:48.902Z | 2026-09-16T13:46:41.443Z | Partial-index inclusion is configured independently at export; its location boundary is a whole mailbox or site rather than a folder. Without advanced indexing, partial items are not constrained by a DocumentLink path restriction. Advanced indexing at export applies query conditions; no Preview feature is used.                                                                                                                                                                          |
+| sc200-exp-d-graph-activity: [Access Microsoft Graph activity logs](https://learn.microsoft.com/en-us/graph/microsoft-graph-activity-logs-overview)                                                                                                    |                        4 / 4 / 4 | 2026-09-16T13:43:07.462Z | 2026-09-16T13:46:41.443Z | Microsoft Graph activity logs record HTTP requests in the resource tenant. The schema distinguishes request and batch IDs, token claims, client authentication methods, and sign-in correlation. The documented correlation uses SignInActivityId to sign-in UniqueTokenIdentifier and warns that some Microsoft application requests lack matching sign-ins. The example use of Preview count_distinct is grounded separately, not labeled GA here.                                              |
+| sc200-exp-d-graph-schema: [MicrosoftGraphActivityLogs](https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/microsoftgraphactivitylogs)                                                                                             |                        2 / 2 / 2 | 2026-09-16T13:40:00.656Z | 2026-09-16T13:46:41.443Z | MicrosoftGraphActivityLogs defines RequestId per request, OperationId shared by batched requests, client-supplied or fallback ClientRequestId, AppId and ServicePrincipalId, and ClientAuthMethod values for public clients, secrets, and certificates. This is field interpretation, not proof of malicious intent or successful resource changes.                                                                                                                                               |
+| sc200-exp-d-count-distinct: [count_distinct() (aggregation function) - (preview)](https://learn.microsoft.com/en-us/kusto/query/count-distinct-aggregation-function)                                                                                  |                        1 / 1 / 1 | 2026-09-16T13:44:51.826Z | 2026-09-16T13:46:41.443Z | The explicitly Preview count_distinct aggregation counts exact distinct scalar values per group, unlike row counts or approximate dcount. Its 100-million unique-value limit is retained in author evidence; the candidate uses a small stipulated dataset and labels the feature Preview.                                                                                                                                                                                                        |
+| sc200-exp-d-leftouter: [leftouter join](https://learn.microsoft.com/en-us/kusto/query/join-leftouter)                                                                                                                                                 |                        1 / 1 / 1 | 2026-09-16T13:44:53.776Z | 2026-09-16T13:46:41.443Z | The leftouter KQL join retains every left input row and matching right rows. Its documented unequal-column key syntax supports preserving Graph requests while enriching available sign-in matches; absent matches do not imply an absent request.                                                                                                                                                                                                                                                |
+| sc200-exp-e-email-postdelivery: [EmailPostDeliveryEvents](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-emailpostdeliveryevents-table)                                                                                              |                        1 / 1 / 1 | 2026-09-16T13:40:41.487Z | 2026-09-16T13:46:43.276Z | EmailPostDeliveryEvents records actions after message delivery, including manual remediation, Phish ZAP and Malware ZAP. ActionTrigger distinguishes administrator-triggered actions from mechanisms such as ZAP; administrator-triggered actions include approval of pending automated actions. Scope excludes any unnamed prerelease columns.                                                                                                                                                   |
+| sc200-exp-e-url-clicks: [UrlClickEvents](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-urlclickevents-table)                                                                                                                        |                        3 / 3 / 3 | 2026-09-16T13:40:45.863Z | 2026-09-16T13:46:43.276Z | UrlClickEvents records Safe Links clicks across Email, Office and Teams. ActionType and IsClickedThrough distinguish allowed clicks and warning-page continuation; ReportId correlates a clickthrough. Drafts and Sent-item clicks can lack usable message metadata, preventing email-table correlation by NetworkMessageId.                                                                                                                                                                      |
+| sc200-exp-e-cloud-app-events: [CloudAppEvents](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-cloudappevents-table)                                                                                                                  |                        4 / 4 / 4 | 2026-09-16T13:40:38.240Z | 2026-09-16T13:46:43.276Z | CloudAppEvents supplies Defender for Cloud Apps activity involving SaaS accounts and objects, including impersonation and external-user flags and source JSON. LastSeenForUser uses negative values for first-seen attributes, zero for today, and positive days for previously seen values. UncommonForUser empty text means unenriched, not a clean bill of health.                                                                                                                             |
+| sc200-exp-e-hunting-schema: [Understand the advanced hunting schema](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-schema-tables)                                                                                                   |                        2 / 2 / 2 | 2026-09-16T13:42:35.301Z | 2026-09-16T13:46:43.276Z | The schema catalog separates post-delivery email security actions, URL content, Safe Links clicks, SaaS object activity, directory queries, account information and endpoint file events. Scope is the established tables used in this batch; explicitly Preview tables in the catalog are not used.                                                                                                                                                                                              |
+| sc200-exp-e-hunting-query-practices: [Advanced hunting query best practices](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-best-practices)                                                                                          |                        1 / 1 / 1 | 2026-09-16T13:40:40.921Z | 2026-09-16T13:46:43.276Z | Advanced hunting guidance recommends early time and source-column filters before expensive parsing, selective projection and explicit search scope. Performance tuning must retain investigative results; take/limit bounds result rows rather than guaranteeing complete search coverage. Process correlation and time-bucket examples are outside this batch.                                                                                                                                   |
+| sc200-exp-e-dynamic-access: [The dynamic data type](https://learn.microsoft.com/en-us/kusto/query/scalar-data-types/dynamic)                                                                                                                          |                        2 / 2 / 2 | 2026-09-16T13:43:55.460Z | 2026-09-16T13:46:43.276Z | Dynamic property bags support named-key access, not a reliable positional order. Accessed values remain dynamic and should be cast to the desired scalar type. Arrays use zero-based indexes; missing or nonmatching data must not be treated as evidence of maliciousness.                                                                                                                                                                                                                       |
+| sc200-exp-e-long-conversion: [tolong()](https://learn.microsoft.com/en-us/kusto/query/tolong-function)                                                                                                                                                |                        2 / 2 / 2 | 2026-09-16T13:42:46.951Z | 2026-09-16T13:46:43.276Z | tolong converts a scalar, including a numeric string, to a signed 64-bit integer; failed conversions yield null. This supports numeric interpretation of documented LastSeenForUser values rather than lexical comparisons.                                                                                                                                                                                                                                                                       |
+| sc200-exp-e-where-filter: [where operator](https://learn.microsoft.com/en-us/kusto/query/where-operator)                                                                                                                                              |                        4 / 4 / 4 | 2026-09-16T13:43:59.587Z | 2026-09-16T13:46:43.276Z | The where operator retains only rows whose predicate is true. Null comparisons do not select a row. Direct column-to-constant comparisons and simple predicates before more complex work support efficient filtering.                                                                                                                                                                                                                                                                             |
+| sc200-exp-e-logical-precedence: [Logical (binary) operators](https://learn.microsoft.com/en-us/kusto/query/logical-operators)                                                                                                                         |                        1 / 1 / 1 | 2026-09-16T13:43:57.692Z | 2026-09-16T13:46:43.276Z | KQL and has higher precedence than or. Parentheses are necessary when a shared scope restriction must apply to both alternatives in a disjunction. The source provides Boolean conjunction, disjunction and equality semantics.                                                                                                                                                                                                                                                                   |
+| sc200-exp-e-dynamic-expansion: [mv-expand operator](https://learn.microsoft.com/en-us/kusto/query/mv-expand-operator)                                                                                                                                 |                        1 / 1 / 1 | 2026-09-16T13:42:42.335Z | 2026-09-16T13:46:43.276Z | mv-expand repeats nonexpanded event fields for each array or bag element. kind=array expands a bag into key/value pairs. Explicit to typeof is cast-only rather than string parsing; empty arrays and bags produce no rows, and null produces one null row.                                                                                                                                                                                                                                       |
+| sc200-exp-e-threat-analytics: [Threat analytics in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/threat-analytics)                                                                                                               |                        2 / 2 / 2 | 2026-09-16T13:40:38.753Z | 2026-09-16T13:46:43.276Z | High-impact threat ranking reflects active and resolved alerts; highest exposure considers vulnerability severity and exploitable-device population. Recommended actions tracks Secure Score mitigations, while Analyst report may contain additional recommendations. Not available vulnerability/configuration counts can mean researchers linked no such items, and completed recommendations never guarantee resilience. Scope excludes Preview Indicators and agent features.                |
+| sc200-exp-e-hunting-graph: [Hunt for threats using the hunting graph](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-graph)                                                                                                          |                        2 / 2 / 2 | 2026-09-16T13:42:35.158Z | 2026-09-16T13:46:43.276Z | Predefined hunting graph scenarios have distinct inputs and purpose: SQL-data-store choke points finds nodes occurring on the most access paths without a target input; paths between two entities needs both endpoints; an entity relationship map explores direct incoming/outgoing connections. Requires Sentinel data lake and Exposure Management read access. December 2025 release receipt explicitly establishes hunting graph GA.                                                        |
+| sc200-exp-e-graph-semantics: [Understanding graphs and visualizations in Microsoft Defender](https://learn.microsoft.com/en-us/defender-xdr/understand-graph-icons)                                                                                   |                        1 / 1 / 1 | 2026-09-16T13:42:46.512Z | 2026-09-16T13:46:43.276Z | Graph nodes represent assets and identities; edges describe relationships such as permission or membership. A number on an edge means multiple relationships, not event frequency. Inspect its side panel for relationship details; a crown denotes business criticality, while a separate bug denotes vulnerability. Claims here apply to GA hunting graph visualizations.                                                                                                                       |
+| sc200-exp-e-sentinel-graph: [What is Microsoft Sentinel graph?](https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-graph-overview)                                                                                                    |                        1 / 1 / 1 | 2026-09-16T13:42:42.504Z | 2026-09-16T13:46:43.276Z | Sentinel graph powers relationship exploration across assets, identities, activity and threat intelligence. Its embedded hunting experience supports connected-asset reasoning. Scope is the established graph model and hunting integration, not the separately labeled Preview custom-graph creation capability.                                                                                                                                                                                |
+| sc200-exp-e-blast-radius: [Investigate incidents in the Microsoft Defender portal](https://learn.microsoft.com/en-us/defender-xdr/investigate-incidents)                                                                                              |                        1 / 1 / 1 | 2026-09-16T13:43:58.040Z | 2026-09-16T13:46:43.276Z | Blast radius shows potential propagation from a selected incident node to critical targets within user scope; the initial display contains eight top-rated paths and a full list can be opened. Paths do not prove traversal, out-of-scope nodes hide paths, and incomplete environment data limits conclusions. Preview classification follows the captured September 2025 release entry; no later blast-radius GA entry was found. Inconsistent numeric hop wording is deliberately not tested. |
+| sc200-exp-e-custom-graphs: [Custom Graph overview (preview)](https://learn.microsoft.com/en-us/azure/sentinel/datalake/custom-graphs-overview)                                                                                                        |                        1 / 1 / 1 | 2026-09-16T13:44:00.575Z | 2026-09-16T13:46:43.276Z | Sentinel custom graphs are explicitly Preview. Interactive notebook graphs exist only for the session; on-demand jobs materialize graphs for 30 days; scheduled jobs rebuild on a configured refresh schedule. Materialized graphs support shared graph exploration and GQL queries; creation and queries use the graph billing meter.                                                                                                                                                            |
+| sc200-exp-f-hunting-queries: [Threat hunting in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/hunting)                                                                                                                         |                        3 / 3 / 3 | 2026-09-16T13:40:57.930Z | 2026-09-16T13:46:27.228Z | Hunting query result counts and deltas compare adjacent 24-hour windows; N/A can identify missing sources. Query favorites rerun on page access. Scope excludes Preview Hunts, bookmarks already tested in the existing bank, and retired livestream behavior. The current article says livestream is no longer available, despite an older availability table still listing it.                                                                                                                  |
+| sc200-exp-f-custom-queries: [Create custom hunting queries in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/hunts-custom-queries)                                                                                              |                        1 / 1 / 1 | 2026-09-16T13:41:06.428Z | 2026-09-16T13:46:27.228Z | Custom hunting queries support entity and ATT&CK mappings. Built-in or custom queries can be cloned; direct editing in Hunting is restricted to custom content, while source-owned content must be edited at its source.                                                                                                                                                                                                                                                                          |
+| sc200-exp-f-kql-jobs: [Create KQL jobs in the Microsoft Sentinel data lake](https://learn.microsoft.com/en-us/azure/sentinel/datalake/kql-jobs)                                                                                                       |                        4 / 4 / 4 | 2026-09-16T13:40:59.285Z | 2026-09-16T13:46:27.228Z | Analytics-output KQL jobs support multi-table investigations, preserve historical event time through a separate column, and need latency-aware windows. Existing-table output must match its schema; several operators and user-defined functions are unsupported. Scope excludes Preview writes into System tables, federated-table lifecycle claims, and contradictory comparison-page cadence/template details.                                                                                |
+| sc200-exp-f-job-selection: [Compare KQL jobs, summary rules, and search jobs in Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/datalake/kql-jobs-summary-rules-search-jobs)                                                     |                        1 / 1 / 1 | 2026-09-16T13:41:02.991Z | 2026-09-16T13:46:27.228Z | The comparison assigns archive data predating data-lake onboarding to search jobs, and data available from onboarding onward to KQL jobs. Search jobs query one table without joins; KQL jobs support multi-table historical analysis. Only these consistent tier/time-scope distinctions are used; its outdated cadence, template, and health-monitoring cells are not evidence for candidates.                                                                                                  |
+| sc200-exp-f-job-management: [Manage jobs in the Microsoft Sentinel data lake](https://learn.microsoft.com/en-us/azure/sentinel/datalake/kql-manage-jobs)                                                                                              |                        2 / 2 / 2 | 2026-09-16T13:41:06.672Z | 2026-09-16T13:46:27.228Z | KQL job edits preserve output schema; editing a one-time job executes it again. Disabling prevents future unscheduled runs but does not cancel work already running. Notebook and graph jobs are view-only on the Jobs page and must be edited and republished in the Sentinel VS Code extension. No claim is made that quota-exceeded KQL submissions are queued.                                                                                                                                |
+| sc200-exp-f-sentinel-summaries: [Aggregate Microsoft Sentinel data with summary rules](https://learn.microsoft.com/en-us/azure/sentinel/summary-rules)                                                                                                |                        1 / 1 / 1 | 2026-09-16T13:40:58.053Z | 2026-09-16T13:46:27.228Z | Sentinel summary rules create Analytics-plan custom tables from background aggregations. The wizard offers a bin schedule, optional delay, preview of query results, and SummaryLogs diagnostics; summaries can then be queried for hunting. No deprecated threat-intelligence-table sample or questionable sample aggregation is reused.                                                                                                                                                         |
+| sc200-exp-f-summary-execution: [Aggregate data in a Log Analytics workspace by using summary rules](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules)                                                                         |                        4 / 4 / 4 | 2026-09-16T13:43:31.827Z | 2026-09-16T13:46:27.228Z | Summary-rule bin size supplies the query window; explicit time filters intersect that window. Summary Logs diagnostics populate LASummaryLogs and exhausted failed bins can be retried manually. Destination schemas are established at creation/update, so wildcard expansion does not automatically persist new columns; removed query columns remain subject to table retention.                                                                                                               |
+| sc200-exp-f-notebook-runtime: [Run notebooks on the Microsoft Sentinel data lake](https://learn.microsoft.com/en-us/azure/sentinel/datalake/notebooks)                                                                                                |                        3 / 3 / 3 | 2026-09-16T13:42:18.071Z | 2026-09-16T13:46:27.228Z | Data-lake notebooks use Sentinel VS Code Spark sessions and the MicrosoftSentinelProvider library. Only the documented runtime libraries and provider are supported; pip/custom libraries are not supported. Creating Analytics custom tables requires Log Analytics Contributor on the destination workspace for the data-lake managed identity. Scope excludes Preview row-level scoping and internally inconsistent timeout/startup figures.                                                   |
+| sc200-exp-f-mcp-exploration: [Explore Microsoft Sentinel data lake with data exploration collection](https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-mcp-data-exploration-tool)                                                    |                        1 / 1 / 1 | 2026-09-16T13:42:29.686Z | 2026-09-16T13:46:27.228Z | The prerelease-marked data-exploration collection exposes an HTTPS MCP endpoint, workspace discovery, schema-oriented search_tables and result-oriented query_lake. Supported roles and onboarding apply; the agent must retrieve data rather than treat catalog search as query results. Graph and entity-analyzer capabilities are not tested here.                                                                                                                                             |
+| sc200-exp-f-mcp-vscode: [Use an MCP tool in Visual Studio Code](https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-mcp-use-tool-visual-studio-code)                                                                                   |                        1 / 1 / 1 | 2026-09-16T13:44:52.803Z | 2026-09-16T13:46:27.228Z | VS Code connects to a Sentinel MCP collection through MCP: Add Server with HTTP transport, the collection URL, authenticated access of at least Security Reader, and Agent-mode Configure Tools. This record scopes the setup procedure; the candidate separately labels the prerelease data-exploration collection Preview.                                                                                                                                                                      |
 
 ## Freshness and review limitations
 
