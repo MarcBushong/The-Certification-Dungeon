@@ -170,7 +170,10 @@ describe('DP-800 observed preparation-linked product views', () => {
     ['azure/azure-sql/database/authentication-aad-overview', 'azuresql'],
     ['azure/azure-sql/database/auditing-overview', 'azuresql'],
     ['azure/azure-sql/database/service-tiers-sql-database-vcore', 'azuresql'],
-    ['sql/tools/sql-database-projects/sql-database-projects', 'sql-server-ver17'],
+    [
+      'sql/tools/sql-database-projects/sql-database-projects',
+      'sql-server-ver17',
+    ],
     [
       'sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts',
       'sql-server-ver17',
@@ -183,7 +186,10 @@ describe('DP-800 observed preparation-linked product views', () => {
       'sql/tools/sql-database-projects/concepts/schema-comparison',
       'sql-server-ver17',
     ],
-    ['sql/tools/sql-database-projects/sql-projects-automation', 'sql-server-ver17'],
+    [
+      'sql/tools/sql-database-projects/sql-projects-automation',
+      'sql-server-ver17',
+    ],
     ['azure/devops/repos/git/branch-policies-overview', 'azure-devops'],
   ] as const;
 
@@ -197,7 +203,11 @@ describe('DP-800 observed preparation-linked product views', () => {
         provider: 'Microsoft',
         strictGuideLinked: true,
         sourceAllowlist: [
-          { host: 'learn.microsoft.com', pathPrefixes: [], exactUrls: [article] },
+          {
+            host: 'learn.microsoft.com',
+            pathPrefixes: [],
+            exactUrls: [article],
+          },
         ],
       };
       expect(safeSourceUrl(canonical, true, credential).href).toBe(canonical);
