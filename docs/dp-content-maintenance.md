@@ -15,6 +15,43 @@ three published weight ranges, 11 skills and 73 subskills in
 `src/content/exams/dp-800/objectives.json`. Generic hero classes are discovery
 filters, not official role requirements.
 
+### September 17, 2026 limited delivery
+
+The user explicitly chose to finish with available verified content rather than
+continue the roughly 150-question expansion. The existing `dp-800` package now
+has **109 playable verified encounters**, **20 final-review holds**, and **one
+rejected duplicate** across 130 installed records. Twenty-five other expansion
+IDs remain outside gameplay without completed current final approval. The
+previous 61 deferred IDs remain outside gameplay as well.
+
+The target remains 150: **41 verified questions short**, with playable coverage
+for 59 of the 73 subskills. All three domains and all 11 skills are represented,
+but AI-assisted SQL development has only one verified encounter. Study is open;
+Boss remains locked under the unchanged minimum skill-breadth rule. The 25
+Advanced questions represent 22.9% of the playable pool, below the reported 40%
+development target; labels and thresholds were not inflated or lowered.
+
+The guide was actually retrieved again on September 16 and its objective
+fingerprint is unchanged. Selected source retrievals extend through September
+17, 00:14:36.938 UTC; the latest selected final review is September 17,
+01:10:38.213 UTC. The original source/question/objective/review snapshots are
+retained under `review-history/2026-09-16-before-refresh`, and current authoring
+and review history under `authoring-archive/2026-09-17-cutoff`. Raw MCP bodies
+remain local and ignored. Later technical-only work does not renew the cutoff.
+
+Known evidence gaps are not assertions that the affected features are Preview
+or unavailable. Some official release evidence could not be connected to an
+admissible immediate guide/training reference. Such material was not promoted.
+The actual training-linked DAB documentation root supplied scoped
+production-readiness evidence; its child links did not acquire automatic source
+approval. The unproven generic Fabric concepts reference was removed from the
+installed source closure and exact catalog approvals.
+
+See the package's generated coverage and verification reports for actual
+counts, source bindings, review outcomes and remaining gaps.
+
+### DP-420 prospective evidence
+
 DP-420's current credential remains
 [Azure Cosmos DB Developer Specialty](https://learn.microsoft.com/en-us/credentials/certifications/azure-cosmos-db-developer-specialty/).
 On **September 14, 2026**, the
