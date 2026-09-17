@@ -1,0 +1,198 @@
+[
+  {
+    "id": "dp800-20260916-d3-005",
+    "question": "A SQL Server 2022 worker reads document revision 41 and prepares a valid nonnull, application-serialized embedding payload outside the write transaction. Revision 42 has since committed; the stored payload represents revision 40. Embedding is an nvarchar(max) column, not a native vector. SourceRevision is maintained by the application whenever text changes. Which additional predicate prevents this stale payload from being written?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "AND SourceRevision >= @revision"
+      },
+      {
+        "id": "b",
+        "text": "AND EmbeddingRevision < @revision"
+      },
+      {
+        "id": "c",
+        "text": "AND SourceRevision = @revision"
+      },
+      {
+        "id": "d",
+        "text": "AND Embedding IS NOT NULL"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Require the current source revision to equal the revision used to prepare the proposed embedding payload.",
+    "deepExplanation": "The stored representation is ordinary application-owned text; no native vector type or model API is used in this persistence step. Current revision 42 does not equal the worker's captured revision 41, so the guarded UPDATE changes no row and the worker can reread and regenerate. Comparing only the existing payload revision accepts work that is newer than revision 40 but still obsolete for the current text.",
+    "whyOtherAnswersAreWrong": {
+      "a": "42 satisfies >= 41, so the stale revision-41 payload is still accepted.",
+      "b": "The stored payload revision is 40, so 40 < 41 accepts work that remains behind the current source revision.",
+      "d": "An existing nonnull payload does not establish that the replacement represents the current source text."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Choose an embedding maintenance method, including table triggers, Change Tracking, Azure Functions with SQL trigger binding, Azure Logic Apps, CDC, CES, and Microsoft Foundry",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d3-maintenance", "dp800-d3x-update"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/05-generate-maintain-embeddings-sql-database-workloads",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/update-transact-sql"
+    ],
+    "documentationTitles": [
+      "Generate and maintain embeddings for SQL database workloads",
+      "UPDATE (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-17T01:13:22.376Z",
+    "lastValidatedAt": "2026-09-17T01:13:22.376Z",
+    "featureStatus": "GA",
+    "tags": [
+      "embedding-maintenance",
+      "asynchronous-worker",
+      "revision-guard",
+      "sql-server-2022",
+      "serialized-payload"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "-- Id is the primary key; @id selects this document.\n-- Embedding and @embedding are nvarchar(max) application payloads.\n-- @revision = 41; @embedding was prepared from that revision's text.\nUPDATE dbo.Documents\nSET Embedding = @embedding,\n    EmbeddingRevision = @revision\nWHERE Id = @id\n/* add predicate here */;",
+    "conceptId": "sql-embedding-worker-guards-persistence-against-concurrent-source-revision",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 source-grounded repair only: fresh authored snapshot and per-option analysis; independent technical and adversarial review remain required.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d3-007",
+    "question": "A fixed SQL Server 2022 staging batch has at least two Documents with unique DocumentId values. Chunks has a unique (DocumentId, ChunkOrder) per row and every chunk references one document. Workers already supplied text payloads: DocumentEmbeddingPayload represents Body, while ChunkEmbeddingPayload represents ChunkText; the corresponding payloads differ in this fixture. Which repair returns exactly one correctly owned row per chunk with its authoritative chunk payload?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Join on DocumentId, but continue selecting d.DocumentEmbeddingPayload."
+      },
+      {
+        "id": "b",
+        "text": "Keep the CROSS JOIN, but select c.ChunkEmbeddingPayload."
+      },
+      {
+        "id": "c",
+        "text": "Keep the CROSS JOIN and select c.DocumentId plus c.ChunkEmbeddingPayload."
+      },
+      {
+        "id": "d",
+        "text": "Join on DocumentId and select c.ChunkEmbeddingPayload."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Match each chunk to its owning document and select the payload produced from that chunk's text.",
+    "deepExplanation": "The CROSS JOIN produces one combination per document/chunk pair. An equality join with the unique document key reduces this to one owner per chunk. Independently, the whole-document payload is not the authoritative chunk payload. Projecting every field from c still leaves the Cartesian multiplicity in place. The producer work is complete before this query: no AI function return type, native vector or DISTINCT behavior is assumed.",
+    "whyOtherAnswersAreWrong": {
+      "a": "It repairs the owner relationship but still copies the whole-document payload instead of the supplied chunk payload.",
+      "b": "It repairs payload selection but leaves unrelated document/chunk combinations and multiple rows per chunk.",
+      "c": "The selected owner and payload are correct, but each chunk still appears once for every document because the CROSS JOIN remains."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Design and implement chunks for embeddings",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d3-input-design", "dp800-d3x-from-clause"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/04-design-embeddings-sql-database-workloads",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql"
+    ],
+    "documentationTitles": [
+      "Design embeddings for SQL database workloads",
+      "FROM clause plus JOIN, APPLY, PIVOT (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-17T01:13:22.377Z",
+    "lastValidatedAt": "2026-09-17T01:13:22.377Z",
+    "featureStatus": "GA",
+    "tags": [
+      "chunking",
+      "source-lineage",
+      "text-payload",
+      "sql-server-2022",
+      "staging-query"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "-- Both payload columns contain application-serialized text.\n-- The staged rows are fixed while this query runs.\nSELECT d.DocumentId,\n       c.ChunkOrder,\n       c.ChunkText,\n       d.DocumentEmbeddingPayload AS EmbeddingPayload\nFROM dbo.Documents AS d\nCROSS JOIN dbo.Chunks AS c;",
+    "conceptId": "sql-chunk-embedding-pipeline-preserves-source-correlation-and-text-vector-identity",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 source-grounded repair only: fresh authored snapshot and per-option analysis; independent technical and adversarial review remain required.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-17T01:13:22.361Z",
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d3-009",
+    "question": "A search application migrates between anonymous encoders A and B over immutable corpus snapshot S. S will not change before cutover; live edits are outside this task. Both encoders produce 1,536 numbers, but the supplied compatibility tests reject cross-encoder comparisons even after scale normalization. Storage for a full second vector set and per-request paired routing are available. Which rollout keeps all of S searchable without mixing encoder spaces?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep A queries paired with A's full S vector set; complete and validate B's S vector set, then switch each request's encoder/vector-set pair together."
+      },
+      {
+        "id": "b",
+        "text": "Encode queries with B immediately and compare them with A's remaining S vectors because the widths match."
+      },
+      {
+        "id": "c",
+        "text": "Scale-normalize A's S vectors and compare them with B queries without creating B's vector set."
+      },
+      {
+        "id": "d",
+        "text": "Replace vectors in place and search only the portion of S already converted to B during backfill."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Serve the complete A/A pair while constructing B/B for the same fixed snapshot, then switch the paired route after B is complete.",
+    "deepExplanation": "The same-width outputs do not override the supplied incompatible-space contract. The complete A route preserves coverage while B is built, and the stipulated per-request pairing prevents a mixed encoder/vector-set request at cutover. This is a vendor-independent migration method over immutable S, not an automatic live-write synchronization feature. A live corpus would need its own validated mutation/catch-up boundary before claiming the replacement is complete.",
+    "whyOtherAnswersAreWrong": {
+      "b": "It compares B queries with A vectors despite the explicitly supplied incompatible-space result.",
+      "c": "The given compatibility tests already reject cross-encoder comparison after scale normalization.",
+      "d": "It intentionally omits the not-yet-converted portion of S from search, violating full-snapshot coverage."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Generate embeddings",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "dp800-d3x-models-evaluate",
+      "dp800-d3-input-design",
+      "dp800-d3-vector-patterns-unit"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/02-understand-evaluate-models-sql-database-workloads",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/04-design-embeddings-sql-database-workloads",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/05-implement-vector-search-query-patterns"
+    ],
+    "documentationTitles": [
+      "Understand and evaluate models for SQL database workloads",
+      "Design embeddings for SQL database workloads",
+      "Implement vector search query patterns"
+    ],
+    "generatedAt": "2026-09-17T01:13:22.377Z",
+    "lastValidatedAt": "2026-09-17T01:13:22.377Z",
+    "featureStatus": "Not applicable",
+    "tags": [
+      "embedding-model-migration",
+      "immutable-corpus",
+      "matched-snapshots",
+      "paired-routing",
+      "methodology"
+    ],
+    "conceptId": "embedding-model-migration-routes-query-and-corpus-snapshots-without-mixing-spaces",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 source-grounded repair only: fresh authored snapshot and per-option analysis; independent technical and adversarial review remain required.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": ""
+  }
+]

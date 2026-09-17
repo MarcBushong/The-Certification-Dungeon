@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-expansion-design-temporal-r1-20260916",
+  "authorId": "dp800-expansion-author-design-20260916",
+  "generatedAt": "2026-09-16T22:30:15.645Z",
+  "candidates": [
+    {
+      "id": "dp800-20260916-d1-003",
+      "question": "On SQL Server 2022, a current table already has its primary key and a valid PERIOD FOR SYSTEM_TIME with nonnull datetime2(7) endpoints. A proposed user-defined history table matches its columns and types but adds ArchiveBatchId and a PRIMARY KEY on (RecordId, ValidFrom). All periods are valid and nonoverlapping. ArchiveBatchId can be stored separately. Which two changes are required before using this history table for system versioning? Choose two.",
+      "questionType": "multi-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Remove the history table's PRIMARY KEY constraint."
+        },
+        {
+          "id": "b",
+          "text": "Replace the history primary key with a UNIQUE index on the same columns."
+        },
+        {
+          "id": "c",
+          "text": "Move ArchiveBatchId elsewhere and remove that extra history-table column."
+        },
+        {
+          "id": "d",
+          "text": "Set DATA_CONSISTENCY_CHECK = OFF instead of changing the history schema."
+        },
+        {
+          "id": "e",
+          "text": "Change the history period columns to date while retaining datetime2(7) in the current table."
+        }
+      ],
+      "correctAnswer": ["a", "c"],
+      "explanation": "Remove the history primary key and make its column schema align exactly with the current table.",
+      "deepExplanation": "A temporal current table needs a primary key, but its history table cannot have one or a unique index. History must also align in column count, names, order and data types. The stated valid periods close the separate temporal-data question; disabling a data consistency check does not legalize an incompatible history schema.",
+      "whyOtherAnswersAreWrong": {
+        "b": "History tables cannot have unique indexes either, so replacing the key with one does not remove the restriction.",
+        "d": "The option controls existing period-data checking, not the independent history schema and constraint requirements.",
+        "e": "That introduces a period-column type mismatch instead of making the schemas align."
+      },
+      "objectiveDomain": "design-and-develop-database-solutions",
+      "skill": "design-and-implement-database-objects",
+      "subskill": "Design and implement specialized tables, including in-memory, temporal, external, ledger, and graph",
+      "difficulty": "advanced",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d1x-create-temporal"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/relational-databases/tables/temporal/create"
+      ],
+      "documentationTitles": ["Create a system-versioned temporal table"],
+      "generatedAt": "2026-09-16T22:30:15.645Z",
+      "lastValidatedAt": "2026-09-16T22:30:15.645Z",
+      "featureStatus": "GA",
+      "tags": ["sql-server-2022", "temporal-tables", "history-schema"],
+      "conceptId": "sql-temporal-history-schema-alignment-and-no-unique-constraints",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "",
+      "requiresManualReview": true,
+      "confidenceReason": ""
+    }
+  ]
+}

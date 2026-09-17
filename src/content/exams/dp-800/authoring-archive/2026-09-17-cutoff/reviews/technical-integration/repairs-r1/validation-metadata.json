@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-20260916-d2-036": {
+      "generation": {
+        "questionFingerprint": "2954fde66e42d0cf6f6fcbb8318f6674f17175d917460eb696dd3bacf319d6e1",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-dab-cache"],
+            "summary": "The frozen cache article documents per-route, per-parameter behavior. Parameter variation is a valid diagnosis for distinct eligible REST cache entries. Here the GraphQL API is outside the documented L1 scope, so that mechanism is not the applicable starting diagnosis."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-dab-cache"],
+            "summary": "The behavior list documents invalidation when entity data is created, updated or deleted. Correlating writes with misses is legitimate for REST caching, but presupposes an eligible cached API and cannot account for GraphQL's lack of L1 applicability."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-dab-cache"],
+            "summary": "The article defines TTL and entity override of the global lifetime. Expiry investigation is valid when eligible REST entries time out. The lifetime settings do not add GraphQL to the feature's separately documented REST-only coverage."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-dab-cache"],
+            "summary": "The current frozen article explicitly states DAB 2.0-and-later L1 applies only to REST endpoints. GraphQL reads therefore need a separate performance investigation rather than being classified as misses from that cache."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-036",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-integration-20260916",
+          "questionFingerprint": "2954fde66e42d0cf6f6fcbb8318f6674f17175d917460eb696dd3bacf319d6e1",
+          "reviewedAt": "2026-09-16T23:50:45.661Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-dab-cache",
+              "url": "https://learn.microsoft.com/en-us/azure/data-api-builder/concept/cache/level-1",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-dab-cache.json",
+              "retrievedAt": "2026-09-16T19:53:57.887Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Re-read the entire frozen Level 1 cache receipt for this repaired question. It expressly describes DAB 2.0-and-later functionality, REST-only coverage, per-route/per-parameter entries, invalidation on modifications and TTL inheritance/overrides. These support the new alternatives as meaningful REST diagnoses and exclude them as explanations of GraphQL L1 entries. The availability-in-version statement does not affirm GA maturity; neither the article nor its inspected training ancestry supplies an affirmative lifecycle statement for this feature."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "The source makes request parameters part of REST cache-entry identity, so varying them can legitimately prevent reuse of an eligible entry. The question instead concerns GraphQL traffic, which the same source excludes from this L1 feature. Parameter variation therefore does not account for the API-coverage issue.",
+              "sourceIds": ["dp800-d2x-dab-cache"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "The documented modification/invalidation rule is a real reason to investigate misses on cached REST entities. It presupposes an API using the cache; GraphQL requests are outside the stated REST-only coverage, rather than entries shown to have been invalidated by entity writes.",
+              "sourceIds": ["dp800-d2x-dab-cache"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Inspecting the effective entity/global TTL can explain expiry of REST entries. A lifetime setting cannot extend the cache's documented API eligibility to GraphQL, so TTL analysis does not explain the coverage boundary asked about.",
+              "sourceIds": ["dp800-d2x-dab-cache"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "The behavior section directly limits this L1 cache to REST endpoints. Investigating the GraphQL data path separately follows that limitation without asserting that GraphQL has no other optimization mechanisms or that a particular SQL tuning remedy is already proven.",
+              "sourceIds": ["dp800-d2x-dab-cache"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "New review of the repaired stem, four replacement options and all explanations; independently derived d. The original enable-twice, impossible-expiry and invented distributed-cache cues are gone. Each alternative is now a documented cache investigation, wrong because of the GraphQL/REST boundary rather than a direct contradiction supplied by the stem. Intermediate troubleshooting is proportionate. The absolute-wording warning comes from the explanation declining a claim about every GraphQL optimization and is nonblocking. The exact source permits a version/applicability conclusion, but does not affirm the authored GA label. I therefore do not carry forward the original featureStatus approval, infer GA from unmarked documentation or change the question to Not applicable. Hold only for affirmative, admitted lifecycle evidence. No runtime or database test was performed. Compared against the revised fourteen-item cohort and thirteen archived integration items: the API-coverage decision remains distinct from opt-in and TTL-inheritance exercises.",
+          "confidenceReason": "The cache-coverage answer and the repaired distractor contexts are directly documented. The remaining uncertainty is the unsupported lifecycle classification, not whether the REST-only behavior or original cue repair is correct."
+        }
+      }
+    },
+    "dp800-20260916-d2-037": {
+      "generation": {
+        "questionFingerprint": "ccbd05f782aeb73c7cb04dc39fa25a9d9717591b63264ff3d21e10f89ac79818",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-dab-entities-unit"],
+            "summary": "Physical names would be appropriate if exposed unchanged. The training says clients use mapped/exposed names, so these internal names do not match the stated GraphQL contract."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-dab-entities-unit"],
+            "summary": "The training shows typed GraphQL field filters using exposed names and comparison operators. Both supplied conditions are required, so this filter expresses the intended subset."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-dab-entities-unit"],
+            "summary": "first controls page size. Omitting after is appropriate for the initial page or restarting the result set, not advancing after the page already received."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-dab-entities-unit"],
+            "summary": "The GraphQL response's endCursor is the documented continuation input for after when hasNextPage is true. Keeping the same logical filter and page size advances the intended request rather than guessing a cursor from an ID."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-037",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-integration-20260916",
+          "questionFingerprint": "ccbd05f782aeb73c7cb04dc39fa25a9d9717591b63264ff3d21e10f89ac79818",
+          "reviewedAt": "2026-09-16T23:50:45.661Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-dab-entities-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-3-define-entities-rest-graphql.json",
+              "retrievedAt": "2026-09-16T19:33:03.539Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Freshly inspected the unit's mapped-name requirement, multi-field GraphQL gt example and first/after example returning hasNextPage/endCursor. These establish the exposed-name filter and opaque continuation behavior, not snapshot isolation across requests. I do not use its conflicting GraphQL-cache section to corroborate these claims. This teaching unit supplies no affirmative GA lifecycle statement for the named DAB GraphQL capabilities."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "Client queries must use the mapped names according to the source. UnitCost and AvailableUnits would work only if the API exposed those physical names unchanged, which the supplied cost/available mapping expressly rules out.",
+              "sourceIds": ["dp800-d2x-dab-entities-unit"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "Both exposed fields are used, with the source's typed gt comparison form. The two-field filter represents cost above 100 together with availability above zero, matching the requested subset rather than substituting physical column names.",
+              "sourceIds": ["dp800-d2x-dab-entities-unit"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "First sets the result limit; after supplies the continuation position. Repeating first:25 without after is an initial-page/restart request and does not advance beyond the already returned page.",
+              "sourceIds": ["dp800-d2x-dab-entities-unit"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "The source uses the returned endCursor as the next after argument. Retaining the filter and page size continues the same logical query. It does not freeze underlying data or license construction of a cursor from a guessed row identifier.",
+              "sourceIds": ["dp800-d2x-dab-entities-unit"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Re-derived b and d and re-evaluated the unchanged technical text rather than rebinding the earlier difficulty hold. The new Intermediate label accurately represents applying alias, filter and continuation conventions; no advanced/expert score is inferred from two selections. The explicitly returned cursor, valid entity configuration and permissions support the stated task. The deep explanation still rejects transactionally frozen pagination, and the pronoun warning resolves to the returned endCursor. Reviewed the GraphQL fragments statically against the actual examples; no service was queried. No scoped/cohort/archive duplicate or new answer-length cue was found. The previous difficulty defect is resolved, but the cited training receipt does not affirm GA for these named capabilities. Its curator GA field and lack of a Preview warning cannot establish the question's lifecycle flag under the stated evidence requirement. Record a new lifecycle hold without relabeling the candidate or copying the old approval.",
+          "confidenceReason": "The mapped filtering and cursor contract support exactly two choices, and Intermediate fixes the prior inflation. A fresh affirmative lifecycle attestation remains unavailable from this question's frozen citation."
+        }
+      }
+    },
+    "dp800-20260916-d2-040": {
+      "generation": {
+        "questionFingerprint": "3dcb1d33d8e0fb7198137c25c57e845b1786cfe297b5d00a56bbebe2369323e5",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2x-dab-entities-unit",
+              "dp800-d2-dab-objects"
+            ],
+            "summary": "Those fields express the foreign-key join, but cardinality one would describe a one-target relationship. The stated customer-to-invoices direction permits multiple target rows."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d2x-dab-entities-unit",
+              "dp800-d2-dab-objects"
+            ],
+            "summary": "The training uses many for a one-to-many traversal and explicitly maps corresponding source and target fields. These settings match the required direction and the documented foreign-key relationship."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d2x-dab-entities-unit",
+              "dp800-d2-dab-objects"
+            ],
+            "summary": "The cited relationship examples require matching source and target fields for the declared relationship. The stem specifies Customers.CustomerId to Invoices.CustomerId; substituting InvoiceId does not express that supplied foreign-key join. Another field pair could fit a different explicitly established relationship, without assuming InvoiceId is a key here."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2x-dab-entities-unit",
+              "dp800-d2-dab-objects"
+            ],
+            "summary": "That is a valid inverse many-to-one traversal from an invoice to its customer. It does not define the requested relationship field on Customer for reaching multiple invoices."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-040",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-integration-20260916",
+          "questionFingerprint": "3dcb1d33d8e0fb7198137c25c57e845b1786cfe297b5d00a56bbebe2369323e5",
+          "reviewedAt": "2026-09-16T23:50:45.661Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-dab-entities-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-3-define-entities-rest-graphql.json",
+              "retrievedAt": "2026-09-16T19:33:03.539Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The relationships section defines many for parent-to-children traversal and one for the inverse, with explicit matching source/target fields. The source also distinguishes the public entity name from its database object. These passages substantiate Customer-to-Invoice traversal using the stated foreign key, but do not affirm GA maturity for the relationship capability."
+            },
+            {
+              "sourceId": "dp800-d2-dab-objects",
+              "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/4-expose-database-objects-stored-procedures-views",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-4-expose-database-objects-stored-procedures-views.json",
+              "retrievedAt": "2026-09-16T19:33:05.627Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Freshly inspected the directional relationship examples, including target.entity, cardinality and source.fields/target.fields. They require the field pair representing the declared relationship; no example establishes this hypothetical InvoiceId as a key. The repaired explanation no longer makes that assumption. The reviewed source does not contain affirmative lifecycle evidence for GraphQL relationship exposure."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "Although the CustomerId pair expresses the declared join, one describes a single target rather than the collection of invoices allowed by the stem. It would suit an inverse or truly one-target relationship, not this requested traversal.",
+              "sourceIds": [
+                "dp800-d2x-dab-entities-unit",
+                "dp800-d2-dab-objects"
+              ]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "A many relationship on Customer targeting the Invoice entity and matching CustomerId on both sides follows the given parent/foreign-key direction. It uses the API entity name rather than substituting the physical Invoices object name.",
+              "sourceIds": [
+                "dp800-d2x-dab-entities-unit",
+                "dp800-d2-dab-objects"
+              ]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "CustomerId-to-InvoiceId is not the CustomerId-to-CustomerId foreign-key relationship stipulated in the question. A different field pair needs its own declared relationship; rejecting this option requires no assertion about whether InvoiceId is a key.",
+              "sourceIds": [
+                "dp800-d2x-dab-entities-unit",
+                "dp800-d2-dab-objects"
+              ]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "This defines the legitimate opposite direction from one invoice to its customer. It does not add the Customer-side collection relationship the question asks for, even though both entities permit reads.",
+              "sourceIds": [
+                "dp800-d2x-dab-entities-unit",
+                "dp800-d2-dab-objects"
+              ]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independently selected b after tracing the given Customer primary key to the Invoice foreign key, traversal direction and many cardinality. Read the repaired c explanation and new generation claim: neither now asserts InvoiceId key status. That exact prior explanation defect is resolved. Same-file placement and caller read access exclude unrelated boundary failures; Intermediate is appropriate for this mapping task. Pronouns refer to the named customer and invoices. No code execution occurred, and no scoped/cohort/archive duplicate was found; archived 055 tests placement across files instead. Fresh lifecycle assessment remains incomplete: the two admitted teaching units demonstrate behavior but supply no affirmative GA statement for DAB GraphQL relationships. The original GA check is not renewed from curator metadata or absence of Preview text. Hold for admitted maturity evidence while retaining the corrected explanation, all historical records and the new generation unchanged.",
+          "confidenceReason": "Direction, fields and cardinality now have a complete explanation with no invented InvoiceId property. The sole remaining hold concerns the independently unsupported GA label, not the relationship key or the repair."
+        }
+      }
+    },
+    "dp800-20260916-d2-043": {
+      "generation": {
+        "questionFingerprint": "3e2b7b99df19f021d736ec4158550f2ae16771e474124900c29003a5740c2271",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-monitor-unit", "dp800-d2x-app-insights"],
+            "summary": "Aggregate duration is useful for trends, but can conceal an intermittent request's timing. It does not attribute SQL time to the specific affected request."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-monitor-unit", "dp800-d2x-app-insights"],
+            "summary": "The monitoring unit describes end-to-end correlation and dependency timing, and Application Insights provides transaction investigation. Existing correlated spans let the engineer inspect the actual slow call before selecting a remedy."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-monitor-unit", "dp800-d2x-app-insights"],
+            "summary": "Availability tests establish reachability/responsiveness for the tested path and time. They do not substitute for the SQL dependency timings within the already observed slow request."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-monitor-unit", "dp800-d2x-app-insights"],
+            "summary": "Index changes may help a demonstrated query bottleneck. Without attributing the slow request to SQL behavior, broad changes are not an evidence-based diagnosis of this incident."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-043",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-integration-20260916",
+          "questionFingerprint": "3e2b7b99df19f021d736ec4158550f2ae16771e474124900c29003a5740c2271",
+          "reviewedAt": "2026-09-16T23:50:45.661Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-monitor-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/6-recommend-azure-monitor-configurations",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-6-recommend-azure-monitor-configurations.json",
+              "retrievedAt": "2026-09-16T19:33:10.438Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The unit separately explains SQL dependency durations, request telemetry and correlated transaction timing for intermittent failures. These passages justify examining the affected request before selecting an index remedy. The candidate stipulates existing telemetry and does not inherit automatic complete instrumentation from the unit's connection-string example. The unit's production-use wording is not an affirmative lifecycle statement."
+            },
+            {
+              "sourceId": "dp800-d2x-app-insights",
+              "url": "https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-app-insights.json",
+              "retrievedAt": "2026-09-16T19:53:59.561Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The full frozen overview describes APM, transaction/search investigation, performance and separate availability testing, with workload-specific instrumentation prerequisites. It supports use of the already collected correlated spans. It does not affirm a GA classification for the precise tracing capability here; its explicit AKS autoinstrumentation Preview note concerns a different scenario and proves neither GA nor Preview for this candidate."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "A daily average combines different calls and cannot attribute SQL time to the intermittent slow request. Aggregate duration can reveal trends, but does not rule out SQL contribution to this particular correlated transaction.",
+              "sourceIds": ["dp800-d2x-monitor-unit", "dp800-d2x-app-insights"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "The source identifies correlated end-to-end timing as useful for intermittent multi-service diagnosis. Inspecting the affected request and its SQL dependency spans uses the already available incident-specific evidence rather than a different population.",
+              "sourceIds": ["dp800-d2x-monitor-unit", "dp800-d2x-app-insights"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "An availability test addresses the tested endpoint at its own time, not the SQL timings of the affected application request. The overview treats availability and transaction investigation as distinct experiences.",
+              "sourceIds": ["dp800-d2x-app-insights"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "The monitoring guidance examines dependency timing and slow queries to guide optimization. Creating indexes indiscriminately before inspecting the incident neither attributes SQL latency nor establishes an appropriate remedy.",
+              "sourceIds": ["dp800-d2x-monitor-unit"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Freshly assessed all four choices and both complete receipts, yielding b. Intermediate now honestly describes selecting the appropriate incident evidence; the question no longer claims Advanced reasoning without supplying a trace to analyze. Existing correlated spans are a premise, so no automatic instrumentation, completeness from a connection string, sampled-trace recovery or numerical critical-path calculation is asserted. The explanations remain bounded to choosing an investigation, not guaranteeing an index fix. No telemetry was collected or query executed. The revised cohort and relevant archive contain no duplicate of this decision; 044 instead concerns query scope. However, neither frozen citation affirmatively establishes the authored GA maturity claim. I do not infer it from production-oriented documentation, the product's general availability reputation, or the lack of a Preview label on these sections. The unrelated AKS Preview notice is not transplanted either. Hold only for admitted lifecycle evidence, with the previous difficulty defect resolved.",
+          "confidenceReason": "The incident-specific investigation and Intermediate classification are defensible from the inspected text. The new hold is an evidence gap in maturity classification, not a claim that transaction tracing is actually Preview."
+        }
+      }
+    }
+  }
+}

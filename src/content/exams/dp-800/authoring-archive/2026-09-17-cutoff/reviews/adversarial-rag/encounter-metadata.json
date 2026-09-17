@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-20260916-d3-026": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "0c6204f4f5b381c76b50f477b3caefa5d48bcfee21a11faabf1f68c9b384469f",
+      "sourceIds": ["dp800-d3x-rag-architecture"],
+      "retrievedAt": "2026-09-16T19:33:17.807Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3x-rag-architecture"],
+          "summary": "This plan supplies the applicable records at request time, includes them as generation context, and retains identifiers for the records actually supplied. It is the only offered plan addressing both changing knowledge and source lineage without updating weights for each edit. Compliance of the eventual answer still requires application checks."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3x-rag-architecture"],
+          "summary": "The option expressly freezes the training snapshot and omits later retrieval. Even if that snapshot accurately captured an earlier policy, it cannot supply the records retrieved for this request after policy edits or establish their request-level lineage. The unit distinguishes weight adaptation from supplying current context at inference time."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3x-rag-architecture"],
+          "summary": "Reusing one unversioned summary after policy edits does not identify the current records supplied for a later request. A maintained retrieval cache is a different design: the option provides neither refresh/version guarantees nor request-specific record attribution."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3x-rag-architecture"],
+          "summary": "General pretrained knowledge does not establish this organization's edited policy rows or which records supplied this request's context. Even a coincidentally correct inferred policy would lack the required retrieval evidence. The source motivates domain-specific retrieval rather than treating model knowledge as an authoritative policy store."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-rag-20260916",
+        "reviewedAt": "2026-09-16T23:07:04.710Z",
+        "notes": "45/48. Strong alignment, bounded claims and direct changing-data/traceability evidence. Deduct one for distractorPlausibility because all alternatives omit retrieval, one for difficultyAuthenticity because this is low-end Intermediate with requirements echoed in the key, and one for originality because current-policy RAG versus a static model is a familiar training pattern. None of these deductions masks a factual or uniqueness defect.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d3-029": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "2e900729f4dea4e6a8dfce1e690d03d4e187994506dbff91212ec0020bce5545",
+      "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+      "retrievedAt": "2026-09-16T19:38:27.268Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+          "summary": "The default array retains both ordered rows, ROOT('items') adds the required outer property, and INCLUDE_NULL_VALUES preserves Note:null for ProductId 17. The logical output is {\"items\":[{\"ProductId\":17,\"Note\":null},{\"ProductId\":23,\"Note\":\"Restocked\"}]}, satisfying every supplied requirement."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+          "summary": "WITHOUT_ARRAY_WRAPPER removes the default row array, while this suffix neither creates items nor includes the NULL Note. The fixed query has two rows, so a single-row unwrapped-object use case cannot justify this suffix for the stated rooted-array contract."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3-for-json"],
+          "summary": "ROOT('items') wraps the default two-element array correctly, but Note for ProductId 17 is omitted because INCLUDE_NULL_VALUES is absent. The receiving contract distinguishes an explicit JSON null from a missing property, so correct nesting alone is insufficient."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+          "summary": "INCLUDE_NULL_VALUES preserves Note:null, but WITHOUT_ARRAY_WRAPPER still removes the array and no items root is requested. Correct null representation does not satisfy the other independent structural requirements."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-rag-20260916",
+        "reviewedAt": "2026-09-16T23:07:04.710Z",
+        "notes": "46/48. The three-control Intermediate task has complete inputs, direct product support and a unique suffix. Deduct one for distractorPlausibility because the two WITHOUT_ARRAY_WRAPPER choices fail both cardinality/root expectations, and one for originality because it is a familiar combination-of-options exercise. The ROOT-only alternative remains a meaningful null-semantics near-miss.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 4,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d3-032": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "55d9982bb6f46c103d0aabfaaf7b41c626074bbb1c6f03693efd80310bf4f12f",
+      "sourceIds": [
+        "dp800-d3-rag-responses",
+        "dp800-d3x-json-value",
+        "dp800-d3x-json-query",
+        "dp800-d3x-openjson"
+      ],
+      "retrievedAt": "2026-09-16T19:57:02.023Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+      "answerEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": [
+            "dp800-d3x-json-value",
+            "dp800-d3x-openjson",
+            "dp800-d3-rag-responses"
+          ],
+          "summary": "JSON_VALUE can decode the supplied short content string, after which OPENJSON can parse its separate document. In an explicit WITH schema, Answer nvarchar(max) '$.answer' and Citations nvarchar(max) '$.citations' AS JSON preserve the scalar and array. This intended key works, but its validity alone does not establish uniqueness because d leaves the OPENJSON schema unspecified."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3x-json-query", "dp800-d3-rag-responses"],
+          "summary": "At the supplied outer path, content is a JSON string, not an object or array. JSON_QUERY therefore yields null in default lax mode or an error in strict mode instead of decoding that string. Parsing its result cannot recover the intended inner document."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3x-json-value", "dp800-d3x-openjson"],
+          "summary": "The outer document has no child answer or citations property beneath the scalar content token. Those keys exist only in the JSON text encoded inside the string. Direct outer paths cannot substitute for interpreting that second document."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3x-openjson", "dp800-d3x-json-value"],
+          "summary": "This is wrong for an explicit WITH column such as Citations nvarchar(max) '$.citations' without AS JSON, but that restriction appears only in the explanation and author claim, not the stem or this option. With the same decoded document, default-schema OPENJSON returns the citations row's value as nvarchar(max) text [17,23] and type 4. Selecting that ordinary value column as Citations, alongside the answer row's value, returns the required outputs without AS JSON. The option is therefore defensible under a legitimate reading and cannot be attested contradicted."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-rag-20260916",
+        "reviewedAt": "2026-09-16T23:07:04.710Z",
+        "notes": "39/48; fails the total and mandatory accuracy=4, answerUniqueness=4 and distractorEvidence>=3 gates. a is technically sound, but d can preserve array text using the documented default value column. Accuracy 3, scenarioCompleteness 3, answerUniqueness 2, distractorEvidence 2, difficultyAuthenticity 3, explanationQuality 3 and clarityAccessibility 3 reflect that precise unstated-WITH defect, not source unavailability or a fabricated Preview issue.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 3,
+          "scenarioCompleteness": 3,
+          "answerUniqueness": 2,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 2,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 3,
+          "originality": 4,
+          "clarityAccessibility": 3
+        }
+      }
+    },
+    "dp800-direct-026": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "4a6ef99f51cd7cc10790d80d0bf1503c0ca320375f8e242f45dbaffa120198eb",
+      "sourceIds": ["dp800-d3-rag-context", "dp800-d3-for-json"],
+      "retrievedAt": "2026-09-16T19:38:27.268Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3-rag-context", "dp800-d3-for-json"],
+          "summary": "The constants produce one row; PATH combines the shared item alias prefix into an object, with a string label and numeric units. The default array wraps that row-object, and no named root is requested. The resulting logical value is exactly [{\"item\":{\"label\":\"Field kit\",\"units\":12}}]."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+          "summary": "The array is plausible, but FOR JSON PATH interprets the item.label and item.units aliases as nested property paths. The shown literal dotted keys therefore do not match this query's output; SQL identifier brackets delimit aliases without disabling PATH's dot convention."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3-for-json"],
+          "summary": "The nested item object has the right members, but this statement has no WITHOUT_ARRAY_WRAPPER option. The formatter retains the array even though the literal SELECT produces only one row."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+          "summary": "This adds an outer items property that the query never requested. The item prefix groups row properties; it neither pluralizes itself nor creates a ROOT wrapper around the entire result array."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-rag-20260916",
+        "reviewedAt": "2026-09-16T23:07:04.710Z",
+        "notes": "45/48. All exact-shape and citation gates pass. Deduct one for difficultyAuthenticity because this is a very small low-end Intermediate trace, one for explanationQuality because the main explanation does not unpack literal string/numeric typing, and one for originality because dotted-alias nesting in one default row array is a familiar instructional pattern. The complete code makes the short stem sufficient.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 3,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    }
+  }
+}

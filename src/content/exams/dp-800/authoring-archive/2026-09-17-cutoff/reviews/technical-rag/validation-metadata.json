@@ -1,0 +1,968 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-20260916-d3-026": {
+      "generation": {
+        "questionFingerprint": "0c6204f4f5b381c76b50f477b3caefa5d48bcfee21a11faabf1f68c9b384469f",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-16T20:50:00.877Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d3x-rag-architecture"],
+            "summary": "The training contrasts request-time retrieval with relying on a training snapshot. Fine-tuning can serve a different adaptation goal, but the explicitly frozen/no-retrieval plan cannot incorporate later policy edits or identify request-specific source records."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3x-rag-architecture"],
+            "summary": "A cached summary could be useful if it were maintained under a validated freshness/provenance contract. This alternative is explicitly unversioned and reused after edits, so it does not meet the request-specific current-record requirement."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3x-rag-architecture"],
+            "summary": "The unit motivates RAG when general models lack the organization's current domain knowledge. Pretrained-only answers can suit stable general knowledge, but cannot establish the actual policy records required for this application."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3x-rag-architecture"],
+            "summary": "The source's retrieve-augment-generate pattern supplies relevant database records at request time and permits tracing the context. Retaining source identifiers is the application's explicit design choice; no privacy, model compliance or automatic update guarantee is implied."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d3-026",
+          "authorId": "dp800-expansion-author-ai-20260916",
+          "reviewerId": "dp800-technical-rag-20260916",
+          "questionFingerprint": "0c6204f4f5b381c76b50f477b3caefa5d48bcfee21a11faabf1f68c9b384469f",
+          "reviewedAt": "2026-09-16T22:06:11.489Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d3x-rag-architecture",
+              "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/2-identify-rag-use-cases-architecture",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-architecture.json",
+              "retrievedAt": "2026-09-16T19:33:17.807Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "Understand how RAG works and Recognize when RAG fits distinguish request-time retrieval and prompt augmentation from retraining, and explicitly identify changing data and tracing retrieved records as use cases. This supports the design, not automatic accuracy, freshness or confidentiality. The candidate avoids the training's broader immediate-freshness and privacy generalizations."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "A one-time training snapshot has no request-time dependency on records edited afterward. Fine-tuning can change model behavior or learn relatively stable data, but this alternative neither updates weights for each edit nor retrieves current policies, so it cannot meet the request-specific requirements.",
+              "sourceIds": ["dp800-d3x-rag-architecture"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "A summary could be useful if refreshed and versioned, but this option reuses one unversioned summary after edits. It establishes neither retrieval of current applicable records for this request nor which record versions supplied its context.",
+              "sourceIds": ["dp800-d3x-rag-architecture"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "General pretrained knowledge may answer general questions but provides no evidence of this organization's changing policy rows or request-level record lineage. The training motivates RAG with organization-specific knowledge unavailable from general training.",
+              "sourceIds": ["dp800-d3x-rag-architecture"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "Retrieving applicable current rows supplies changing facts at inference time, placing them in the prompt augments the request, and retaining identifiers records which rows were supplied. Both requirements are met without changing model weights; authorization and response validation remain application responsibilities.",
+              "sourceIds": ["dp800-d3x-rag-architecture"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. Independently derived d from changing records and request lineage. Not applicable is justified: no named API, permission, model version or software release is asserted; this is vendor-independent retrieval-versus-training methodology. No executable code is present. Negative/absolute wording expresses scenario constraints and insufficient alternatives, not a RAG guarantee; pronouns resolve to the model or records. Intermediate is reasonable at its introductory end. The longer correct option satisfies both requirements rather than giving a grammar clue. This use-case fact differs from the other eight items' serialization, transport and parsing decisions; targeted duplicate diagnostics found no blocker. Exact credential/course/path/module/unit ancestry was checked from actual frozen receipts. No gameplay or third-pass approval is supplied.",
+          "confidenceReason": "High confidence in the unique design: the actual unit specifically addresses changing data and traceability. This does not certify that an unspecified implementation really retrieves current authorized rows or produces truthful answers."
+        }
+      }
+    },
+    "dp800-20260916-d3-027": {
+      "generation": {
+        "questionFingerprint": "fbd38b491c67e4563e9795c2ac0fb10e78e4054d5ae6129889d5667c071afa11",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-16T20:50:00.877Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d3x-json-object",
+              "dp800-d3x-rag-prompts",
+              "dp800-d3x-rest-endpoint"
+            ],
+            "summary": "The constructor reference documents JSON escaping and nested arrays/objects, and the prompt unit uses role/content messages. This expression preserves the supplied string values in the exact stipulated request shape before transport. It does not prove the model follows the system instruction."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3x-json-object"],
+            "summary": "The constructor exists to serialize values with the required escaping; directly concatenating @user into quoted JSON syntax leaves its quote, backslash and control character unescaped. Manual construction could work with correctly encoded values, but no such encoding is performed in this expression."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3x-json-object", "dp800-d3x-rag-prompts"],
+            "summary": "This is valid JSON construction but produces an object keyed by system/user, not the specified messages array. It could fit a different adapter schema accepting that object, but not the endpoint contract supplied in the question."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d3x-json-object",
+              "dp800-d3x-json-query",
+              "dp800-d3x-rag-prompts"
+            ],
+            "summary": "JSON_QUERY extracts the context array as a JSON fragment, whereas this endpoint requires user.content to be the prepared string containing context and question. An array-valued context field can be valid for a different explicitly supported schema, but does not satisfy this text-message contract."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d3-027",
+          "authorId": "dp800-expansion-author-ai-20260916",
+          "reviewerId": "dp800-technical-rag-20260916",
+          "questionFingerprint": "fbd38b491c67e4563e9795c2ac0fb10e78e4054d5ae6129889d5667c071afa11",
+          "reviewedAt": "2026-09-16T22:06:11.489Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d3x-rag-prompts",
+              "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/4-augment-prompts-database-context",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-prompts.json",
+              "retrievedAt": "2026-09-16T19:33:21.924Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "Build prompts in T-SQL nests JSON_OBJECT inside JSON_ARRAY under messages and puts instructions and question-plus-context in string content. This supports request construction. Its illustrative model parameters are not a universal service contract; this candidate instead supplies its required endpoint shape."
+            },
+            {
+              "sourceId": "dp800-d3x-json-object",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-object-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\json-object.json",
+              "retrievedAt": "2026-09-16T19:44:48.617Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "The reference defines colon-separated key/value arguments, nvarchar(max) JSON text and special/control-character escaping. Examples 4 and 5 preserve nested JSON_ARRAY and JSON_OBJECT expressions. This supports encoding quotes, backslashes and the newline without losing the messages array; optional RETURNING json is not used."
+            },
+            {
+              "sourceId": "dp800-d3x-json-query",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-query-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\json-query.json",
+              "retrievedAt": "2026-09-16T19:44:53.438Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "The documented object/array fragment extraction defaults to path $ and returns nvarchar(max). JSON_QUERY(@context) identifies the retrieved array, not the prepared @user text containing the question. No wildcard or WITH ARRAY WRAPPER behavior is needed to reject that replacement."
+            },
+            {
+              "sourceId": "dp800-d3x-rest-endpoint",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rest-endpoint.json",
+              "retrievedAt": "2026-09-16T19:38:27.272Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "Arguments separates outgoing nvarchar(max) payload from headers and response OUTPUT; Permissions documents default enablement in Azure SQL Database. These establish support and behavior, but the actual receipt has no affirmative GA/Preview classification for this named REST feature. Manifest GA metadata and absence of a Preview warning are not independent lifecycle evidence."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "The inner constructors create two role/content objects, JSON_ARRAY preserves their array shape, and the outer constructor assigns them to messages. @user is an nvarchar string value, so its quote, backslash and line break are encoded while the complete context and question survive decoding.",
+              "sourceIds": ["dp800-d3x-json-object", "dp800-d3x-rag-prompts"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "T-SQL concatenation does not JSON-escape variable contents. This @user inserts catalog quotes, a backslash and a literal newline into string syntax, breaking its encoding. Concatenation could work with restricted already-escaped input, but those are not these supplied values.",
+              "sourceIds": ["dp800-d3x-json-object", "dp800-d3x-rag-prompts"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "The expression can generate valid JSON but makes messages an object keyed by system and user. The stipulated contract requires an array of separate role/content objects. Valid syntax under a different object-shaped contract is insufficient here.",
+              "sourceIds": ["dp800-d3x-json-object", "dp800-d3x-rag-prompts"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "JSON_QUERY(@context) selects the retrieved array instead of the complete @user string. It substitutes a structured fragment for required string content and omits the question. That could suit a separate structured-input field, not this explicitly given content contract.",
+              "sourceIds": [
+                "dp800-d3x-json-query",
+                "dp800-d3x-json-object",
+                "dp800-d3x-rag-prompts"
+              ]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "HOLD: answer a and JSON behavior are supported, but the citations do not affirmatively establish the authored GA classification of sp_invoke_external_rest_endpoint on Azure SQL Database. This is an evidence gap, not a claim it is Preview; Not applicable cannot replace named-API maturity evidence. Static SQL review found initialized variables, valid SQL literals and nvarchar(max) propagation; an expression-selection task need not include a deployment/authentication script. The quoted catalog, C:\\kits and newline motivate actual escaping. The messages/string-content schema is stipulated, not a claim about the training's named model/API example. Low-end Advanced is defensible because lexical encoding, array/object nesting and string-versus-fragment semantics interact; d is a substantive near-miss. Pronouns resolve to @user and the contract. No target duplicate was found: 028 instead binds an already-built prompt to transport. Source ancestry passed using a local exact-URL credential clone. Acquire admitted lifecycle evidence; authored source/field repairs restart all passes.",
+          "confidenceReason": "High confidence in the constructor expression and option-specific counterexamples from actual SQL references. Lifecycle confidence remains insufficient because default-enablement support does not affirmatively establish GA in these receipts. No SQL engine or REST endpoint was executed."
+        }
+      }
+    },
+    "dp800-20260916-d3-028": {
+      "generation": {
+        "questionFingerprint": "b5703f93055ddb3b5050313230ae9041d51d14ba72ce8a28c7801138c88896bf",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-16T20:50:00.877Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d3x-rest-endpoint"],
+            "summary": "The procedure documents @headers as flat JSON and @payload as the body. Header metadata is appropriate for content type or other supported request headers, but a nested messages request cannot replace the body by being placed there."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3x-rag-prompts"],
+            "summary": "The prompt unit creates the request body and the transport reference sends it through @payload, with POST and an OUTPUT variable for the reply. The preconfigured endpoint and authentication remain prerequisites; this assignment does not validate provider content or answer quality."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3x-rest-endpoint"],
+            "summary": "The reference treats the URL and payload as different inputs with different size limits. Query parameters can carry parameters accepted by an endpoint, but the stated chat endpoint contract requires this JSON as the body, not appended URL text."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3x-rest-endpoint"],
+            "summary": "@response OUTPUT is the destination for received data. It would be relevant after the request to parse the result, but initializing it does not supply the outgoing @payload or change the endpoint's request-body contract."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d3-028",
+          "authorId": "dp800-expansion-author-ai-20260916",
+          "reviewerId": "dp800-technical-rag-20260916",
+          "questionFingerprint": "b5703f93055ddb3b5050313230ae9041d51d14ba72ce8a28c7801138c88896bf",
+          "reviewedAt": "2026-09-16T22:06:11.489Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d3x-rest-endpoint",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rest-endpoint.json",
+              "retrievedAt": "2026-09-16T19:38:27.272Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "Arguments explicitly assigns outgoing nvarchar(max) data to @payload, permits POST, restricts @headers to flat JSON and defines @response OUTPUT as received data. Permissions and Credentials separately describe default enablement, EXECUTE ANY EXTERNAL ENDPOINT, credential REFERENCES and URL matching. Platform support is explicit, but a GA/Preview declaration for the named procedure is absent."
+            },
+            {
+              "sourceId": "dp800-d3x-rag-prompts",
+              "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/4-augment-prompts-database-context",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-prompts.json",
+              "retrievedAt": "2026-09-16T19:33:21.924Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "The training builds a nested messages request in @payload for use as the request body. It does not place that prompt in headers, URL configuration or an output variable. Its contextual example supports the payload shape, not a universal provider contract or lifecycle assertion."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "The documented headers argument requires a flat metadata object, whereas the supplied prompt has nested messages. An empty payload loses the actual request. Headers can carry appropriate metadata or authentication but do not replace this endpoint's body.",
+              "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3x-rag-prompts"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "For the documented REST procedure, @payload is the outgoing body. Assigning the validated prompt preserves the accepted JSON contract, POST is a supported method, and @response OUTPUT captures the reply separately instead of acting as an input body.",
+              "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3x-rag-prompts"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "The URL identifies the endpoint and can include query parameters but does not populate @payload. This contract expects the nested request as its body. A different query-string-based API would require a different contract, proper encoding and URL-length handling.",
+              "sourceIds": ["dp800-d3x-rest-endpoint"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "The procedure captures received data through @response OUTPUT; initializing that variable does not supply an outgoing request body. An application could explicitly copy its contents to @payload, but that assignment is omitted here.",
+              "sourceIds": ["dp800-d3x-rest-endpoint"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "HOLD for unestablished GA classification, not the intended parameter mapping: b is supported and the other assignments misuse documented roles. Authentication, URL configuration and prompt validity are stipulated; this task need not create a credential or assume SQL Server enablement settings apply to Azure SQL Database. Parameter fragments were checked against actual syntax, not a live endpoint. Intermediate is low-end applied discrimination of nested body data, flat headers and returned data. Pronouns resolve to the prompt/endpoint. No material grammar, answer-position or duplicate cue was found; 027 assesses construction rather than transport binding. In a future authored repair, directly name sys.sp_invoke_external_rest_endpoint in the stem instead of relying on its subskill and distinctive argument names. Default enablement is not affirmative GA evidence; acquire admitted lifecycle support without substituting Not applicable. The exact source chain passed only in a local proposed-URL credential clone.",
+          "confidenceReason": "High confidence in the intended body/header/output distinction because the actual reference states each parameter's role. The strict lifecycle gate remains unestablished by the captured teaching example and support text."
+        }
+      }
+    },
+    "dp800-20260916-d3-029": {
+      "generation": {
+        "questionFingerprint": "2e900729f4dea4e6a8dfce1e690d03d4e187994506dbff91212ec0020bce5545",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-16T20:50:00.877Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d3-for-json"],
+            "summary": "The reference reserves WITHOUT_ARRAY_WRAPPER for a single-row object and otherwise defaults to an array. This choice might fit one row without a named root when missing null fields are acceptable, but fails all three stated shape requirements."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+            "summary": "ROOT supplies the named object and default formatting retains the rows array, but NULL properties are omitted without INCLUDE_NULL_VALUES. This could fit a sparse-context schema where absent and null are equivalent; this consumer explicitly distinguishes them."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3-for-json"],
+            "summary": "INCLUDE_NULL_VALUES fixes null preservation, but the wrapper removal and missing ROOT still conflict with the two-row rooted-array contract. It would be suitable for a different single-object output that retained null fields."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+            "summary": "The reference defines each option independently: default array for multiple rows, ROOT for items and INCLUDE_NULL_VALUES for Note:null. The result encodes the supplied rows faithfully without claiming that serialization forces the model's interpretation."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d3-029",
+          "authorId": "dp800-expansion-author-ai-20260916",
+          "reviewerId": "dp800-technical-rag-20260916",
+          "questionFingerprint": "2e900729f4dea4e6a8dfce1e690d03d4e187994506dbff91212ec0020bce5545",
+          "reviewedAt": "2026-09-16T22:06:11.489Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d3-for-json",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\for-json.json",
+              "retrievedAt": "2026-09-16T19:38:27.268Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "Control other JSON output options distinguishes ROOT, INCLUDE_NULL_VALUES and WITHOUT_ARRAY_WRAPPER. Output of the FOR JSON clause states that each input row becomes an array element by default. The article documents this baseline text-serialization feature for SQL Server 2016+ and Azure SQL Database; no native-json or newer optional JSON feature is used."
+            },
+            {
+              "sourceId": "dp800-d3-rag-context",
+              "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/3-prepare-retrieval-context-augmentation",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-context.json",
+              "retrievedAt": "2026-09-16T19:33:20.120Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "The actual training connects FOR JSON to retrieved RAG context and separately explains null retention, named roots and single-record wrapper removal. This supports the scenario's serialization contract, not the training's broader suggestion that formatting guarantees what a model relied on."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "Removing the wrapper cannot supply the required two-element array under items, and the SQL NULL Note is omitted by default. WITHOUT_ARRAY_WRAPPER can produce a one-row object, but the fixture has two rows and this choice has no ROOT clause.",
+              "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "ROOT('items') correctly wraps the default array, but without INCLUDE_NULL_VALUES the first row's Note property disappears. That suits a contract permitting omission, not this requirement for an explicit JSON null.",
+              "sourceIds": ["dp800-d3-for-json"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "INCLUDE_NULL_VALUES preserves Note:null, but removing the array wrapper and omitting ROOT violates the other two constraints. A single-row unrooted object would be a different output contract.",
+              "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "Keeping the default wrapper creates two array elements. ROOT('items') names the top-level property and INCLUDE_NULL_VALUES emits Note:null for ProductId 17 while retaining Restocked for 23. All three output requirements are met.",
+              "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. Derived d by checking root, row-array and null requirements separately. Static SQL review found complete VALUES inputs, a valid nvarchar null cast, defined aliases and ORDER BY before FOR JSON. Expected logical value is {\"items\":[{\"ProductId\":17,\"Note\":null},{\"ProductId\":23,\"Note\":\"Restocked\"}]}; this is a documentation-derived trace, not SQL execution. GA is supported for the baseline text-based FOR JSON controls documented for SQL Server 2016+ and Azure SQL Database; no preview JSON extension is asserted. Intermediate fits the three-control task. The longest suffix contains independently necessary switches; the alternatives implement plausible partial contracts rather than arbitrary omissions. Pronouns have explicit antecedents. Direct-026 instead tests dotted aliases on one row, so this null/root/cardinality decision is not a cosmetic duplicate. No model-grounding or security guarantee is made, and actual training-to-document provenance passed.",
+          "confidenceReason": "High confidence in the exact output contract: both product reference and training describe the independent controls, and every input and row count is supplied. Whitespace alone is immaterial; no real model-service assumptions are needed."
+        }
+      }
+    },
+    "dp800-20260916-d3-030": {
+      "generation": {
+        "questionFingerprint": "5f143b1d1d4fd96cd88210afbbcb5fcc82b6c5f815301fff8a39ae363cf9dbca",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-16T20:50:00.877Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3-rag-responses"],
+            "summary": "The procedure's zero return represents received 2xx status, whereas the RAG unit separately parses content. A success-only shortcut could be safe only under an independently enforced always-answer response contract; this supplied 204 fixture disproves that assumption."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3x-rest-endpoint"],
+            "summary": "The reference distinguishes received non/2xx statuses from being unable to make an HTTPS call, which throws. A transport-exception path would be appropriate for no completed call, not this explicit received 204 response."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3-rag-responses"],
+            "summary": "The reference explicitly omits result for a 204 response while treating 2xx as successful transport. The application must inspect its required answer contract separately before marking generation complete; this does not invent an answer or misreport the transport result."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3x-rest-endpoint"],
+            "summary": "The response metadata and result payload are separate envelope members. Here the HTTP status is present and clear. Missing status capture would be a different malformed/missing-envelope problem, not a consequence of an intentionally absent 204 body."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d3-030",
+          "authorId": "dp800-expansion-author-ai-20260916",
+          "reviewerId": "dp800-technical-rag-20260916",
+          "questionFingerprint": "5f143b1d1d4fd96cd88210afbbcb5fcc82b6c5f815301fff8a39ae363cf9dbca",
+          "reviewedAt": "2026-09-16T22:06:11.489Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d3x-rest-endpoint",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rest-endpoint.json",
+              "retrievedAt": "2026-09-16T19:38:27.272Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "Return value defines zero for a completed HTTPS call with a received 2xx, the actual code for non-2xx, and an exception when no call can be made. Response format explicitly omits result for 204 while retaining HTTP metadata. These directly support the diagnosis, but the page does not affirmatively establish the named feature's GA/Preview lifecycle."
+            },
+            {
+              "sourceId": "dp800-d3-rag-responses",
+              "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-responses.json",
+              "retrievedAt": "2026-09-16T19:33:24.113Z",
+              "lastReviewedAt": "2026-09-16T20:50:00.844Z",
+              "supportingSummary": "The training separates REST execution from extracting message.content and gives the 2xx/zero convention. Its immediate-extraction-after-zero example is simplified, not proof that every 2xx contains an answer. The cited product reference, not this training, supplies the explicit 204 omission rule."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "The return code describes a received 2xx status, not provider answer content. This 204 fixture is a counterexample: zero is compatible with no result. A nonempty generated answer requires separate body/schema/content validation.",
+              "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3-rag-responses"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "A captured 204 means an HTTP response was received and belongs to the success range. Inability to make the HTTPS call is an exception path instead. No-content success is not a connection failure.",
+              "sourceIds": ["dp800-d3x-rest-endpoint"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "supported",
+              "rationale": "Zero and 204 meet the procedure's definition of HTTP success, but documented omission of result leaves no answer payload to extract. The application must distinguish successful transport from meeting its answer-generation requirement.",
+              "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3-rag-responses"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "The supplied envelope retains response.status.http.code with value 204. Because result is an independently omitted payload for this status, its absence does not imply loss of HTTP metadata.",
+              "sourceIds": ["dp800-d3x-rest-endpoint"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "HOLD solely for missing affirmative lifecycle evidence for the named REST feature's GA label. Diagnosis c is supported: zero means received 2xx, not a populated answer, and 204 legitimately omits result. The JSON fixture is valid with an explicit HTTP code; no SQL or network execution is claimed. It is a stipulated gateway fixture, not a claim that a specific model chat API normally returns 204. Credential setup is not answer-determining once a received success is given. Intermediate troubleshooting appropriately separates procedure return, HTTP metadata and application output. The pronoun refers to the zero-return rule; options represent plausible layer confusions without grammar clues. This differs from capacity planning in 031 and parsing an existing scalar in direct-027. The actual later RAG-response source review time 20:50:00.844Z is preserved. Source ancestry passed; acquire admitted lifecycle evidence rather than substituting Not applicable or a curator's GA label.",
+          "confidenceReason": "High confidence in the return-code/204 distinction because the product reference expressly documents it and the exception alternative. The unresolved gate is lifecycle substantiation, not the correctness of the fixture diagnosis."
+        }
+      }
+    },
+    "dp800-20260916-d3-031": {
+      "generation": {
+        "questionFingerprint": "20212fe733a9e678f2773690b9f407bd052880bca7040029ce3f82d16c3132f4",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-16T20:50:00.877Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d3x-rest-endpoint"],
+            "summary": "The reference separates database/pool outbound throttling from documented retryable HTTP responses. Eight calls exceed the four available slots; retries do not raise the capacity. This launch pattern would require eight available slots, not the supplied reservation."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3-for-json"],
+            "summary": "The transport reference recommends grouping rows into JSON when the endpoint supports batching. Forty requests at five per body require eight calls, and the fixed reservation leaves four concurrent slots. This satisfies both stipulated constraints without inventing a chat-model batch API or a completion-time guarantee."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3x-rest-endpoint"],
+            "summary": "The concurrency count is feasible, but the supplied gateway contract caps each body at five independent requests. Ten-request batches could be considered only after the gateway explicitly supports that larger shape; SQL payload capacity alone is not that approval."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3x-rest-endpoint"],
+            "summary": "The procedure's timeout controls how long a call may run, not the concurrent-worker limit. Single-request calls can be appropriate for a nonbatch endpoint, but this endpoint permits batching and forty concurrent calls violate the stated database capacity."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d3-031",
+          "authorId": "dp800-expansion-author-ai-20260916",
+          "reviewerId": "dp800-technical-rag-20260916",
+          "questionFingerprint": "20212fe733a9e678f2773690b9f407bd052880bca7040029ce3f82d16c3132f4",
+          "reviewedAt": "2026-09-16T22:06:11.489Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d3x-rest-endpoint",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rest-endpoint.json",
+              "retrievedAt": "2026-09-16T19:38:27.272Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "Throttling caps external-call concurrency, exposes effective limits through sys.dm_user_db_resource_governance and raises 10928/10936 when exhausted. Retry logic lists HTTP statuses rather than worker-limit exceptions. Best practices recommends endpoint-compatible batching. This supports capacity distinctions, not the stipulated numbers, a universal batch API, or affirmative GA classification."
+            },
+            {
+              "sourceId": "dp800-d3-for-json",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\for-json.json",
+              "retrievedAt": "2026-09-16T19:38:27.268Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "The product article documents serializing multiple query rows as a JSON array with text escaping on Azure SQL Database. This can construct a gateway batch but does not establish that an endpoint accepts five requests or enforce concurrency. The scenario separately stipulates those capacities."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "Eight simultaneous calls need eight slots when only 12 minus 8 equals 4 remain available. The reference distinguishes worker-limit errors from its retryable HTTP list; retry_count neither expands capacity nor preserves the fixed reservation.",
+              "sourceIds": ["dp800-d3x-rest-endpoint"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "Five requests per payload creates a lower bound of ceil(40/5)=8 calls. Eight full batches attain it, and at most 12-8=4 calls in flight respect the reservation. FOR JSON can serialize rows, but acceptance of this batch shape is stipulated by the tested gateway, not assumed from SQL.",
+              "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3-for-json"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Four calls fit the concurrency budget, but ten requests per payload violate the explicit maximum of five. Larger batches could reduce calls under another tested gateway contract, not under this one.",
+              "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3-for-json"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "Forty concurrent calls exceed the four available slots, and forty single-request calls fail the minimum-call objective. Timeout changes how long a call may run, not its allowed worker concurrency or required payload count.",
+              "sourceIds": ["dp800-d3x-rest-endpoint"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": false
+          },
+          "verificationNotes": "HOLD for two independent reasons. The cited REST receipt supports behavior but does not affirmatively establish GA/Preview lifecycle. Also, Advanced is inflated: supplied fixed budgets leave division 40/5 and subtraction 12-8; every alternative visibly violates a given limit or uses more calls. Retry/timeout recognition does not add advanced scheduling or failure analysis. Intermediate is the defensible current difficulty. Key b and its contextual counterexamples are supported, and a tested hypothetical gateway is not presented as a standard model batch API. No executable snippet exists; parameter concepts and arithmetic were checked statically. Four available slots is a scenario premise, not a universal Azure SQL limit or a claim about additional pool capacity. No deterministic duplicate/clue warning was found, but that does not override the independent difficulty finding. Exact training/doc ancestry passed. Even a difficulty-only repair changes authored content and restarts generation and both independent passes; do not transplant this hash.",
+          "confidenceReason": "High confidence in b and the difficulty hold: the complete solution is an eight-call lower bound and four-slot ceiling, with no deeper optimization problem. Worker/retry semantics are documented, but named-feature lifecycle evidence remains insufficient."
+        }
+      }
+    },
+    "dp800-20260916-d3-032": {
+      "generation": {
+        "questionFingerprint": "55d9982bb6f46c103d0aabfaaf7b41c626074bbb1c6f03693efd80310bf4f12f",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-16T20:50:00.877Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d3x-json-value",
+              "dp800-d3x-openjson",
+              "dp800-d3-rag-responses"
+            ],
+            "summary": "The response unit locates message.content, JSON_VALUE extracts the explicitly short scalar, and OPENJSON can then parse that extracted text. Its typed WITH contract requires nvarchar(max) AS JSON for the citations array. This is a two-layer parse, not a claim that every provider returns this shape."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3x-json-query", "dp800-d3x-openjson"],
+            "summary": "JSON_QUERY extracts an actual object or array at its input path; the outer content token here is a string. This approach would fit a different envelope whose content member was itself an object, not the escaped JSON string supplied here."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3x-json-value", "dp800-d3x-openjson"],
+            "summary": "The parser traverses the JSON structure it is given, not a second document hidden in a scalar's characters. Direct content.answer traversal would be correct for object-valued content, but the supplied outer token first requires string extraction and another parse."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3x-openjson"],
+            "summary": "OPENJSON's ordinary typed columns extract scalar values, while AS JSON retains an object/array fragment. Omitting AS JSON could be correct if citations were a scalar identifier or string; the supplied value is the array [17,23] that must remain intact."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d3-032",
+          "authorId": "dp800-expansion-author-ai-20260916",
+          "reviewerId": "dp800-technical-rag-20260916",
+          "questionFingerprint": "55d9982bb6f46c103d0aabfaaf7b41c626074bbb1c6f03693efd80310bf4f12f",
+          "reviewedAt": "2026-09-16T22:06:11.489Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d3-rag-responses",
+              "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-responses.json",
+              "retrievedAt": "2026-09-16T19:33:24.113Z",
+              "lastReviewedAt": "2026-09-16T20:50:00.844Z",
+              "supportingSummary": "The training shows result.choices[0].message.content and distinguishes scalar JSON_VALUE from object/array JSON_QUERY extraction. It contextualizes the outer step, not a universal provider envelope or guarantee of JSON inside content; the candidate explicitly supplies both encoding layers."
+            },
+            {
+              "sourceId": "dp800-d3x-json-value",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-value-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\json-value.json",
+              "retrievedAt": "2026-09-16T19:44:51.456Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "The reference defines scalar JSON-text extraction, nvarchar(4000) without RETURNING, and NULL/error behavior for non-scalars and overlength values. Its baseline SQL Server 2016+/Azure SQL scope covers this bounded nvarchar input; no native-json RETURNING extension is needed."
+            },
+            {
+              "sourceId": "dp800-d3x-json-query",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-query-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\json-query.json",
+              "retrievedAt": "2026-09-16T19:44:53.438Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "Object/array fragment extraction yields NULL for a scalar in default lax mode, or an error in strict mode. Outer message.content is a string, so JSON_QUERY cannot decode its text as the first step. Only classic two-argument behavior is involved, not native-json wildcard or WITH ARRAY WRAPPER features."
+            },
+            {
+              "sourceId": "dp800-d3x-openjson",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\openjson.json",
+              "retrievedAt": "2026-09-16T19:57:02.023Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "Syntax and AS JSON sections support typed WITH projections, explicit property paths and nvarchar(max) AS JSON for an inner object/array. Without AS JSON, typed scalar projection loses an array in lax mode. Compatibility 130+ and case-sensitive key matching are documented; 170 and explicit $.answer/$.citations mappings satisfy those constraints."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "JSON_VALUE decodes the short outer content string into text beginning with an object brace. OPENJSON then interprets that separate document using explicit $.answer and $.citations paths. A scalar Answer column returns the answer text, while nvarchar(max) AS JSON preserves [17,23] as a JSON array fragment.",
+              "sourceIds": [
+                "dp800-d3x-json-value",
+                "dp800-d3x-openjson",
+                "dp800-d3-rag-responses"
+              ]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Outer content has string type even though its decoded characters form JSON. JSON_QUERY requires an object/array and returns NULL at this scalar path in default lax mode. It would fit a response where outer content were actually a structured value instead.",
+              "sourceIds": ["dp800-d3x-json-query", "dp800-d3-rag-responses"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "answer and citations are not child properties of the outer scalar content value. Their names exist only inside its encoded text and require a second parse. Direct nested paths would work only if content were an actual outer JSON object.",
+              "sourceIds": ["dp800-d3x-json-value", "dp800-d3x-openjson"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "The first decode is valid, but a typed WITH column without AS JSON uses scalar semantics. $.citations is an array, so the projection yields NULL in lax mode or an error in strict mode instead of the complete fragment. nvarchar(max) AS JSON supplies the missing fragment behavior.",
+              "sourceIds": ["dp800-d3x-openjson", "dp800-d3x-json-query"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. Derived a from two encoding layers and typed scalar/fragment projection. The outer JSON and decoded content are valid; the inner answer is 'Use catalog entry 17.' and citations is [17,23]. The <4,000-character constraint bounds classic JSON_VALUE; compatibility 170 exceeds OPENJSON's 130 minimum. Explicit $.answer and $.citations paths, already given in the explanation, avoid case-sensitive key mismatches. GA concerns established nvarchar-based JSON functions documented for SQL Server 2016+ and Azure SQL, not a provider API, native-json RETURNING or wildcard extension. Both envelope and content shape are stipulated. Advanced is defensible for interacting two parses and typed fragment projection; direct-027 is only a single known-path lookup. Parallel parsing alternatives reveal no grammar or answer-length shortcut. No duplicate blocker was found. Static JSON/SQL analysis only, not SQL execution. The direct current-guide OPENJSON reference and all frozen source/objective bindings were independently checked.",
+          "confidenceReason": "High confidence from the literal two-layer fixture and the reference's WITH/AS JSON rules. The bounded scalar and explicit compatibility level eliminate overlength and unsupported-OPENJSON alternatives without assuming real model-output conformance."
+        }
+      }
+    },
+    "dp800-direct-026": {
+      "generation": {
+        "questionFingerprint": "4a6ef99f51cd7cc10790d80d0bf1503c0ca320375f8e242f45dbaffa120198eb",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-16T20:50:00.879Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d3-for-json"],
+            "summary": "PATH mode interprets the dotted aliases as nested properties, so these flat dotted-key names are not the shown query's output. A serializer expressly using literal dotted keys could produce this other shape, but that is not FOR JSON PATH's selected convention."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3-for-json"],
+            "summary": "The nesting is correct, but the default array remains because WITHOUT_ARRAY_WRAPPER is absent. This shape could follow an explicitly requested single-row object wrapper removal, not the shown statement."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+            "summary": "The directly fetched product contract combines dotted-alias nesting with the default array wrapper even for one row. The supplied literal values therefore form one nested item object inside the array; this is a serialization result, not evidence of downstream model compliance."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3-for-json"],
+            "summary": "An items root would require an explicit ROOT('items') option. That option could create the proposed outer wrapper in a different statement, but it is not present here."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-026",
+          "authorId": "dp800-expansion-author-ai-20260916",
+          "reviewerId": "dp800-technical-rag-20260916",
+          "questionFingerprint": "4a6ef99f51cd7cc10790d80d0bf1503c0ca320375f8e242f45dbaffa120198eb",
+          "reviewedAt": "2026-09-16T22:06:11.489Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d3-rag-context",
+              "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/3-prepare-retrieval-context-augmentation",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-context.json",
+              "retrievedAt": "2026-09-16T19:33:20.120Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "The training's PATH example uses dotted aliases to create a nested product object inside the default array. WITHOUT_ARRAY_WRAPPER and ROOT separately alter different layers. This supports the structural example, not the training's broader suggestion that JSON formatting guarantees model grounding."
+            },
+            {
+              "sourceId": "dp800-d3-for-json",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\for-json.json",
+              "retrievedAt": "2026-09-16T19:38:27.268Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "The product reference documents PATH dot-syntax nesting, a default array with one element per input row, an optional ROOT and explicit wrapper removal. Its baseline SQL Server 2016+/Azure SQL scope supports these shipped text-formatting controls; no newer JSON feature is used."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "PATH interprets dots in item.label and item.units as nesting syntax rather than literal dotted property names. The array layer is right but the flat property structure does not match the shown PATH aliases.",
+              "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "The nested item object is correct, but the default array remains even for a single SELECT row. Producing this unwrapped object would require the omitted WITHOUT_ARRAY_WRAPPER option.",
+              "sourceIds": ["dp800-d3-for-json"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "supported",
+              "rationale": "Constants with no FROM produce one row. PATH nests the two aliases under item, retains label as a string and units as a number, and puts that row-object in its default array. The result is exactly the displayed one-element array.",
+              "sourceIds": ["dp800-d3-rag-context", "dp800-d3-for-json"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "The inner array and item object are consistent with PATH, but no ROOT('items') appears in the statement. That wrapper could be explicitly requested; neither PATH nor the alias prefix item invents it.",
+              "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only for this exact fresh generation under the preserved ID, not renewal of historical approval. Traced c from one row, dotted aliases, default array and absence of ROOT. The SQL is self-contained and uses baseline FOR JSON PATH with documented SQL Server 2016+/Azure SQL support; no table state, model API, permission setup or preview extension determines the answer. Intermediate fits combined alias/array/root discrimination. Complete literal inputs resolve the short-scenario warning; extra narrative would not add a prerequisite. The absolute-wording warning concerns a qualified no-grounding-guarantee statement, not a positive universal claim. Parallel JSON alternatives provide no grammatical cue. New 029 independently tests nulls in a rooted multirow contract, not renamed aliases. Targeted diagnostics found no duplicate blocker. Actual source ancestry was checked and history left untouched. SQL was reviewed statically, not run.",
+          "confidenceReason": "High confidence in the logical JSON shape from both actual training and product rules. A fixed one-row SELECT eliminates external-state and cardinality ambiguity; no conclusion about a language model's behavior follows from this formatting result."
+        }
+      }
+    },
+    "dp800-direct-027": {
+      "generation": {
+        "questionFingerprint": "e748966b909478321ee515a63b63bd9cbaa8952c7c3aa21f307827a472359bb0",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-16T20:50:00.879Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d3-rag-responses"],
+            "summary": "The supplied response wraps choices under result, so the path omitting that level cannot locate the answer. It would fit a variable containing the unwrapped provider result, not the complete envelope shown."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3-rag-responses"],
+            "summary": "The current response unit demonstrates the exact result.choices[0].message.content path and scalar JSON_VALUE extraction. The given short string and fixed envelope make the choice bounded; no arbitrary-length or all-provider response claim is added."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3-rag-responses"],
+            "summary": "The unit differentiates JSON_QUERY for an object/array from JSON_VALUE for a scalar. JSON_QUERY would suit object- or array-valued content in a different documented contract, but the supplied content is a short scalar string."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3-rag-responses"],
+            "summary": "This path addresses the HTTP status code in the envelope, not the assistant's answer text. It is useful for transport diagnostics, a distinct task from extracting the given model message."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-027",
+          "authorId": "dp800-expansion-author-ai-20260916",
+          "reviewerId": "dp800-technical-rag-20260916",
+          "questionFingerprint": "e748966b909478321ee515a63b63bd9cbaa8952c7c3aa21f307827a472359bb0",
+          "reviewedAt": "2026-09-16T22:06:11.489Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d3-rag-responses",
+              "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-responses.json",
+              "retrievedAt": "2026-09-16T19:33:24.113Z",
+              "lastReviewedAt": "2026-09-16T20:50:00.844Z",
+              "supportingSummary": "Extract the answer demonstrates JSON_VALUE at result.choices[0].message.content and contrasts JSON_QUERY for objects/arrays. This supports all four path/type distinctions for the short supplied fixture. The sole citation is training, not affirmative release/lifecycle evidence for the named JSON APIs; its manifest GA declaration cannot independently support that label."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "The fixture has no root-level choices property; it is nested inside result. This path could read an unwrapped provider response but does not address the answer in the explicitly supplied envelope.",
+              "sourceIds": ["dp800-d3-rag-responses"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "Following result, the first choices element and message.content reaches the fixture's answer string. JSON_VALUE is the documented training example's scalar extractor, returning answer text rather than HTTP metadata or a structured fragment.",
+              "sourceIds": ["dp800-d3-rag-responses"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "The path is correct but the training distinguishes JSON_QUERY for an object/array from JSON_VALUE for a scalar. Here content is a plain string, so fragment extraction does not return the requested answer. It could fit a genuinely structured content value.",
+              "sourceIds": ["dp800-d3-rag-responses"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "This path addresses the numeric HTTP status 200, not assistant text inside result. A scalar extractor can read status metadata for a different check, but that is not the answer text requested here.",
+              "sourceIds": ["dp800-d3-rag-responses"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "HOLD for lifecycle evidence sufficiency, not the path/type key: b reaches the only answer string. The sole cited training unit teaches the extraction but does not establish GA/Preview for the named JSON_VALUE/JSON_QUERY APIs. Directly retrieved product references with established SQL Server 2016+/Azure SQL scope are cited by 032, but cannot silently become evidence for this one-source candidate. Add approved product citations and freshly bind/review authored content; do not substitute Not applicable. The valid fixture explicitly gives the envelope and short plain scalar, so no universal provider schema or arbitrarily long JSON_VALUE behavior is assumed. Intermediate fits low-end path/type discrimination. Pronouns are explicit and similarly formatted choices provide no length cue. 032 adds a separate inner parse and AS JSON fragment projection, not cosmetic restatement. Preserved ID/history is untouched and no old attestation is reused. Expressions and JSON were checked statically, not in SQL.",
+          "confidenceReason": "High confidence in b and each alternative from the given tree and actual training example. Lifecycle attestation remains insufficient with training-only support; this is an evidence-integration hold, not speculation that established JSON functions are Preview."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "dp800-direct-018",
+    "question": "An SDK-style SQL database project creates a lookup table on its first deployment. Versioned reference rows have stable primary keys. Later deployments retain the table and existing rows, must update changed reference values for existing keys, and must insert missing keys without duplicate-key errors. Which strategy meets both the initial ordering and rerun requirements?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Run the reference-data script before the schema deployment plan"
+      },
+      {
+        "id": "b",
+        "text": "After each schema deployment, replay only unconditional INSERTs for the full reference set, without checking or updating existing rows."
+      },
+      {
+        "id": "c",
+        "text": "Reconcile existing and missing reference keys in a versioned post-deployment script"
+      },
+      {
+        "id": "d",
+        "text": "Deploy only the schema model without a reference-data script"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Reconcile the versioned reference data after schema deployment: update existing reference values and insert missing keys.",
+    "deepExplanation": "An INSERT-based script is not inherently nonrepeatable. Guarded insertion can be appropriate when only missing rows matter. Here existing reference values must also converge, and option B explicitly excludes checking or updating them. The requirement does not mandate MERGE or claim that arbitrary data scripts are concurrency-safe.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The initial schema deployment has not yet created the lookup table, so this earlier timing cannot populate it. Pre-deployment preparation can be appropriate when the required target objects already exist.",
+      "b": "This option explicitly replays the full set without existing-key checks or updates. It neither updates changed reference values nor handles retained keys as the required reconciliation demands. Unconditional insertion can fit an empty one-time target; guarded missing-key insertion is a different strategy and alone would still omit the newly required value updates.",
+      "d": "The schema model supplies table definitions, not the required versioned row values. Schema-only deployment can suffice when data provisioning is outside the deployment contract, but that is not this requirement."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Create and manage reference/static data in source control",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d2-reference-data"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/03-configure-source-control-manage-reference-data"
+    ],
+    "documentationTitles": [
+      "Configure source control and manage reference data"
+    ],
+    "generatedAt": "2026-09-16T23:43:34.173Z",
+    "lastValidatedAt": "2026-09-16T23:43:34.173Z",
+    "featureStatus": "GA",
+    "tags": ["sql-database-projects", "reference-data", "postdeployment"],
+    "conceptId": "sql-project-postdeployment-reference-data-idempotence",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh pass-1 adversarial-cicd-r1 repair. All prior snapshots and holds remain frozen. This exact content requires new independent technical and adversarial passes.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "Original grounded repair against unchanged CI/CD evidence; no independent approval or rubric is carried forward."
+  },
+  {
+    "id": "dp800-20260916-d2-032",
+    "question": "An SDK-style SQL project has a prerequisite schema change that must be visible when SqlPackage compares the target with the .dacpac. Required permissions and an isolated test target are available. Which workflow calculates the deployment plan from that changed target schema?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Execute the prerequisite in a separate stage; then generate, review, and execute the deployment script."
+      },
+      {
+        "id": "b",
+        "text": "Put the prerequisite in PreDeploy; then generate, review, and execute the combined deployment script."
+      },
+      {
+        "id": "c",
+        "text": "Put the prerequisite in PostDeploy; then generate, review, and execute the combined deployment script."
+      },
+      {
+        "id": "d",
+        "text": "Generate and review the deployment script; then execute the prerequisite separately and run that saved script."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Complete the prerequisite before generating the deployment script so the comparison reads the resulting target schema.",
+    "deepExplanation": "PreDeploy executes before the deployment plan is executed, but after the plan is calculated. PostDeploy executes after the plan. A separate completed prerequisite stage can change the schema seen by a subsequent comparison. Validate the prerequisite and complete sequence against the isolated target; the ordering alone does not prove the migration safe.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The plan is calculated before PreDeploy executes, so this placement does not make the prerequisite visible to that comparison. PreDeploy is appropriate for preparation compatible with the already calculated plan.",
+      "c": "PostDeploy executes after the schema plan, too late to affect its calculation. It is appropriate for work such as populating reference data after objects exist.",
+      "d": "The saved script was generated against the earlier target schema. Running the prerequisite before executing that script does not recalculate it. A saved approved script can fit a compatible unchanged planning context, but this requirement explicitly needs a comparison against the changed schema."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Update an SQL database project and deploy changes",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "dp800-d2x-pre-post-deployment",
+      "dp800-d2x-compare-project",
+      "dp800-d2x-testing-unit"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts",
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/howto/compare-database-project",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy"
+    ],
+    "documentationTitles": [
+      "Pre-deployment and post-deployment scripts overview",
+      "Compare a database and a project",
+      "Design and implement a testing strategy"
+    ],
+    "generatedAt": "2026-09-16T23:43:34.173Z",
+    "lastValidatedAt": "2026-09-16T23:43:34.173Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-database-projects",
+      "deployment-planning",
+      "staged-migration"
+    ],
+    "conceptId": "sql-project-predeployment-executes-after-plan-calculation-stage-prerequisites-separately",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh pass-1 adversarial-cicd-r1 repair. All prior snapshots and holds remain frozen. This exact content requires new independent technical and adversarial passes.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "Original grounded repair against unchanged CI/CD evidence; no independent approval or rubric is carried forward."
+  }
+]

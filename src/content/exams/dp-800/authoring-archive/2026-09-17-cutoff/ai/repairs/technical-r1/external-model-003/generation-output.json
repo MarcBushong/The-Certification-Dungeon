@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-expansion-ai-external-model-003-r1-20260916",
+  "authorId": "dp800-expansion-author-ai-20260916",
+  "generatedAt": "2026-09-16T23:56:31.608Z",
+  "candidates": [
+    {
+      "id": "dp800-20260916-d3-003",
+      "question": "A team reviews SQL Server 2025 external-model definitions for an AI application. It proposes using the same model-object mechanism for embeddings and chat-answer generation. Under the documented MODEL_TYPE contract, which conclusion is supported? Consider the local ONNX Runtime alternative in its explicitly documented Preview scope; no model invocation is being performed.",
+      "questionType": "single-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Declare MODEL_TYPE = CHAT_COMPLETIONS to register the chat-generation purpose."
+        },
+        {
+          "id": "b",
+          "text": "Keep MODEL_TYPE = EMBEDDINGS and change API_FORMAT to Azure OpenAI to make it a chat-generation object."
+        },
+        {
+          "id": "c",
+          "text": "Keep MODEL_TYPE = EMBEDDINGS and select the local ONNX Runtime Preview format to make it a chat-generation object."
+        },
+        {
+          "id": "d",
+          "text": "Treat the documented external-model type as embedding-only; chat generation needs a separately documented interface outside this model-object contract."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "The current reference lists EMBEDDINGS as the accepted MODEL_TYPE. Changing the provider format or selecting local ONNX does not introduce a chat-generation model type.",
+      "deepExplanation": "API_FORMAT identifies the provider's message format, while MODEL_TYPE identifies the operation's purpose. The local ONNX example retains MODEL_TYPE = EMBEDDINGS and has explicit developer Preview status. This question evaluates those model-definition fields only; it does not select, invoke or make lifecycle claims about a separate chat transport.",
+      "whyOtherAnswersAreWrong": {
+        "a": "CHAT_COMPLETIONS is not an accepted MODEL_TYPE in the cited current definition.",
+        "b": "Azure OpenAI is an accepted API_FORMAT, but selecting it does not change the EMBEDDINGS model type into chat generation.",
+        "c": "The documented local ONNX Preview definition also uses EMBEDDINGS; its execution location does not create a different model type."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Create and manage external models",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3-create-external-model"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-model-transact-sql"
+      ],
+      "documentationTitles": ["CREATE EXTERNAL MODEL (Transact-SQL)"],
+      "generatedAt": "2026-09-16T23:56:31.607Z",
+      "lastValidatedAt": "2026-09-16T23:56:31.607Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "external-model",
+        "model-type",
+        "embedding-versus-generation",
+        "sql-server-2025",
+        "onnx-preview"
+      ],
+      "conceptId": "sql-external-model-embedding-type-is-not-a-chat-generation-interface",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 repair only: fresh authored snapshot and option claims; separate technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    }
+  ]
+}

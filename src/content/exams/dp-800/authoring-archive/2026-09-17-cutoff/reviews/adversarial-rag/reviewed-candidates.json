@@ -1,0 +1,246 @@
+[
+  {
+    "id": "dp800-20260916-d3-026",
+    "question": "A database-backed assistant answers questions about policies that change during the day. Responses must be based on the policy records retrieved for that request, and the application must retain which records supplied the context. The model's weights are not updated for each policy edit. Which design matches this requirement?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use a one-time fine-tuned snapshot and answer later questions without retrieving policy records."
+      },
+      {
+        "id": "b",
+        "text": "Cache one unversioned policy summary and reuse it for every request after edits."
+      },
+      {
+        "id": "c",
+        "text": "Ask the model to infer the organization's current policies from general pretrained knowledge."
+      },
+      {
+        "id": "d",
+        "text": "Retrieve applicable current records, include their content in the prompt, and retain the request's source identifiers."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "RAG supplies request-relevant database content to the model and can retain the records used for that request.",
+    "deepExplanation": "Retrieval, prompt augmentation and generation are distinct stages. This design addresses the changing-source and traceability requirements without claiming that RAG automatically guarantees freshness, authorization or factual answers. The application still owns retrieval correctness, access checks and response validation.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A frozen training snapshot without request-time retrieval cannot account for the stated intervening policy edits.",
+      "b": "An unversioned reused summary does not establish which current records informed a later request.",
+      "c": "General pretrained knowledge is not evidence of this organization's current policy records."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-retrieval-augmented-generation-rag",
+    "subskill": "Identify use cases for RAG",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["dp800-d3x-rag-architecture"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/2-identify-rag-use-cases-architecture"
+    ],
+    "documentationTitles": ["Identify RAG use cases and architecture"],
+    "generatedAt": "2026-09-16T20:50:00.877Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+    "featureStatus": "Not applicable",
+    "tags": ["rag", "changing-knowledge", "source-traceability", "methodology"],
+    "conceptId": "rag-request-time-retrieval-and-source-traceability-for-changing-domain-knowledge",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3x-rag-architecture"],
+    "verificationNotes": "PASS 3: independently retained d after testing frozen snapshots, maintained-cache alternatives, coincidental pretrained knowledge and the difference between context attribution and guaranteed model truth. I read the actual architecture unit and the credential-course-path-module receipts under the real DP-800 exact-URL catalog, not a permission clone. The non-feature lifecycle label is justified only for this generic design. No code requires execution. Intermediate is introductory; rubric 45/48 deducts for easy distractors, low-end reasoning and the familiar use-case pattern. This review binds the fresh candidate and current March 12 map, preserves all prior history, and does not promote content into the application.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence in d as the sole offered design satisfying current-record context and retained record identity. Confidence is explicitly limited to the design choice; actual retrieval freshness, authorization and generated-answer faithfulness were not demonstrated.",
+    "verifiedAt": "2026-09-16T23:07:04.710Z"
+  },
+  {
+    "id": "dp800-20260916-d3-029",
+    "question": "An Azure SQL Database query returns exactly two context rows. The receiving prompt formatter requires an items root containing an array of both rows, and a SQL NULL Note must remain an explicit JSON null rather than disappear. Which FOR JSON suffix satisfies that serialization contract?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "FOR JSON PATH, WITHOUT_ARRAY_WRAPPER"
+      },
+      {
+        "id": "b",
+        "text": "FOR JSON PATH, ROOT('items')"
+      },
+      {
+        "id": "c",
+        "text": "FOR JSON PATH, INCLUDE_NULL_VALUES, WITHOUT_ARRAY_WRAPPER"
+      },
+      {
+        "id": "d",
+        "text": "FOR JSON PATH, INCLUDE_NULL_VALUES, ROOT('items')"
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Retain the default array, add ROOT('items'), and include null-valued properties explicitly.",
+    "deepExplanation": "Array shape, root naming and null representation are independent controls. WITHOUT_ARRAY_WRAPPER is intended for a single-row object, not this two-row array contract. Preserving a null can communicate that a field is present but unknown; it is not the same as omitting the field or replacing it with an empty string.",
+    "whyOtherAnswersAreWrong": {
+      "a": "It removes the array wrapper, adds no items root and still omits null-valued properties.",
+      "b": "It supplies the correct root and array, but default formatting omits the NULL Note.",
+      "c": "It retains null properties but removes the array and does not supply the required root."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-retrieval-augmented-generation-rag",
+    "subskill": "Convert structured data to JSON for language model processing",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/3-prepare-retrieval-context-augmentation"
+    ],
+    "documentationTitles": [
+      "Format query results as JSON with FOR JSON",
+      "Prepare retrieval context for augmentation"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.877Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+    "featureStatus": "GA",
+    "tags": ["rag-context", "for-json", "null-preservation", "multirow-array"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT ProductId, Note\nFROM (VALUES\n    (17, CAST(NULL AS nvarchar(50))),\n    (23, N'Restocked')\n) AS ContextRows(ProductId, Note)\nORDER BY ProductId\n-- append one FOR JSON suffix",
+    "conceptId": "sql-rag-json-context-preserves-explicit-null-within-rooted-multirow-array",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+    "verificationNotes": "PASS 3: independently retained d after checking each root/array/null control and the alternate single-row contracts for wrapper removal. The actual FOR JSON reference and training unit support the predicted two-row logical value; no SQL engine was run. Core Azure SQL text JSON formatting has established supported-version evidence and uses no Preview extension. The real exact-URL catalog and full credential-course-path-module-summary ancestry were inspected. Rubric 46/48 deducts for uneven distractor strength and a familiar switch-combination setup. Combined-corpus comparison distinguishes the single-row PATH-nesting and JSON_ARRAYAGG positional-null items. Only verification metadata is changed in the scoped output.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence in the uniquely matching suffix because all rows and all three consumer requirements are explicit and the product source defines their independent controls. This confidence covers logical serialization only, not a live database result or downstream model interpretation.",
+    "verifiedAt": "2026-09-16T23:07:04.710Z"
+  },
+  {
+    "id": "dp800-20260916-d3-032",
+    "question": "Azure SQL Database at compatibility level 170 receives the valid nvarchar(max) response shown. HTTP success is already checked. message.content is a string shorter than 4,000 characters containing another JSON document. The application needs one Answer scalar and the complete Citations array as JSON text. Which parsing plan respects both encoding layers and the array type?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Extract content with JSON_VALUE, parse that text with OPENJSON, and project citations as nvarchar(max) AS JSON."
+      },
+      {
+        "id": "b",
+        "text": "Extract content with JSON_QUERY, parse that fragment with OPENJSON, and project citations as nvarchar(max) AS JSON."
+      },
+      {
+        "id": "c",
+        "text": "Read content.answer and content.citations directly as nested paths in the outer response without parsing content again."
+      },
+      {
+        "id": "d",
+        "text": "Extract content with JSON_VALUE, parse that text with OPENJSON, and project citations as an ordinary scalar column without AS JSON."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "First decode the scalar content string, then parse its JSON document and preserve the citations array with AS JSON.",
+    "deepExplanation": "The outer response's content member is not itself an object even though its characters form JSON. JSON_VALUE retrieves that bounded scalar string; a second OPENJSON call interprets it as a document. In the typed WITH projection, Answer can map to $.answer and Citations needs nvarchar(max) '$.citations' AS JSON to retain the array rather than scalar-extract it.",
+    "whyOtherAnswersAreWrong": {
+      "b": "JSON_QUERY at the outer content path expects an object or array, but the supplied outer value is a string.",
+      "c": "JSON path traversal does not automatically parse JSON text stored inside a scalar string.",
+      "d": "A typed scalar projection does not retain the nested array; the documented fragment projection requires AS JSON."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-retrieval-augmented-generation-rag",
+    "subskill": "Extract language model responses",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d3-rag-responses",
+      "dp800-d3x-json-value",
+      "dp800-d3x-json-query",
+      "dp800-d3x-openjson"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-value-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-query-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql"
+    ],
+    "documentationTitles": [
+      "Generate and process RAG responses",
+      "JSON_VALUE (Transact-SQL)",
+      "JSON_QUERY (Transact-SQL)",
+      "OPENJSON (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.877Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+    "featureStatus": "GA",
+    "tags": [
+      "rag-response",
+      "nested-encoding",
+      "openjson",
+      "scalar-versus-fragment",
+      "citations"
+    ],
+    "codeLanguage": "json",
+    "codeSnippet": "{\"response\":{\"status\":{\"http\":{\"code\":200}}},\"result\":{\"choices\":[{\"message\":{\"content\":\"{\\\"answer\\\":\\\"Use catalog entry 17.\\\",\\\"citations\\\":[17,23]}\"}}]}}",
+    "conceptId": "sql-rag-response-decodes-json-in-content-string-before-projecting-citation-array",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "PASS 3 HOLD: a works, but d is not uniquely wrong under the unchanged stem. The actual OPENJSON article documents default key/value/type output in which value is nvarchar(max) and arrays are returned as text with type 4. After the same JSON_VALUE decode, ordinary SELECT projections of the answer and citations value rows return the requested scalar and full [17,23] text without AS JSON. Only typed WITH needs that flag, and the stem/option d do not require WITH; the explanation and prior claims introduce it later. I therefore cannot attest distractor incorrectness, explanation applicability, complete prerequisites or final quality. The four cited snapshots, exact catalog grants, GA text-function scope and current objective binding otherwise pass. Static reasoning only, no live SQL. Repair the authored stem/options to require explicit WITH projections, then restart generation and both independent reviews; do not reuse this attestation.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": "High confidence in the documented default-versus-explicit-schema distinction and in a's valid intended behavior. Because a legitimate default-schema interpretation makes d work on the same fixture, confidence in answer uniqueness is insufficient for verification. The counterexample is documentation-derived SQL reasoning, not a claimed live execution."
+  },
+  {
+    "id": "dp800-direct-026",
+    "question": "An Azure SQL Database query formats a single retrieved row as RAG context using the statement shown. Ignoring whitespace, which JSON shape is produced?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "[{\"item.label\":\"Field kit\",\"item.units\":12}]"
+      },
+      {
+        "id": "b",
+        "text": "{\"item\":{\"label\":\"Field kit\",\"units\":12}}"
+      },
+      {
+        "id": "c",
+        "text": "[{\"item\":{\"label\":\"Field kit\",\"units\":12}}]"
+      },
+      {
+        "id": "d",
+        "text": "{\"items\":[{\"item\":{\"label\":\"Field kit\",\"units\":12}}]}"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The result is an array containing one nested item object.",
+    "deepExplanation": "PATH alias nesting, the default array and a named ROOT are distinct formatting controls. Correct formatting preserves structure but does not by itself guarantee a language model will stay grounded.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Under PATH mode, the dotted aliases define nested properties rather than the flat dotted-name structure shown here.",
+      "b": "The statement has not requested WITHOUT_ARRAY_WRAPPER, so the default array wrapper is retained even for one row.",
+      "d": "A named outer root is not requested by the shown statement."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-retrieval-augmented-generation-rag",
+    "subskill": "Convert structured data to JSON for language model processing",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d3-rag-context", "dp800-d3-for-json"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/3-prepare-retrieval-context-augmentation",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server"
+    ],
+    "documentationTitles": [
+      "Prepare retrieval context for augmentation",
+      "Format query results as JSON with FOR JSON"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.879Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+    "featureStatus": "GA",
+    "tags": ["rag", "for-json-path", "structured-context"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT N'Field kit' AS [item.label],\n       12 AS [item.units]\nFOR JSON PATH;",
+    "conceptId": "sql-for-json-path-dot-alias-nesting-default-array",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3-rag-context", "dp800-d3-for-json"],
+    "verificationNotes": "PASS 3: independently retained c by tracing the literal row, shared item alias prefix, string/numeric values, retained default array and absent ROOT. I challenged bracketed alias semantics, automatic single-row unwrapping and unrequested root creation against the actual product and training bodies. Core text JSON maturity, real DP-800 exact URL approvals and complete training ancestry pass; no SQL or model endpoint was executed. Rubric 45/48 records low-end Intermediate reasoning, familiar shape construction and terse value-type explanation. Combined comparison distinguishes 029's explicit-null rooted multirow contract and direct-031's OPENJSON literal-key matching. The existing canonical ID and all prior/completed history remain unchanged outside these scoped verification fields.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence in c for the exact self-contained statement: no table state, credentials or model behavior can change its documented nesting and wrapper controls. Confidence is based on actual reference rules and a static trace, not a claimed database execution.",
+    "verifiedAt": "2026-09-16T23:07:04.710Z"
+  }
+]

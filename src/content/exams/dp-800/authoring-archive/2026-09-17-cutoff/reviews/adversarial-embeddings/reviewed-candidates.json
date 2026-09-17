@@ -1,0 +1,565 @@
+[
+  {
+    "id": "dp800-20260916-d3-001",
+    "question": "A database-backed support assistant must read text and images, handle English and Spanish, and produce schema-valid JSON within a measured p95 target of 900 ms. The following hypothetical model profiles are stipulated evaluation results, not vendor specifications. Which profile meets every requirement?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Text input; English and Spanish; schema-valid JSON; p95 400 ms."
+      },
+      {
+        "id": "b",
+        "text": "Text and image input; English only; schema-valid JSON; p95 650 ms."
+      },
+      {
+        "id": "c",
+        "text": "Text and image input; English and Spanish; schema-valid JSON; p95 850 ms."
+      },
+      {
+        "id": "d",
+        "text": "Text and image input; English and Spanish; prose output only; p95 600 ms."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Profile c meets the modality, language, output-format and measured-latency requirements together.",
+    "deepExplanation": "Model evaluation is a conjunction of workload requirements rather than a contest for the smallest latency number. These are supplied test profiles. Passing this comparison does not establish a named model's availability or guarantee future production latency.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Its faster response does not compensate for its missing image-input capability.",
+      "b": "It fails the Spanish requirement even though its modality, output and latency fit.",
+      "d": "A prose-only result does not meet the stated programmatic JSON-output contract."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Evaluate external models, including multimodal, multilanguage, sizes, and structured output",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d3x-models-evaluate"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/02-understand-evaluate-models-sql-database-workloads"
+    ],
+    "documentationTitles": [
+      "Understand and evaluate models for SQL database workloads"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.860Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.860Z",
+    "featureStatus": "Not applicable",
+    "tags": [
+      "model-evaluation",
+      "multimodal",
+      "multilingual",
+      "structured-output",
+      "hypothetical-data"
+    ],
+    "conceptId": "model-selection-conjoins-modality-language-output-and-measured-latency",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3x-models-evaluate"],
+    "verificationNotes": "PASS 3 independently retains c after testing text-only preprocessing, translation and prose-to-JSON alternatives; none is part of the stipulated profiles. The actual unit supports the four selection dimensions, not these invented benchmark numbers. Not applicable is appropriate for this non-feature method. The item is easy within Intermediate, with an independently scored 45/48 rather than automatic full marks. Compared the combined-corpus pipeline-budget item and the installed AI-103 memory-fit question; no same-fact cosmetic duplicate was found. No API or SQL execution was performed.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": "High confidence in the bounded unique key and methodological label: all four required measurements are explicit, while every losing profile lacks one required property.",
+    "verifiedAt": "2026-09-16T23:50:38.336Z"
+  },
+  {
+    "id": "dp800-20260916-d3-005",
+    "question": "A SQL Server 2025 worker reads document revision 41, generates its embedding outside the write transaction, then runs the shown update. Revision 42 has meanwhile committed; the stored embedding still represents revision 40. SourceRevision is an application-maintained number that changes with the text. Which additional predicate rejects this stale write so the worker can reread and regenerate?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "AND SourceRevision >= @revision"
+      },
+      {
+        "id": "b",
+        "text": "AND EmbeddingRevision < @revision"
+      },
+      {
+        "id": "c",
+        "text": "AND SourceRevision = @revision"
+      },
+      {
+        "id": "d",
+        "text": "AND Embedding IS NOT NULL"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Require the current source revision to equal the revision used to generate the proposed embedding.",
+    "deepExplanation": "A changed-row notification is not a guarantee that asynchronous work is still current when it finishes. Here 42 does not equal 41, so the guarded update affects no row and the worker can retry from current text. Comparing only the old embedding revision accepts a newer-than-old but still obsolete result. This is a persistence guard, not a complete exactly-once consumer.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Revision 42 satisfies >= 41, so this admits the stale revision-41 vector.",
+      "b": "The old embedding revision is 40, so 40 < 41 also admits a vector that is behind the current text.",
+      "d": "An existing embedding says nothing about whether the completed work represents the current source revision."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Choose an embedding maintenance method, including table triggers, Change Tracking, Azure Functions with SQL trigger binding, Azure Logic Apps, CDC, CES, and Microsoft Foundry",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "dp800-d3-maintenance",
+      "dp800-d3x-update",
+      "dp800-d3-vector-type"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/05-generate-maintain-embeddings-sql-database-workloads",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/update-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/data-types/vector-data-type"
+    ],
+    "documentationTitles": [
+      "Generate and maintain embeddings for SQL database workloads",
+      "UPDATE (Transact-SQL)",
+      "Vector data type"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.860Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.860Z",
+    "featureStatus": "GA",
+    "tags": [
+      "embedding-maintenance",
+      "asynchronous-worker",
+      "revision-guard",
+      "sql-server-2025"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "-- Id is the primary key. @id identifies the document.\n-- @revision = 41; @embedding is its completed VECTOR(3).\nUPDATE dbo.Documents\nSET Embedding = @embedding,\n    EmbeddingRevision = @revision\nWHERE Id = @id\n/* add predicate here */;",
+    "conceptId": "sql-embedding-worker-guards-persistence-against-concurrent-source-revision",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "PASS 3 holds this unchanged record despite supporting key c. Independently evaluated the supplied stale-write predicates and checked the actual UPDATE/raw vector documentation; this was static analysis, not SQL execution. Two blockers remain: affirmative maturity evidence for the GA-labelled SQL Server 2025 native vector use is absent from the cited frozen record, and the one-predicate truth-table task is inflated to Advanced. The earlier technical approval does not resolve either. The current question, dates, sources and generation record must remain intact; any authored repair requires fresh three-pass bindings.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": "High confidence in the equality guard and the difficulty concern; insufficient evidence to attest the full native-vector lifecycle label, so confidence in final promotion is withheld."
+  },
+  {
+    "id": "dp800-20260916-d3-006",
+    "question": "An Azure SQL Database team can tolerate scheduled embedding refresh. It must coordinate an approved embedding-service call with a notification to another system using a low-code workflow designer, without deploying custom function code or adding generation work to table writes. Connectivity and access are already established. Which maintenance approach best matches those constraints?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Run embedding generation synchronously in a table trigger."
+      },
+      {
+        "id": "b",
+        "text": "Orchestrate the scheduled refresh and notification in Azure Logic Apps."
+      },
+      {
+        "id": "c",
+        "text": "Implement both operations in custom Azure Function code with a SQL trigger."
+      },
+      {
+        "id": "d",
+        "text": "Configure Microsoft Foundry model hosting without a change-processing workflow."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Azure Logic Apps matches the stated low-code orchestration and scheduled-maintenance requirements.",
+    "deepExplanation": "Maintenance selection includes execution location, latency and orchestration style. A function-based worker can also coordinate services, but it violates this team's explicit no-custom-function-code condition. Model hosting and evaluation are separate from detecting changes, persisting embeddings and sending notifications.",
+    "whyOtherAnswersAreWrong": {
+      "a": "It puts remote generation on the write path, contrary to the stated constraint.",
+      "c": "It can offload work, but requires the custom function deployment the team has ruled out.",
+      "d": "Model hosting alone supplies neither the scheduled refresh workflow nor the second-system notification."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Choose an embedding maintenance method, including table triggers, Change Tracking, Azure Functions with SQL trigger binding, Azure Logic Apps, CDC, CES, and Microsoft Foundry",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d3-maintenance"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/05-generate-maintain-embeddings-sql-database-workloads"
+    ],
+    "documentationTitles": [
+      "Generate and maintain embeddings for SQL database workloads"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.860Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.860Z",
+    "featureStatus": "GA",
+    "tags": [
+      "embedding-maintenance",
+      "logic-apps",
+      "orchestration",
+      "low-code"
+    ],
+    "conceptId": "embedding-maintenance-low-code-cross-system-orchestration-versus-detection-and-hosting",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "PASS 3 supports b's documented orchestration role but withholds final verification because the frozen single-unit citation does not affirm the GA lifecycle of the named integration. This is not a finding that Logic Apps is Preview or unavailable. The all-option comparison independently distinguishes an immediate-generation trigger from a marking trigger and allows Functions and Foundry appropriate roles in other designs. No connector, credential or model maturity was invented. Difficulty is lower-Intermediate with an obvious but legitimate low-code cue; the independently scored rubric is below the strict promotion gate.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": "High confidence in the intended Logic Apps selection and alternative roles; insufficient cited lifecycle evidence to certify the whole GA-labelled encounter."
+  },
+  {
+    "id": "dp800-20260916-d3-007",
+    "question": "On SQL Server 2025 at compatibility level 170, documents have unique DocumentId values and each produces multiple chunks. Model access, chunk input limits and destination vector width are validated. The empty destination must receive one row per source document/chunk, with the embedding generated from that row's ChunkText. Which repair fixes both defects in the shown insertion?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Join Chunks to Documents on DocumentId, but continue embedding d.Body."
+      },
+      {
+        "id": "b",
+        "text": "Keep the CROSS JOIN, but pass c.chunk to AI_GENERATE_EMBEDDINGS."
+      },
+      {
+        "id": "c",
+        "text": "Select DISTINCT over the current CROSS JOIN, retaining the existing embedding input."
+      },
+      {
+        "id": "d",
+        "text": "Join on DocumentId and pass c.chunk to AI_GENERATE_EMBEDDINGS."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Correlate each chunk with its own document and generate the vector from the chunk text being stored.",
+    "deepExplanation": "The CTE already produces the correct document/chunk relationship through CROSS APPLY. The later CROSS JOIN destroys that relationship by pairing every document with every chunk. Independently, embedding d.Body represents the entire document rather than c.chunk. Fixing only one defect leaves either incorrect ownership or a text/vector mismatch.",
+    "whyOtherAnswersAreWrong": {
+      "a": "It repairs ownership but still generates whole-document vectors for rows labeled with individual chunks.",
+      "b": "It repairs the embedding input but still associates each chunk with unrelated DocumentId values.",
+      "c": "DISTINCT does not restore the missing document relationship or change what text is embedded."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Design and implement chunks for embeddings",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d3-generate-chunks", "dp800-d3-generate-embeddings"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-chunks-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql"
+    ],
+    "documentationTitles": [
+      "AI_GENERATE_CHUNKS (Transact-SQL)",
+      "AI_GENERATE_EMBEDDINGS (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.867Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.867Z",
+    "featureStatus": "GA",
+    "tags": [
+      "chunking",
+      "cross-apply",
+      "source-lineage",
+      "embedding-input",
+      "sql-server-2025"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "WITH Chunks AS (\n    SELECT d.DocumentId, c.chunk_order, c.chunk\n    FROM dbo.Documents AS d\n    CROSS APPLY AI_GENERATE_CHUNKS(\n        SOURCE = d.Body, CHUNK_TYPE = FIXED, CHUNK_SIZE = 600\n    ) AS c\n)\nINSERT dbo.ChunkVectors(DocumentId, ChunkOrder, ChunkText, Embedding)\nSELECT d.DocumentId, c.chunk_order, c.chunk,\n       AI_GENERATE_EMBEDDINGS(d.Body USE MODEL SupportEmbedding)\nFROM dbo.Documents AS d\nCROSS JOIN Chunks AS c;",
+    "conceptId": "sql-chunk-embedding-pipeline-preserves-source-correlation-and-text-vector-identity",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "PASS 3 holds the exact candidate. Key d is supported by the two complete official per-chunk compositions and by independent relational tracing, but that is not full executable-code or maturity approval. The same cited embeddings body calls the return a table while using scalar expressions; DISTINCT over a native vector has additional comparison restrictions not covered by this question's citations or explanation. Both function GA claims also lack affirmative frozen lifecycle grounding. No SQL server or model was run, and no source typo was silently repaired. The independent 40/48 rubric and failed code/explanation/status checks prohibit promotion.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": "High confidence in the intended two-invariant repair; insufficient confidence in the whole GA-labelled executable question because of result-type evidence conflict and incomplete DISTINCT treatment."
+  },
+  {
+    "id": "dp800-20260916-d3-008",
+    "question": "A multilingual handbook uses fixed character chunks before embedding. Tests find some 400-character chunks contain 620 model tokens, exceeding the stipulated 512-token limit. Other chunks separate a restriction from the sentence it qualifies. Which revised preparation policy addresses both observed failures without assuming a fixed characters-to-tokens ratio?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use 512 characters for every chunk and keep the existing boundaries."
+      },
+      {
+        "id": "b",
+        "text": "Validate token counts for the chosen model and use context-preserving boundaries or overlap within the limit."
+      },
+      {
+        "id": "c",
+        "text": "Keep the oversized chunks but normalize each generated vector to unit length."
+      },
+      {
+        "id": "d",
+        "text": "Split each document into single words without retaining neighboring context."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Check actual model-token counts while preserving enough neighboring text to retain the qualifying context.",
+    "deepExplanation": "Input-size compliance and semantic completeness are different design requirements. A character limit cannot be assumed to enforce the measured token limit, while extremely small chunks can lose meaning. Boundary and overlap choices must be evaluated on this corpus rather than treated as universally optimal numbers.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The measured character/token mismatch already disproves a one-to-one size rule.",
+      "c": "Post-generation vector scaling does not repair an oversized model input or missing source context.",
+      "d": "Short units may fit the limit but discard the neighboring qualification that the tests require."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Design and implement chunks for embeddings",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["dp800-d3-input-design", "dp800-d3x-models-evaluate"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/04-design-embeddings-sql-database-workloads",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/02-understand-evaluate-models-sql-database-workloads"
+    ],
+    "documentationTitles": [
+      "Design embeddings for SQL database workloads",
+      "Understand and evaluate models for SQL database workloads"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.867Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.867Z",
+    "featureStatus": "Not applicable",
+    "tags": [
+      "chunking",
+      "token-budget",
+      "semantic-boundaries",
+      "multilingual",
+      "methodology"
+    ],
+    "conceptId": "embedding-chunk-design-jointly-validates-token-limits-and-context-completeness",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d3-input-design",
+      "dp800-d3x-models-evaluate"
+    ],
+    "verificationNotes": "PASS 3 verifies b with an independent 45/48 rubric. I challenged character-only sizing, post-generation scaling and atomic-word splitting against the actual two instructional bodies and supplied corpus measurements. The anonymous 512-token limit is not a real model specification. Not applicable is appropriate for this non-feature preparation policy; no SQL chunker, tokenizer SDK or lifecycle claim is hidden in the wording. The mild combined-answer cue and indirect scaling evidence receive reduced scores, not default full marks. The related SQL ownership, semantic-column and PostgreSQL section-schema questions test different decisions.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": "High confidence that the bounded policy uniquely addresses both observed failures; no claim is made to have executed a tokenizer, generated embeddings or proved an optimal chunk size.",
+    "verifiedAt": "2026-09-16T23:50:38.336Z"
+  },
+  {
+    "id": "dp800-20260916-d3-009",
+    "question": "A SQL Server 2025 search application will replace embedding model A with model B. Both return 1,536 components, but the supplied model contracts say their coordinates are not interchangeable. Queries must cover the entire corpus throughout backfill. Which rollout preserves meaningful comparisons while moving to B?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep A queries on A vectors; build a separate complete B-vector snapshot, validate it, then switch query encoding and storage together."
+      },
+      {
+        "id": "b",
+        "text": "Encode queries with B immediately and compare them with the remaining A vectors because their dimensions match."
+      },
+      {
+        "id": "c",
+        "text": "Normalize A vectors and compare them with B queries without regenerating the corpus."
+      },
+      {
+        "id": "d",
+        "text": "Replace A vectors in place and search only the rows already converted to B during backfill."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Maintain a matched encoder/vector snapshot until the replacement corpus is complete and validated, then switch them together.",
+    "deepExplanation": "Vector width is a storage contract, not a model-space compatibility guarantee. The query-pattern training uses the same model for query and stored vectors. A separate replacement snapshot avoids mixing spaces and preserves full-corpus coverage while backfill runs; it requires extra storage and explicit routing rather than promising a free migration.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Equal component counts do not override the stated incompatibility of the two coordinate systems.",
+      "c": "Normalization changes scale, not the supplied models' incompatible semantic coordinate systems.",
+      "d": "It avoids comparing A with B only by dropping the not-yet-converted part of the required searchable corpus."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Generate embeddings",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "dp800-d3-generate-embeddings",
+      "dp800-d3-vector-patterns-unit",
+      "dp800-d3-vector-normalize",
+      "dp800-d3-vector-type"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/05-implement-vector-search-query-patterns",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-normalize-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/data-types/vector-data-type"
+    ],
+    "documentationTitles": [
+      "AI_GENERATE_EMBEDDINGS (Transact-SQL)",
+      "Implement vector search query patterns",
+      "VECTOR_NORMALIZE (Transact-SQL)",
+      "Vector data type"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.867Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.867Z",
+    "featureStatus": "GA",
+    "tags": [
+      "embedding-generation",
+      "model-migration",
+      "matched-snapshots",
+      "corpus-coverage"
+    ],
+    "conceptId": "embedding-model-migration-routes-query-and-corpus-snapshots-without-mixing-spaces",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "PASS 3 supports a as the unique matched-snapshot plan but holds final verification for missing affirmative lifecycle grounding of the GA-labelled SQL Server 2025 implementation context. I explicitly challenged the training table's broad cross-model normalization suggestion using the product's same-direction return contract; normalization is not a learned coordinate mapping. The rollout is bounded to complete validated snapshots, not an automatic live-write reconciliation API. The installed Cosmos replacement-container question shares a rollout pattern but tests immutable dimensional policy instead. No source approvals, dates or authored fields were changed.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": "High confidence in the matched-model/full-corpus principle and rejection of the offered shortcuts; insufficient cited release-status evidence for final GA-labelled approval."
+  },
+  {
+    "id": "dp800-20260916-d3-010",
+    "question": "Two SQL Server 2025 jobs use different configured remote models through AI_GENERATE_EMBEDDINGS. Intermittent failures occur during the endpoint calls. The operator needs model identity, HTTP status and error information for those calls, rather than merely measuring incomplete table rows. Which documented diagnostic pair is relevant?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The source-row count and the count of NULL embedding values."
+      },
+      {
+        "id": "b",
+        "text": "The query vector's norm and each stored vector's norm."
+      },
+      {
+        "id": "c",
+        "text": "VECTORPROPERTY with Dimensions and BaseType on stored vectors."
+      },
+      {
+        "id": "d",
+        "text": "The ai_generate_embeddings_summary and external_rest_endpoint_summary extended events."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "The embedding and external-REST summary events expose the request/response diagnostic information needed.",
+    "deepExplanation": "Generation completeness, vector metadata and remote-call outcomes are different observability layers. The named events are documented for troubleshooting model calls and underlying REST requests. The answer does not assume that enabling an event automatically creates a retention, privacy or monitoring policy.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Counts show completion gaps but cannot identify the HTTP status or failing model call.",
+      "b": "Vector lengths describe generated data, not the remote transport failure.",
+      "c": "Dimensions and BaseType inspect vector metadata rather than request or response errors."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Generate embeddings",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "dp800-d3-generate-embeddings",
+      "dp800-d3x-vector-property",
+      "dp800-d3-vector-normalize"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vectorproperty-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-normalize-transact-sql"
+    ],
+    "documentationTitles": [
+      "AI_GENERATE_EMBEDDINGS (Transact-SQL)",
+      "VECTORPROPERTY (Transact-SQL)",
+      "VECTOR_NORMALIZE (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.867Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.867Z",
+    "featureStatus": "GA",
+    "tags": [
+      "embedding-generation",
+      "extended-events",
+      "remote-call-diagnostics",
+      "sql-server-2025"
+    ],
+    "conceptId": "sql-embedding-generation-diagnostics-correlate-model-and-rest-summary-events",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "PASS 3 supports d from the actual Extended Events paragraph but holds the GA-labelled record because that body supplies no affirmative lifecycle attestation for the SQL Server 2025 function/events. This decision does not infer that the events are Preview, and does not reuse d3-003's separate procedure hold. Independently checked every property's meaning and rejected the idea that output norms or counts identify a remote request. No event session was enabled and no SQL or endpoint was executed. The only-event-option cue and lower-Intermediate recognition depth receive reduced scores.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": "High confidence in the event-selection key and counterexamples; insufficient evidence to endorse the whole named diagnostic feature's GA lifecycle."
+  },
+  {
+    "id": "dp800-direct-021",
+    "question": "A SQL-backed semantic search stores a DisplayName containing the brand, a Description containing product features, an opaque StorageKey, and an operational ModifiedAt timestamp. Users ask brand-and-feature questions; the key and timestamp are not relevant to that retrieval task. Which embedding input includes both required semantic fields without those operational fields?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "DisplayName and StorageKey"
+      },
+      {
+        "id": "b",
+        "text": "Description and ModifiedAt"
+      },
+      {
+        "id": "c",
+        "text": "DisplayName and Description"
+      },
+      {
+        "id": "d",
+        "text": "StorageKey and ModifiedAt"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Build the input from DisplayName and Description.",
+    "deepExplanation": "Embedding input should reflect the stated semantic task. This is not a universal ban on identifiers or dates: the scenario explicitly identifies where the required meaning resides and which metadata is irrelevant.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This includes the brand but omits the feature description and adds an explicitly irrelevant opaque key.",
+      "b": "This omits the brand-bearing name and includes the operational timestamp excluded by the stated retrieval task.",
+      "d": "Neither field carries the brand-and-feature meaning required by the question; both are explicitly operational in this scenario."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Identify which columns to include in embeddings",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d3-input-design"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/04-design-embeddings-sql-database-workloads"
+    ],
+    "documentationTitles": ["Design embeddings for SQL database workloads"],
+    "generatedAt": "2026-09-16T20:50:00.879Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+    "featureStatus": "Not applicable",
+    "tags": ["embeddings", "semantic-input", "sql-data"],
+    "conceptId": "sql-embedding-input-semantic-fields-versus-operational-metadata",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3-input-design"],
+    "verificationNotes": "PASS 3 freshly verifies the exact retained dp800-direct-021 record with c and an independent 46/48 rubric. I tested identifier/date relevance in other tasks and the possibility of brand inference from descriptions; neither changes the explicit request to include both stipulated semantic fields. The actual source says operational metadata usually lack semantic value, not that their types are forbidden. Not applicable is correct methodology classification, and Beginner/concept-recall remains honest. The installed and preserved-history occurrences of this canonical ID are replacements/history, not additional coverage or proof of a new original fact.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence in the unique task-specific field pair and non-feature classification; no model-quality guarantee, source re-dating or borrowed prior attestation is involved.",
+    "verifiedAt": "2026-09-16T23:50:38.336Z"
+  },
+  {
+    "id": "dp800-direct-022",
+    "question": "A SQL Server embedding-refresh worker will run in the background and read current source text. Its chosen database mechanism should identify rows changed since a version watermark without capturing before/after row images or requiring a custom change-log trigger. Which documented maintenance option matches that mechanism?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Change Tracking"
+      },
+      {
+        "id": "b",
+        "text": "Change Data Capture"
+      },
+      {
+        "id": "c",
+        "text": "A custom table trigger that logs each change"
+      },
+      {
+        "id": "d",
+        "text": "Microsoft Foundry model management alone"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use Change Tracking as the changed-row signal for the background refresh worker.",
+    "deepExplanation": "This selects the change-detection mechanism, not a complete refresh implementation. Enabling and consuming that mechanism, reading current text and updating stored embeddings remain separate implementation tasks.",
+    "whyOtherAnswersAreWrong": {
+      "b": "CDC captures detailed data-change information including before/after values, contrary to the specified mechanism distinction.",
+      "c": "A trigger can react to writes, but the requirement explicitly avoids implementing a custom trigger-based change log.",
+      "d": "Model management supports selecting or hosting models; another mechanism must detect the database changes and coordinate refresh."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-models-and-embeddings",
+    "subskill": "Choose an embedding maintenance method, including table triggers, Change Tracking, Azure Functions with SQL trigger binding, Azure Logic Apps, CDC, CES, and Microsoft Foundry",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d3-maintenance"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/05-generate-maintain-embeddings-sql-database-workloads"
+    ],
+    "documentationTitles": [
+      "Generate and maintain embeddings for SQL database workloads"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.879Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+    "featureStatus": "GA",
+    "tags": ["embeddings", "change-tracking", "maintenance"],
+    "conceptId": "sql-embedding-refresh-change-tracking-versus-row-image-capture",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "PASS 3 supports a's role-level selection but holds the unchanged retained dp800-direct-022 record. The actual maintenance unit supplies the changed-row/row-image contrast, not an affirmative lifecycle statement or the concrete version-watermark product contract. I did not infer those from the prior technical approval or convert the named feature to Not applicable. The explanation appropriately stops short of a complete refresh consumer. The identical installed/history ID is one preserved encounter, not additional coverage; its old evidence and history remain untouched. No SQL consumer was executed.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": "High confidence in Change Tracking as the intended alternative; insufficient current cited specificity and lifecycle evidence for full final technical approval."
+  }
+]

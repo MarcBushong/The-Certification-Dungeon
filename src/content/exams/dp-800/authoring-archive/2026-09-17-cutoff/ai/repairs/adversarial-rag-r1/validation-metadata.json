@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-20260916-d3-032": {
+      "generation": {
+        "questionFingerprint": "80d6afee7379bc65d328c701dddc41ebc6d52aa9bd59bf16f77cc21c21a7df7e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-17T00:14:43.363Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d3-rag-responses",
+              "dp800-d3x-json-value",
+              "dp800-d3x-openjson"
+            ],
+            "summary": "The supplied envelope contains a bounded scalar at result.choices[0].message.content. JSON_VALUE retrieves that text, and OPENJSON parses its object members. The explicit WITH paths map the answer scalar and request the citations array as nvarchar(max) AS JSON. This satisfies the stated typed-schema implementation, not a claim that every possible array-preserving implementation needs that flag."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3x-json-query", "dp800-d3x-openjson"],
+            "summary": "JSON_QUERY extracts an actual object or array at its input path; the outer content token here is a string, so the first extraction does not supply the inner object to OPENJSON. This exact plan could fit a different envelope with object-valued content, but JSON-looking characters in this scalar do not change its outer token type."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3x-json-value", "dp800-d3x-openjson"],
+            "summary": "OPENJSON is positioned at the outer message object, whose content member is still a scalar string. Its column paths do not automatically decode that string into nested members. Those paths could work if content were already an actual object containing answer and citations; the fixed fixture instead requires the additional extraction and parse."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3x-openjson", "dp800-d3x-json-value"],
+            "summary": "The first extraction is valid, but this explicit WITH clause asks for citations as a scalar rather than an array fragment and omits AS JSON. The same fixture can be handled without AS JSON using default key/value/type rows, as the source documents; that is expressly excluded and is not this option. With a scalar-valued citations property instead of the supplied array, this typed scalar projection could also be appropriate."
+          }
+        ]
+      }
+    }
+  }
+}

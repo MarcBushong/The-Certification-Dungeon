@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-technical-security-20260916-r1",
+  "reviews": [
+    {
+      "questionId": "dp800-20260916-d2-010",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-technical-security-20260916",
+      "questionFingerprint": "34381a11cd22e1de708482a0c35d682b17123b7e2681e264eddcb9492bdd21b9",
+      "reviewedAt": "2026-09-16T23:40:27.600Z",
+      "verdict": "manual-review-required",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-external-rest",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-external-rest.json",
+          "retrievedAt": "2026-09-16T19:39:52.009Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Freshly inspected the frozen MCP reference's database permissions, credential selection, credential REFERENCES requirement and Azure OpenAI example. The detailed Managed Identity bullets at body lines 328-333 select the primary user-assigned identity when multiple user-assigned identities exist, even alongside a system-assigned identity. The example at line 658 requires Cognitive Services OpenAI User for the calling identity. These passages support C and distinguish every other principal/permission choice. They do not affirmatively establish GA or Preview for the Azure SQL Database REST invocation feature. The Applies to header, default enablement at line 107 and curator GA label are not lifecycle proof. The preview API-version string at line 670 concerns the example's remote model API and establishes neither GA nor Preview for the SQL procedure."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The source treats local database execution/credential permissions separately from the remote OpenAI role assignment. More table SELECT can be relevant when the SQL caller cannot read source data for a payload, but the stem explicitly closes local-permission gaps. It changes neither the outgoing managed identity selected by the credential nor that identity's role on OpenAI.",
+          "sourceIds": ["dp800-d2x-external-rest"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The actual selection bullets say that with more than one user-assigned identity only the primary identity is used. Authorizing the other identity would be relevant if a different server configuration selected it as primary; it does not authorize ModelCaller in this configuration. No automatic rotation or fallback among assigned identities is documented or assumed.",
+          "sourceIds": ["dp800-d2x-external-rest"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Combining the two inspected passages independently gives ModelCaller: it is the configured primary user-assigned identity, which takes precedence over the coexisting system identity, and the OpenAI example requires Cognitive Services OpenAI User for the identity making the call. Granting that role to ModelCaller addresses the remote principal actually used. This behavioral support does not prove the SQL feature's lifecycle label.",
+          "sourceIds": ["dp800-d2x-external-rest"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The system-assigned identity is the documented credential identity when no user-assigned identity is assigned and the system identity is enabled. This server has user-assigned identities and an explicit primary. Repeating an existing grant on the unused system identity cannot repair the selected user's remote authorization; the alternative fits a server without assigned user identities instead.",
+          "sourceIds": ["dp800-d2x-external-rest"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": false,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh PASS 2 judgment of the new Intermediate snapshot, not a copied approval with a replacement hash. Independently derive C from the specific user-assigned selection rules and OpenAI role requirement. Those detailed rules qualify the reference's earlier generic system-assigned wording. Local SQL permissions, credential scope, network, token audience and an existing endpoint are stipulated; no runtime SQL or endpoint call is claimed tested, and no complete API-version request is authored here. Intermediate now honestly fits applying the one remaining identity-selection rule, resolving the previous difficulty hold. The 'not always system-assigned' explanation is a documented qualification, not an unsupported universal claim. The old same-ID snapshot is historical lineage, not a new duplicate; inbound application-to-database principal provisioning and credential-path matching test different facts. However, the unchanged GA metadata remains unsupported by affirmative lifecycle evidence in this sole frozen citation. Default enablement, a platform applicability label, omission of a Preview warning and curator metadata cannot supply that missing proof. The remote example's preview API version cannot classify the SQL procedure either. This named platform/API behavior cannot be relabeled Not applicable. Hold featureStatus pending genuinely admitted exact-feature lifecycle evidence and the necessary fresh authored/review bindings.",
+      "confidenceReason": "High confidence that C alone targets the documented outgoing identity and that Intermediate resolves the difficulty problem. No defensible confidence in the claimed GA maturity follows from the frozen cited evidence, so this complete candidate cannot receive technical approval."
+    }
+  ]
+}

@@ -1,0 +1,610 @@
+[
+  {
+    "id": "dp800-direct-004",
+    "question": "A migration administrator on SQL Server 2022 has permission to alter tables. A view uses explicit two-part object names and references a column that must not be dropped while the view depends on it. The administrator will not first change or drop the view. Which view attribute makes an incompatible ALTER TABLE DROP COLUMN fail?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "WITH CHECK OPTION"
+      },
+      {
+        "id": "b",
+        "text": "WITH SCHEMABINDING"
+      },
+      {
+        "id": "c",
+        "text": "WITH ENCRYPTION"
+      },
+      {
+        "id": "d",
+        "text": "WITH VIEW_METADATA"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "SCHEMABINDING protects the view's referenced schema from incompatible changes.",
+    "deepExplanation": "This is a dependency constraint, not an authorization boundary against an administrator who first removes the binding. The other listed attributes address writable-view criteria, definition text or client metadata.",
+    "whyOtherAnswersAreWrong": {
+      "a": "CHECK OPTION constrains data modifications made through the view to its selection criteria; it is not a dependency-binding rule for ALTER TABLE.",
+      "c": "ENCRYPTION protects the stored view-definition text from ordinary inspection; it does not establish schema-binding dependency protection.",
+      "d": "VIEW_METADATA changes metadata exposed for supported client browsing operations; it does not bind the underlying schema against the specified column drop."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create views",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d1-create-view"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql"
+    ],
+    "documentationTitles": ["CREATE VIEW (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "views", "schema-binding"],
+    "conceptId": "sql-schema-bound-view-blocks-dependent-column-drop",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d1-create-view"],
+    "verificationNotes": "Independent PASS 3 selected b after trying the administrator-removes-binding and compatible-ALTER counterexamples; neither meets the supplied conditions. Read the actual option paragraphs and immediate training ancestry, with exact current catalog approval. Static clause review only, not SQL execution. The restrained intermediate difficulty and item-specific rubric pass; no source or authored field was renewed.",
+    "requiresManualReview": false,
+    "confidenceReason": "High confidence in the single dependency rule and rejection of the three alternative attributes. Confidence is limited to the described valid view, not an unseen deployment or an authorization guarantee.",
+    "sourceLastReviewedAt": "2026-09-16T19:59:14.110Z",
+    "verifiedAt": "2026-09-16T23:55:49.123Z"
+  },
+  {
+    "id": "dp800-20260916-d1-012",
+    "question": "A SQL Server 2022 view exposes JobId and Ready from dbo.Job, filters WHERE Ready = 1, and uses WITH CHECK OPTION. A test login can update both the view and the base table. No trigger or table constraint prohibits Ready = 0. Starting from the same Ready = 1 row in separate tests, what happens when the login changes Ready to 0 through each object?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Both updates succeed because the row was visible when each statement began."
+      },
+      {
+        "id": "b",
+        "text": "Both updates fail because CHECK OPTION applies to every update of the base row."
+      },
+      {
+        "id": "c",
+        "text": "The view update succeeds; the direct base-table update fails."
+      },
+      {
+        "id": "d",
+        "text": "The view update fails; the direct base-table update can succeed."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "CHECK OPTION requires rows modified through the view to remain visible, but does not constrain direct base-table updates.",
+    "deepExplanation": "The view predicate is checked against the resulting row, not only the initially visible row. Setting Ready to 0 through the view breaks that condition. The direct update bypasses this view-scoped check and is allowed under the explicitly supplied permissions and absence of another prohibiting rule.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Initial visibility is insufficient; CHECK OPTION requires post-update visibility for modifications through the view.",
+      "b": "The product explicitly limits CHECK OPTION to modifications through the view, not direct changes to its base table.",
+      "c": "This reverses the control's scope: it restricts the view update, not the permitted base-table update."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create views",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d1-create-view"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql"
+    ],
+    "documentationTitles": ["CREATE VIEW (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:36:26.857Z",
+    "lastValidatedAt": "2026-09-16T20:36:26.857Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "views", "check-option", "update-scope"],
+    "conceptId": "sql-view-check-option-post-update-visibility-not-base-table-rule",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d1-create-view"],
+    "verificationNotes": "Independent PASS 3 obtained d. Tested alternatives involving initial-only visibility, direct-table permission denial and inter-test state changes; the actual article or explicit stem conditions reject each. Static reasoning only. Exact source ancestry and current approval were checked without renewing any snapshot.",
+    "requiresManualReview": false,
+    "confidenceReason": "High confidence: one precisely targeted article states both the post-update requirement and the direct-write exception. No unseen trigger or transaction behavior is necessary to determine this answer.",
+    "sourceLastReviewedAt": "2026-09-16T19:59:14.110Z",
+    "verifiedAt": "2026-09-16T23:55:49.125Z"
+  },
+  {
+    "id": "dp800-20260916-d1-013",
+    "question": "A SQL Server 2022 scalar UDF is already schema-bound. It looks up a rate in dbo.DailyRate using GETDATE(), then calculates an amount. A computed column calling it cannot be indexed. Each booked row can instead store its agreed rate, and recalculation must use that recorded rate rather than today's rate. Which redesign addresses both the volatile dependency and the UDF's table access?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Replace GETDATE() with a date parameter but keep the dbo.DailyRate lookup inside the UDF."
+      },
+      {
+        "id": "b",
+        "text": "Add a schema-bound wrapper that calls the same existing rate-lookup UDF."
+      },
+      {
+        "id": "c",
+        "text": "Pass the row's amount and recorded rate into a schema-bound UDF that performs only deterministic decimal calculations."
+      },
+      {
+        "id": "d",
+        "text": "Keep the existing function body and make the calling computed column PERSISTED."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Make the rate an explicit recorded input and keep the function free of clock and table dependencies.",
+    "deepExplanation": "SCHEMABINDING protects dependencies but does not make GETDATE deterministic or remove UserDataAccess. Passing the booked rate allows a pure repeatable calculation and addresses these two blockers. Other computed-column index prerequisites, including valid types and SET options, still need to be satisfied; the redesign is not a blanket claim that every calling expression is indexable.",
+    "whyOtherAnswersAreWrong": {
+      "a": "An explicit date removes the clock dependency, but the UDF still accesses user data, which violates the documented indexed-computed-column UDF conditions.",
+      "b": "A wrapper does not eliminate the underlying GETDATE or table access.",
+      "d": "Persistence does not waive the determinism or no-user-data-access conditions."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create scalar functions",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "dp800-d1x-create-function",
+      "dp800-d1x-udf-overview",
+      "dp800-d1x-scalar-unit"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/user-defined-functions/user-defined-functions",
+      "https://learn.microsoft.com/en-us/training/modules/implement-programmability-objects/4-create-scalar-functions"
+    ],
+    "documentationTitles": [
+      "CREATE FUNCTION (Transact-SQL)",
+      "User-defined functions",
+      "Create scalar functions"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "scalar-udf", "determinism", "computed-column"],
+    "conceptId": "sql-indexed-scalar-udf-explicit-snapshot-inputs-no-table-or-clock",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d1x-create-function",
+      "dp800-d1x-udf-overview",
+      "dp800-d1x-scalar-unit"
+    ],
+    "verificationNotes": "Independent PASS 3 retained c after testing a deterministic date-parameter lookup, a bound wrapper and the PERSISTED exception. All leave at least one stated blocker. Re-read actual product/training text and its current exact DP-800 approvals; excluded conflicting training simplifications and unrelated Fabric Preview claims. Static reasoning only, with no indexing execution or source refresh.",
+    "requiresManualReview": false,
+    "confidenceReason": "High confidence in the two-blocker conclusion because the product property list is explicit. Confidence does not extend to the deployment of an unspecified computed-column index or its runtime performance.",
+    "sourceLastReviewedAt": "2026-09-16T20:36:26.420Z",
+    "verifiedAt": "2026-09-16T23:55:49.126Z"
+  },
+  {
+    "id": "dp800-20260916-d1-014",
+    "question": "SQL Server 2022 has CLR enabled and an approved registered scalar method that returns 'unassigned' when its argument is NULL. The SQL function wrapper explicitly declares RETURNS NULL ON NULL INPUT. True or false: callers can rely on receiving 'unassigned' whenever they pass SQL NULL to that wrapper.",
+    "questionType": "true-false",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "True"
+      },
+      {
+        "id": "b",
+        "text": "False"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "False. The wrapper permits SQL Server to return NULL without invoking the CLR method.",
+    "deepExplanation": "A fallback implemented inside the method is not a guarantee when the SQL declaration permits null-call short-circuiting. CALLED ON NULL INPUT is the documented declaration for invoking the method with NULL; the wrapper declaration takes precedence over a conflicting method null-call attribute. This item concerns the registered SQL Server CLR scalar form, not CLR support in Azure SQL Database.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The method's fallback code may not run under RETURNS NULL ON NULL INPUT. The documented wrapper option, not the mere existence of fallback code, controls this call contract."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create scalar functions",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d1x-create-function"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql"
+    ],
+    "documentationTitles": ["CREATE FUNCTION (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "clr-scalar-udf", "null-call-contract"],
+    "conceptId": "sql-clr-scalar-wrapper-null-short-circuit-precedes-method-fallback",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d1x-create-function"],
+    "verificationNotes": "Independent PASS 3 selected False. Challenged the method's fallback, enabled CLR and conflicting attributes; none compels execution under RETURNS NULL ON NULL INPUT. Read actual CLR syntax/null-call evidence and exact training ancestry, keeping this strictly SQL Server-scoped. Static contract review only; no method binary or SQL execution was examined.",
+    "requiresManualReview": false,
+    "confidenceReason": "High confidence in disproving the promised fallback using a documented permitted alternative. The review does not certify the implementation or security configuration of a real CLR assembly.",
+    "sourceLastReviewedAt": "2026-09-16T20:36:26.420Z",
+    "verifiedAt": "2026-09-16T23:55:49.126Z"
+  },
+  {
+    "id": "dp800-20260916-d1-015",
+    "question": "On SQL Server 2022, the shown inline TVF counts ready lots for each warehouse. ANSI_WARNINGS is ON and counts fit int. The report currently includes warehouses with no ready lots. Keep the count for warehouses that have ready lots, but exclude the others. Which two independent changes would each meet that requirement? Choose two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Add WHERE r.ReadyCount > 0 to the outer SELECT."
+      },
+      {
+        "id": "b",
+        "text": "Add HAVING COUNT(*) > 0 to the TVF's aggregate SELECT."
+      },
+      {
+        "id": "c",
+        "text": "Change the outer CROSS APPLY to OUTER APPLY, without adding a predicate."
+      },
+      {
+        "id": "d",
+        "text": "Replace COUNT(*) with COUNT(1) in the TVF, without adding a predicate."
+      },
+      {
+        "id": "e",
+        "text": "Add WHERE r.ReadyCount IS NOT NULL to the outer SELECT."
+      }
+    ],
+    "correctAnswer": ["a", "b"],
+    "explanation": "Filter the aggregate value outside the TVF, or filter the aggregate row inside it with HAVING.",
+    "deepExplanation": "An ungrouped COUNT returns one row containing zero when no lots match. CROSS APPLY therefore has a nonempty right rowset and keeps the warehouse. An outer positive-count predicate removes that row; a HAVING predicate inside the TVF removes the aggregate row before APPLY. Changing APPLY flavor or testing nonnullness does not distinguish zero from a positive count.",
+    "whyOtherAnswersAreWrong": {
+      "c": "OUTER APPLY preserves at least as many left rows and does not filter an existing zero-count aggregate row.",
+      "d": "The constant 1 is nonnull for every matched row, so COUNT(1) has the same zero-count result here.",
+      "e": "A successful zero count is not NULL under these conditions, so this retains warehouses with no ready lots."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create table-valued functions",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "dp800-d1x-create-function",
+      "dp800-d1x-count",
+      "dp800-d1x-from",
+      "dp800-d1x-select"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/count-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql"
+    ],
+    "documentationTitles": [
+      "CREATE FUNCTION (Transact-SQL)",
+      "COUNT (Transact-SQL)",
+      "FROM clause plus JOIN, APPLY, PIVOT (Transact-SQL)",
+      "SELECT (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "inline-tvf", "apply", "aggregate-cardinality"],
+    "codeLanguage": "sql",
+    "codeSnippet": "CREATE FUNCTION dbo.ReadyLotCount(@WarehouseId int)\nRETURNS TABLE\nAS RETURN\n(\n    SELECT COUNT(*) AS ReadyCount\n    FROM dbo.Lot\n    WHERE WarehouseId = @WarehouseId AND Ready = 1\n);\nGO\nSELECT w.WarehouseId, r.ReadyCount\nFROM dbo.Warehouse AS w\nCROSS APPLY dbo.ReadyLotCount(w.WarehouseId) AS r;",
+    "conceptId": "sql-aggregate-tvf-zero-row-value-versus-empty-apply-input",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d1x-create-function",
+      "dp800-d1x-count",
+      "dp800-d1x-from",
+      "dp800-d1x-select"
+    ],
+    "verificationNotes": "Independent PASS 3 reconstructed results for no ready lots and positive lot counts and retained exactly a and b. Tested inner HAVING plus OUTER APPLY, COUNT(1), runtime versus metadata NULL and alias visibility as counterexamples. Actual cited bodies and complete immediate training ancestry were read. Static SQL grammar/result reasoning only; no live SQL execution or optimizer trace.",
+    "requiresManualReview": false,
+    "confidenceReason": "High confidence in the exact two-answer set: the function, aggregate, APPLY and filtering contracts compose without an unstated platform or numeric condition. Runtime deployment and physical execution remain untested.",
+    "sourceLastReviewedAt": "2026-09-16T20:43:33.655Z",
+    "verifiedAt": "2026-09-16T23:55:49.127Z"
+  },
+  {
+    "id": "dp800-20260916-d1-016",
+    "question": "A SQL Server 2022 inline TVF is used by several applications. Its replacement needs a declared return-table variable populated by multiple statements. The old function must remain callable while applications migrate. Which deployment approach supports that change of function kind?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "ALTER the existing inline TVF into a multistatement TVF under its current name."
+      },
+      {
+        "id": "b",
+        "text": "Use CREATE OR ALTER under the current name to bypass the inline-to-multistatement restriction."
+      },
+      {
+        "id": "c",
+        "text": "Set INLINE = OFF on the existing function to convert its table-return form automatically."
+      },
+      {
+        "id": "d",
+        "text": "Create the multistatement TVF under a new name, migrate callers, then retire the old function."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Deploy a separately named replacement; ALTER FUNCTION cannot convert an inline TVF into a multistatement TVF.",
+    "deepExplanation": "The two table-valued forms have different definition shapes, and the alteration contract explicitly prohibits switching between them. CREATE OR ALTER does not evade the restriction for an existing function. A new name allows both interfaces to coexist during a deliberate caller and permission migration; INLINE for scalar-UDF optimization is not this object-kind conversion.",
+    "whyOtherAnswersAreWrong": {
+      "a": "ALTER FUNCTION explicitly prohibits changing an inline function into a multistatement function.",
+      "b": "The existing object follows the alteration path, so CREATE OR ALTER does not remove that restriction.",
+      "c": "The scalar-UDF inlining option does not transform an inline TVF into a return-table-variable implementation."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create table-valued functions",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-alter-function", "dp800-d1x-create-function"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-function-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql"
+    ],
+    "documentationTitles": [
+      "ALTER FUNCTION (Transact-SQL)",
+      "CREATE FUNCTION (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "table-valued-functions", "function-migration"],
+    "conceptId": "sql-tvf-kind-change-requires-replacement-not-alter",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d1x-alter-function",
+      "dp800-d1x-create-function"
+    ],
+    "verificationNotes": "Independent PASS 3 retained d. Tried same-kind ALTER, an absent-name CREATE OR ALTER and scalar INLINE OFF as legitimate alternate contexts; none satisfies the unchanged existing-inline plus coexistence case. Actual product/training references and exact approvals were read. Static deployment reasoning only; no object or grant was changed.",
+    "requiresManualReview": false,
+    "confidenceReason": "High confidence in the documented kind boundary and the stated coexistence strategy. A real rollout's grants, dependencies, result compatibility and locking remain outside this unexecuted approach review.",
+    "sourceLastReviewedAt": "2026-09-16T20:36:26.420Z",
+    "verifiedAt": "2026-09-16T23:55:49.128Z"
+  },
+  {
+    "id": "dp800-20260916-d1-017",
+    "question": "Inside a SQL Server 2022 procedure, @Tag is an nvarchar(80) input and may contain apostrophes. dbo.Tagged.Tag is nvarchar(80); counts fit int. The dynamic statement text must stay unchanged, and the caller variable @Matches must receive the computed count. Which replacement for the EXEC call supplies the required input and output bindings?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "EXEC sys.sp_executesql @sql, N'@p nvarchar(80), @n int OUTPUT', @p = @Tag, @n = @Matches OUTPUT;"
+      },
+      {
+        "id": "b",
+        "text": "EXEC sys.sp_executesql @sql, N'@Tag nvarchar(80), @n int OUTPUT', @Tag = @Tag, @n = @Matches OUTPUT;"
+      },
+      {
+        "id": "c",
+        "text": "EXEC sys.sp_executesql @sql, N'@p nvarchar(80), @n int OUTPUT', @p = @Tag, @n = @Matches;"
+      },
+      {
+        "id": "d",
+        "text": "DECLARE @p nvarchar(80) = @Tag, @n int; EXEC sys.sp_executesql @sql;"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Declare the dynamic batch's @p and @n, bind @p as a data value, and mark @n OUTPUT at both declaration and call sites.",
+    "deepExplanation": "sp_executesql compiles a separate batch, so caller-local variables are not visible merely because they have the same names. The parameter definition must use the names in the dynamic text. The @n declaration allows an output value, while OUTPUT on @Matches propagates it back to the caller. Passing @Tag separately handles apostrophes as data without string substitution.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The definition declares @Tag, but the dynamic statement references @p, leaving @p unbound.",
+      "c": "The dynamic count is computed, but omission of OUTPUT on the caller binding prevents the result from being returned into @Matches.",
+      "d": "Variables declared in the calling scope do not become visible to the separate sp_executesql batch."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create stored procedures",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-executesql", "dp800-d1x-count"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-executesql-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/count-transact-sql"
+    ],
+    "documentationTitles": [
+      "sp_executesql (Transact-SQL)",
+      "COUNT (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "stored-procedures",
+      "dynamic-sql",
+      "parameter-binding"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @Matches int;\nDECLARE @sql nvarchar(max) =\n    N'SELECT @n = COUNT(*) FROM dbo.Tagged WHERE Tag = @p;';\nEXEC sys.sp_executesql @sql;\nSELECT @Matches AS Matches;",
+    "conceptId": "sql-dynamic-batch-typed-input-and-output-scope-binding",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "HOLD after independent PASS 3. Key a and every technical option distinction remain supported by actual evidence, but the advanced label is inflated for a standard sp_executesql input/output binding exercise closely matching the product example. The independent rubric is 43/48 and qualityReviewed is false. Preserve this immutable record and technical pass; repair difficulty or reasoning in authoring, then restart all three passes. Static review only, not SQL execution.",
+    "requiresManualReview": true,
+    "confidenceReason": "High confidence in key a, the source/provenance checks and the routine nature of the implementation task. Insufficient confidence in the authored advanced classification; technical correctness does not override the realism hold.",
+    "sourceLastReviewedAt": "2026-09-16T20:43:33.507Z"
+  },
+  {
+    "id": "dp800-20260916-d1-018",
+    "question": "A SQL Server 2022 procedure executes the shown statements. Exactly three rows satisfy the UPDATE, permissions are sufficient, and no triggers or other statements intervene. What does SET NOCOUNT ON change about the observed result?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "ChangedRows is 3, and the ordinary affected-row messages are still emitted."
+      },
+      {
+        "id": "b",
+        "text": "No SELECT result is returned because NOCOUNT suppresses all result sets."
+      },
+      {
+        "id": "c",
+        "text": "ChangedRows is 3, while ordinary affected-row messages are suppressed."
+      },
+      {
+        "id": "d",
+        "text": "ChangedRows is 0 because NOCOUNT stops updating @@ROWCOUNT."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "NOCOUNT suppresses row-count messages, not the explicit SELECT or the updating of @@ROWCOUNT.",
+    "deepExplanation": "The UPDATE sets @@ROWCOUNT to three. The immediately following SELECT reads that value and returns a one-row result containing 3. SET NOCOUNT ON suppresses the per-statement affected-row protocol messages; it does not disable DML, erase the server-side count or hide selected data.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The explicit row value is correct, but NOCOUNT ON suppresses the ordinary affected-row messages.",
+      "b": "Explicit SELECT data still returns; only the count messages are suppressed.",
+      "d": "The documented @@ROWCOUNT behavior continues under NOCOUNT ON."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create stored procedures",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-nocount"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/set-nocount-transact-sql"
+    ],
+    "documentationTitles": ["SET NOCOUNT (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "stored-procedures", "nocount", "rowcount"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SET NOCOUNT ON;\nUPDATE dbo.Job SET Processed = 1 WHERE Processed = 0;\nSELECT @@ROWCOUNT AS ChangedRows;",
+    "conceptId": "sql-nocount-suppresses-messages-not-rowcount-or-select-results",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d1x-nocount"],
+    "verificationNotes": "Independent PASS 3 retained c after tracing UPDATE then SELECT and testing OFF, a missing data SELECT and an intervening count-reset statement as alternate contexts. Those changes are outside the supplied sequence. Read actual dedicated evidence and current exact approval/ancestry. Static result reasoning only; no SQL execution or client packet observation.",
+    "requiresManualReview": false,
+    "confidenceReason": "High confidence because the dedicated NOCOUNT text expressly preserves @@ROWCOUNT and shows SELECT under ON. The observed value depends only on the explicitly stipulated successful three-row UPDATE.",
+    "sourceLastReviewedAt": "2026-09-16T20:36:26.420Z",
+    "verifiedAt": "2026-09-16T23:55:49.129Z"
+  },
+  {
+    "id": "dp800-20260916-d1-019",
+    "question": "An updatable SQL Server 2022 view filters BranchId = 7 and uses WITH CHECK OPTION. A new INSTEAD OF INSERT trigger must translate legacy inputs before writing base rows. The team must continue rejecting every resulting row outside branch 7, including in multirow inserts. Which deployment respects both the trigger restriction and the existing admission rule?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep CHECK OPTION and add an AFTER INSERT trigger on the view to translate and validate rows."
+      },
+      {
+        "id": "b",
+        "text": "Keep CHECK OPTION and add an INSTEAD OF INSERT trigger on the view to translate and validate rows."
+      },
+      {
+        "id": "c",
+        "text": "Remove CHECK OPTION and add an INSTEAD OF INSERT trigger that inserts translated rows, relying only on the view's WHERE filter."
+      },
+      {
+        "id": "d",
+        "text": "Remove CHECK OPTION and add an INSTEAD OF INSERT trigger that explicitly validates all translated BranchId values before base writes."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Remove the incompatible CHECK OPTION declaration, then enforce the equivalent admission rule explicitly in the INSTEAD OF trigger.",
+    "deepExplanation": "SQL Server does not allow an INSTEAD OF trigger on an updatable view that has CHECK OPTION, and views do not support AFTER triggers. Replacing the view's ordinary insertion path does not make its WHERE clause a sufficient check on inserted values. The trigger must validate the complete translated rowset and preserve base constraints before performing the approved writes.",
+    "whyOtherAnswersAreWrong": {
+      "a": "AFTER triggers cannot target views.",
+      "b": "An INSTEAD OF trigger cannot be added while the updatable view retains CHECK OPTION.",
+      "c": "Removing CHECK OPTION without replacing its admission check loses the explicit guarantee that all inserted values satisfy BranchId = 7."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create triggers",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-create-trigger", "dp800-d1-create-view"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql"
+    ],
+    "documentationTitles": [
+      "CREATE TRIGGER (Transact-SQL)",
+      "CREATE VIEW (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "triggers",
+      "updatable-view",
+      "admission-control"
+    ],
+    "conceptId": "sql-instead-of-view-trigger-replaces-check-option-with-explicit-rowset-rule",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d1-create-trigger",
+      "dp800-d1-create-view"
+    ],
+    "verificationNotes": "Independent PASS 3 retained d after challenging AFTER view support, retained CHECK OPTION, base-table-only constraints and NULL/multirow translation cases. The option describes complete validation, not a faulty sample predicate; an actual implementation must meet that description. Read both actual product contracts and direct training references. Static strategy review only, with no deployment or transaction execution.",
+    "requiresManualReview": false,
+    "confidenceReason": "High confidence in the unique legal enforcement strategy. Confidence is conditional on implementing the stated complete translated-row validation and ordinary deployment/permission controls, not on nonexistent trigger code.",
+    "sourceLastReviewedAt": "2026-09-16T19:59:14.110Z",
+    "verifiedAt": "2026-09-16T23:55:49.130Z"
+  },
+  {
+    "id": "dp800-20260916-d1-020",
+    "question": "A SQL Server 2022 AFTER UPDATE trigger maintains Invoice.Total from detail amounts. One statement moves a 30-unit detail from invoice 1 to invoice 2 while changing it to 40, and changes another invoice-1 detail from 20 to 15. Totals were correct at 100 and 50 before the statement. No other writes intervene. Which set-based strategy produces totals 65 and 90 without losing a parent present in only one transition rowset?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Group inserted amounts by InvoiceId and add those sums to the existing header totals."
+      },
+      {
+        "id": "b",
+        "text": "UNION ALL positive inserted amounts with negative deleted amounts, group by InvoiceId, and add each net delta once."
+      },
+      {
+        "id": "c",
+        "text": "Inner join inserted and deleted sums by InvoiceId, then update only the invoices returned by that join."
+      },
+      {
+        "id": "d",
+        "text": "Read one inserted/deleted detail pair into scalar variables and apply its difference to a single header."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Aggregate the signed union of the two transition rowsets by parent, then apply each net delta once.",
+    "deepExplanation": "Invoice 1 loses 30 and 20 and gains 15, giving a net -35 and total 65. Invoice 2 gains 40, giving total 90, even though it has no deleted row in this update. A signed UNION ALL retains both contributions without requiring the same parent in both rowsets. The trigger must handle the statement's whole rowset rather than assume one changed detail.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Adding only new amounts neglects removal of old contributions, incorrectly retaining amounts being replaced or moved.",
+      "c": "Invoice 2 appears only in inserted, so an inner join to deleted sums omits its required +40 change.",
+      "d": "A scalar pair does not represent all modified rows and cannot account for both parent changes reliably."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create triggers",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d1-create-trigger",
+      "dp800-d1-triggers",
+      "dp800-d1x-select"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/implement-programmability-objects/6-create-triggers",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql"
+    ],
+    "documentationTitles": [
+      "CREATE TRIGGER (Transact-SQL)",
+      "Create triggers",
+      "SELECT (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "multirow-trigger",
+      "signed-delta",
+      "parent-transfer"
+    ],
+    "conceptId": "sql-trigger-parent-transfer-signed-union-deltas-cover-both-rowsets",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d1-create-trigger",
+      "dp800-d1-triggers",
+      "dp800-d1x-select"
+    ],
+    "verificationNotes": "Independent PASS 3 retained b after reconstructing both transition tables and calculating all alternatives. Signed union produces 65/90, new-only produces 115/90, and matching-parent restriction omits invoice 2. Actual cited text and immediate source ancestry were read. The grouped arithmetic is a static derivation, not a SQL engine run or proof of a complete concurrent trigger implementation.",
+    "requiresManualReview": false,
+    "confidenceReason": "High confidence in the closed-data arithmetic and necessity of retaining parents from either transition side. The review intentionally does not certify unseen trigger DDL, error handling, locking or concurrency behavior.",
+    "sourceLastReviewedAt": "2026-09-16T20:43:33.655Z",
+    "verifiedAt": "2026-09-16T23:55:49.130Z"
+  }
+]

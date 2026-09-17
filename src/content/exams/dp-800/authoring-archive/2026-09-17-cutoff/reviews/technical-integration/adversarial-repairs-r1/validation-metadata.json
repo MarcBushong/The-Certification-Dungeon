@@ -1,0 +1,332 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-20260916-d2-035": {
+      "generation": {
+        "questionFingerprint": "a395404329ec40857885dc2bae1cf6e967ed40880d06ee4408c65a36119a81cc",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T23:59:52.138Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-dab-config", "dp800-d2x-dab-reference"],
+            "summary": "The training explicitly says to use the schema matching the DAB installation, and the reference documents release-specific schema URLs. Selecting the deployed release's URL ties validation to the production target specified in the stem."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-dab-reference", "dp800-d2-dab-config"],
+            "summary": "The reference offers a latest-release schema URL as well as version-specific URLs. The latest choice is legitimate for a workflow following the corresponding current runtime, but does not pin validation to one older approved executable as new schemas are published."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-dab-config", "dp800-d2x-dab-reference"],
+            "summary": "Matching a schema to a local DAB installation follows the documented rule for that local target. The question instead names one production target while developer versions vary, so author-local selection is not a consistent production validation policy."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-dab-reference", "dp800-d2-dab-config"],
+            "summary": "Release-specific URLs permit selecting a schema for a separately evaluated runtime version. That fits testing an upgrade candidate, but does not change the current production target or authorize using that candidate's grammar for the pinned deployment."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-035",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-integration-20260916",
+          "questionFingerprint": "a395404329ec40857885dc2bae1cf6e967ed40880d06ee4408c65a36119a81cc",
+          "reviewedAt": "2026-09-17T00:49:27.407Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-dab-config",
+              "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/2-create-configuration-files-data-api-builder",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-2-create-configuration-files-data-api-builder.json",
+              "retrievedAt": "2026-09-16T19:33:00.124Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Re-read the schema-ownership explanation and instruction to match the DAB installation's schema. This supports selecting the production executable as the validation target rather than a developer's different local installation. The unit's environment-merging sample is unnecessary to this decision. Its use of a production configuration does not affirm the separate GA lifecycle label."
+            },
+            {
+              "sourceId": "dp800-d2x-dab-reference",
+              "url": "https://learn.microsoft.com/en-us/azure/data-api-builder/configuration/",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-dab-reference-canonical.json",
+              "retrievedAt": "2026-09-16T20:08:08.292Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The Schema/Versioning section distinguishes a latest alias from release-specific schema URLs and defines $schema as a validation URI. These are real alternatives serving different version targets. I checked the frozen summary-to-reference provenance and canonical redirect receipt; no new source from the lifecycle bundle is included. Neither inspected section provides affirmative maturity evidence for the authored GA classification."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "A release-specific URL for the deployed executable keeps the schema target fixed as requested. The unit recommends matching the installation, and the reference documents version-specific URLs rather than requiring the moving latest alias.",
+              "sourceIds": ["dp800-d2-dab-config", "dp800-d2x-dab-reference"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Latest is a documented selection for following newly published schemas. That can serve a latest-runtime workflow, but does not remain tied to the production release once publications advance beyond that release.",
+              "sourceIds": ["dp800-d2x-dab-reference"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "A local-version schema serves local authoring, but the stem expressly gives developers different installations. Selecting each local version therefore fails to establish one production-version validation target.",
+              "sourceIds": ["dp800-d2-dab-config", "dp800-d2x-dab-reference"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "The next candidate's version-specific schema is appropriate for testing that upgrade. It is not the schema of the currently pinned production executable that this question asks to validate.",
+              "sourceIds": ["dp800-d2x-dab-reference"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Freshly derived a for the repaired version-target question. All four choices are genuine schema-selection policies rather than imaginary executable upgrades, removed validation or unrelated database changes. Beginner/concept-recall honestly reflects the direct mapping task. The target is the deployed executable, resolving the pronoun and local-version distinction. No schema file was downloaded or runtime upgraded. The explanations correctly describe other policies' legitimate contexts and do not require the questionable configuration-merging sample. No duplicate was found in the current comparison cohort or relevant archive. The requested editorial repair is resolved, but this exact bundle still cites only the original frozen sources, which do not affirm GA maturity. 'Approved executable' and a production deployment premise cannot replace lifecycle evidence. The separately retrieved production catalog is not in this candidate's source set and postdates this generation; it has not been borrowed or rebound into this record. Hold only for admitted lifecycle evidence.",
+          "confidenceReason": "The pinned-schema answer and repaired alternatives have direct documentation support. The remaining hold concerns the separate maturity label in this immutable bundle, not the corrected key, difficulty or wording."
+        }
+      }
+    },
+    "dp800-20260916-d2-038": {
+      "generation": {
+        "questionFingerprint": "a6a589ebc771d5f1c40cdc5db75c74988d44ee463da2472e241a67192bc9b84e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T23:59:52.138Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2-dab-config",
+              "dp800-d2x-dab-entities-unit",
+              "dp800-d2x-dab-reference"
+            ],
+            "summary": "The sources assign API prefixes to runtime and the REST resource path to the entity. Under the newly explicit final-effective-settings premise, /data plus /shipments gives the REST collection, while GraphQL uses /query. This conclusion does not depend on a blanket child-file precedence rule."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-dab-config", "dp800-d2x-dab-entities-unit"],
+            "summary": "The documented routing model keeps the global REST prefix and uses a common GraphQL endpoint. Omitting /data and appending Shipment to /query does not follow from the effective settings; a deliberately different global routing configuration would be another context."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-dab-config", "dp800-d2x-dab-entities-unit"],
+            "summary": "The training distinguishes default entity paths from explicit REST path overrides and supplies the common GraphQL path through runtime. Defaults can fit an unmodified configuration, but the stated final settings explicitly override both relevant names."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2x-dab-reference",
+              "dp800-d2x-dab-entities-unit",
+              "dp800-d2-dab-config"
+            ],
+            "summary": "A different controlling configuration can yield REST /query and GraphQL /data; the prior fragment did not rule that out. The repaired stem identifies the displayed block as the final effective runtime, so that alternative is now excluded by an explicit premise, not by claiming child runtime is always ignored."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-038",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-integration-20260916",
+          "questionFingerprint": "a6a589ebc771d5f1c40cdc5db75c74988d44ee463da2472e241a67192bc9b84e",
+          "reviewedAt": "2026-09-17T00:49:27.407Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-dab-config",
+              "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/2-create-configuration-files-data-api-builder",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-2-create-configuration-files-data-api-builder.json",
+              "retrievedAt": "2026-09-16T19:33:00.124Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The runtime discussion assigns separate REST and GraphQL paths and illustrates an entity beneath the REST prefix. Those route responsibilities support composing the supplied effective values. This does not validate every file-loading or merging example, and the unit's production-host setting is not affirmative GA lifecycle evidence."
+            },
+            {
+              "sourceId": "dp800-d2x-dab-entities-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-3-define-entities-rest-graphql.json",
+              "retrievedAt": "2026-09-16T19:33:03.539Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The custom REST path example preserves the global prefix while replacing the entity suffix; the GraphQL section describes one common endpoint. These passages support the path pair after effective configuration is known. The unit's cache/method examples and its lack of Preview text are not used as proof of correctness or maturity."
+            },
+            {
+              "sourceId": "dp800-d2x-dab-reference",
+              "url": "https://learn.microsoft.com/en-us/azure/data-api-builder/configuration/",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-dab-reference-canonical.json",
+              "retrievedAt": "2026-09-16T20:08:08.292Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The current reference separates runtime API settings from entity settings and describes multiple configuration files with a controlling runtime. The revised question supplies final effective settings and no longer depends on a universal child-runtime-ignore or fallback-resolution assertion. This reference remains behavior/configuration evidence, without an affirmative GA statement for the versioned route capability."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "The final effective REST prefix /data combines with Shipment's /shipments route. The final effective GraphQL path is /query and remains a single common endpoint, giving exactly the stated pair.",
+              "sourceIds": [
+                "dp800-d2-dab-config",
+                "dp800-d2x-dab-entities-unit",
+                "dp800-d2x-dab-reference"
+              ]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "This discards the supplied REST prefix and appends an entity suffix to GraphQL. Those values need a different effective route contract; neither follows from the resolved settings in the fragment.",
+              "sourceIds": [
+                "dp800-d2-dab-config",
+                "dp800-d2x-dab-entities-unit"
+              ]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "These are default-style entity/GraphQL names, whereas the resolved entity route and GraphQL path explicitly override them. Defaults could matter if those values were absent, not in this final effective configuration.",
+              "sourceIds": [
+                "dp800-d2-dab-config",
+                "dp800-d2x-dab-entities-unit"
+              ]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "This exchanges the two effective protocol paths. A different controlling configuration could produce such a pair, but the new stem explicitly excludes that counterexample by supplying the already resolved /data and /query settings.",
+              "sourceIds": ["dp800-d2x-dab-reference", "dp800-d2-dab-config"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independently parsed the JSON and composed /data/shipments and /query, selecting a. The important repair is substantive: final effective settings after loading, no competing configuration and no gateway rewrite eliminate the former alternative controlling-runtime interpretation. I am not restating a blanket rule about child configuration behavior. A suitable key, caller read permissions and GraphQL enablement are explicit; this remains a fragment, not a claimed complete deployable file. Intermediate static implementation reasoning is appropriate, and the alternatives distinguish prefix omission, ignored overrides and swapped protocols. No live DAB instance was run. No scoped duplicate or construction warning remains. A separate lifecycle hold persists for this exact source set: none of the frozen citations affirm the GA label. Bundle B's later production catalog is not silently added to this candidate or its old generation. The routing ambiguity itself is resolved.",
+          "confidenceReason": "The effective-settings premise now makes the route derivation determinate without assumptions about configuration-file precedence. The sole remaining hold is affirmative lifecycle evidence missing from bundle A's immutable citations."
+        }
+      }
+    },
+    "dp800-20260916-d2-045": {
+      "generation": {
+        "questionFingerprint": "d6cadfbb9dcbc9da4e361ee70784575e62d5a2a659cd4d3fd1312c75778d4c55",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T23:59:52.138Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-cdc"],
+            "summary": "The frozen product article's shared-reader section says transactional replication's log reader satisfies both replication and CDC when the publication is present. Inspecting its progress targets the capture process without assuming in advance that the agent has stopped."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-cdc"],
+            "summary": "The validity-interval and agent-jobs sections assign cleanup the removal of expired changes and movement of the retention boundary. That is a legitimate investigation of missing historical records, not the log-reading process that populates new capture batches."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-cdc"],
+            "summary": "The source requires a consumer's requested LSN interval to fit the current capture validity window. Checking its saved range is appropriate for extraction or retention failures, but consuming that window does not drive the server capture process or explain which agent owns it."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-cdc"],
+            "summary": "The source documents a dedicated capture job when no transactional publication exists and describes its configurable scans. That is a real alternate topology; with the stated publication, the transactional log reader provides the shared capture path instead."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-045",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-integration-20260916",
+          "questionFingerprint": "d6cadfbb9dcbc9da4e361ee70784575e62d5a2a659cd4d3fd1312c75778d4c55",
+          "reviewedAt": "2026-09-17T00:49:27.407Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-cdc",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/track-changes/about-change-data-capture-sql-server",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-cdc.json",
+              "retrievedAt": "2026-09-16T19:53:59.810Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Re-read the CDC data flow, validity interval, log-reader relationship and agent-job sections. They distinguish capture's high-water progress, retention cleanup and consumer extraction, and explicitly use the replication reader for CDC when a transactional publication exists. The receipt establishes these operational distinctions but does not affirm GA lifecycle or released-production status for the stated SQL Server 2022 claim."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "With transactional replication present, the article says its Log Reader Agent supplies both replication and CDC capture. Inspecting that reader targets the process responsible for advancing captured log data, without presuming which failure has occurred.",
+              "sourceIds": ["dp800-d2x-cdc"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Cleanup prunes expired captured records and advances the retained interval's lower boundary. It is relevant to lost older history, not the log-reading process that publishes newly committed changes at the high-water end.",
+              "sourceIds": ["dp800-d2x-cdc"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "A consumer's saved LSN and extraction range govern reads of already captured data. Inspecting them can diagnose consumer replay or retention gaps, but does not identify the server capture path used with the publication.",
+              "sourceIds": ["dp800-d2x-cdc"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "A dedicated capture job is the ordinary CDC-only path when no transactional publication exists. The supplied publication changes the responsible reader, so this otherwise valid investigation addresses the wrong operating mode.",
+              "sourceIds": ["dp800-d2x-cdc"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Freshly selected a by separating capture, cleanup and consumer roles and applying the publication-dependent reader rule. The stem no longer gives away an observed reader stoppage or prior no-job success. Every option is now a real investigation in an appropriate alternative context, and Intermediate replaces inflated Advanced difficulty. Running SQL Server Agent does not establish reader progress; nor does a committed update prove a particular failure. The explanation properly requests investigation rather than promising recovery. The negative/pronoun warnings concern an explicitly nonadvancing high-water mark, not an ambiguous referent. No job or SQL statement was executed. The decision differs from archived latency, retained-range, operation-code and schema-transition exercises. However, this fresh pass cannot affirm the GA label from the cited frozen operational article alone. Neither the Azure-hosted consumer location, existing CDC premise nor DAB production evidence supplies SQL Server CDC lifecycle proof. Hold only for that evidence gap; the clue/difficulty repair is resolved.",
+          "confidenceReason": "The source explicitly identifies the reader used in this coexistence mode and the distinct roles of the alternatives. Missing affirmative maturity evidence is a separate attestation limit, not a claim that CDC is Preview or that the functional key is wrong."
+        }
+      }
+    }
+  }
+}

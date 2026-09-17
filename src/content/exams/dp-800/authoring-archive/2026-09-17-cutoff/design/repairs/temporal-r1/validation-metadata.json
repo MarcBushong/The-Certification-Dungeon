@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-20260916-d1-003": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T22:30:15.645Z",
+        "questionFingerprint": "e662ec1a579cd9e81a05d9050c44656421f4e8a2fc8cb6eaa6d86e69e88d9f03",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-create-temporal"],
+            "summary": "The current canonical article explicitly prohibits a primary key on a user-defined history table, even though the current temporal table must have its own primary key. Removing the history key is therefore required; retaining such a key could be appropriate for an ordinary non-temporal archive."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-create-temporal"],
+            "summary": "Replacing the history primary key with a UNIQUE index still violates the canonical article's explicit history-table restrictions. A unique index can enforce a key on an ordinary archive table, but is not a supported substitute on the history table being attached here."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-create-temporal"],
+            "summary": "The canonical schema-alignment rule requires matching column count, names, order and types. ArchiveBatchId is an extra history-only column, so moving its metadata elsewhere and removing it restores that required alignment without changing the requested temporal record shape."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-create-temporal"],
+            "summary": "The current existing-table section allows DATA_CONSISTENCY_CHECK = OFF to skip temporal-data consistency checking when attaching history. It does not permit an extra history column or prohibited key, and the stem already establishes valid nonoverlapping periods."
+          },
+          {
+            "choiceId": "e",
+            "sourceIds": ["dp800-d1x-create-temporal"],
+            "summary": "The current article requires history/current data-type alignment and explicitly calls out matching datetime2 precision. Replacing a history datetime2(7) endpoint with date introduces a mismatch; a date-only field could belong in a separate report but not this unchanged temporal history schema."
+          }
+        ]
+      }
+    }
+  }
+}

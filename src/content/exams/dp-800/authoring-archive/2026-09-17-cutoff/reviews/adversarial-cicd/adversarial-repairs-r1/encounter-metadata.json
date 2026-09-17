@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-direct-018": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "766effb9401adb0d7ec3a75231c01c4baf179897f9d327cf3435822ab1853f44",
+      "sourceIds": ["dp800-d2-reference-data"],
+      "retrievedAt": "2026-09-16T19:33:04.473Z",
+      "lastValidatedAt": "2026-09-16T23:43:34.173Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2-reference-data"],
+          "summary": "Supported, not incorrect: the schema plan first provides the table, and reconciliation can then update changed values and insert absent keys across repeated deployments. Alternative context: The implemented script actually applies the versioned reference values to existing keys and inserts missing ones after schema completion. Any concurrency, deletion or transactional requirements would need separate implementation review. Evidence: The unit versions reference scripts alongside schema, runs post scripts after the plan and demonstrates both matching-row updates and missing-row insertion. No particular DML spelling is necessary to choose this strategy."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2-reference-data"],
+          "summary": "The project creates the table during its first schema deployment, so the proposed earlier data step lacks its required target on that first run. Being feasible on a later existing-table run is not enough. Alternative context: The necessary table already exists before the deployment and data preparation must precede compatible schema operations. Adding an independent table-creation process would change the expressly stated first-deployment lifecycle. Evidence: The actual unit distinguishes pre-plan preparation from post-plan lookup population; the new candidate assigns initial table creation to the schema plan."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2-reference-data"],
+          "summary": "This expressly excludes the existing-key handling needed on reruns and never updates changed values. Even hypothetically suppressing duplicate errors would leave existing reference values unconverged. Alternative context: An empty one-time table is intentionally loaded once with unique new keys and no updates are required. Guarded missing-key insertion is a different strategy, explicitly excluded by B, and alone would not meet this stem's changed-value requirement. Evidence: The source contrasts replayed plain INSERT with separate WHEN MATCHED UPDATE and WHEN NOT MATCHED INSERT behavior. Unlike the prior snapshot, B now explicitly forbids both checks and updates, and the stem requires both outcomes."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d2-reference-data"],
+          "summary": "Table definitions do not supply this deployment contract's versioned values or their convergence. Omitting the data work leaves those requirements unimplemented. Alternative context: Data is not required at deployment or a separately specified provisioning process owns it. The current task explicitly includes the reference-data lifecycle, with no alternate provisioner. Evidence: The actual training introduces pre/post data scripts precisely because essential lookup/configuration rows are outside the declarative schema model."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-17T00:54:28.926Z",
+        "notes": "alignment 4/4: Directly implements the current reference/static-data source-control subskill. accuracy 4/4: Correctly separates table creation, existing-row updates, missing-row insertion and unrelated concurrency guarantees. scenarioCompleteness 4/4: Initial absence, later retention, stable keys and changed-value convergence are now explicit. answerUniqueness 4/4: B explicitly excludes checks/updates, A fails initial availability and D omits required data; only C meets the complete contract. distractorPlausibility 3/4: Pre-data preparation, one-time insertion and schema-only delivery are legitimate elsewhere, but the strong constraints make them fairly easy exclusions. distractorEvidence 4/4: The source directly describes post-plan population and matching-update/missing-insert behavior supporting every contextual distinction. documentationStrength 4/4: The admitted teaching unit supplies a concrete two-branch reconciliation example and the needed deployment lifecycle. citationSpecificity 4/4: The cited data-script and idempotence sections cover the exact initial/rerun conditions rather than only general Git guidance. difficultyAuthenticity 4/4: Combining initial table availability with repeated updates/inserts honestly fits Intermediate implementation reasoning. explanationQuality 4/4: Repairs the INSERT overgeneralization explicitly and preserves legitimate alternative implementations and safety limits. originality 3/4: Original convergence-focused scenario, although post-deployment reference reconciliation is a standard documented pattern. clarityAccessibility 4/4: The repaired stem and unconditional option remove the previous unstated assumption without requiring executable SQL.",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 4,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d2-032": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "34f231893ecb3b062cbfa939b87c6c940d720d718ddc87ae0f300694841426ca",
+      "sourceIds": [
+        "dp800-d2x-pre-post-deployment",
+        "dp800-d2x-compare-project",
+        "dp800-d2x-testing-unit"
+      ],
+      "retrievedAt": "2026-09-16T19:43:11.829Z",
+      "lastValidatedAt": "2026-09-16T23:43:34.173Z",
+      "answerEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": [
+            "dp800-d2x-pre-post-deployment",
+            "dp800-d2x-compare-project",
+            "dp800-d2x-testing-unit"
+          ],
+          "summary": "Supported, not incorrect: the changed target schema already exists when SqlPackage performs the later source-to-target comparison, which is the required planning input. Alternative context: The separate stage finishes successfully against the same target and its resulting schema is visible to the subsequent comparison. The reviewed script must still be validated for that actual target and intended migration. Evidence: The explicit plan-before-pre-script order and target-dependent Script generation require the prerequisite to precede generation; the testing unit independently limits any inference of runtime safety."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": [
+            "dp800-d2x-pre-post-deployment",
+            "dp800-d2x-compare-project"
+          ],
+          "summary": "PreDeploy is executed only after the plan has already been calculated. Including it in the generated script schedules its later execution; it does not execute it before that script's comparison. Alternative context: The preparation is compatible with a plan calculated from the original target and need only precede plan execution. The current requirement explicitly needs the changed schema at calculation time. Evidence: The product opening paragraph distinguishes calculation from PreDeploy execution, while the compare article treats Script as a separately generated artifact for review."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2x-pre-post-deployment"],
+          "summary": "PostDeploy runs after the schema plan executes and therefore cannot provide input to its earlier calculation. Alternative context: Work requires the new schema to exist first, such as post-plan reference data population or application defaults. That is the reverse dependency from the prerequisite stated here. Evidence: The actual product article states post-deployment execution occurs after plan completion and illustrates a post script for application settings."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": [
+            "dp800-d2x-compare-project",
+            "dp800-d2x-pre-post-deployment"
+          ],
+          "summary": "The saved artifact was calculated from the earlier target. Changing execution order after generation does not retroactively make that comparison inspect the changed schema. Alternative context: The saved plan remains valid for the later execution context and no requirement demands recalculation from a changed target. If the new schema must be a planning input, a fresh generation is required instead. Evidence: The compare article derives Script output from the supplied target at generation, and the pre/post contract separates calculating a plan from later executing its statements."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-17T00:54:28.926Z",
+        "notes": "alignment 4/4: Directly addresses updating an SQL project and deploying changes under the current objective map. accuracy 4/4: The workflows are evaluated against the documented order of comparison, pre-script execution, plan execution and post-script execution. scenarioCompleteness 4/4: The required planning input, permissions and isolated target are enough to select the workflow without inventing a migration implementation. answerUniqueness 4/4: Only A completes the prerequisite before plan generation; B/C/D each place its effect after the deciding comparison. distractorPlausibility 4/4: PreDeploy, PostDeploy and saved-approved-script workflows are real practices that differ meaningfully in timing. distractorEvidence 4/4: The exact product phase order and target-dependent script-generation contract independently defeat each alternative. documentationStrength 4/4: Two direct product articles ground the timing distinction, and the testing unit supplies the safety boundary. citationSpecificity 4/4: The opening pre/post paragraph and Script-generation section directly answer the planning-input question. difficultyAuthenticity 4/4: Intermediate is authentic for applying a phase-order contract across plausible workflows without needing an Advanced migration design. explanationQuality 4/4: Explains why each order fails or succeeds and explicitly separates correct sequencing from runtime safety. originality 3/4: The balanced workflow alternatives are newly authored, while the underlying planning-order fact remains a standard documented contract. clarityAccessibility 4/4: Parallel choices, similar lengths and a focused stem remove the prior longest-safe-answer and disclosed-diagnosis shortcuts.",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 4,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    }
+  }
+}

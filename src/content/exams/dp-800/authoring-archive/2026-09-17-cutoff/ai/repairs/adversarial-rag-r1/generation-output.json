@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-expansion-ai-adversarial-rag-r1-20260916",
+  "authorId": "dp800-expansion-author-ai-20260916",
+  "generatedAt": "2026-09-17T00:14:43.367Z",
+  "candidates": [
+    {
+      "id": "dp800-20260916-d3-032",
+      "question": "In Azure SQL Database at compatibility level 170, @response contains the valid nvarchar(max) JSON shown. message.content is a string shorter than 4,000 characters containing another JSON document. This implementation must use SELECT Answer, Citations FROM an explicit OPENJSON WITH schema; default key/value/type output and later reshaping are out of scope. Which table expression returns the answer scalar and complete citations array as JSON text?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "OPENJSON(JSON_VALUE(@response, '$.result.choices[0].message.content'))\nWITH (Answer nvarchar(200) '$.answer',\n      Citations nvarchar(max) '$.citations' AS JSON)"
+        },
+        {
+          "id": "b",
+          "text": "OPENJSON(JSON_QUERY(@response, '$.result.choices[0].message.content'))\nWITH (Answer nvarchar(200) '$.answer',\n      Citations nvarchar(max) '$.citations' AS JSON)"
+        },
+        {
+          "id": "c",
+          "text": "OPENJSON(@response, '$.result.choices[0].message')\nWITH (Answer nvarchar(200) '$.content.answer',\n      Citations nvarchar(max) '$.content.citations' AS JSON)"
+        },
+        {
+          "id": "d",
+          "text": "OPENJSON(JSON_VALUE(@response, '$.result.choices[0].message.content'))\nWITH (Answer nvarchar(200) '$.answer',\n      Citations nvarchar(max) '$.citations')"
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "Decode content with JSON_VALUE, parse the extracted document with OPENJSON, and use AS JSON on the explicit WITH column that must retain the citations array.",
+      "deepExplanation": "The outer content member is a scalar string, so its JSON-looking characters first need scalar extraction and then a second parse. In the required explicit WITH schema, Answer uses a scalar projection and Citations uses nvarchar(max) AS JSON for the array fragment. Default-schema OPENJSON can expose array JSON in its ordinary value column without AS JSON and can solve an unrestricted output task. That documented alternative is outside this implementation contract; it is not the explicit typed projection shown in d.",
+      "whyOtherAnswersAreWrong": {
+        "b": "JSON_QUERY sees a scalar string at the outer content path and returns NULL in default lax mode rather than extracting the inner document.",
+        "c": "The WITH paths try to traverse answer and citations inside content before its encoded JSON text has been parsed as a second document.",
+        "d": "This option explicitly declares a typed WITH Citations column without AS JSON. Its scalar projection does not retain the supplied array. The valid default-schema value-column alternative uses a different, expressly excluded mode."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-retrieval-augmented-generation-rag",
+      "subskill": "Extract language model responses",
+      "difficulty": "advanced",
+      "complexity": "technical-implementation",
+      "sourceIds": [
+        "dp800-d3-rag-responses",
+        "dp800-d3x-json-value",
+        "dp800-d3x-json-query",
+        "dp800-d3x-openjson"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-value-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-query-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql"
+      ],
+      "documentationTitles": [
+        "Generate and process RAG responses",
+        "JSON_VALUE (Transact-SQL)",
+        "JSON_QUERY (Transact-SQL)",
+        "OPENJSON (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-17T00:14:43.363Z",
+      "lastValidatedAt": "2026-09-17T00:14:43.363Z",
+      "featureStatus": "GA",
+      "tags": [
+        "rag-response",
+        "nested-encoding",
+        "openjson",
+        "scalar-versus-fragment",
+        "citations"
+      ],
+      "codeLanguage": "json",
+      "codeSnippet": "{\"response\":{\"status\":{\"http\":{\"code\":200}}},\"result\":{\"choices\":[{\"message\":{\"content\":\"{\\\"answer\\\":\\\"Use catalog entry 17.\\\",\\\"citations\\\":[17,23]}\"}}]}}",
+      "conceptId": "sql-rag-response-decodes-json-in-content-string-before-projecting-citation-array",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 scope repair only: explicit typed OPENJSON WITH projection and exact alternatives; independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    }
+  ]
+}

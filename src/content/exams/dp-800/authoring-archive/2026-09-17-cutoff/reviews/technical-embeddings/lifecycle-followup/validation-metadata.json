@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-20260916-d3-003": {
+      "generation": {
+        "questionFingerprint": "5ca4bde62a9602774ec56641765425265572ea3ab1a00e47d7b5ef76428f3fca",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-16T20:50:00.860Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d3-generate-embeddings"],
+            "summary": "The function consumes text through an EMBEDDINGS definition to generate a vector representation. This would be useful when preparing the query embedding for retrieval, but that stage cannot substitute for asking the chat endpoint to compose an answer."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3-create-external-model"],
+            "summary": "The current accepted MODEL_TYPE list contains EMBEDDINGS, not CHAT_COMPLETIONS. A future independently documented model type could change the interface choice; current code cannot invent that value because an endpoint happens to support chat."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3-create-external-model"],
+            "summary": "The reference's local ONNX Runtime path is developer Preview and still declares MODEL_TYPE = EMBEDDINGS. It could fit an approved local embedding workload with its extra runtime prerequisites, but it is not the configured remote chat-generation operation."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3-rag-responses"],
+            "summary": "The transport procedure accepts the prepared payload, URL, method and response OUTPUT variable, and the RAG unit demonstrates using it for generation. The stem supplies endpoint compatibility and access; using this interface does not itself guarantee answer quality or provider-schema validation."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d3-003",
+          "authorId": "dp800-expansion-author-ai-20260916",
+          "reviewerId": "dp800-technical-embeddings-20260916",
+          "questionFingerprint": "5ca4bde62a9602774ec56641765425265572ea3ab1a00e47d7b5ef76428f3fca",
+          "reviewedAt": "2026-09-16T22:31:01.749Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d3-create-external-model",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-model-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\create-external-model.json",
+              "retrievedAt": "2026-09-16T19:38:25.131Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "Re-examined the actual frozen product body for lifecycle scope as well as the previously reviewed type contract. MODEL_TYPE still accepts EMBEDDINGS only. The local ONNX example is Windows-specific and explicitly enables developer preview features with PREVIEW_FEATURES = ON (decoded lines 308 and 328-335). That is affirmative Preview evidence for the local alternative, not for sp_invoke_external_rest_endpoint. Remote examples and a SQL Server 2025 applicability statement do not establish a separate procedure's GA/Preview status. The original direct models-summary provenance remains intact."
+            },
+            {
+              "sourceId": "dp800-d3-generate-embeddings",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\generate-embeddings.json",
+              "retrievedAt": "2026-09-16T19:41:55.087Z",
+              "lastReviewedAt": "2026-09-16T20:50:00.844Z",
+              "supportingSummary": "The actual function syntax, model_identifier definition and complete examples still support the embedding-versus-chat distinction. Re-examined its platform, Remarks, Prerequisites and diagnostic text: these establish usage, model access and remote-invocation configuration, but provide no affirmative GA/Preview statement for the SQL Server 2025 REST procedure. Its description of default external-endpoint enablement in Azure SQL Database/Fabric cannot fill a different platform's lifecycle gap. The source snapshot and explicit training-parent reference remain unchanged."
+            },
+            {
+              "sourceId": "dp800-d3x-rest-endpoint",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rest-endpoint.json",
+              "retrievedAt": "2026-09-16T19:38:27.272Z",
+              "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+              "supportingSummary": "Re-read the frozen reference's actual applicability, syntax, permissions, enablement and lifecycle-related passages. It supports HTTPS POST/payload/response behavior and explicitly says the procedure is available in SQL Server 2025 and disabled by default (decoded lines 92-103); Azure SQL Database/Fabric default enablement is stated separately at line 107. Neither passage affirms GA or Preview maturity. The only preview token in this body is an example remote Azure OpenAI api-version=2024-08-01-preview URL at line 670, which labels that endpoint API example, not the SQL procedure. The manifest's frozen GA value is not independent proof. The RAG summary's actual direct link still establishes provenance, not maturity."
+            },
+            {
+              "sourceId": "dp800-d3-rag-responses",
+              "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-responses.json",
+              "retrievedAt": "2026-09-16T19:33:24.113Z",
+              "lastReviewedAt": "2026-09-16T20:50:00.844Z",
+              "supportingSummary": "The actual Call the model from SQL section documents POST of a prepared chat payload through sp_invoke_external_rest_endpoint and describes SQL Server 2025 sp_configure enablement. This continues to support the intended operation and configured prerequisites. Re-examining that teaching text reveals no affirmative GA/Preview statement for the procedure on SQL Server 2025. A current instructional example, its endpoint API version and default Azure SQL enablement cannot substitute for a lifecycle declaration. Its module parent and frozen source dates remain unchanged."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "The actual AI_GENERATE_EMBEDDINGS contract uses an EMBEDDINGS model and returns embedding representations, not a chat answer. Passing the prepared chat payload does not change that operation. This could serve text encoding for retrieval, but not the required generation step; the lifecycle gap does not make this a valid alternate answer.",
+              "sourceIds": [
+                "dp800-d3-generate-embeddings",
+                "dp800-d3-create-external-model"
+              ]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "The frozen external-model reference lists EMBEDDINGS as the only accepted MODEL_TYPE, and the embedding function requires it. CHAT_COMPLETIONS is not supported by that documented registration/operation contract. A different future interface would need its own evidence; uncertainty about REST maturity cannot validate this unsupported type.",
+              "sourceIds": [
+                "dp800-d3-create-external-model",
+                "dp800-d3-generate-embeddings"
+              ]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "The actual ONNX Runtime example is explicitly developer Preview, but still registers MODEL_TYPE = EMBEDDINGS and invokes embedding generation. It neither changes that type to chat generation nor posts this remote request. Its Preview status is substantiated for this alternative only and cannot establish the remote procedure's release maturity.",
+              "sourceIds": ["dp800-d3-create-external-model"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "The product procedure and directly linked RAG teaching text support POSTing the prepared compatible payload and receiving the chat endpoint's response. Enabled invocation, authentication and permissions are stipulated. This remains the uniquely supported behavioral answer. However, the frozen sources do not affirmatively establish the procedure's GA/Preview status on SQL Server 2025, so behavioral support is insufficient for technical-pass approval.",
+              "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3-rag-responses"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": false,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Append-only lifecycle reconsideration of the exact unchanged candidate after independently re-reading its four frozen cited sources. The operational key remains d, and the local ONNX alternative has affirmative Preview evidence. The candidate's overall Preview tag does not establish the maturity of every other named feature it discusses: sp_invoke_external_rest_endpoint on SQL Server 2025 remains unverified for GA/Preview in this evidence set. Applicability, availability, default enablement, a current tutorial and absence of a Preview warning are insufficient. The deep explanation's statement that the question label does not reclassify REST must not be read as proof that REST is GA. The explanation's operation distinction remains supported, but featureStatus fails and supersedes this candidate's earlier technical approval for integration. No assertion is made that REST is actually Preview or not GA; the limitation is insufficient affirmative evidence. No source dates, source metadata, authored labels, old reviews or other candidates were changed.",
+          "confidenceReason": "High confidence that d is the intended documented interface and that ONNX Preview is explicitly established; insufficient evidence to affirm the separate SQL Server 2025 REST lifecycle. This is an independently evidenced maturity hold, not an inherited Azure SQL verdict or a change to the answer key."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1036 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-adversarial-security-20260916-lifecycle-reassessment",
+  "reviews": [
+    {
+      "questionId": "dp800-direct-013",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "5477945148ab5d6e452d0de77b9c238603176c7faf138561b5f1c8b23acefe60",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2-always-encrypted",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/security/encryption/always-encrypted-database-engine",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-always-encrypted.json",
+          "retrievedAt": "2026-09-16T19:39:43.635Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Configure Always Encrypted and Limitations explicitly permit equality point lookups with deterministic encryption, exclude searching with randomized encryption without enclaves, and require encrypted client parameters. The bigint scenario avoids the documented string-collation restrictions. Deterministic ciphertext exposes repetition; enclave processing changes the plaintext boundary."
+        },
+        {
+          "sourceId": "dp800-d2-encryption-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-data-security-compliance/2-design-implement-data-encryption",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\security-2-design-implement-data-encryption.json",
+          "retrievedAt": "2026-09-16T19:33:00.124Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Understand encryption layers and Choose the right encryption approach identify TDE as file/log/backup protection and distinguish client-side Always Encrypted from explicit server-side encryption. Only the no-enclave comparison is used: the unit's unconditional plaintext wording must not be applied to secure enclaves or to every Fabric feature."
+        },
+        {
+          "sourceId": "dp800-d2-masking",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-masking.json",
+          "retrievedAt": "2026-09-16T19:39:48.903Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Overview, Permissions and the inference warning establish that DDM changes query-result presentation while underlying values remain in the database. It complements encryption but does not implement the client-versus-engine cryptographic boundary required by this question."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The Always Encrypted article expressly excludes searching randomized encrypted columns without secure enclaves. Randomized encryption still protects the client/engine boundary, but cannot satisfy the required server-side parameterized equality lookup. It fits storage/retrieval without such predicates, or a separately designed enclave-enabled solution; neither is the stated workload.",
+          "sourceIds": ["dp800-d2-always-encrypted"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Configure Always Encrypted permits deterministic point lookups, and Limitations requires client-encrypted parameters instead of plaintext literals. Those prerequisites and external-key access are supplied. This is supported, not incorrect: deterministic encryption meets both stated constraints without enclaves, although repeated ciphertext can disclose equality patterns.",
+          "sourceIds": ["dp800-d2-always-encrypted"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The encryption unit identifies TDE as protection for database files, logs and backups at rest and explicitly says it does not protect data from authorized connected users. TDE alone leaves normal engine plaintext processing available. It can protect stolen storage or complement Always Encrypted, but does not meet this client-only plaintext requirement.",
+          "sourceIds": ["dp800-d2-encryption-unit"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The DDM article says stored values are unchanged and masking is applied to query results for restricted readers. Its inference warning further rejects treating masking as full protection from ad hoc queries. DDM alone can reduce accidental display exposure, but is not encryption and cannot keep the engine from processing plaintext.",
+          "sourceIds": ["dp800-d2-masking"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 independently derives B after testing randomized no-enclave searches, enclave-enabled alternatives, TDE runtime plaintext and DDM presentation. Reviewed all cited MCP bodies and their current credential/course/path/module ancestry against the unchanged catalog's exact approvals. The negative/absolute wording warnings are resolved by the explicit no-enclave scope and retained equality-pattern limitation. Static query-contract review only; no client or SQL execution occurred. This preserved ID remains distinct from server-side key opening and transport encryption comparisons. The independently scored rubric retains narrow-task and distractor deductions, not a full-score default.",
+      "confidenceReason": "High confidence in this bounded answer because the product article explicitly defines the equality exception and parameter prerequisites; no inference of semantic correctness was taken from hashes, source availability or the technical verdict."
+    },
+    {
+      "questionId": "dp800-direct-011",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "cb494c6641799a6da486e8c86a38ee255abad6183f938eda5d48e9e7c204d81b",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2-masking",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-masking.json",
+          "retrievedAt": "2026-09-16T19:39:48.903Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Permissions separates SELECT from UNMASK and requires ALTER ANY MASK plus table ALTER for mask modification. Granular permissions introduced in SQL Server 2022 explicitly permits column-level UNMASK. The examples distinguish column, table, schema and database scopes; administrative CONTROL and inference remain exceptions to simplistic secrecy claims."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Permissions states that SELECT supplies table-data access and that UNMASK requires accompanying SELECT to have an effect. Under the closed effective-permission baseline, table SELECT is supported, not incorrect, and must be paired with Phone-column UNMASK. SELECT alone would leave both defined masks in the returned data.",
+          "sourceIds": ["dp800-d2-masking"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The SQL Server 2022 granular examples show table-level UNMASK covering the table's masked columns. With the necessary SELECT, this would expose both Phone and Email, contrary to the Phone-only exception. Table UNMASK is appropriate for a reader approved to see all masked columns in that table.",
+          "sourceIds": ["dp800-d2-masking"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "The granular-permissions section and column UNMASK example explicitly support a column-scoped exception beginning with SQL Server 2022. Phone-column UNMASK paired with table SELECT is supported, not incorrect: it reveals Phone while leaving Email masked under the stipulated absence of overriding grants, DENYs, CONTROL or module access.",
+          "sourceIds": ["dp800-d2-masking"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Permissions describes ALTER ANY MASK as mask-definition administration, with table ALTER additionally required to add, replace or remove a mask. It supplies neither the SELECT nor UNMASK grant requested here, and changing the mask is explicitly prohibited. It fits an authorized mask-maintenance task instead.",
+          "sourceIds": ["dp800-d2-masking"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 derives exactly A,C after challenging every combination against SELECT, UNMASK and mask-management scope. The closed effective-permission baseline is essential and resolves CONTROL, inherited access and DENY counterexamples. Read the actual DDM article and its training/module/root receipts; the exact URL is already approved for DP-800. Permissions were reviewed statically, not executed. Preserved direct-011 is not duplicated by the exported-copy item or DP-700's mask-editing and RLS/CLS choices. The rubric deducts for dense wording while retaining the explicit inference caveat.",
+      "confidenceReason": "High confidence from the product's independent SELECT/UNMASK requirements and explicit SQL Server 2022 column example; no unrecorded administrative or inherited permissions are needed to establish the pair."
+    },
+    {
+      "questionId": "dp800-direct-012",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "4e14ddf9772960a8bc3152fce909293320291e324210992465fb11302285c9dd",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2-rls",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/security/row-level-security",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-rls.json",
+          "retrievedAt": "2026-09-16T19:39:52.032Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Description expressly permits INSERT under a filter even when the inserted row will later be invisible, while AFTER INSERT block predicates reject new rows that violate the predicate. BEFORE UPDATE and BEFORE DELETE target different operations. The document introduces SQL Server 2016 RLS and separately excludes Fabric/Synapse block support."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The RLS description says filter predicates affect SELECT, UPDATE and DELETE visibility and still allow inserting rows that will subsequently be filtered. A filter alone therefore does not reject this INSERT. It is appropriate for hiding existing rows from reads or preventing selection of rows to update/delete.",
+          "sourceIds": ["dp800-d2-rls"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "BEFORE UPDATE checks whether existing rows targeted by an update currently violate the predicate. It is not triggered as the after-insertion validation of newly created row values. It is appropriate when an update must be blocked based on the row's pre-update state.",
+          "sourceIds": ["dp800-d2-rls"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The RLS description assigns BEFORE DELETE to blocking deletion of existing rows. It does not validate newly inserted values. It is a legitimate block predicate when deletion itself is the prohibited write operation.",
+          "sourceIds": ["dp800-d2-rls"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Description lists AFTER INSERT as a block operation and states that a violating block predicate makes the write fail with an error. This is supported, not incorrect, because the question requires checking newly inserted row values. It assumes a correctly bound, enabled policy; merely declaring an unused or disabled predicate would not enforce anything.",
+          "sourceIds": ["dp800-d2-rls"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 independently derives D from the product's INSERT behavior, then challenges all three alternatives against their real operation/state semantics. Scope is SQL Server 2022, not Fabric or Synapse block predicates. An enabled, correctly attached policy is required; the item asks mechanism selection and makes no universal security promise. Actual RLS training and root receipts were checked against the current exact approval. There is no executable candidate snippet; review was static. Preserved direct-012 is distinct from policy dependency permissions and cross-credential row/column scope.",
+      "confidenceReason": "High confidence because the product directly documents both filter-permitted INSERT and AFTER INSERT rejection. The remaining weakness is pedagogical simplicity, reflected in the rubric, not ambiguity of the key."
+    },
+    {
+      "questionId": "dp800-20260916-d2-001",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "b0553152dab0db729c7de25323d2cca878076e336627aff7ca518990bc9e9633",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-column-encryption",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/security/encryption/encrypt-a-column-of-data",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-column-encryption.json",
+          "retrievedAt": "2026-09-16T19:39:46.259Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Encrypt with simple symmetric encryption opens the certificate-protected symmetric key before updating a binary column with ENCRYPTBYKEY(KEY_GUID(...), plaintext). Its Security section lists setup/key permissions. The candidate supplies an existing usable certificate/key and authorized session rather than claiming the full setup is unnecessary."
+        },
+        {
+          "sourceId": "dp800-d2-encryption-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-data-security-compliance/2-design-implement-data-encryption",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\security-2-design-implement-data-encryption.json",
+          "retrievedAt": "2026-09-16T19:33:00.124Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Implement column-level encryption explicitly opens, uses and closes a symmetric key. Understand encryption layers distinguishes TDE storage protection and Always Encrypted client/external-key processing from this explicit server-side operation."
+        },
+        {
+          "sourceId": "dp800-d2-masking",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-masking.json",
+          "retrievedAt": "2026-09-16T19:39:48.903Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The DDM overview says values remain unchanged in storage and masking alters returned results. This supports rejecting a mask as a way to open a cryptographic key, without claiming masks are useless for separate presentation requirements."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The encryption unit describes TDE as automatic encryption of files, logs and backups, while the column-encryption example independently opens its named symmetric key. TDE could be a complementary at-rest control, but it is not the operation that opens AccountKey for this ENCRYPTBYKEY call.",
+          "sourceIds": [
+            "dp800-d2-encryption-unit",
+            "dp800-d2x-column-encryption"
+          ]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The encryption unit places Always Encrypted processing in an enabled client with externally held keys. The supplied UPDATE instead invokes the engine's ENCRYPTBYKEY using a database symmetric key and explicitly permits server plaintext. Enabling a client driver fits an Always Encrypted design, not this closed-key prerequisite.",
+          "sourceIds": ["dp800-d2-encryption-unit"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Both the direct simple-encryption example and the teaching unit open the symmetric key with its protecting certificate before ENCRYPTBYKEY. This is supported, not incorrect: the key is explicitly closed, the certificate is usable, and the session is authorized. The operation must make that key available in this session.",
+          "sourceIds": [
+            "dp800-d2x-column-encryption",
+            "dp800-d2-encryption-unit"
+          ]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "DDM changes query-result exposure while leaving stored plaintext values unchanged. Adding a mask may reduce accidental display of AccountNumber but does not open AccountKey or implement the named encryption function's prerequisite.",
+          "sourceIds": ["dp800-d2-masking"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 independently selects C after testing already-open keys, missing certificate/key access, client-side encryption and presentation-only masking. Statically reviewed UPDATE, ENCRYPTBYKEY, KEY_GUID, Unicode naming and the supplied binary destination against the actual example; no SQL execution is claimed. The absolute prerequisite wording is confined to this closed key, and the pronoun refers to the maintenance session. Exact admitted documents and observed training ancestry were inspected. Repeated opening text with JSON/CDC questions does not repeat their reasoning. Rubric deductions recognize the strong closed/open cue and comparatively easy technology distractors.",
+      "confidenceReason": "High confidence in the required key-opening order from both actual encryption bodies; confidence is about the static prerequisite, not tested ciphertext output or a complete production encryption rollout."
+    },
+    {
+      "questionId": "dp800-20260916-d2-002",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "14196c31b6d71f9cbb634e500c98a4d0291297510a95cbb77417a2042b1ee4a6",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2-masking",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-masking.json",
+          "retrievedAt": "2026-09-16T19:39:48.903Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Best practices explicitly says SELECT INTO or INSERT INTO by a reader without UNMASK copies masked data to the target. The numeric default mask yields zero; the overview leaves original source storage unchanged. Partial masking is a string operation, and UNMASK grants access to underlying data rather than reconstructing an already materialized lossy copy."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "The documented SELECT INTO rule materializes the restricted reader's masked output. The stipulated destination therefore contains actual zeroes, not hidden originals. A new appropriately authorized extraction from the still-intact source is supported, not incorrect; UNMASK cannot recreate information absent from the existing copy.",
+          "sourceIds": ["dp800-d2-masking"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "UNMASK controls what an authorized source query returns; it does not rewrite another table's previously copied values. Granting source UNMASK could support a new extraction, but merely rereading the unchanged zero-filled reporting table cannot recover the originals.",
+          "sourceIds": ["dp800-d2-masking"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Removing a real mask reveals that table's underlying values, but the question explicitly says the reporting table has no mask definition and stores zeroes. There is no destination presentation mask concealing originals to remove.",
+          "sourceIds": ["dp800-d2-masking"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The product defines partial masking for stored strings, not recovery of numeric values replaced by the default mask. Applying another display transformation cannot reconstruct a numeric suffix that was never retained in the copy.",
+          "sourceIds": ["dp800-d2-masking"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 derives A by distinguishing source storage, exported presentation and destination storage, rather than merely repeating the existing key. Tested privileged export, a still-masked target, direct rereading of the source and missing source originals as counterexamples; the stem excludes them. Static SELECT INTO behavior was reviewed from the actual product body; no copy was executed. The exact DDM source and full observed ancestry remain frozen and admitted. DP-700's live-mask and inference facts do not independently solve the added materialization/recovery decision. Rubric deductions explicitly cover weak C/D distractors and the tightly guided Advanced diagnosis.",
+      "confidenceReason": "High confidence in A because the product explicitly describes masked SELECT INTO and the candidate states the resulting physical values; editorial confidence is lower for distractor strength and reflected numerically."
+    },
+    {
+      "questionId": "dp800-20260916-d2-003",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "6322f69df66dd9b81b425541926020247be2720da979cbc1136657686e19c6f8",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2-rls",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/security/row-level-security",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-rls.json",
+          "retrievedAt": "2026-09-16T19:39:52.032Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Description and Permissions explicitly distinguish policy SCHEMABINDING ON, which bypasses extra dependency permission checks, from OFF, which requires callers to have SELECT/EXECUTE on predicate dependencies. Enabled policies still filter dbo/db_owner according to their logic, but administrators can alter policies; disabled policies do not enforce filtering."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "With policy SCHEMABINDING OFF, the article requires the reader's permissions on additional predicate tables/functions. Granting those rights can remove the failure, but granting direct SELECT on the sensitive entitlement table violates the explicit access boundary. It fits only a design that permits dependency access.",
+          "sourceIds": ["dp800-d2-rls"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The product says disabled security policies do not affect filtered or blocked rows. Disabling this policy might isolate it during controlled diagnosis, but the existing business-table SELECT would no longer be restricted by its row predicate.",
+          "sourceIds": ["dp800-d2-rls"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "db_owner supplies broad database authority and can alter or drop security policies. That is not a least-privilege entitlement-table boundary. The article also says owners are still filtered by an enabled predicate unless its logic allows them; the option is not rejected by inventing automatic owner exemption from RLS.",
+          "sourceIds": ["dp800-d2-rls"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Permissions explicitly bypasses extra predicate/dependency checks when the security policy uses SCHEMABINDING ON. Keeping the policy enabled with unchanged logic therefore restores filtering without direct dependency SELECT. This is supported, not incorrect, given the stated compatible objects and a controlled authorized policy deployment.",
+          "sourceIds": ["dp800-d2-rls"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 independently derives D after challenging caller dependency grants, disabled enforcement and owner authority. The actual RLS article ties the relevant checks to policy binding, not merely the already-bound function. Static policy semantics only; no recreation or SQL execution occurred. The restrictive wording is necessary, the administrator/dependency limitations are retained, and actual ancestry plus current exact URL approval were inspected. Compared schema-bound view/function DDL questions and the preserved INSERT-timing question; the tested permission-check failure is distinct. The rubric retains dense-prose and weaker-distractor deductions.",
+      "confidenceReason": "High confidence because the direct product explicitly states both sides of the policy ON/OFF permission comparison, including the owner and enabled-state qualifications that could otherwise undermine the options."
+    },
+    {
+      "questionId": "dp800-20260916-d2-004",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "671c0172d178e7ffa72f4cf961c52567be806d2e2c004e8800d387ce678fa05c",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-grant",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/grant-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-grant.json",
+          "retrievedAt": "2026-09-16T19:54:04.421Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "WITH GRANT OPTION contains a concrete role-member example: an ordinary onward GRANT fails and GRANT ... AS the role succeeds. Arguments separately defines onward delegation and recorded grantor identity. Permissions requires authority to use the grantor and warns that AS is not general impersonation. The SQL Server syntax, not the Fabric warehouse variant, supports the candidate statements."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The article's role-held grant-option example explicitly shows a member's plain onward GRANT failing and the AS role version succeeding. Mira lacks any independent authority that could make the plain grant valid. This statement could work for a user with a direct grant option or appropriate ownership/control.",
+          "sourceIds": ["dp800-d2x-grant"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "AS names the principal recorded as grantor and requires authority to use that principal; it is not a permission to assume any identity. Mira's documented authority is ProcedureDelegates, not dbo. An independently authorized owner operation could use an owner grantor, but that authority is excluded.",
+          "sourceIds": ["dp800-d2x-grant"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "AS ProcedureDelegates correctly invokes the role, but WITH GRANT OPTION additionally gives NewReader the ability to grant that permission onward. It is valid syntax for delegated administration but violates this requested execution-only grant.",
+          "sourceIds": ["dp800-d2x-grant"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "The documented role-member example requires AS role to invoke the role's grant option, and omission of WITH GRANT OPTION avoids conferring delegation in the new grant. D is supported, not incorrect, for Mira's stated authority and requested statement. It does not revoke any unrelated delegation rights NewReader might already possess.",
+          "sourceIds": ["dp800-d2x-grant"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 derives D after checking whether direct authority could rescue A, owner authority B, or intended delegation C. The stem excludes the first two and rejects the third. Statically checked the setup and all four GRANT statements against the actual product syntax and role example; no SQL execution occurred. The recipient caveat is limited to unrelated existing rights, not what this grant confers. Exact provenance/current approval were checked. Archived grant-option removal and DENY-exception questions require distinct operations. Independent rubric deductions cover scenario closure and close scaffolding to the documentation example.",
+      "confidenceReason": "High confidence in the uniquely correct statement from the explicit role-member failure/success example and separate GRANT OPTION definition, bounded to the new grant rather than total recipient authority."
+    },
+    {
+      "questionId": "dp800-20260916-d2-005",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "c3dcde51d0e17b8ea264e08ff63da85ef72fb9b34807a97e8a9630d5ca1d953d",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-permissions-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-data-security-compliance/5-design-implement-object-level-permissions",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\security-5-design-implement-object-level-permissions.json",
+          "retrievedAt": "2026-09-16T19:33:08.151Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "View and audit permissions separately shows a direct-principal sys.database_permissions query and fn_my_permissions at OBJECT scope for the current user's effective permissions. Earlier role examples establish inherited access. The unrelated DENY-always-wins and impossible-credential-theft wording is not accepted."
+        },
+        {
+          "sourceId": "dp800-d2-masking",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-masking.json",
+          "retrievedAt": "2026-09-16T19:39:48.903Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Query for masked columns defines sys.masked_columns as a mask-definition catalog with is_masked and masking_function, not an effective object-permission calculator."
+        },
+        {
+          "sourceId": "dp800-d2x-entra-authentication",
+          "url": "https://learn.microsoft.com/en-us/azure/azure-sql/database/authentication-aad-overview",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-entra-authentication.json",
+          "retrievedAt": "2026-09-16T19:39:43.663Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Microsoft Entra principals and Tools support use sys.database_principals to identify database principals and describe identity type/SID properties. These inventory fields are not a substitute for the current context's effective permissions on Sales.Invoice."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The permissions unit distinguishes assignment rows filtered to a principal from its effective-permission function. Repeating a filter only for the user's grantee ID still omits the role grant already known to explain access. Such filtering is useful to inventory explicit user grants/denials, not this effective-rights task.",
+          "sourceIds": ["dp800-d2x-permissions-unit"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "The unit labels fn_my_permissions('Sales.Orders', 'OBJECT') as checking effective permissions for the current user. Substituting the specified Sales.Invoice object in that same current reporting-user context is supported, not incorrect. Running it in an administrator's context would answer a different question.",
+          "sourceIds": ["dp800-d2x-permissions-unit"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The Entra article uses sys.database_principals for identity inventory, including names, type and SID. The permissions unit joins that catalog to assignment rows rather than treating identity metadata as rights. Reading only a name/type does not determine effective access to Sales.Invoice.",
+          "sourceIds": [
+            "dp800-d2x-entra-authentication",
+            "dp800-d2x-permissions-unit"
+          ]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The DDM article describes sys.masked_columns as returning mask-definition metadata, including whether a column is masked and the masking function. Those rows do not answer the caller's effective object permissions. This view fits mask inventory, not diagnosis of inherited SELECT.",
+          "sourceIds": ["dp800-d2-masking"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 derives B from the actual effective-permission example and independently checks the assignment, principal and mask surfaces. The OBJECT invocation in the answer text was reviewed statically even though the record is single-select rather than code-format; nothing was executed. Current-user context excludes the administrator-query counterexample. Checked each admitted source and its training ancestry without accepting unrelated unit absolutes. Archived direct-096's permission transition is substantively different. Independent deductions capture the function-name clue and prediagnosed role context.",
+      "confidenceReason": "High confidence in the static diagnostic choice because the admitted unit explicitly names fn_my_permissions for current-user effective rights, and separate product evidence bounds both catalog distractors."
+    },
+    {
+      "questionId": "dp800-20260916-d2-006",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "04178325c6a40d98bf4ce8014fcd97f450683f3b95b5b3f585e72bf483dd2254",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-entra-authentication",
+          "url": "https://learn.microsoft.com/en-us/azure/azure-sql/database/authentication-aad-overview",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-entra-authentication.json",
+          "retrievedAt": "2026-09-16T19:39:43.663Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Configuration steps requires mapped SQL principals; the Important RBAC passage says SQL DB Contributor controls management operations, not SQL connectivity. Managed identities and contained users are supported. Permissions separately requires ALTER ANY USER and Graph lookup authority for principal creation; service-identity provisioning can require server Graph permissions."
+        },
+        {
+          "sourceId": "dp800-d2x-permissions-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-data-security-compliance/5-design-implement-object-level-permissions",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\security-5-design-implement-object-level-permissions.json",
+          "retrievedAt": "2026-09-16T19:33:08.151Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The unit creates users FROM EXTERNAL PROVIDER for managed identities, then independently assigns SQL grants/roles. Object-level GRANT examples support restricting reads to one table. Its passwordless guidance does not justify the unrelated claim that managed identities can never be stolen or misused."
+        },
+        {
+          "sourceId": "dp800-d2x-grant",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/grant-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-grant.json",
+          "retrievedAt": "2026-09-16T19:54:04.421Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "GRANT assigns a specific permission on a securable to a principal; database grants are scoped to the relevant database. Permissions explains broad db_owner/CONTROL authority. This supports object SELECT rather than database-owner elevation after the missing principal is established."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "The Entra article requires identities to exist as SQL principals in the databases they access and shows contained users FROM EXTERNAL PROVIDER. The unit applies that form to managed identities. A is supported, not incorrect: a valid token and SQL DB Contributor do not create this missing database user.",
+          "sourceIds": [
+            "dp800-d2x-entra-authentication",
+            "dp800-d2x-permissions-unit"
+          ]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The unit distinguishes password-based SQL authentication from managed-identity authentication, which avoids application-managed passwords. Replacing the connection with a stored SQL password abandons the stated passwordless requirement and does not perform the requested Entra user/grant setup.",
+          "sourceIds": [
+            "dp800-d2x-permissions-unit",
+            "dp800-d2x-entra-authentication"
+          ]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Creating a mapped identity and granting data access are separate steps. The unit's object grants and GRANT reference support SELECT on one specified table. C is supported, not incorrect, when paired with A: it supplies Dispatch reading without the broad authority of db_owner.",
+          "sourceIds": ["dp800-d2x-permissions-unit", "dp800-d2x-grant"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The Entra and GRANT documents describe db_owner/CONTROL as broad database administration, not Dispatch-only reading. Role membership also presupposes the missing database principal. db_owner may suit a trusted administrator but violates the application's specified access scope.",
+          "sourceIds": ["dp800-d2x-entra-authentication", "dp800-d2x-grant"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 independently derives exactly A,C after testing whether management RBAC, existing group access, stored-password authentication or administrative membership could replace either step. The closed access baseline and passwordless/table-only requirement exclude those alternatives. Statically checked user creation and object GRANT semantics; no provisioning or database connection was executed. Read actual Entra Graph/admin limitations and used authorized administrator as the actor, not as a grant to the application. Current exact approvals and full ancestry are unchanged. Compared narrow-role, removed-admin and OIDC questions and retained their distinct decisions. Rubric deductions are explicit rather than accepting the prior Advanced judgment without challenge.",
+      "confidenceReason": "High confidence in the necessary two-layer database repair from direct Entra/RBAC evidence and SQL grants; confidence does not extend to an unspecified administrator's Graph setup or complete runtime success."
+    },
+    {
+      "questionId": "dp800-20260916-d2-007",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "560fde69ea84f3d03440f0d4ac40665c4b1dc12bcbdea7524d5bc2fd43088fa4",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-entra-authentication",
+          "url": "https://learn.microsoft.com/en-us/azure/azure-sql/database/authentication-aad-overview",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-entra-authentication.json",
+          "retrievedAt": "2026-09-16T19:39:43.663Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Microsoft Entra administrator explicitly states that removing the logical-server administrator disables Entra-authentication connections even for existing users with database permissions. Limitations repeats the condition. The article separates Azure management RBAC from SQL connectivity, describes contained/login-based users, and now labels Azure SQL Database Entra logins GA while leaving Synapse logins Preview."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Creating mapped principals is necessary when users are absent, but the article says removing the administrator disables Entra connections even for existing permitted users. The stem preserves those users. Recreating or renaming them does not restore the removed server authentication prerequisite.",
+          "sourceIds": ["dp800-d2x-entra-authentication"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The article explicitly assigns SQL DB Contributor to Azure management-related operations, not data-plane connection access. Giving that role to applications does not set the logical-server Entra administrator or repair the disabled authentication integration.",
+          "sourceIds": ["dp800-d2x-entra-authentication"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "The product requires a configured Entra administrator to enable Entra authentication and explicitly disables even existing permitted users when it is removed. Restoring an approved administrator is supported, not incorrect, as the first configuration repair for the stipulated unchanged tokens, routes and users.",
+          "sourceIds": ["dp800-d2x-entra-authentication"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The article supports both contained and login-based Entra users, with login-based users inheriting server permissions. Neither design removes the requirement for an Entra administrator. Changing principal form while leaving that property unset does not restore the disabled connections.",
+          "sourceIds": ["dp800-d2x-entra-authentication"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 derives C by applying the actual administrator-removal rule and challenging contained users, login-based users and management RBAC as possible alternatives. The current source explicitly makes Azure SQL Database logins GA; no outdated Preview assertion was accepted. Static configuration review only, with no connection or administrator change performed. Checked the article's training reference and credential ancestry against exact catalog approval. The stem concerns reconnects and does not claim all existing sessions are terminated. Initial provisioning and SC-500's Entra-only acceptance question are distinct. The rubric deducts for the strongly signposted repair.",
+      "confidenceReason": "High confidence because two explicit product passages describe existing permitted Entra users losing connection capability after administrator removal; the answer remains conditional on the incident's stipulated unchanged layers."
+    },
+    {
+      "questionId": "dp800-20260916-d2-008",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "bd7dfdceb1ba83cb154f984cdf197a99b50b9eb2c0dd8047ffe1267813c20ee5",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-azure-audit",
+          "url": "https://learn.microsoft.com/en-us/azure/azure-sql/database/auditing-overview",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-azure-audit.json",
+          "retrievedAt": "2026-09-16T19:39:46.224Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Remarks explicitly says failed Entra login records do not appear in the SQL audit and directs investigators to the Entra admin center, explaining pre-database credential verification versus SQL-authentication verification at the requested database. The article separately warns about high-load event loss, outbound delivery restrictions and other audit limitations; none is generalized away."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The audit article distinguishes retaining captured events from failures that never reach the database and therefore are not audited there. Longer SQL retention may prevent existing records aging out, but it cannot create the stated pre-database Entra failure records.",
+          "sourceIds": ["dp800-d2x-azure-audit"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Remarks directs users to the Entra admin center for failed Entra logins and explains that failed credential verification precedes access to the requested database. B is supported, not incorrect, for these specified failures. It is a direction for investigation, not a guarantee of unlimited log retention or visibility for every investigator.",
+          "sourceIds": ["dp800-d2x-azure-audit"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "SQL auditing retains selected database actions; SELECT auditing concerns data reads after reaching the database. It cannot capture credential failures that prevent such access. Object auditing is useful for investigating actual reads, not the specified rejected authentication.",
+          "sourceIds": ["dp800-d2x-azure-audit"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The article says successful Entra and SQL logins both reach the database and can be audited. Those success records cannot stand in for a rejected Entra authentication. They can correlate an accepted session, but do not establish that the stated failed attempt was captured.",
+          "sourceIds": ["dp800-d2x-azure-audit"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 independently derives B from the actual Entra-versus-SQL authentication boundary. Challenged retention, post-connect data actions, successful-session correlation and genuine SQL audit delivery-loss conditions; the stem excludes competing delivery diagnoses. No log query, sign-in attempt or SQL execution was performed. The exact product article and audit-unit/root reference chain were inspected against current approval. This is not an enablement, GUID, outbound network, immutable-retention or SAS-credential duplicate. Rubric deductions recognize weak nonidentity distractors and a highly specified Intermediate incident. No universal capture or retention guarantee is attested.",
+      "confidenceReason": "High confidence in the recommended investigation surface because the product expressly directs it for this failure stage; bounded confidence only, not a claim that a particular tenant's logs were observed."
+    },
+    {
+      "questionId": "dp800-20260916-d2-009",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "31e6fa7af4ba43c08642fd8a1a103ce92ee98711587e6420a235d9bcdd74bb47",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-server-audit",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-database-engine",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-server-audit.json",
+          "retrievedAt": "2026-09-16T19:39:57.282Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Target prescribes active-file read/write for the SQL service, reduced archive ACLs for audit administrators/readers, and a separate restricted reporting instance. It warns that authenticated users can read/write the Windows Application log and that engine authority can reach active files. Permissions adds SQL Server 2022 VIEW SERVER SECURITY AUDIT and sysadmin/db_owner tampering limits."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "The product explicitly reduces copied archive ACLs to Audit Administrator read/write and Audit Reader read. A is supported, not incorrect: the production database service retains its needed active-file access but not a grant on the independent archive. OS administrators and audit administrators still require a separate trust model.",
+          "sourceIds": ["dp800-d2x-server-audit"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The Target section supports Windows Application logging but explicitly warns that authenticated users can read and write that log. Relying on its default access does not meet the requirement to restrict the independent archive to audit administrators/readers.",
+          "sourceIds": ["dp800-d2x-server-audit"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Service read/write is required on active audit files, but the article separately reduces archive ACLs to audit administrators/readers. Keeping production-service write on archived copies negates that separation. The active collection requirement is not permission to modify every closed archive.",
+          "sourceIds": ["dp800-d2x-server-audit"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "The Target section recommends audit reporting on a separate SQL instance accessible only to audit administrators/readers to reduce unauthorized access through the production engine. D is supported, not incorrect, when combined with the archive ACL control. The reporting service still needs deliberately authorized read access to its input.",
+          "sourceIds": ["dp800-d2x-server-audit"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 independently derives A,D after examining each principal's access to active files, closed archive copies and reports. The direct article supports both selected controls and explicitly rejects the Application-log default as equally restrictive. Static design review only: no ACL, audit or instance was configured. Current exact approval and actual audit-unit/root references were checked. The explanation retains sysadmin/OS/audit-admin limitations and does not promise immutable or lossless logs. Compared file-reader privileges, immutable Blob constraints and SAS formatting and found different tested facts. The independently scored Advanced rubric includes a deduction for the easily excluded retain-service-write distractor.",
+      "confidenceReason": "High confidence in the two-control design because the product provides separate active/archive ACLs and a reporting-instance recommendation, with explicit privilege and tampering caveats preserved."
+    },
+    {
+      "questionId": "dp800-20260916-d2-011",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "408b302f52b2dc7fc42e055e87e68c8f84e868ed759659bf51e0a2c2738a0b33",
+      "reviewedAt": "2026-09-16T23:45:34.435Z",
+      "verdict": "manual-review-required",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-external-rest",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-external-rest.json",
+          "retrievedAt": "2026-09-16T19:39:52.009Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Credential name rules and Grant permissions to use credential support complete scheme/host/path matching, parent-path scope, query-free credential names and REFERENCES on the selected credential. The same frozen body establishes Azure SQL support and default enablement but contains no affirmative GA/Preview classification for this Azure SQL Database feature. Its api-version=2024-08-01-preview example concerns the called Azure OpenAI API, not the lifecycle of the SQL invocation feature."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The reference requires complete corresponding URL path parts. arc is not the archive segment, so the chosen credential does not match this request. It would fit an otherwise valid request under the distinct arc deployment. This behavioral distinction is supported even though the SQL feature's asserted GA classification remains unestablished.",
+          "sourceIds": ["dp800-d2x-external-rest"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "An archive-deployment credential is the correctly scoped parent of the shown embeddings path, and the reference separately requires REFERENCES on that credential. B remains behaviorally supported, not incorrect. However, correct credential syntax and an enabled Azure SQL feature do not establish the authored GA lifecycle label, so this answer cannot authorize verification.",
+          "sourceIds": ["dp800-d2x-external-rest"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The reference allows a generic host-root credential and uses one in an Azure OpenAI example, so this is a valid matching alternative rather than malformed syntax. It violates the explicit archive-only scope because it also covers sibling deployment paths. Its possible use does not establish lifecycle status either.",
+          "sourceIds": ["dp800-d2x-external-rest"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The credential must cover the request from the same or a more generic path; an embeddings/details child cannot cover the parent embeddings request. A separately valid child request could satisfy the matching rule, but the article does not establish that this hypothetical OpenAI child operation exists or that the SQL invocation feature is GA.",
+          "sourceIds": ["dp800-d2x-external-rest"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": false,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Supersedes my 2026-09-16T23:35:25.006Z verification of this unchanged d2-011 snapshot. Independent rereading confirms B's URL-segment/ancestor/REFERENCES behavior but finds no affirmative GA/Preview classification for the exact Azure SQL external-REST feature in the cited frozen body or its admitted training ancestor. Applies to, default enablement, no Preview warning and curator GA metadata are not lifecycle proof. The Preview OpenAI api-version example classifies a different contract and is not a basis for relabeling. Therefore featureStatus fails and the final verdict is manual-review-required. No authored field, citation, source date, generation record or technical stage changed; no SQL or endpoint execution occurred. Earlier completed files remain immutable historical evidence.",
+      "confidenceReason": "High confidence in the conditional behavioral answer B and in the identified evidence gap; insufficient confidence to attest the authored GA label. The hold does not assert that the feature is actually Preview or unavailable, and it does not borrow a related candidate's source approval."
+    },
+    {
+      "questionId": "dp800-20260916-d2-012",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "34f8cbe6d163342bf73a24d0b50bf976ffd4fb6723ebe7e822cbafa73bb11760",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2-dab-procedures",
+          "url": "https://learn.microsoft.com/en-us/azure/data-api-builder/concept/rest/stored-procedures",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-dab-procedures.json",
+          "retrievedAt": "2026-09-16T19:43:04.459Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The current DAB 2.0-aware article requires execute for procedure entities, defines GET query-string versus POST JSON parameters and explicitly states No parameter-level authorization. Its current parameter-array format is not confused with the older teaching sample."
+        },
+        {
+          "sourceId": "dp800-d2-dab-objects",
+          "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/4-expose-database-objects-stored-procedures-views",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-4-expose-database-objects-stored-procedures-views.json",
+          "retrievedAt": "2026-09-16T19:33:05.627Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The important note distinguishes the shared database connection's permissions from the caller and requires validation/authorization in the procedure or trusted session-context RLS. The article's route examples establish naming as configuration, not tenant authorization; its outdated JSON examples are not used as executable contracts."
+        },
+        {
+          "sourceId": "dp800-d2-rls",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/security/row-level-security",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-rls.json",
+          "retrievedAt": "2026-09-16T19:39:52.032Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The middle-tier application example uses trusted application identity in SESSION_CONTEXT with a low-privilege shared SQL user and an enabled predicate. It places responsibility for setting the correct application identity on the middle tier and distinguishes it from the shared database principal."
+        },
+        {
+          "sourceId": "dp800-d2-dab-config",
+          "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/2-create-configuration-files-data-api-builder",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-2-create-configuration-files-data-api-builder.json",
+          "retrievedAt": "2026-09-16T19:33:00.124Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Configure the data source describes identity information being passed through session context for procedures/functions, while runtime path fields define API URLs. This supports the stipulated integration premise and rejects equating a route name with authorization; its unrelated automatic-config-merging claims are not adopted."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "The DAB product explicitly lacks parameter-level authorization, while the objects unit requires procedure validation/authorization or session-context RLS. The RLS middle-tier model uses trusted caller context despite a shared SQL identity. Validating or deriving TenantId from that already-trusted context is supported, not incorrect; trusting the supplied parameter alone is not sufficient.",
+          "sourceIds": [
+            "dp800-d2-dab-procedures",
+            "dp800-d2-dab-objects",
+            "dp800-d2-rls"
+          ]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The DAB REST article maps POST parameters to JSON body and GET parameters to query strings, but expressly supplies no parameter-level authorization. Moving TenantId to a body does not prove the authenticated caller owns it. POST is appropriate for supported procedure transport, not as tenant-ownership evidence.",
+          "sourceIds": ["dp800-d2-dab-procedures"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "DAB configuration describes paths as API URL settings, while the objects unit separately requires authorization within the procedure or session-context enforcement. Renaming a route to private changes its address, not validation of TenantId or the shared connection's authority.",
+          "sourceIds": ["dp800-d2-dab-config", "dp800-d2-dab-objects"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The direct procedure article requires execute but explicitly lists no parameter-level authorization. Execute therefore permits invocation, not arbitrary TenantId values. It could suffice for a genuinely tenant-independent operation or a procedure that already enforces tenant authorization internally; neither fixes this described parameter-only query.",
+          "sourceIds": ["dp800-d2-dab-procedures", "dp800-d2-dab-objects"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3 independently derives A after testing client-controlled JSON, route naming, shared SQL identity and the false assumption of DAB parameter authorization. Read actual current DAB procedure limits, training references and the RLS middle-tier context example. The trusted-context premise is essential; neither a header nor a configuration flag alone is attested trustworthy. No DAB server, procedure or JSON example was executed. Source/canonical approvals and ancestor receipts are unchanged. The decision is distinct from POST defaults, stdio transport/role syntax and generic least privilege. The independently authored 44/48 rubric explicitly retains substantial distractor and explanation-depth deductions without altering the frozen Advanced label.",
+      "confidenceReason": "High confidence in the bounded authorization answer from the product's explicit missing-parameter-authorization limitation and the stipulated trusted context; the minimum passing score reflects pedagogical weaknesses, not an assumed runtime test."
+    },
+    {
+      "questionId": "dp800-20260916-d2-013",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-security-20260916",
+      "questionFingerprint": "675b46bfd4c3026f6a8cf0a0855a2e60c2403f7776b2c973bab511c6163decbb",
+      "reviewedAt": "2026-09-16T23:35:25.006Z",
+      "verdict": "rejected",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-endpoint-security-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-data-security-compliance/8-secure-graphql-rest-mcp-endpoints",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\security-8-secure-graphql-rest-mcp-endpoints.json",
+          "retrievedAt": "2026-09-16T19:33:15.625Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Secure MCP endpoints recommends limiting operations, sensitive-table access, result sizes and logging, then explicitly calls for allowlists instead of malicious-pattern blocklists. Its illustrative MCP JSON is not a universal protocol contract and its substring SQL filter is not accepted as a safe authorization implementation."
+        },
+        {
+          "sourceId": "dp800-d2x-permissions-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-data-security-compliance/5-design-implement-object-level-permissions",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\security-5-design-implement-object-level-permissions.json",
+          "retrievedAt": "2026-09-16T19:33:08.151Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Object-level permissions and role sections place executable SQL authority in database principals and grants. They support narrowing the service account to approved reads, but not treating prompts or monitoring as permission changes. Unconditional DENY and managed-identity guarantees are not used."
+        },
+        {
+          "sourceId": "dp800-d2x-grant",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/grant-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-grant.json",
+          "retrievedAt": "2026-09-16T19:54:04.421Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The language reference grants specific operations on securables and describes broad owner/CONTROL authority. It grounds the distinction between a restricted reader and an administrative connection independently of any model instruction."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The endpoint unit treats untrusted AI queries as requiring enforced operation/object restrictions, while SQL permissions control actual database authority. Repeating a prompt leaves the administrative principal unchanged. Prompt guidance may be useful alongside authorization, but it is not the required enforced boundary.",
+          "sourceIds": [
+            "dp800-d2x-endpoint-security-unit",
+            "dp800-d2x-permissions-unit"
+          ]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The endpoint unit recommends logging MCP operations for monitoring, separately from restricting operations and object access. Keeping an administrator connection and logging its SQL does not prevent an authorized harmful operation from executing. Monitoring is complementary, not a grant restriction.",
+          "sourceIds": ["dp800-d2x-endpoint-security-unit", "dp800-d2x-grant"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "The endpoint unit calls for allowlisted read operations, and SQL permission sources allow only the approved object operations instead of administrative CONTROL. C is technically supported, not incorrect, given no needed privileged modules. It limits authority but does not eliminate every prompt-injection or allowed-read exfiltration risk. This technical support does not cure the same-fact duplicate rejection.",
+          "sourceIds": [
+            "dp800-d2x-endpoint-security-unit",
+            "dp800-d2x-permissions-unit",
+            "dp800-d2x-grant"
+          ]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The endpoint unit recommends result-size limits as a separate safeguard from restricting operations and tables. A lower row limit does not revoke write or sensitive-base-table rights held by the administrator. It may reduce response volume, but cannot establish the stated authorization boundary.",
+          "sourceIds": ["dp800-d2x-endpoint-security-unit", "dp800-d2x-grant"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": false,
+        "qualityReviewed": false
+      },
+      "verificationNotes": "PASS 3 independently re-derives technical key C but retains REJECTED. Direct comparison with the actual integrated dp800-direct-010 shows the same approved-read MCP setup and the same decisive principal-permissions-versus-advisory/ancillary-controls fact. A distinct conceptId, longer scenario and bundled allowlist do not create a separately tested inference; lexical success is not semantic originality. Original wording is present, but the duplicate/quality acceptance checks fail and originality receives 0/4. Every option and actual admitted source/ancestor was reviewed, with unsafe training filter/schema examples excluded. Static review only. No authored repair, gameplay installation or conversion of the technical rejection occurred.",
+      "confidenceReason": "High confidence both that C is technically supported and that this frozen item repeats direct-010's tested fact. Rejection follows substantive stem/option comparison, not lexical thresholds, source availability or blind deference to PASS 2."
+    }
+  ]
+}

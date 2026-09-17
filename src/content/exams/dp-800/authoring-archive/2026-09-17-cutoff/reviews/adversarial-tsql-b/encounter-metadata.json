@@ -1,0 +1,561 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-direct-036": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "a11a7ac8d996d058f5c921b4c610b33c41efd81dd93d961e1d037ae3a717ce9b",
+      "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+      "retrievedAt": "2026-09-16T19:47:28.696Z",
+      "lastValidatedAt": "2026-09-16T21:16:50.204Z",
+      "answerEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+          "summary": "Supported, not incorrect: append changes the saved sequence from receive/validate to receive/validate/verify; the next ordinary path replaces its first member only. All three surviving values match this answer."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+          "summary": "The first SET has already saved a third member. Replacing the element at index zero cannot discard the unaffected final member; this two-member document therefore cannot be the final returned value."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+          "summary": "The last path is $.stages[0], not append $.stages. It selects the existing first element and supplies no operation that could produce a fourth member."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+          "summary": "The actual indexed path addresses one array entry, leaving the enclosing stages array intact. Nothing in the second call targets the stages property as a whole."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "notes": "alignment 4/4: Current advanced-T-SQL JSON-function subskill directly covers the task. accuracy 4/4: The two-step document trace follows the literal paths and retained assignment. scenarioCompleteness 4/4: All input values and paths are displayed, with a whitespace convention. answerUniqueness 4/4: Only one complete document preserves both state transitions. distractorPlausibility 4/4: Each wrong document encodes a distinct plausible path or assignment mistake. distractorEvidence 4/4: The two sources directly distinguish append, index update and whole-property update. documentationStrength 4/4: The precise function contract and indexed-update example agree. citationSpecificity 4/4: Both exact citations support specific steps rather than just the JSON topic. difficultyAuthenticity 3/4: Two bounded state transitions are intermediate but not demanding synthesis. explanationQuality 4/4: Explanations distinguish assignment, path selection and returned output. originality 3/4: Original composition and values, using familiar documented mutation primitives. clarityAccessibility 4/4: Short prose plus complete, compact SQL makes all values visible.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-direct-037": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "3cc87710522a856ebb0e734239382021c5bd3dfa29170b4f4f2858429551e367",
+      "sourceIds": ["dp800-d1-json-object"],
+      "retrievedAt": "2026-09-16T19:34:50.273Z",
+      "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d1-json-object"],
+          "summary": "Supported, not incorrect: @comment is SQL NULL, but @code and @retry are nonnull. The explicit policy removes only comment, producing the two required keys and leaving retry as a number."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d1-json-object"],
+          "summary": "This expression produces code R9, numeric retry zero and a comment key with JSON null. The API demands that the key be absent, which is a different document contract."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d1-json-object"],
+          "summary": "The omitted policy defaults to NULL ON NULL in JSON_OBJECT, so it has the same retained-null output as a. Default behavior is not the desired omission."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d1-json-object"],
+          "summary": "N'' is a nonnull character expression. The policy tests SQL NULL, not emptiness, so the result contains comment with an empty JSON string and violates omission."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "notes": "alignment 4/4: Maps exactly to current JSON-function authoring objectives. accuracy 4/4: Type-aware construction and default policy yield the stated unique result. scenarioCompleteness 4/4: Typed variable values and the receiving API contract are complete. answerUniqueness 4/4: Neither retained-null nor retained-empty-string output satisfies absence. distractorPlausibility 3/4: a and b cover distinct syntax choices but the same erroneous result. distractorEvidence 4/4: One precise argument contract disproves every offered alternative. documentationStrength 4/4: Current product grammar, defaults and examples provide direct support. citationSpecificity 4/4: The sole source is the exact function's null-policy reference. difficultyAuthenticity 3/4: Applied intermediate distinction, mostly a single constructor-policy decision. explanationQuality 3/4: Accurate but the main explanation is terse; the deep explanation carries most teaching value. originality 4/4: Zero, missing comment and blank substitution make an original API contract. clarityAccessibility 4/4: Inputs and parallel expressions are compact and readable.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 3,
+          "originality": 4,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-direct-038": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "0aaa2acbe87cecac4b0beecd8c4bcc20f3fc2278c23df9974c36b2ada94e9351",
+      "sourceIds": ["dp800-d1-json-arrayagg"],
+      "retrievedAt": "2026-09-16T19:34:52.096Z",
+      "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+      "answerEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d1-json-arrayagg"],
+          "summary": "Supported, not incorrect: the distinct positions 10,20,30 determine the ascending order, and the explicit policy retains the SQL NULL middle row as one array slot. The resulting array is exactly the requested output."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d1-json-arrayagg"],
+          "summary": "The strings remain in position order but the middle row contributes no array element, giving [\"z\",\"a\"] rather than a three-position array."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d1-json-arrayagg"],
+          "summary": "Descending numeric Position visits 30,20,10, giving [\"a\",null,\"z\"]. Preserving the null does not repair the reversed endpoint order."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d1-json-arrayagg"],
+          "summary": "This produces [\"a\",\"z\"]: it fails both the required ascending endpoint order and the middle-slot requirement."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "notes": "alignment 4/4: Exact current JSON_ARRAYAGG objective alignment. accuracy 4/4: All four arrays follow the stated sort and null policies. scenarioCompleteness 4/4: Rows, types, unique positions and required complete output are supplied. answerUniqueness 4/4: Only one of the four independent policy combinations works. distractorPlausibility 4/4: Each wrong answer preserves one requirement or applies two familiar wrong defaults. distractorEvidence 4/4: The precise function arguments substantiate each alternative's output. documentationStrength 4/4: Current Azure-scoped grammar and examples provide unambiguous technical support. citationSpecificity 4/4: Exact aggregate reference, not a general JSON topic citation. difficultyAuthenticity 3/4: Two required decisions are intermediate but the trace is intentionally small. explanationQuality 4/4: Explains default omission and explicitly limits platform assumptions. originality 3/4: Original null-position fixture built from familiar ordering/null primitives. clarityAccessibility 4/4: Parallel expressions and a short literal array make comparison accessible.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d1-021": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "4ad49f5e4e7a7e9ee4268db7a4f4790d5d49e9c38c35c4a21288473762faf65e",
+      "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+      "retrievedAt": "2026-09-16T19:34:39.489Z",
+      "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+          "summary": "Supported, not incorrect: the anchor depth is zero, so inputs at depths zero, one and two produce depths one, two and three. Depth-three inputs produce no further rows. Equal sufficient path widths retain all stipulated valid walks, including bounded cyclic walks."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+          "summary": "The path types would agree, but a cycle can keep producing recursive rows past depth three. The final WHERE determines displayed rows, not whether the recursive member becomes empty, so this is not a bounded-walk implementation."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+          "summary": "Depth generation stops correctly and both expressions become nvarchar(20), but narrowing cannot retain the explicitly permitted longer paths. Satisfying recursive type equality by shortening the result violates the separate no-truncation requirement."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+          "summary": "The incompatible nvarchar(20)/nvarchar(200) expressions are unchanged, so the type defect remains before recursion can be useful. A recursion safeguard does not rewrite the member or establish successful enumeration through depth three."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "notes": "alignment 4/4: Directly maps to the current CTE-writing subskill. accuracy 4/4: The sufficient-width repair and depth induction satisfy the full contract. scenarioCompleteness 4/4: Cyclic data, width limits, types and required maximum edge count are explicit. answerUniqueness 4/4: Each partial repair leaves a distinct stipulated failure. distractorPlausibility 4/4: All alternatives resemble realistic recursive-CTE troubleshooting attempts. distractorEvidence 3/4: Type-width loss is a transparent static consequence rather than an exact cast example in the cited pages. documentationStrength 4/4: The product's mandatory equality and termination rules are specific and consistent. citationSpecificity 4/4: The precise CTE reference and recursive unit cover each decision. difficultyAuthenticity 4/4: Interacting compilation, truncation and termination constraints justify advanced. explanationQuality 4/4: The explanation separates semantic termination from the recursion guard. originality 4/4: Combines bounded cyclic walks with path-width repair, unlike nearby CTE items. clarityAccessibility 3/4: Long code and prose require careful tracking of input versus output depth.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 3,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 4,
+          "explanationQuality": 4,
+          "originality": 4,
+          "clarityAccessibility": 3
+        }
+      }
+    },
+    "dp800-20260916-d1-022": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "21a5fe445135d6c5a590edebb85ee434a2691757d6ec669798c3a99d1053892f",
+      "sourceIds": [
+        "dp800-d1x-lag",
+        "dp800-d1x-select",
+        "dp800-d1-window-unit"
+      ],
+      "retrievedAt": "2026-09-16T20:16:21.821Z",
+      "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+      "answerEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": [
+            "dp800-d1x-lag",
+            "dp800-d1x-select",
+            "dp800-d1-window-unit"
+          ],
+          "summary": "Supported, not incorrect: the inner result assigns each reading its actual predecessor using the complete meter partition. Removing older display rows in the outer query does not remove that predecessor from the already defined inner calculation."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d1x-lag", "dp800-d1x-select"],
+          "summary": "The older row is still outside the window input. For an older reading of 100 and first displayed reading of 80, the required delta is -20, whereas a zero default gives 80. A coincidental older value of zero is not a rowset repair."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d1-window-unit", "dp800-d1x-select"],
+          "summary": "LEAD under the unchanged ascending time/id order refers to a subsequent retained row, not the predecessor. For values 100 before cutoff, then 80 and 95, it gives 80-95 rather than 80-100."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d1x-lag", "dp800-d1x-select"],
+          "summary": "A larger offset still searches only the filtered partition and asks for two rows back, not one. The first displayed row has neither predecessor in that partition, so increasing the offset cannot recover the removed row."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "notes": "alignment 4/4: Exact current window-functions subskill. accuracy 4/4: Logical filtering and preceding-row lookup are correctly separated. scenarioCompleteness 4/4: History inclusion, cutoff role, nullability and tie order are stated. answerUniqueness 4/4: Only one option restores the correct comparison rowset generally. distractorPlausibility 3/4: Default, direction and offset mistakes are plausible but easy to eliminate once the boundary is recognized. distractorEvidence 4/4: Actual LAG, LEAD training and logical SELECT rules refute each alternative. documentationStrength 4/4: Two precise product contracts supply the distinct mechanisms. citationSpecificity 4/4: Each citation is linked to its particular row-scope or evaluation-order claim. difficultyAuthenticity 3/4: A real advanced boundary diagnosis, but one main structural decision. explanationQuality 4/4: Explanation explicitly avoids physical-plan and optional-null-feature overclaims. originality 4/4: Original display-boundary diagnostic, not another running-frame exercise. clarityAccessibility 4/4: Clear aliases and stated ordering make the symptom reproducible by reasoning.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 4,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d1-023": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "7fd0a29f5972005865420df019325883021d6878aac07a45d230fd1a22c8a139",
+      "sourceIds": ["dp800-d1x-regexp-replace", "dp800-d1x-regex-overview"],
+      "retrievedAt": "2026-09-16T19:53:15.363Z",
+      "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+      "answerEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d1x-regexp-replace", "dp800-d1x-regex-overview"],
+          "summary": "Supported, not incorrect: the matches are ab:12 and cd:34. In each, group two is numeric and group one is alphabetic. Occurrence zero applies the replacement to both, leaving the unmatched pipe and producing 12-ab|34-cd."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d1x-regexp-replace", "dp800-d1x-regex-overview"],
+          "summary": "This replaces both colons with hyphens but retains the original letter-before-digit order, yielding ab-12|cd-34. Replacing all tokens does not fix the wrong captured-group order."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d1x-regexp-replace"],
+          "summary": "Occurrence one changes ab:12 but leaves cd:34 untouched, so the resulting text is 12-ab|cd:34 rather than the complete requested transformation."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d1x-regexp-replace"],
+          "summary": "The first token remains ab:12 and only cd:34 becomes 34-cd, giving ab:12|34-cd. The task requires changing both tokens."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "notes": "alignment 4/4: Current regular-expression authoring subskill explicitly includes REGEXP_REPLACE. accuracy 4/4: Every substituted output follows the documented SQL parameter rules. scenarioCompleteness 4/4: Pattern, source, flags, start and target text are supplied. answerUniqueness 4/4: Only one pair swaps both complete matches. distractorPlausibility 4/4: All alternatives express realistic partial transformations. distractorEvidence 4/4: Specific capture-reference and occurrence clauses establish each rejection. documentationStrength 4/4: The exact product contract governs the named function, with overview grammar corroboration. citationSpecificity 4/4: Citations distinguish replacement syntax from regex pattern matching. difficultyAuthenticity 3/4: A small but genuine two-parameter intermediate implementation. explanationQuality 4/4: Explains both capture order and all-versus-numbered occurrences. originality 3/4: Original bounded token fixture using a familiar group-swap technique. clarityAccessibility 4/4: Parallel parameter choices and short input/output strings are easy to inspect.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d1-024": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "f8cde51ac264729c40f9407e9640ae68abcfb993ce42dcd0b7afd3b3a88331a5",
+      "sourceIds": ["dp800-d1x-regexp-substr", "dp800-d1x-regex-overview"],
+      "retrievedAt": "2026-09-16T19:53:17.656Z",
+      "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d1x-regexp-substr", "dp800-d1x-regex-overview"],
+          "summary": "Supported, not incorrect: resolving ic leaves c; the matches are A=28 and A=39; occurrence two selects A=39 and group two selects only its digits. The case-insensitive database collation does not override those stages."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d1x-regexp-substr", "dp800-d1x-regex-overview"],
+          "summary": "The final c in ic selects case-sensitive matching, so [A-Z] does not match the initial lowercase a. Even case-insensitive matching would need occurrence one, not the displayed two, to select 17."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d1x-regexp-substr", "dp800-d1x-regex-overview"],
+          "summary": "Under the final c flag, A=28 is match one, but the function requests match two. The input's raw token position is not the same as the ordinal among case-sensitive matches."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d1x-regexp-substr"],
+          "summary": "The correct match is selected, but the explicit final group argument is two. It extracts the digit subexpression rather than the whole match, so retaining A= is incorrect."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "notes": "alignment 4/4: Exact current REGEXP_SUBSTR objective alignment. accuracy 4/4: Final case policy, occurrence and group produce the stated text. scenarioCompleteness 4/4: The full literal call and competing collation are explicit. answerUniqueness 4/4: Only one choice satisfies all four dependent evaluation stages. distractorPlausibility 4/4: Each distractor is a coherent wrong stopping point or parameter interpretation. distractorEvidence 4/4: Every alternate context is directly supported by argument or collation clauses. documentationStrength 4/4: Product contract and overview independently support the critical distinction. citationSpecificity 4/4: Exact function and collation-specific evidence, not general regex familiarity. difficultyAuthenticity 3/4: Multiple dependent concepts justify advanced, but no broader design is required. explanationQuality 4/4: Explanation separates case resolution, match numbering and group extraction. originality 4/4: Original fixture deliberately distinguishes raw token order from match order. clarityAccessibility 4/4: Compact inputs and explicit numeric parameters keep the trace inspectable.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 4,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d1-025": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "e3e6962ae9957b5ebb801cce4f4461ab925c237fedf18e269f3b2e48a3bb506e",
+      "sourceIds": ["dp800-d1x-edit-distance", "dp800-d1x-edit-similarity"],
+      "retrievedAt": "2026-09-16T19:53:22.487Z",
+      "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d1x-edit-distance", "dp800-d1x-edit-similarity"],
+          "summary": "Supported, not incorrect: the Arguments section expressly says omission returns the actual distance. Sorting that count ascending directly meets the ranking requirement without relying on a disputed capped return value or length-normalized score."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d1x-edit-distance"],
+          "summary": "IDs contain no stipulated distance information. Two pairs whose uncapped distances differ can share an over-cap result under either documented capped interpretation, so arbitrary ID ordering cannot guarantee raw-count order."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d1x-edit-similarity"],
+          "summary": "The normalization denominator varies with string length. A distance of one with maximum length two has similarity 50, while distance two with maximum length ten has similarity 80; descending similarity reverses their raw-count ranking."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d1x-edit-distance"],
+          "summary": "Reducing the bound cannot recover an exact positive count. The detailed contract collapses positive distances to one, while the contradictory Return value sentence would cap them at zero; either interpretation still loses the required distinction."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "notes": "alignment 4/4: Direct alignment with the current fuzzy-string function subskill. accuracy 3/4: The key is defensible but the authored universal cap-return assertion is not unambiguously grounded. scenarioCompleteness 4/4: The retained-pair and varying-length ranking requirements are clear. answerUniqueness 4/4: Only uncapped raw distance guarantees the requested metric among these options. distractorPlausibility 3/4: Similarity is plausible; the ID and zero-cap alternatives are comparatively weak. distractorEvidence 3/4: Alternative metric and information-loss arguments are sound, but exact capped values are disputed. documentationStrength 3/4: An exact official article contradicts itself on the critical explanation's numeric return contract. citationSpecificity 4/4: Citations are the precise functions and reveal, rather than hide, the conflicting clauses. difficultyAuthenticity 3/4: A meaningful metric-composition scenario, with the uncapped choice strongly cued by exact ranking. explanationQuality 3/4: Useful ranking explanation but it overstates a disputed maximum+1 guarantee. originality 4/4: Original over-cap ranking failure rather than a copied fuzzy example. clarityAccessibility 4/4: The requirement, preserved candidates and metric alternatives are readable.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 3,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 3,
+          "documentationStrength": 3,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 3,
+          "originality": 4,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d1-027": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "530d8cbc0cbee7b551cffeedb0d157390bf8dea47f4e864f4a2a4c1e1491f317",
+      "sourceIds": [
+        "dp800-d1x-exists",
+        "dp800-d1x-correlated-unit",
+        "dp800-d1x-subqueries"
+      ],
+      "retrievedAt": "2026-09-16T20:16:18.625Z",
+      "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": [
+            "dp800-d1x-exists",
+            "dp800-d1x-correlated-unit",
+            "dp800-d1x-subqueries"
+          ],
+          "summary": "Supported, not incorrect: the first EXISTS rejects the empty set; the second detects both non-pass values and NULL. Pass-only nonempty batches remain, while NULL-only, fail-only, pass/fail and pass/NULL batches each fail."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d1x-exists", "dp800-d1x-subqueries"],
+          "summary": "For a batch containing a single NULL result, the first EXISTS is true but the <> predicate does not select the NULL as a counterexample. NOT EXISTS therefore succeeds and admits a batch the stem forbids."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d1x-exists", "dp800-d1x-correlated-unit"],
+          "summary": "A pass/fail batch contains a pass and no NULL, so both predicates succeed even though a failed test exists. Excluding NULLs does not establish universal success across nonnull results."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d1x-exists", "dp800-d1x-correlated-unit"],
+          "summary": "An empty batch returns no counterexamples, so NOT EXISTS is true. Nothing in this predicate requires a positive related row, making empty batches wrongly eligible."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "notes": "alignment 4/4: Exact current correlated-query subskill. accuracy 4/4: Static acceptance cases match the nonempty universal-success requirement. scenarioCompleteness 4/4: NULL, mixed results and empty batches are explicitly in scope. answerUniqueness 4/4: Each incorrect predicate has a concrete allowed counterexample. distractorPlausibility 4/4: Every alternative is legal SQL with a recognizable quantifier mistake. distractorEvidence 3/4: NULL handling is derived from the product's inequality example, not an exact copied truth table. documentationStrength 4/4: Direct EXISTS and correlated/comparison contracts suffice for the derivation. citationSpecificity 4/4: Specific sources are attached to row-presence, correlation and nullable comparison separately. difficultyAuthenticity 4/4: Interacting nonempty, universal and NULL logic genuinely supports advanced. explanationQuality 4/4: The explanation teaches the two independent safeguards accurately. originality 4/4: Original acceptance-rule composition, distinct from simple source existence examples. clarityAccessibility 3/4: Long single-line predicates require careful side-by-side reading.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 3,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 4,
+          "explanationQuality": 4,
+          "originality": 4,
+          "clarityAccessibility": 3
+        }
+      }
+    },
+    "dp800-20260916-d1-029": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "c307ec4d8c54f8000e1db4ebdb6fb39288a8077a3f6b55224165138402689dd3",
+      "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+      "retrievedAt": "2026-09-16T19:53:20.064Z",
+      "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+          "summary": "Supported, not incorrect: the direct missing-object statement is at A's handler level; B executes its Unicode statement in sp_executesql's separate compiled batch while the caller's TRY surrounds EXEC. The current product rule therefore yields exactly the two outcomes."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+          "summary": "Variant A's missing-table SELECT is compiled or resolved at the same execution level as its TRY...CATCH, which the product explicitly excludes from that handler. B being catchable does not make A catchable."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+          "summary": "The product explicitly names sp_executesql as an example of lower-level compilation that the surrounding CATCH can handle. The stipulated continuing connection and no-other-error condition leave B in that catchable case."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+          "summary": "This reverses both outcomes. Dynamic text is compiled at a lower level during sp_executesql execution, inside the outer TRY; same-level direct resolution does not acquire that boundary."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "notes": "alignment 4/4: Direct current error-handling objective alignment. accuracy 4/4: Compilation-level distinction correctly predicts both handlers. scenarioCompleteness 4/4: The environment and competing-error exclusions isolate the rule. answerUniqueness 4/4: Only d matches the two different execution levels. distractorPlausibility 3/4: Every/never wording in two distractors creates avoidable elimination clues. distractorEvidence 4/4: Every alternate context and rejection is tied to the precise catchability rules. documentationStrength 4/4: The handler article explicitly mentions the dynamic procedure, with a corroborating batch contract. citationSpecificity 4/4: Exact compilation-exclusion and separate-batch passages support the key. difficultyAuthenticity 3/4: Advanced scope diagnosis, but the stem already highlights its central mechanism. explanationQuality 4/4: Explanation accurately bounds catchability and avoids transaction overclaims. originality 3/4: Original two-variant question built on a standard documented missing-object demonstration. clarityAccessibility 4/4: Separate variants, concise handlers and clear outcome pairs are readable.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    }
+  }
+}

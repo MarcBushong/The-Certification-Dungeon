@@ -1,0 +1,225 @@
+[
+  {
+    "id": "dp800-direct-015",
+    "question": "A SQL Server 2022 performance report combines the two Query Store statistics rows shown for the same plan and execution type. Durations use the same unit, and these rows are the complete nonoverlapping input. Which expression computes the mean duration per execution across both rows?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "AVG(avg_duration)"
+      },
+      {
+        "id": "b",
+        "text": "SUM(avg_duration * count_executions) / SUM(count_executions)"
+      },
+      {
+        "id": "c",
+        "text": "SUM(avg_duration * count_executions)"
+      },
+      {
+        "id": "d",
+        "text": "MAX(avg_duration)"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Weight each recorded average by its execution count and divide by the total count.",
+    "deepExplanation": "Aggregated statistics rows can represent very different numbers of executions. Averaging their averages changes the denominator and overweights small intervals. The actual teaching query uses SUM(avg_duration * count_executions) divided by SUM(count_executions); the supplied positive counts avoid a zero denominator.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This gives each statistics row equal weight, producing 505 rather than weighting the 100 fast executions and one slow execution.",
+      "c": "This reconstructs total duration, 2000 in the stated unit, but does not divide by the 101 executions to obtain a mean.",
+      "d": "This returns the largest interval mean, 1000, rather than the mean across all executions."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "optimize-database-performance",
+    "subskill": "Evaluate query performance by using query execution plans, dynamic management views (DMVs), Query Store, and Query Performance Insight",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d2-store-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/05-monitor-tune-queries-query-store"
+    ],
+    "documentationTitles": [
+      "Monitor and tune queries with query store and query performance insight"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "query-store", "weighted-aggregation"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT interval_id, avg_duration, count_executions\nFROM (VALUES\n    (1, CAST(10 AS float), CAST(100 AS bigint)),\n    (2, CAST(1000 AS float), CAST(1 AS bigint))\n) AS Stats(interval_id, avg_duration, count_executions);",
+    "conceptId": "sql-query-store-execution-weighted-duration-across-statistics",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d2-store-unit"],
+    "verificationNotes": "PASS 3 independently selects b after challenging equal-count coincidence, total-versus-mean confusion and maximum-row-versus-maximum-execution confusion. I read the actual weighted SELECT and manually derived all four results; a JavaScript arithmetic assertion checks those numbers, not SQL execution. Static review covered the VALUES alias, float/bigint operands, positive denominator, population and units. SQL Server 2022 Query Store is in scope: the supplementary admitted product introduction covers SQL Server 2016 and later and names 2022, without borrowing newer replica features. No live catalog-view permissions or production extraction are prescribed by this supplied-data problem. Actual course/path/module/unit receipts and existing DP-800 approvals were inspected. The closest history-selection, correlated-trace and vector-recall questions require different evidence or metrics. Rubric 46/48 deducts for the tiny synthetic fixture and straightforward arithmetic, not correctness. Authored content and frozen source dates remain unchanged.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High for the stipulated population: independently derived 505, 2000/101, 2000 and 1000 are distinct and agree with the raw teaching formula. This does not attest an unshown production Query Store extraction, empty inputs, mixed execution types or overlapping intervals.",
+    "verifiedAt": "2026-09-16T23:10:51.414Z"
+  },
+  {
+    "id": "dp800-direct-016",
+    "question": "Two UPDATE statements form one explicit SQL Server 2022 transaction. During the second statement the transaction is selected as a deadlock victim and error 1205 is returned. No external side effects occurred, and a bounded retry of the complete operation is safe. After a short randomized delay, which recovery strategy applies?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Retry the failed statement in isolation"
+      },
+      {
+        "id": "b",
+        "text": "Commit the currently active transaction"
+      },
+      {
+        "id": "c",
+        "text": "Wait for a lock to be released and continue the existing transaction"
+      },
+      {
+        "id": "d",
+        "text": "Begin a new transaction and repeat the complete operation"
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Retry the complete rolled-back operation in a new transaction.",
+    "deepExplanation": "Ordinary blocking, successful commit and deadlock-victim recovery are different states. TRY...CATCH handling can continue after 1205, but it does not restore the old transaction. The supplied safe-retry and no-external-effects premises matter.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Both updates belonged to the rolled-back victim transaction. Retrying only the last statement would omit the earlier part of this unit of work.",
+      "b": "The stated victim transaction has been rolled back, so there is no surviving original transaction whose changes can be committed.",
+      "c": "Ordinary blocking can end when a conflicting lock is released, but this operation received 1205 and its original transaction no longer survives."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "optimize-database-performance",
+    "subskill": "Identify and resolve query performance issues, including blocking and deadlocks",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d2-deadlocks"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-deadlocks-guide"
+    ],
+    "documentationTitles": ["Deadlocks guide"],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "deadlock", "retry"],
+    "conceptId": "sql-deadlock-1205-retry-whole-transaction",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d2-deadlocks"],
+    "verificationNotes": "PASS 3 independently selects d. The strongest alternate interpretation is statement-only retry for a single autocommit operation; that fails the explicit two-statement victim here. I read the product’s transaction-wide rollback, normal-blocking contrast and TRY...CATCH text: a running CATCH does not prove a surviving transaction. Bounded safe retry and no external effects are supplied, and randomized delay does not guarantee success. No executable retry loop or SQL execution is claimed. SQL Server 2022 uses the ordinary GA victim mechanism; no service-tier, privileged diagnostic role, optimized-locking default or cheapest-victim shortcut is imported. Actual summary/document and root receipts were checked against existing DP-800 approvals. The SNAPSHOT neighbor needs rereading/recomputation; the sleeping-blocker neighbor concerns a still-live transaction. Rubric 46/48 deducts for easier distractor elimination and modest depth, including repeated complete-operation wording. No authored repair was made.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High because the actual 1205 description rolls back the transaction and both UPDATEs are explicitly inside it. Supplied replay safety eliminates the external-effects ambiguity; approval does not endorse arbitrary operations or unbounded retry loops.",
+    "verifiedAt": "2026-09-16T23:10:51.414Z"
+  },
+  {
+    "id": "dp800-20260916-d2-014",
+    "question": "A team is selecting an Azure SQL Database configuration for one database projected to grow to 12 TB. Sharding is out of scope. Compute usage is steady, and independent read scale-out is planned. The region offers the relevant tiers and ordinary GA compute sizes. Which option meets the storage boundary and the stated compute pattern?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "General Purpose with provisioned compute."
+      },
+      {
+        "id": "b",
+        "text": "Business Critical with provisioned compute."
+      },
+      {
+        "id": "c",
+        "text": "General Purpose with serverless compute."
+      },
+      {
+        "id": "d",
+        "text": "Hyperscale with provisioned compute."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Use Hyperscale for the large single database and provisioned compute for the steady workload.",
+    "deepExplanation": "Separate service-tier storage architecture from compute billing/scaling. Extra vCores or a serverless choice cannot turn a 4-TB tier into the required 12-TB database. This is a constraint-based recommendation, not a guarantee of latency, cost or replica freshness.",
+    "whyOtherAnswersAreWrong": {
+      "a": "General Purpose provisioned compute fits steady workloads within its supported storage size. Its documented 4-TB data limit cannot hold the projected 12-TB single database.",
+      "b": "Business Critical supplies local SSD storage and a readable replica for demanding OLTP. It also has a documented 4-TB data limit, so those advantages do not meet the 12-TB requirement.",
+      "c": "Serverless can fit intermittent demand, but changing compute tier does not remove General Purpose's storage boundary. This workload is also steady rather than the stated intermittent serverless use case."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "optimize-database-performance",
+    "subskill": "Recommend database configurations",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-sql/database/service-tiers-sql-database-vcore",
+      "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/02-recommend-database-configurations"
+    ],
+    "documentationTitles": [
+      "vCore purchasing model - Azure SQL Database",
+      "Recommend database configurations"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["azure-sql-database", "hyperscale", "capacity-planning"],
+    "conceptId": "azure-sql-hyperscale-large-single-database-with-provisioned-compute",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-service-tiers",
+      "dp800-d2x-config-unit"
+    ],
+    "verificationNotes": "PASS 3 independently selects d using 4 < 12 <= 128 TB, not a marketing default-tier label. Business Critical’s readable secondary and General Purpose’s serverless compute do not change their 4-TB data boundary. Sharding is excluded; region and ordinary GA sizes are supplied. Steady demand supports provisioned compute without making serverless impossible. I reread the actual product table, named-replica section, 160/192-vCore Preview footnote and separate compute guidance. The actual training summary directly links the approved product document, with course/path ancestry intact; no cloned policy or new URL approval was used. No subscription deployment, price measurement, SKU benchmark or SQL execution occurred. The absolute-word warning comes from denying a guarantee, not claiming infinite capacity. Rubric 45/48 deducts for conventional sizing originality, easy elimination of three 4-TB alternatives and modest depth. Adjacent cache-policy and cross-domain metric/UDF questions require different facts. No authored field or source date was changed.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High for choosing among these four: the raw table supplies a decisive single-database capacity mismatch for the alternatives, and independent compute guidance matches steady usage. This does not attest production sizing, regional quota, actual price, performance or replica-consistency guarantees.",
+    "verifiedAt": "2026-09-16T23:10:51.414Z"
+  },
+  {
+    "id": "dp800-20260916-d2-015",
+    "question": "In Azure SQL Database, thousands of distinct ad hoc statements execute once. Their full compiled plans consume much of the plan cache and displace frequently reused plans. Query parameterization cannot be changed in this release. The goal is to reduce storage for first-use ad hoc plans, not change parallelism or force a particular query plan. Which setting targets that goal?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Set database MAXDOP to 1."
+      },
+      {
+        "id": "b",
+        "text": "Enable OPTIMIZE_FOR_AD_HOC_WORKLOADS at database scope."
+      },
+      {
+        "id": "c",
+        "text": "Raise the database compatibility level to 170."
+      },
+      {
+        "id": "d",
+        "text": "Enable FORCE_LAST_GOOD_PLAN to restore a prior plan."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Enable OPTIMIZE_FOR_AD_HOC_WORKLOADS to reduce first-use ad hoc plan-cache storage.",
+    "deepExplanation": "The workload evidence identifies cache occupancy by single-use plans, not a slow parallel operator or one regressed query. The setting is not a substitute for later parameterization work and does not promise that first execution avoids compilation.",
+    "whyOtherAnswersAreWrong": {
+      "a": "MAXDOP constrains query parallelism and can be relevant to CPU/thread contention. It does not select compiled stubs instead of full first-use ad hoc plans.",
+      "c": "Compatibility level enables version-specific optimizer behavior. It is relevant to testing newer optimizer features, not the named control for retaining stubs for first-use ad hoc statements.",
+      "d": "Automatic plan correction addresses regressions between alternative plans for a query. It is useful for that scenario, not the accumulation of many distinct statements executed once."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "optimize-database-performance",
+    "subskill": "Recommend database configurations",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d2x-config-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/02-recommend-database-configurations"
+    ],
+    "documentationTitles": ["Recommend database configurations"],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["azure-sql-database", "plan-cache", "ad-hoc-workloads"],
+    "conceptId": "azure-sql-optimize-ad-hoc-workloads-plan-stubs-for-single-use-cache-pressure",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d2x-config-unit"],
+    "verificationNotes": "PASS 3 independently selects b after reading all four actual configuration sections and testing their alternative diagnoses. First-use storage is the goal, and parameterization changes are excluded; parallelism, optimizer adoption and prior-plan correction do not select stubs. The Azure SQL Database database-scoped statement is in the raw source; no SQL Server instance-level sp_configure permission or setting is borrowed. This asks which control targets the goal, not whether an already-enabled switch instantly clears old cache entries. I rejected zero-compilation and guaranteed-residency readings of the teaching prose. No SQL, cache experiment or configuration mutation was performed. Actual root-to-unit provenance and existing exact approvals were inspected. Rubric 45/48 deducts for a familiar setup, the ad hoc lexical cue and alternatives partly ruled out by the stem. Negative/pronoun warnings were reviewed: that goal refers to first-use storage. No authored text or source dates changed; approval is limited to this exact snapshot.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High for the narrow cache-policy selection: the real database-scoped statement and three contrasting sections support every option. The descriptive identifier and supplied diagnosis make the item easier, reflected in the rubric; neither replaces the inspected stub-versus-full-plan evidence.",
+    "verifiedAt": "2026-09-16T23:10:51.414Z"
+  }
+]

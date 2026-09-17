@@ -1,0 +1,54 @@
+[
+  {
+    "id": "dp800-direct-024",
+    "question": "For a hypothetical two-list ranking, each list containing a document contributes 1/(20 + rank) to its RRF score; an absent list contributes zero. Add the contributions using real-number arithmetic. A has rank 1 only in the keyword list, B has rank 2 in both lists, and C has rank 1 only in the vector list. Which proposed scores are correct, rounded to six decimal places?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "A = 0.023810; B = 0.045455; C = 0.023810"
+      },
+      {
+        "id": "b",
+        "text": "A = 0.047619; B = 0.041667; C = 0.047619"
+      },
+      {
+        "id": "c",
+        "text": "A = 0.097619; B = 0.090909; C = 0.097619"
+      },
+      {
+        "id": "d",
+        "text": "A = 0.047619; B = 0.090909; C = 0.047619"
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "A and C each score 1/21, or 0.047619. B scores 1/22 + 1/22 = 1/11, or 0.090909.",
+    "deepExplanation": "The rule applies the reciprocal separately to each present list and then sums those contributions. It neither averages the two list scores nor takes one reciprocal after adding rank numbers. Absence contributes zero, not the score for an invented rank zero. B remains the highest-scoring document, but selecting the complete score triple also requires preserving the correct singleton scores. These are stipulated mathematical scores; 20 is not asserted as a vendor default or an optimal tuning value.",
+    "whyOtherAnswersAreWrong": {
+      "a": "These values divide the correct scores by two, as if both lists had weight 0.5. The stated rule adds full contributions without that normalization.",
+      "b": "B's 0.041667 is 1/(20 + 2 + 2). The rule instead requires a separate reciprocal for each rank-2 appearance and then adds them.",
+      "c": "A and C each receive an extra 1/20 here, as if their absent list had rank zero. The problem explicitly assigns zero contribution to absence."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Implement reciprocal rank fusion (RRF)",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d3-hybrid"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking"
+    ],
+    "documentationTitles": ["Implement hybrid search and ranking"],
+    "generatedAt": "2026-09-17T00:28:26.501Z",
+    "lastValidatedAt": "2026-09-17T00:28:26.501Z",
+    "featureStatus": "Not applicable",
+    "tags": ["hybrid-search", "rrf", "ranking"],
+    "conceptId": "sql-hybrid-rrf-sums-reciprocal-rank-contributions",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 construction repair only: parallel mathematical score triples and fresh option claims; independent technical and adversarial review are pending.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": ""
+  }
+]

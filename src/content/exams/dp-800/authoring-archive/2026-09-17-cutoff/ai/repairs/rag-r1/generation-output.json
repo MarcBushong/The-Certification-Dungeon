@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-expansion-ai-rag-r1-20260916",
+  "authorId": "dp800-expansion-author-ai-20260916",
+  "generatedAt": "2026-09-16T22:52:40.927Z",
+  "candidates": [
+    {
+      "id": "dp800-direct-027",
+      "question": "An Azure SQL Database workflow has the valid JSON response shown in @response. The answer is a scalar string shorter than 200 characters. Which expression extracts that answer text rather than HTTP metadata or an object/array?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "JSON_VALUE(@response, '$.choices[0].message.content')"
+        },
+        {
+          "id": "b",
+          "text": "JSON_VALUE(@response, '$.result.choices[0].message.content')"
+        },
+        {
+          "id": "c",
+          "text": "JSON_QUERY(@response, '$.result.choices[0].message.content')"
+        },
+        {
+          "id": "d",
+          "text": "JSON_VALUE(@response, '$.response.status.http.code')"
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Use JSON_VALUE at $.result.choices[0].message.content.",
+      "deepExplanation": "Both the JSON path and the extracted value's type matter. The response shape and bounded string length are given explicitly; the answer does not assume every model API uses this envelope or that JSON_VALUE returns arbitrarily long strings.",
+      "whyOtherAnswersAreWrong": {
+        "a": "This path omits the result wrapper present in the supplied JSON, so it does not address the answer location.",
+        "c": "JSON_QUERY is for an object or array, whereas the supplied content value is a scalar string.",
+        "d": "This path addresses the HTTP status value 200, not the model answer text."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-retrieval-augmented-generation-rag",
+      "subskill": "Extract language model responses",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": [
+        "dp800-d3-rag-responses",
+        "dp800-d3x-json-value",
+        "dp800-d3x-json-query"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-value-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-query-transact-sql"
+      ],
+      "documentationTitles": [
+        "Generate and process RAG responses",
+        "JSON_VALUE (Transact-SQL)",
+        "JSON_QUERY (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T22:52:40.912Z",
+      "lastValidatedAt": "2026-09-16T22:52:40.912Z",
+      "featureStatus": "GA",
+      "tags": ["rag", "json-value", "response-parsing"],
+      "codeLanguage": "json",
+      "codeSnippet": "{\"response\":{\"status\":{\"http\":{\"code\":200}}},\"result\":{\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"The requested part is available.\"}}]}}",
+      "conceptId": "sql-rag-response-envelope-scalar-json-value-path",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 RAG repair only: existing classic JSON product citations added with unchanged source snapshots; independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    }
+  ]
+}

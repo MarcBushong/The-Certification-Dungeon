@@ -1,0 +1,600 @@
+[
+  {
+    "id": "dp800-direct-017",
+    "question": "A deployment pipeline has a built SQL project .dacpac and authorized access to its target database. An approver needs the proposed deployment's actual T-SQL as an artifact before any changes are applied. Which SqlPackage action produces that artifact without executing the deployment?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Publish"
+      },
+      {
+        "id": "b",
+        "text": "Script"
+      },
+      {
+        "id": "c",
+        "text": "DeployReport"
+      },
+      {
+        "id": "d",
+        "text": "Extract"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Use SqlPackage Script to generate the proposed T-SQL without applying it.",
+    "deepExplanation": "Artifact generation and deployment execution are distinct. This answer does not assume that Publish drops every target-only object; its behavior depends on the actual deployment options and differences.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Publish applies the deployment to the target rather than stopping after generation of the requested approval artifact.",
+      "c": "DeployReport produces an XML summary of planned operations, not the actual T-SQL artifact requested.",
+      "d": "Extract obtains a database schema representation; it does not generate this source-to-target deployment's proposed T-SQL."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Update an SQL database project and deploy changes",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d2-drift", "dp800-d2-project-build"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/05-detect-resolve-schema-drift",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects"
+    ],
+    "documentationTitles": [
+      "Detect and resolve schema drift",
+      "Create, build, and validate SQL database projects"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sql-database-projects", "sqlpackage", "deployment-review"],
+    "conceptId": "sqlpackage-script-versus-publish-extract-deployreport",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d2-drift", "dp800-d2-project-build"],
+    "verificationNotes": "Independent PASS 3: attempted to replace Script with a no-op Publish, report XML and Extract-generated SQL files; none meets both stated properties. Actual source sections and DP-800 ancestry were inspected. GA action semantics and the exact current objective map are supported. No SQL command or deployment was executed; codeReviewed records static action review. Reviewed duplication, output clues and the source's overbroad dropping language, which is not adopted. Final approval is scoped to this unchanged item, not gameplay installation.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in key B from explicit output and execution distinctions in both admitted training bodies; no inference from the technical verdict or availability result.",
+    "verifiedAt": "2026-09-16T22:57:00.484Z"
+  },
+  {
+    "id": "dp800-direct-018",
+    "question": "An SDK-style SQL database project creates a lookup table on its first deployment. Reference rows with stable primary keys must be present afterward. Later deployments retain the table and must reconcile those rows without duplicate-key errors. Which deployment strategy satisfies both the initial ordering and repeatability requirements?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Run the reference-data script before the schema deployment plan"
+      },
+      {
+        "id": "b",
+        "text": "Append the reference rows using INSERT after the schema deployment"
+      },
+      {
+        "id": "c",
+        "text": "Reconcile existing and missing reference keys in a versioned post-deployment script"
+      },
+      {
+        "id": "d",
+        "text": "Deploy only the schema model without a reference-data script"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Use a versioned, repeatable post-deployment data script.",
+    "deepExplanation": "The table must exist before seeding, and existing keys must be handled on reruns. Each alternative is a valid deployment strategy for another lifecycle, but only the post-deployment reconciliation strategy meets both stated conditions.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The lookup table does not exist before the initial schema deployment, so this timing cannot seed that new table.",
+      "b": "Appending the same required keys without handling existing rows can violate the retained table's primary key during a later deployment.",
+      "d": "A schema model creates schema objects but does not supply the required lookup rows in this stated workflow."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Create and manage reference/static data in source control",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d2-reference-data"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/03-configure-source-control-manage-reference-data"
+    ],
+    "documentationTitles": [
+      "Configure source control and manage reference data"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sql-database-projects", "reference-data", "postdeployment"],
+    "conceptId": "sql-project-postdeployment-reference-data-idempotence",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent PASS 3 HOLD. Key C is technically supported, but option B is not limited to plain unconditional INSERT replay. A guarded append of missing stable keys, with unchanged reference values, remains compatible with its text and the stem; the source's failure warning concerns plain INSERT, and the authored explanation adds an unstated 'without handling existing rows' condition. This is a source-bounded ambiguity challenge, not a claim of executing seed SQL. Current objectives, GA lifecycle, citations and distinctness were inspected. Any authored clarification requires fresh generation and both independent reviews.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in the ordering and reconciliation principles; insufficient confidence in exclusive key C because the option's general INSERT wording is broader than its rejection rationale."
+  },
+  {
+    "id": "dp800-20260916-d2-020",
+    "question": "SQL database unit tests run against a dedicated SQL Server 2022 test database. Each passes alone, but shuffled execution produces different totals because prior tests leave business rows behind. Deploying the same .dacpac does not remove those rows. Which change makes the tests independent without weakening their expected results?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Run the tests only in their currently passing order."
+      },
+      {
+        "id": "b",
+        "text": "Remove the total-value assertions and keep only connection checks."
+      },
+      {
+        "id": "c",
+        "text": "Give each test deterministic pre-test setup and appropriate post-test cleanup for its owned data."
+      },
+      {
+        "id": "d",
+        "text": "Assume a successful schema build clears every row created by a prior test."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Make test fixtures establish and clean up known state for each test.",
+    "deepExplanation": "A dedicated database prevents production impact but does not automatically isolate tests from each other. Schema deployment and data lifecycle are different concerns; setup and cleanup must intentionally manage the test-owned rows.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A fixed sequence can be appropriate for an explicitly ordered integration journey. It does not make independent unit tests robust against leftover data or reveal their hidden state coupling.",
+      "b": "Connectivity checks are useful smoke tests but do not verify the intended database logic. Removing value assertions hides the contamination instead of repairing test isolation.",
+      "d": "The model build does not execute test cleanup or validate deployment-script behavior. Schema validation is valuable but is not a reset of the deployed database's business data."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Design and implement a testing strategy, including unit tests and integration tests",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d2x-testing-unit", "dp800-d2x-pre-post-deployment"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts"
+    ],
+    "documentationTitles": [
+      "Design and implement a testing strategy",
+      "Pre-deployment and post-deployment scripts overview"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "sql-unit-tests", "test-isolation"],
+    "conceptId": "sql-unit-test-fixtures-reset-state-and-cleanup-not-schema-redeployment",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-testing-unit",
+      "dp800-d2x-pre-post-deployment"
+    ],
+    "verificationNotes": "Independent PASS 3: challenged fixed-order integration, smoke checks, redeployment reset and parallel-test countercontexts. C alone repairs the given sequential order-dependent state without weakening totals. Actual pre/test/post evidence and the product build boundary were read. GA SQL Server 2022 scope and current subskill are supported. No fixtures or database tests were executed; review is static. Duplicate and construction checks were independently interpreted rather than taken as semantic proof.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in C for the stated residual-row cause; real test implementation, cleanup error handling and any concurrent test isolation remain outside the attested content.",
+    "verifiedAt": "2026-09-16T22:57:00.484Z"
+  },
+  {
+    "id": "dp800-20260916-d2-021",
+    "question": "An SDK-style SQL project has one PostDeploy.sql entry point containing the SQLCMD include shown. The versioned seed script contains data-changing statements, not schema definitions. Default .sql globbing currently sends it into model compilation. The file must remain in source control and visible in the VS Code project view, but execute only through the post-deployment entry point. Select two project-item changes.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Add a Build Remove entry for Seed\\delivery-states.sql."
+      },
+      {
+        "id": "b",
+        "text": "Delete the seed script from source control and leave the SQLCMD reference unchanged."
+      },
+      {
+        "id": "c",
+        "text": "Add a None Include entry for Seed\\delivery-states.sql."
+      },
+      {
+        "id": "d",
+        "text": "Declare the seed file as a second independent PostDeploy entry point."
+      }
+    ],
+    "correctAnswer": ["a", "c"],
+    "explanation": "Use Build Remove plus None Include for the included seed file.",
+    "deepExplanation": "Model compilation, file visibility and deployment packaging are separate. The SQLCMD include determines deployment inclusion, while the item changes keep data statements out of schema compilation without discarding the versioned file.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Removing generated outputs from source control is appropriate, but this seed file is required authored data logic. Deleting it breaks the include and loses its version history.",
+      "d": "The project supports one post-deployment entry point. Multiple data files are combined through SQLCMD includes; separate entry points are not the documented model for this requirement."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Create and manage reference/static data in source control",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d2-reference-data", "dp800-d2x-pre-post-deployment"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/03-configure-source-control-manage-reference-data",
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts"
+    ],
+    "documentationTitles": [
+      "Configure source control and manage reference data",
+      "Pre-deployment and post-deployment scripts overview"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sdk-style-sql-project", "reference-data", "sqlcmd"],
+    "codeLanguage": "sql",
+    "codeSnippet": ":r .\\Seed\\delivery-states.sql",
+    "conceptId": "sql-project-reference-script-build-remove-none-include-preserves-sqlcmd-packaging",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2-reference-data",
+      "dp800-d2x-pre-post-deployment"
+    ],
+    "verificationNotes": "Independent PASS 3: challenged None without Build Remove, Build Remove without visibility, removed child sources and a second PostDeploy root. Only A,C meets the stated three-mechanism contract. The actual product article explicitly supports the VS Code visibility distinction. The displayed :r directive is SQLCMD syntax, not standalone T-SQL; review checked its path and inclusion semantics statically, not a live build. Current objective, GA context, source ancestry and semantic distinctness were independently checked.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in A,C from the exact product behavior and corroborating training example. No attestation is made about the missing seed implementation or an executed deployment.",
+    "verifiedAt": "2026-09-16T22:57:00.484Z"
+  },
+  {
+    "id": "dp800-20260916-d2-022",
+    "question": "A GA VS Code SDK-style SQL project is intended only for SQL Server 2022. Its schema uses a feature available in SQL Server 2022 but not SQL Server 2017. The required objects are present, yet model validation reports the older syntax boundary because the project's target platform is Sql140. Which correction aligns validation with the deployment contract?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Change only the deployment connection string while retaining Sql140."
+      },
+      {
+        "id": "b",
+        "text": "Disable validation for the object while retaining the old target."
+      },
+      {
+        "id": "c",
+        "text": "Set the project's target platform to SQL Server 2022 and rebuild."
+      },
+      {
+        "id": "d",
+        "text": "Set the target to the newest available SQL version regardless of the deployment engine."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Match the SQL project target platform to SQL Server 2022, then rebuild.",
+    "deepExplanation": "The .NET SDK that runs the build and the SQL target platform answer different version questions. This stem stipulates the feature boundary without requiring an unsupported preview feature or an ungrounded SQL syntax example.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The connection string selects the runtime deployment destination. It is appropriate when the destination changes, but it does not change the project's build-time SQL syntax target.",
+      "b": "Excluding nonmodel deployment scripts can be appropriate, but this object is required schema. Bypassing its model validation loses the target-version check instead of aligning it.",
+      "d": "A newer target is appropriate when deploying to that newer engine. It can admit features outside a SQL Server 2022 contract, so it is not the requested version-aligned validation."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Create, build, and validate database models by using SQL Database Projects, including SDK-style models",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d2-project-build", "dp800-d2x-sql-projects"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects",
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-database-projects"
+    ],
+    "documentationTitles": [
+      "Create, build, and validate SQL database projects",
+      "What are SQL database projects?"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sdk-style-sql-project", "target-platform", "build-validation"],
+    "conceptId": "sql-project-target-platform-validates-syntax-against-deployment-engine-version",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2-project-build",
+      "dp800-d2x-sql-projects"
+    ],
+    "verificationNotes": "Independent PASS 3: tested runtime-destination, validation-bypass, newest-target and mixed-engine alternatives. The 2022-only contract uniquely supports C. The current product source independently confirms Sql140 and the SDK UI lifecycle boundary. No SQL feature implementation, SDK build or deployment was executed; static platform semantics were reviewed. Sources, exact objective map and related concepts were independently checked rather than accepting Pass 2's label.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in C because the product article states the precise target-version validation relationship. Approval does not attest any unprovided engine-specific feature syntax or runtime result.",
+    "verifiedAt": "2026-09-16T22:57:00.484Z"
+  },
+  {
+    "id": "dp800-20260916-d2-024",
+    "question": "A database team wants Git reviews to show changes to individual tables and procedures, with reproducible CI builds and versioned seed data. It currently checks in only each release's .dacpac. Which repository layout should become the authoritative development source?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Track the .sqlproj, per-object SQL and deployment-data scripts; keep generated bin/obj and .dacpac outputs out of the source tree."
+      },
+      {
+        "id": "b",
+        "text": "Track only each generated .dacpac and keep editable object definitions on developers' machines."
+      },
+      {
+        "id": "c",
+        "text": "Track only bin and obj directories because they contain the last successful build."
+      },
+      {
+        "id": "d",
+        "text": "Track only database connection settings and extract every release directly from production."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Version the authored SQL project and data scripts, not just generated build artifacts.",
+    "deepExplanation": "Deployment artifacts can be retained in an artifact store with build lineage. That does not replace source control for the declarative model, reference data and reviewable changes.",
+    "whyOtherAnswersAreWrong": {
+      "b": "A .dacpac is a useful deployment artifact, but binary-only versioning does not provide the requested authored object diffs or a complete reproducible source set.",
+      "c": "Generated build folders can be retained as temporary build diagnostics, but they are not the authored model and seed-data source the team needs to review and rebuild.",
+      "d": "Extraction can help baseline or reconcile a live database. Connection settings alone do not version the reviewed object definitions and data scripts that should drive this development workflow."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Configure source control for SQL Database Projects",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d2-reference-data", "dp800-d2-project-build"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/03-configure-source-control-manage-reference-data",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects"
+    ],
+    "documentationTitles": [
+      "Configure source control and manage reference data",
+      "Create, build, and validate SQL database projects"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sql-database-projects", "git", "source-control"],
+    "conceptId": "sql-project-source-control-authored-model-and-seeds-not-generated-binaries",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2-reference-data",
+      "dp800-d2-project-build"
+    ],
+    "verificationNotes": "Independent PASS 3: considered binary artifacts retained outside source, production baselining, generated caches and dependency-controlled rebuilds. A remains uniquely responsive to authoritative editable model and seed management. No build was run, and no reproducibility or runtime guarantee is attributed to this layout alone. Actual source examples, current objective alignment, GA software behavior and related integrated concepts were reviewed. Final metadata does not install content.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in A as the requested development layout, with explicit limits separating source retention, artifact retention and real reproducible-build configuration.",
+    "verifiedAt": "2026-09-16T22:57:00.484Z"
+  },
+  {
+    "id": "dp800-20260916-d2-025",
+    "question": "In an SDK-style SQL project, dbo.Parcel already has a versioned CREATE TABLE definition. A developer adds a second dated SQL file declaring dbo.Parcel again with a new column, expecting build order to act like sequential migrations. The project must remain a declarative source of the desired schema. How should the change be represented?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep both CREATE TABLE files and arrange their filenames in date order."
+      },
+      {
+        "id": "b",
+        "text": "Edit the existing Parcel definition to include the column and let Git preserve the earlier version."
+      },
+      {
+        "id": "c",
+        "text": "Keep the old model unchanged and put the schema difference only into an unmodeled post-deployment script."
+      },
+      {
+        "id": "d",
+        "text": "Remove all Parcel definitions and rely on the existing production table during every build."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Update the one declarative object definition and retain its history in Git.",
+    "deepExplanation": "A migration history and a current-state SQL model are different authoring approaches. SqlPackage derives target-specific changes from the desired model; date-ordered duplicate CREATE declarations do not supply that model.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Sequential migration tooling can use ordered change scripts. A SQL project instead models each object once, so filename order does not turn two object declarations into a migration chain.",
+      "c": "Post-deployment scripts are useful for data work outside the schema model. Leaving the desired schema change out of that model defeats the stated declarative source-of-truth requirement.",
+      "d": "A live database can be used as an extraction source, but it does not replace the required table definition in a self-contained model. This would discard the object's versioned desired state."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Configure source control for SQL Database Projects",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d2x-sql-projects",
+      "dp800-d2-reference-data",
+      "dp800-d2x-pre-post-deployment"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-database-projects",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/03-configure-source-control-manage-reference-data",
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts"
+    ],
+    "documentationTitles": [
+      "What are SQL database projects?",
+      "Configure source control and manage reference data",
+      "Pre-deployment and post-deployment scripts overview"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sdk-style-sql-project", "declarative-schema", "source-control"],
+    "conceptId": "sql-project-single-desired-object-definition-not-sequential-migration-files",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-sql-projects",
+      "dp800-d2-reference-data",
+      "dp800-d2x-pre-post-deployment"
+    ],
+    "verificationNotes": "Independent PASS 3: considered real migration runners, post-deployment DDL, live-schema extraction and references to objects outside a model. Those different architectures do not satisfy this unchanged single-table declarative requirement. B is uniquely supported. The product rule and script boundary were reread directly; no CREATE statement or model build was executed. Current objectives, actual GA software scope and related integrated items were independently inspected.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in B for this declared model architecture, without claiming all migration frameworks, post-deployment DDL or external references are invalid in other contexts.",
+    "verifiedAt": "2026-09-16T22:57:00.484Z"
+  },
+  {
+    "id": "dp800-20260916-d2-028",
+    "question": "Several database deployment pipelines temporarily must use an approved SQL-authentication account. Security requires one centrally managed password value, rotation without editing repositories, and secret retrieval only by authorized deployment jobs. A central Azure Key Vault and workload access to it are already configured. Which pattern meets these requirements?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Maintain a separate repository-secret copy of the password in every repository."
+      },
+      {
+        "id": "b",
+        "text": "Retrieve the centrally stored Key Vault secret during the authorized deploy job and inject it without logging the value."
+      },
+      {
+        "id": "c",
+        "text": "Store a separate protected environment-secret copy in each deployment environment."
+      },
+      {
+        "id": "d",
+        "text": "Replace SQL authentication with federated Entra authentication immediately, without changing the approved target authentication contract."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Fetch the centrally managed Key Vault secret at authorized deployment time.",
+    "deepExplanation": "Protected storage, centralized rotation and job-level access are separate requirements. Key Vault is not a guarantee that a careless pipeline cannot leak a value; access and logging must remain controlled.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Repository secrets avoid hardcoding credentials and suit decentralized secret ownership. Separate copies do not provide the requested single centrally rotated authoritative value.",
+      "c": "Environment secrets are useful for environment-specific isolation. Independent copies still require coordinated updates and do not satisfy the stated single central password source.",
+      "d": "Federation is a strong alternative when the target and policy permit it. This scenario explicitly retains SQL authentication temporarily, so changing the identity method is outside the current constraint."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Implement secrets management",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["dp800-d2x-pipeline-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/06-implement-cicd-pipelines"
+    ],
+    "documentationTitles": ["Implement CI/CD pipelines"],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sql-deployment", "key-vault", "secrets-management"],
+    "conceptId": "sql-pipeline-central-key-vault-runtime-secret-retrieval-versus-replicated-secrets",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d2x-pipeline-unit"],
+    "verificationNotes": "Independent PASS 3: considered synchronized secret copies, environment-scoped credentials, future Entra migration, stale secret versions and unsynchronized SQL-password rotation. None invalidates B as a bounded central retrieval pattern, but no automatic rotation or leak-immunity claim is approved. Actual pipeline teaching sections and provenance were inspected; no vault call, secret value, YAML or authentication was executed. Current objective and GA behavior are supported. The reviewed metadata remains outside gameplay.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in B for a single authoritative password under the stated temporary contract. Confidence does not extend to an unprovided rotation workflow or actual job access configuration.",
+    "verifiedAt": "2026-09-16T22:57:00.484Z"
+  },
+  {
+    "id": "dp800-20260916-d2-029",
+    "question": "A SQL deployment job must authenticate to Azure without a pipeline-managed long-lived client secret, certificate private key or SQL password. Federated trust, the job's OIDC token permissions, target Entra principal/SQL permissions and network access are already configured. Which authentication pattern uses these prerequisites?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use the job's OIDC token with the configured federated credential for Azure sign-in."
+      },
+      {
+        "id": "b",
+        "text": "Retrieve an application client secret from Key Vault for service-principal sign-in."
+      },
+      {
+        "id": "c",
+        "text": "Store a long-lived service-principal certificate private key in the deployment environment."
+      },
+      {
+        "id": "d",
+        "text": "Use a SQL-authentication connection string injected from a protected environment secret."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use the already configured OIDC federated authentication flow.",
+    "deepExplanation": "Federation removes one category of stored credential; it does not automatically grant SQL access or network connectivity. Those independent requirements are supplied in the scenario so that the question concerns authentication design, not omitted setup.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Key Vault protects and centralizes a client secret and can fit a secret-based service principal. It still relies on the long-lived credential that this requirement excludes.",
+      "c": "Certificate-based authentication can be stronger than a shared secret, but the stated option still introduces a pipeline-managed long-lived private key. It fits a different credential-management policy.",
+      "d": "Protected environment secrets are appropriate for authorized password-based deployments. This still uses a SQL password instead of the configured federation and violates the no-long-lived-credential requirement."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Implement secrets management",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d2x-pipeline-unit", "dp800-d2x-permissions-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/06-implement-cicd-pipelines",
+      "https://learn.microsoft.com/en-us/training/modules/implement-data-security-compliance/5-design-implement-object-level-permissions"
+    ],
+    "documentationTitles": [
+      "Implement CI/CD pipelines",
+      "Manage permissions and secure access"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sql-deployment", "oidc", "federated-identity"],
+    "conceptId": "sql-pipeline-oidc-federation-removes-managed-long-lived-login-credentials",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-pipeline-unit",
+      "dp800-d2x-permissions-unit"
+    ],
+    "verificationNotes": "Independent PASS 3: challenged vault-protected and hypothetically short-lived client secrets, certificates, SQL passwords, managed-identity alternatives and the difference between Azure sign-in and SQL access. A uniquely uses the stated federation without the prohibited managed credentials. Actual OIDC and permission bodies were read, with no token exchange, SDK command or live authentication executed. Current objective, GA scope and full DP-800 source ancestry are supported; source dates stay frozen.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in A as the sign-in pattern that uses the configured prerequisites. This does not approve the source's incomplete sample YAML or attest a live SQL access-token implementation.",
+    "verifiedAt": "2026-09-16T22:57:00.484Z"
+  },
+  {
+    "id": "dp800-20260916-d2-032",
+    "question": "A SQL project deployment has a prerequisite column rename. A developer places it in a pre-deployment script and assumes SqlPackage calculates the schema plan afterward. Inspection shows the proposed deployment plan still references the old column. An isolated target clone and an approved staged-migration window are available. Which approach avoids relying on the false planning-order assumption?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Test the prerequisite as a separate controlled stage, regenerate and review the plan against that resulting schema, and validate the complete staged deployment."
+      },
+      {
+        "id": "b",
+        "text": "Keep the prerequisite in pre-deployment and assume the same publish automatically recalculates every dependency afterward."
+      },
+      {
+        "id": "c",
+        "text": "Rename the pre-deployment script file so it sorts before the model files."
+      },
+      {
+        "id": "d",
+        "text": "Use the unchanged green model build as sufficient proof that the prerequisite script is safe."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Stage and test the prerequisite separately, then generate the deployment plan for the resulting target state.",
+    "deepExplanation": "The deciding issue is the boundary between plan calculation, pre-script execution and plan execution. A staged migration needs explicit validation of schema and data effects; moving code into a pre-script does not renew a previously calculated plan.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Pre-deployment runs before plan execution, not before plan calculation. It can perform compatible preparation, but the documented ordering does not support this assumed automatic replan.",
+      "c": "Filename organization can help navigation, but it does not change the documented deployment-planning order. Pre/post script treatment is defined by project items and deployment stages, not lexical filenames.",
+      "d": "Pre/post scripts are packaged but not compiled or validated with the database object model. A green build is useful structural evidence, not proof of this target-dependent staged migration."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Update an SQL database project and deploy changes",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "dp800-d2x-pre-post-deployment",
+      "dp800-d2x-compare-project",
+      "dp800-d2x-testing-unit"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts",
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/howto/compare-database-project",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy"
+    ],
+    "documentationTitles": [
+      "Pre-deployment and post-deployment scripts overview",
+      "Compare a database and a project",
+      "Design and implement a testing strategy"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-database-projects",
+      "deployment-planning",
+      "staged-migration"
+    ],
+    "conceptId": "sql-project-predeployment-executes-after-plan-calculation-stage-prerequisites-separately",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent PASS 3 HOLD for inflated Advanced difficulty and answer construction, not key A. The stem announces that the assumption is false, supplies the stale-plan observation and authorizes a separate migration stage; A simply repeats stage/replan/test, while alternatives repeat the known error or implausible shortcuts. No concrete dependency analysis or interacting constraint justifies Advanced architecture-design. Actual sources support the technical key and all option exclusions. No rename SQL, deployment or live test was executed. Any label or scenario repair requires fresh generation and both independent review passes.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in A's bounded technical recommendation and in the disclosed-reasoning problem. The current wording does not earn the required Advanced realism score despite strong documentation."
+  }
+]

@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-direct-015": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "e9a2f7ce4f27d31975203452cb31f86610856c40f2a5368b574ed6bfae836e87",
+      "sourceIds": ["dp800-d2-store-unit"],
+      "retrievedAt": "2026-09-16T19:33:08.032Z",
+      "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+      "answerEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2-store-unit"],
+          "summary": "Supported, not incorrect: the documented weighted calculation reconstructs 10*100 + 1000*1 = 2000 duration units and divides by 100 + 1 = 101 executions, approximately 19.801980198. The float means avoid integer division, counts are positive, and the stem excludes overlapping populations and mismatched units. These conditions make b the sole combined per-execution mean."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2-store-unit"],
+          "summary": "The unit aggregates represented executions, not merely statistics rows. Giving the two means equal weight calculates (10 + 1000) / 2 = 505 even though their populations are 100 and 1. An equal-weight mean of interval means, or a fixture with equal execution counts, could justify AVG(avg_duration); neither describes these 101 executions."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2-store-unit"],
+          "summary": "Multiplying each row mean by its count recovers represented duration, so this expression gives 2000, not a mean of 101 executions. It is appropriate for a summed-execution-duration question. The teaching formula contains this numerator but also the count denominator; omitting that denominator changes the requested metric."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d2-store-unit"],
+          "summary": "The maximum supplied row mean is 1000. Selecting the worst interval mean is a legitimate Maximum-style comparison, but not the combined population mean. Nor does this expression generally reveal the slowest individual execution: its inputs are already averages. The unit’s runtime description and distinct report aggregations establish that boundary."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-16T23:10:51.414Z",
+        "notes": "46/48, independently scored against the current performance-evaluation objective. ScenarioCompleteness 3: correctness preconditions are complete, but this minimal supplied-data fixture has limited operational realism. DifficultyAuthenticity 3: two-row unequal-count weighting is applied but narrow. Accuracy, answer uniqueness, option plausibility/evidence and documentation/citation specificity are 4 because the real unit formula and four recomputed values establish every distinction. Alignment 4 matches the current Query Store subskill. ExplanationQuality 4 credits metric-specific errors; originality 4 credits a distinct population-weighting exercise rather than another history-selection question; clarityAccessibility 4 credits explicit population, units and compact readable code.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 3,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 4,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-direct-016": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "ca899bb7c5a3546a8c2a876c8d569fd45a8709a7e584f33f93be07c169bad5ba",
+      "sourceIds": ["dp800-d2-deadlocks"],
+      "retrievedAt": "2026-09-16T19:43:09.576Z",
+      "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d2-deadlocks"],
+          "summary": "Supported, not incorrect: rerunning the entire victim transaction means beginning a new transaction and executing both updates again. The stem makes a bounded complete retry safe and excludes external side effects; the source recommends a randomized pause. This is a recovery strategy, not a promise of success on the next attempt."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2-deadlocks"],
+          "summary": "The guide makes the victim transaction the rollback unit. Here it contains both UPDATEs, so repeating only the second cannot restore the first one’s undone work. A failed autocommit statement that is itself the entire safe unit could be retried alone; the guide’s separate autocommit example illustrates that different boundary."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2-deadlocks"],
+          "summary": "The 1205 handler runs after the original victim transaction was rolled back. No remaining original pair of updates exists for COMMIT to finalize. Committing a still-live, committable transaction after its work finishes is valid in the guide’s normal transaction-completion context, not after this victim rollback."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2-deadlocks"],
+          "summary": "The raw guide distinguishes normal blocking from victim termination: a blocked transaction can continue when the lock owner finishes, but a 1205 victim cannot resume its discarded transaction. A randomized delay is useful before a new attempt; it does not revive the first UPDATE or the old transaction."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-16T23:10:51.414Z",
+        "notes": "46/48, independently scored for the current blocking/deadlocks subskill. DistractorPlausibility 3: commit and waiting are familiar but easy to exclude after recognizing victim rollback. DifficultyAuthenticity 3: 1205 and safe-retry premises keep inference narrow, with repeated complete-operation wording. Accuracy, uniqueness and documentary/citation strength are 4 because the actual guide states the rollback boundary and normal-blocking distinction. DistractorEvidence 4 includes sourced autocommit, ordinary commit and non-victim waiting contexts. ScenarioCompleteness 4 credits both UPDATEs and replay safety. Alignment, explanation, originality and clarity are 4: a preserved distinct recovery fact is mapped correctly and explained without confusing CATCH with survival.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 4,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d2-014": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "220ced71df9b5e91aa055c518dbf90b8e4e5bebc61bff7eafec447ac1e62ad3c",
+      "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+      "retrievedAt": "2026-09-16T19:43:11.879Z",
+      "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+          "summary": "Supported, not incorrect: documented Hyperscale capacity exceeds 12 TB and named replicas serve independent read scale-out. Provisioned compute matches steady demand. Available ordinary GA sizes are stipulated, so no Preview 160/192-vCore option is needed and no unlimited storage, optimal price, latency or immediate replica freshness is promised."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+          "summary": "Provisioned compute fits the steady consumption, but General Purpose’s documented 4-TB data boundary is below the unsharded 12 TB required. A smaller moderate-I/O database with predictable demand can use General Purpose provisioned compute. Additional vCores do not change the service tier’s data-capacity boundary."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2x-service-tiers"],
+          "summary": "Business Critical offers local SSD and a readable secondary, so it could serve a smaller demanding OLTP/reporting workload. Its documented 4-TB data limit nevertheless fails this single 12-TB requirement. Better I/O and read offload are genuine capabilities, not substitutes for storage capacity."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+          "summary": "General Purpose serverless retains General Purpose’s 4-TB limit. Serverless can suit an intermittent smaller database on supported hardware, but changing compute scaling cannot hold 12 TB. Steady demand favors provisioned compute; this is not a claim that serverless is technically unable to execute every steady workload."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-16T23:10:51.414Z",
+        "notes": "45/48 for Recommend database configurations on the exact current map. DistractorPlausibility 3: real alternatives share the decisive 4-TB boundary. DifficultyAuthenticity 3: two-constraint selection is narrower than deployment sizing. Originality 3: the large-database setup is conventional but originally worded. Alignment, accuracy, uniqueness and scenario completeness are 4 because platform, size, pattern and availability are explicit. DistractorEvidence, documentationStrength and citationSpecificity are 4 for the actual product table, smaller Business Critical counter-context, Hyperscale named replicas and separate compute guidance. ExplanationQuality and clarityAccessibility are 4 for finite limits and explicit rejection of latency/cost/freshness guarantees.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d2-015": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "87217dc0228def37600a5d694a8382e1e0159f198c4226a9f403e4e6dca2e48c",
+      "sourceIds": ["dp800-d2x-config-unit"],
+      "retrievedAt": "2026-09-16T19:33:00.061Z",
+      "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+      "answerEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2x-config-unit"],
+          "summary": "Supported, not incorrect: the raw unit gives the database-scoped OPTIMIZE_FOR_AD_HOC_WORKLOADS switch and explains that first use retains a small compiled stub rather than the full plan. That matches the storage objective. It is not proof of compilation avoidance, retroactive old-plan eviction or permanent residency of reused plans."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2x-config-unit"],
+          "summary": "The unit describes MAXDOP as the parallel-execution control. Reducing it can be investigated for measured thread/CPU contention, but it does not select compiled stubs for first-use ad hoc entries. The supplied diagnosis concerns retained cache storage, not excessive parallel execution."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2x-config-unit"],
+          "summary": "Compatibility level 170 is a real Azure SQL Database optimizer-behavior choice in the unit. Testing a newer optimizer feature against a baseline can justify that change. It does not specify first-use compiled-stub retention, so optimizer modernization is not the requested cache-policy control."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d2x-config-unit"],
+          "summary": "FORCE_LAST_GOOD_PLAN addresses a query that regresses to a worse plan and has a better earlier plan to restore. The stem instead describes many distinct statements used once occupying cache. Correcting one query’s regression does not establish a first-use stub-retention policy."
+        }
+      ],
+      "rubric": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-16T23:10:51.414Z",
+        "notes": "45/48 for the current database-configurations subskill. DistractorPlausibility 3: parallelism and plan forcing are already excluded, although useful for different diagnoses. DifficultyAuthenticity 3: ad hoc echoes the key’s identifier and diagnosis is supplied. Originality 3: the cache-pressure setup is familiar but originally phrased. Accuracy and answer uniqueness are 4 because the actual stub mechanism, not its name, establishes b. DocumentationStrength, citationSpecificity and distractorEvidence are 4: the admitted unit contains actual syntax and all four distinct controls. Alignment, scenario completeness, explanation and clarity are 4 for a bounded first-use goal, excluded parameterization change, compilation limitation and clear referents.",
+        "version": 2,
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    }
+  }
+}

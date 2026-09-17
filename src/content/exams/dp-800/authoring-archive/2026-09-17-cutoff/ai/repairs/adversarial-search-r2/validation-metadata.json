@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-20260916-d3-022": {
+      "generation": {
+        "questionFingerprint": "04c6d8a90b6c6dc157ab79db9095f5507084170cc288b54571b04ce186993b42",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-17T01:13:22.364Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d3-vector-search"],
+            "summary": "The reference permits exact kNN for ordinary TOP plus distance ordering without APPROXIMATE, but separately requires APPROXIMATE when FORCE_ANN_ONLY is present. Q still has that hint, so this option incorrectly transfers the unforced behavior. It would match Q's exact strategy only after removing the forcing hint."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3-vector-search"],
+            "summary": "The no-index section documents kNN fallback for unforced search. The hint section requires an index when forcing ANN and states that missing either prerequisite fails the query. R could use the ordinary no-index fallback without the hint, not under its supplied forcing requirement."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3-vector-search"],
+            "summary": "The exact hint contract requires both the index and TOP WITH APPROXIMATE: P satisfies both, while Q and R each omit one. The latest-index optimizer may choose ANN or kNN when unforced, as in S. These are documented strategy classifications for stipulated valid trials, not executed plans or performance promises."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3-vector-search"],
+            "summary": "A compatible latest index does not force ANN by its existence; the current reference explicitly permits optimizer-selected kNN. S could happen to execute an ANN plan, but this is different from being forced to use that strategy. Adding the forcing hint would create a different trial."
+          }
+        ]
+      }
+    }
+  }
+}

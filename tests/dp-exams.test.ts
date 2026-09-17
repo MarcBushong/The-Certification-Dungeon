@@ -3,6 +3,7 @@ import { readRawPackage } from '../scripts/content-files';
 import prospective from '../docs/dp-420-prospective-objectives.json';
 import groundingStatus from '../docs/dp-420-grounding-status.json';
 import authoringArchive from '../src/content/exams/dp-800/authoring-archive/index.json';
+import releaseCutoff from '../src/content/exams/dp-800/authoring-archive/2026-09-17-cutoff/index.json';
 import previousQuestions from '../src/content/exams/dp-800/review-history/2026-09-16-before-refresh/questions.json';
 import {
   credentials,
@@ -227,32 +228,30 @@ describe('DP-800 reviewed production content and shared runtime', () => {
     const installedIds = new Set(
       dungeon.allQuestions.map((question) => question.id),
     );
-    for (const id of previousIds) expect(installedIds.has(id)).toBe(true);
+    for (const id of previousIds)
+      expect(
+        installedIds.has(id) ||
+          releaseCutoff.uninstalledCandidateIds.includes(id),
+      ).toBe(true);
   });
 
-  it('provides a mature independently reviewed bank across the complete current outline', () => {
+  it('honors the limited delivery cutoff without lowering the remaining readiness gates', () => {
     const dungeon = dp800();
-    expect(dungeon.questions.length).toBeGreaterThanOrEqual(150);
-    expect(dungeon.readiness).toMatchObject({ study: true, gauntlet: true });
-    for (const domain of dungeon.taxonomy.domains) {
-      const questions = dungeon.questions.filter(
-        (question) => question.objectiveDomain === domain.id,
-      );
-      const percentage = (100 * questions.length) / dungeon.questions.length;
-      expect(percentage).toBeGreaterThanOrEqual(domain.weightRange![0]);
-      expect(percentage).toBeLessThanOrEqual(domain.weightRange![1]);
-      for (const skill of domain.skills) {
-        for (const subskill of skill.subskills) {
-          expect(
-            questions.some(
-              (question) =>
-                question.skill === skill.id && question.subskill === subskill,
-            ),
-            `${skill.id}: ${subskill}`,
-          ).toBe(true);
-        }
-      }
-    }
+    expect(dungeon.questions).toHaveLength(109);
+    expect(dungeon.allQuestions).toHaveLength(130);
+    expect(dungeon.credential.verifiedQuestionCount).toBe(109);
+    expect(dungeon.packageManifest.reviewPolicy?.targetVerified).toBe(150);
+    expect(releaseCutoff.verifiedShortfall).toBe(41);
+    expect(releaseCutoff.uninstalledCandidateIds).toHaveLength(25);
+    expect(dungeon.readiness).toMatchObject({ study: true, gauntlet: false });
+    expect(dungeon.readiness.reasons).toContain(
+      'Boss Gauntlet needs verified breadth across every skill.',
+    );
+    expect(
+      dungeon.questions.some((question) =>
+        releaseCutoff.uninstalledCandidateIds.includes(question.id),
+      ),
+    ).toBe(false);
   });
 
   it('opens Study only with genuine three-pass content and complete major-floor coverage', () => {

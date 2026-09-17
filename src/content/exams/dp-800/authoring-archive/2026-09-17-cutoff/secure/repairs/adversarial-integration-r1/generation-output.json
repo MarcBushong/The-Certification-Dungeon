@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-expansion-secure-adversarial-integration-r1-20260916",
+  "authorId": "dp800-expansion-author-secure-20260916",
+  "generatedAt": "2026-09-16T23:59:52.138Z",
+  "candidates": [
+    {
+      "id": "dp800-20260916-d2-035",
+      "question": "A DAB deployment pins an approved executable release. Developers use different DAB releases locally. Production configuration validation must remain tied to the deployed release's schema even as newer schemas are published. Which $schema selection policy matches that target?",
+      "questionType": "single-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Use the release-specific schema URL for the pinned production executable."
+        },
+        {
+          "id": "b",
+          "text": "Use the latest-release schema URL so validation follows new schema publications."
+        },
+        {
+          "id": "c",
+          "text": "Use the release-specific schema matching each author's locally installed DAB version."
+        },
+        {
+          "id": "d",
+          "text": "Use the release-specific schema for the next upgrade candidate under evaluation."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "Select the version-specific schema for the deployed DAB release.",
+      "deepExplanation": "The validation target is the pinned production release, not the latest publication, an author's local runtime or a separate upgrade experiment. Those other schema selections can serve their corresponding targets. A schema reference selects validation rules; it does not upgrade the executable.",
+      "whyOtherAnswersAreWrong": {
+        "b": "The latest alias can follow newer schema publications instead of remaining tied to the pinned release. It suits a workflow deliberately tracking the latest compatible runtime, not this fixed validation target.",
+        "c": "Matching a local runtime is useful for local configuration work. Because local versions differ, that policy does not consistently target the specified production release.",
+        "d": "The upgrade candidate's schema is appropriate when evaluating that candidate. It is not the selected validation contract for the current pinned deployment."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "integrate-sql-solutions-with-azure-services",
+      "subskill": "Create configuration files for Data API builder (DAB)",
+      "difficulty": "beginner",
+      "complexity": "concept-recall",
+      "sourceIds": ["dp800-d2-dab-config", "dp800-d2x-dab-reference"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/2-create-configuration-files-data-api-builder",
+        "https://learn.microsoft.com/en-us/azure/data-api-builder/configuration/"
+      ],
+      "documentationTitles": [
+        "Create configuration files for data API builder",
+        "Data API builder configuration schema reference"
+      ],
+      "generatedAt": "2026-09-16T23:59:52.138Z",
+      "lastValidatedAt": "2026-09-16T23:59:52.138Z",
+      "featureStatus": "GA",
+      "tags": ["data-api-builder", "configuration-schema", "version-pinning"],
+      "conceptId": "dab-versioned-schema-validation-must-match-pinned-runtime-not-upgrade-it",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 adversarial-integration-r1 repair. Original snapshots and final-pass holds remain frozen; both independent technical and adversarial review must be repeated for this content.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair only, with unchanged source snapshots and no copied approval, rubric or attestation."
+    },
+    {
+      "id": "dp800-20260916-d2-038",
+      "question": "The following fragment shows the final effective runtime and Shipment entity settings after configuration loading for a DAB 2.0 service. No other configuration or gateway rewriting changes these settings. Shipment has a suitable key, caller read permissions and GraphQL enabled. Which pair gives the REST collection path and the single GraphQL endpoint path?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "REST: /data/shipments; GraphQL: /query."
+        },
+        {
+          "id": "b",
+          "text": "REST: /shipments; GraphQL: /query/Shipment."
+        },
+        {
+          "id": "c",
+          "text": "REST: /data/Shipment; GraphQL: /graphql."
+        },
+        {
+          "id": "d",
+          "text": "REST: /query/shipments; GraphQL: /data."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "The effective REST prefix and entity route produce /data/shipments; the effective GraphQL path is /query.",
+      "deepExplanation": "Compose the entity's REST path with the effective global REST prefix. GraphQL uses its effective common endpoint, without an entity suffix. The stem now supplies the resolved settings, so determining which source file or fallback supplied them is outside this routing question.",
+      "whyOtherAnswersAreWrong": {
+        "b": "This pair omits the effective /data REST prefix and adds an entity suffix to the effective /query GraphQL path. Such paths would require different explicit global routing settings, not composition of the settings supplied here.",
+        "c": "This pair uses the entity name and a default-style GraphQL path instead of the effective overrides. It could fit a configuration without those overrides, but the resolved settings explicitly specify /shipments and /query.",
+        "d": "This pair would fit effective runtime paths REST /query and GraphQL /data. The question now expressly supplies the final effective paths as REST /data and GraphQL /query, excluding a different controlling configuration without asserting a universal child-runtime rule."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "integrate-sql-solutions-with-azure-services",
+      "subskill": "Configure REST or GraphQL endpoints",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": [
+        "dp800-d2-dab-config",
+        "dp800-d2x-dab-entities-unit",
+        "dp800-d2x-dab-reference"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/2-create-configuration-files-data-api-builder",
+        "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql",
+        "https://learn.microsoft.com/en-us/azure/data-api-builder/configuration/"
+      ],
+      "documentationTitles": [
+        "Create configuration files for data API builder",
+        "Define entities for REST and GraphQL",
+        "Data API builder configuration schema reference"
+      ],
+      "generatedAt": "2026-09-16T23:59:52.138Z",
+      "lastValidatedAt": "2026-09-16T23:59:52.138Z",
+      "featureStatus": "GA",
+      "tags": ["data-api-builder-2", "rest", "graphql", "routing"],
+      "codeLanguage": "json",
+      "codeSnippet": "{\n  \"runtime\": {\n    \"rest\": { \"enabled\": true, \"path\": \"/data\" },\n    \"graphql\": { \"enabled\": true, \"path\": \"/query\" }\n  },\n  \"entities\": {\n    \"Shipment\": {\n      \"source\": \"dbo.Shipment\",\n      \"rest\": { \"enabled\": true, \"path\": \"/shipments\" },\n      \"graphql\": { \"enabled\": true }\n    }\n  }\n}",
+      "conceptId": "dab-rest-global-prefix-plus-entity-route-separate-from-single-graphql-endpoint",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 adversarial-integration-r1 repair. Original snapshots and final-pass holds remain frozen; both independent technical and adversarial review must be repeated for this content.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair only, with unchanged source snapshots and no copied approval, rubric or attestation."
+    },
+    {
+      "id": "dp800-20260916-d2-045",
+      "question": "An Azure-hosted consumer reads CDC from a SQL Server 2022 database. Updates to a tracked table commit, but the CDC capture high-water mark is not advancing. The database also has a transactional replication publication, and SQL Server Agent is running. Which investigation targets the capture process used in this configuration?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Inspect the transactional replication Log Reader Agent's status and capture progress."
+        },
+        {
+          "id": "b",
+          "text": "Inspect the CDC cleanup job's retention settings and removal of expired changes."
+        },
+        {
+          "id": "c",
+          "text": "Inspect the consumer's saved LSN and its extraction range for already captured changes."
+        },
+        {
+          "id": "d",
+          "text": "Inspect a dedicated CDC capture job's scan settings and execution history."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "Inspect the transactional replication Log Reader Agent, which supplies capture for both replication and CDC in this configuration.",
+      "deepExplanation": "A transactional publication changes which log-reading path serves CDC. The replication Log Reader Agent performs that work; a dedicated CDC capture job applies to the ordinary no-publication configuration. Cleanup and consumer extraction concern other stages. Inspecting the responsible process is a starting point, not a claim that a particular failure or successful recovery has already been established.",
+      "whyOtherAnswersAreWrong": {
+        "b": "Cleanup advances retention's lower boundary and removes expired change records. Investigating it is appropriate for missing older data, but it is not the process that reads new source-log changes into CDC tables.",
+        "c": "The consumer's saved LSN and extraction window matter when consuming already captured changes or diagnosing a retention gap. They do not identify the server-side process responsible for the nonadvancing capture high-water mark.",
+        "d": "A dedicated capture job is used for the ordinary CDC-only configuration without a transactional publication. With the publication present, the documented capture path is the replication log reader; job absence alone would not establish that CDC is disabled."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "integrate-sql-solutions-with-azure-services",
+      "subskill": "Handle changes by using change event streaming (CES), change data capture (CDC), Change Tracking, Azure Functions with SQL trigger binding, or Azure Logic Apps",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d2x-cdc"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/relational-databases/track-changes/about-change-data-capture-sql-server"
+      ],
+      "documentationTitles": ["What is change data capture (CDC)?"],
+      "generatedAt": "2026-09-16T23:59:52.138Z",
+      "lastValidatedAt": "2026-09-16T23:59:52.138Z",
+      "featureStatus": "GA",
+      "tags": ["sql-server-2022", "cdc", "transactional-replication"],
+      "conceptId": "sql-cdc-with-transactional-replication-shares-log-reader-capture-dependency",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 adversarial-integration-r1 repair. Original snapshots and final-pass holds remain frozen; both independent technical and adversarial review must be repeated for this content.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair only, with unchanged source snapshots and no copied approval, rubric or attestation."
+    }
+  ]
+}

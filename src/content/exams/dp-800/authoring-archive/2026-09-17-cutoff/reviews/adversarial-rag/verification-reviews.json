@@ -1,0 +1,290 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-adversarial-rag-20260916",
+  "reviews": [
+    {
+      "questionId": "dp800-20260916-d3-026",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-rag-20260916",
+      "questionFingerprint": "0c6204f4f5b381c76b50f477b3caefa5d48bcfee21a11faabf1f68c9b384469f",
+      "reviewedAt": "2026-09-16T23:07:04.710Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3x-rag-architecture",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/2-identify-rag-use-cases-architecture",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-architecture.json",
+          "retrievedAt": "2026-09-16T19:33:17.807Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual Understand how RAG works section separates retrieving relevant records, adding them to a prompt, and generation. Recognize when RAG fits explicitly connects changing data with tracing the retrieved records. This supports request-time context plus application-maintained source identifiers, not a guarantee that retrieval is current or that the model obeys it. I exclude the unit's categorical immediate-freshness, training-privacy and organization-knowledge generalizations from this approval."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The option expressly freezes the training snapshot and omits later retrieval. Even if that snapshot accurately captured an earlier policy, it cannot supply the records retrieved for this request after policy edits or establish their request-level lineage. The unit distinguishes weight adaptation from supplying current context at inference time.",
+          "sourceIds": ["dp800-d3x-rag-architecture"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Reusing one unversioned summary after policy edits does not identify the current records supplied for a later request. A maintained retrieval cache is a different design: the option provides neither refresh/version guarantees nor request-specific record attribution.",
+          "sourceIds": ["dp800-d3x-rag-architecture"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "General pretrained knowledge does not establish this organization's edited policy rows or which records supplied this request's context. Even a coincidentally correct inferred policy would lack the required retrieval evidence. The source motivates domain-specific retrieval rather than treating model knowledge as an authoritative policy store.",
+          "sourceIds": ["dp800-d3x-rag-architecture"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "This plan supplies the applicable records at request time, includes them as generation context, and retains identifiers for the records actually supplied. It is the only offered plan addressing both changing knowledge and source lineage without updating weights for each edit. Compliance of the eventual answer still requires application checks.",
+          "sourceIds": ["dp800-d3x-rag-architecture"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3: independently retained d after testing frozen snapshots, maintained-cache alternatives, coincidental pretrained knowledge and the difference between context attribution and guaranteed model truth. I read the actual architecture unit and the credential-course-path-module receipts under the real DP-800 exact-URL catalog, not a permission clone. The non-feature lifecycle label is justified only for this generic design. No code requires execution. Intermediate is introductory; rubric 45/48 deducts for easy distractors, low-end reasoning and the familiar use-case pattern. This review binds the fresh candidate and current March 12 map, preserves all prior history, and does not promote content into the application.",
+      "confidenceReason": "High confidence in d as the sole offered design satisfying current-record context and retained record identity. Confidence is explicitly limited to the design choice; actual retrieval freshness, authorization and generated-answer faithfulness were not demonstrated."
+    },
+    {
+      "questionId": "dp800-20260916-d3-029",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-rag-20260916",
+      "questionFingerprint": "2e900729f4dea4e6a8dfce1e690d03d4e187994506dbff91212ec0020bce5545",
+      "reviewedAt": "2026-09-16T23:07:04.710Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-for-json",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\for-json.json",
+          "retrievedAt": "2026-09-16T19:38:27.268Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual product article's Control other JSON output options separately defines ROOT, INCLUDE_NULL_VALUES and the default array versus WITHOUT_ARRAY_WRAPPER. Output of the FOR JSON clause maps each input row to an array element. Its SQL Server 2016+ and Azure SQL Database scope covers these established text-formatting controls, not newer native-json features. The two-row fixture therefore needs the items root, retained array and explicit Note:null together."
+        },
+        {
+          "sourceId": "dp800-d3-rag-context",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/3-prepare-retrieval-context-augmentation",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-context.json",
+          "retrievedAt": "2026-09-16T19:33:20.120Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "Format query results with FOR JSON and Control JSON output options show PATH context preparation and distinguish root naming, retained nulls and single-record wrapper removal. These sections connect the product controls to structured RAG context. I do not adopt the unit's stronger claim that JSON proves which fields a model used or its generic recommendations about excluding IDs; this candidate's consumer contract is stipulated."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "WITHOUT_ARRAY_WRAPPER removes the default row array, while this suffix neither creates items nor includes the NULL Note. The fixed query has two rows, so a single-row unwrapped-object use case cannot justify this suffix for the stated rooted-array contract.",
+          "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "ROOT('items') wraps the default two-element array correctly, but Note for ProductId 17 is omitted because INCLUDE_NULL_VALUES is absent. The receiving contract distinguishes an explicit JSON null from a missing property, so correct nesting alone is insufficient.",
+          "sourceIds": ["dp800-d3-for-json"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "INCLUDE_NULL_VALUES preserves Note:null, but WITHOUT_ARRAY_WRAPPER still removes the array and no items root is requested. Correct null representation does not satisfy the other independent structural requirements.",
+          "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "The default array retains both ordered rows, ROOT('items') adds the required outer property, and INCLUDE_NULL_VALUES preserves Note:null for ProductId 17. The logical output is {\"items\":[{\"ProductId\":17,\"Note\":null},{\"ProductId\":23,\"Note\":\"Restocked\"}]}, satisfying every supplied requirement.",
+          "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3: independently retained d after checking each root/array/null control and the alternate single-row contracts for wrapper removal. The actual FOR JSON reference and training unit support the predicted two-row logical value; no SQL engine was run. Core Azure SQL text JSON formatting has established supported-version evidence and uses no Preview extension. The real exact-URL catalog and full credential-course-path-module-summary ancestry were inspected. Rubric 46/48 deducts for uneven distractor strength and a familiar switch-combination setup. Combined-corpus comparison distinguishes the single-row PATH-nesting and JSON_ARRAYAGG positional-null items. Only verification metadata is changed in the scoped output.",
+      "confidenceReason": "High confidence in the uniquely matching suffix because all rows and all three consumer requirements are explicit and the product source defines their independent controls. This confidence covers logical serialization only, not a live database result or downstream model interpretation."
+    },
+    {
+      "questionId": "dp800-20260916-d3-032",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-rag-20260916",
+      "questionFingerprint": "55d9982bb6f46c103d0aabfaaf7b41c626074bbb1c6f03693efd80310bf4f12f",
+      "reviewedAt": "2026-09-16T23:07:04.710Z",
+      "verdict": "manual-review-required",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-rag-responses",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-responses.json",
+          "retrievedAt": "2026-09-16T19:33:24.113Z",
+          "lastReviewedAt": "2026-09-16T20:50:00.844Z",
+          "supportingSummary": "The actual Extract the answer from the response section locates the example's scalar message.content and contrasts JSON_VALUE with JSON_QUERY for structured values. It supports the first extraction on the supplied fixture, not a universal provider envelope, HTTP-success sufficiency, authenticated deployment or guaranteed model schema. Its complete REST/model example and lifecycle are not required by this candidate."
+        },
+        {
+          "sourceId": "dp800-d3x-json-value",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-value-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\json-value.json",
+          "retrievedAt": "2026-09-16T19:44:51.456Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual reference defines scalar extraction, the nvarchar(4000) result without RETURNING and null/error behavior above that bound. The fixture explicitly stays below the bound and uses nvarchar text, so its content string can be decoded before another parse. The SQL Server 2016+/Azure SQL scope concerns this established operation; no native-json RETURNING behavior is needed."
+        },
+        {
+          "sourceId": "dp800-d3x-json-query",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-query-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\json-query.json",
+          "retrievedAt": "2026-09-16T19:44:53.438Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual Return value and lax/strict table restrict JSON_QUERY to an object or array at the selected path: a scalar string yields null in lax mode or an error in strict mode. That rules out b on this exact outer content token. The optional WITH ARRAY WRAPPER section requires native json input and does not alter this nvarchar scalar case."
+        },
+        {
+          "sourceId": "dp800-d3x-openjson",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\openjson.json",
+          "retrievedAt": "2026-09-16T19:57:02.023Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual with_clause/AS JSON section requires nvarchar(max) AS JSON for a nested fragment in an explicit typed schema. However, the Arguments default-schema example also returns Array_value as textual [\"a\",\"r\",\"r\",\"a\",\"y\"] with type 4, and Return value documents the default Value column as nvarchar(max). Thus an ordinary SELECT projection of the default value preserves an array without AS JSON. This is a source-backed counterexample to treating d as unconditionally wrong when the stem never requires WITH."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "JSON_VALUE can decode the supplied short content string, after which OPENJSON can parse its separate document. In an explicit WITH schema, Answer nvarchar(max) '$.answer' and Citations nvarchar(max) '$.citations' AS JSON preserve the scalar and array. This intended key works, but its validity alone does not establish uniqueness because d leaves the OPENJSON schema unspecified.",
+          "sourceIds": [
+            "dp800-d3x-json-value",
+            "dp800-d3x-openjson",
+            "dp800-d3-rag-responses"
+          ]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "At the supplied outer path, content is a JSON string, not an object or array. JSON_QUERY therefore yields null in default lax mode or an error in strict mode instead of decoding that string. Parsing its result cannot recover the intended inner document.",
+          "sourceIds": ["dp800-d3x-json-query", "dp800-d3-rag-responses"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The outer document has no child answer or citations property beneath the scalar content token. Those keys exist only in the JSON text encoded inside the string. Direct outer paths cannot substitute for interpreting that second document.",
+          "sourceIds": ["dp800-d3x-json-value", "dp800-d3x-openjson"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "ambiguous",
+          "rationale": "This is wrong for an explicit WITH column such as Citations nvarchar(max) '$.citations' without AS JSON, but that restriction appears only in the explanation and author claim, not the stem or this option. With the same decoded document, default-schema OPENJSON returns the citations row's value as nvarchar(max) text [17,23] and type 4. Selecting that ordinary value column as Citations, alongside the answer row's value, returns the required outputs without AS JSON. The option is therefore defensible under a legitimate reading and cannot be attested contradicted.",
+          "sourceIds": ["dp800-d3x-openjson", "dp800-d3x-json-value"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": false,
+        "explanationsSupported": false,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": false,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": false
+      },
+      "verificationNotes": "PASS 3 HOLD: a works, but d is not uniquely wrong under the unchanged stem. The actual OPENJSON article documents default key/value/type output in which value is nvarchar(max) and arrays are returned as text with type 4. After the same JSON_VALUE decode, ordinary SELECT projections of the answer and citations value rows return the requested scalar and full [17,23] text without AS JSON. Only typed WITH needs that flag, and the stem/option d do not require WITH; the explanation and prior claims introduce it later. I therefore cannot attest distractor incorrectness, explanation applicability, complete prerequisites or final quality. The four cited snapshots, exact catalog grants, GA text-function scope and current objective binding otherwise pass. Static reasoning only, no live SQL. Repair the authored stem/options to require explicit WITH projections, then restart generation and both independent reviews; do not reuse this attestation.",
+      "confidenceReason": "High confidence in the documented default-versus-explicit-schema distinction and in a's valid intended behavior. Because a legitimate default-schema interpretation makes d work on the same fixture, confidence in answer uniqueness is insufficient for verification. The counterexample is documentation-derived SQL reasoning, not a claimed live execution."
+    },
+    {
+      "questionId": "dp800-direct-026",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-rag-20260916",
+      "questionFingerprint": "4a6ef99f51cd7cc10790d80d0bf1503c0ca320375f8e242f45dbaffa120198eb",
+      "reviewedAt": "2026-09-16T23:07:04.710Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-rag-context",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/3-prepare-retrieval-context-augmentation",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\rag-context.json",
+          "retrievedAt": "2026-09-16T19:33:20.120Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual PATH example uses dotted product aliases and shows a nested product object inside a one-element array. Its output-options section treats WITHOUT_ARRAY_WRAPPER and ROOT as explicit independent changes. These passages support the shown item nesting and retained default array. Its broad assertion that structured context proves a model used only supplied fields is not part of this approval."
+        },
+        {
+          "sourceId": "dp800-d3-for-json",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\for-json.json",
+          "retrievedAt": "2026-09-16T19:38:27.268Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual PATH section says dotted aliases create nested output. Control other JSON output options states that arrays remain by default and no named root exists unless ROOT is requested; Output of the FOR JSON clause maps rows and columns to objects/properties and illustrates numeric versus text JSON values. These are established SQL Server 2016+/Azure SQL text-formatting operations, sufficient for the supplied one-row literal SELECT."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The array is plausible, but FOR JSON PATH interprets the item.label and item.units aliases as nested property paths. The shown literal dotted keys therefore do not match this query's output; SQL identifier brackets delimit aliases without disabling PATH's dot convention.",
+          "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The nested item object has the right members, but this statement has no WITHOUT_ARRAY_WRAPPER option. The formatter retains the array even though the literal SELECT produces only one row.",
+          "sourceIds": ["dp800-d3-for-json"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "The constants produce one row; PATH combines the shared item alias prefix into an object, with a string label and numeric units. The default array wraps that row-object, and no named root is requested. The resulting logical value is exactly [{\"item\":{\"label\":\"Field kit\",\"units\":12}}].",
+          "sourceIds": ["dp800-d3-rag-context", "dp800-d3-for-json"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "This adds an outer items property that the query never requested. The item prefix groups row properties; it neither pluralizes itself nor creates a ROOT wrapper around the entire result array.",
+          "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "PASS 3: independently retained c by tracing the literal row, shared item alias prefix, string/numeric values, retained default array and absent ROOT. I challenged bracketed alias semantics, automatic single-row unwrapping and unrequested root creation against the actual product and training bodies. Core text JSON maturity, real DP-800 exact URL approvals and complete training ancestry pass; no SQL or model endpoint was executed. Rubric 45/48 records low-end Intermediate reasoning, familiar shape construction and terse value-type explanation. Combined comparison distinguishes 029's explicit-null rooted multirow contract and direct-031's OPENJSON literal-key matching. The existing canonical ID and all prior/completed history remain unchanged outside these scoped verification fields.",
+      "confidenceReason": "High confidence in c for the exact self-contained statement: no table state, credentials or model behavior can change its documented nesting and wrapper controls. Confidence is based on actual reference rules and a static trace, not a claimed database execution."
+    }
+  ]
+}

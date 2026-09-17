@@ -1,0 +1,178 @@
+[
+  {
+    "id": "dp800-20260916-d2-036",
+    "question": "An operator is investigating repeated database reads from a standalone DAB 2.0 GraphQL endpoint after configuring L1 caching. Which diagnostic path accounts for the cache's documented API coverage?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Investigate request-parameter variation as the reason repeated requests use different cached entries."
+      },
+      {
+        "id": "b",
+        "text": "Investigate entity writes as the reason cached query results are being invalidated."
+      },
+      {
+        "id": "c",
+        "text": "Investigate the effective TTL as the reason cached entries expire between requests."
+      },
+      {
+        "id": "d",
+        "text": "Investigate GraphQL performance separately because the documented L1 cache serves REST endpoints."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "The documented DAB L1 cache applies to REST endpoints, so GraphQL reads are outside that cache's scope.",
+    "deepExplanation": "Parameter variation, data-write invalidation and TTL expiration are legitimate cache-miss investigations for eligible REST requests. Check API applicability before assuming the GraphQL path has L1 entries to diagnose. This boundary concerns DAB's documented L1 feature, not every possible GraphQL optimization.",
+    "whyOtherAnswersAreWrong": {
+      "a": "L1 works per route and parameter, so parameter variation can matter for eligible REST requests. It does not explain GraphQL behavior as an L1 cache miss because the documented L1 feature excludes that API.",
+      "b": "Create, update and delete operations invalidate cached results under the documented cache behavior. That is a plausible REST cache-miss diagnosis, not the reason GraphQL traffic is outside L1 applicability.",
+      "c": "TTL governs how long eligible cached entries remain valid. Examining expiry can diagnose REST misses, but changing an entry's lifetime does not extend L1 to GraphQL."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Configure entities for REST and GraphQL, including data caching, pagination, searching, and filtering",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d2x-dab-cache", "dp800-d2x-dab-production-catalog"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/concept/cache/level-1",
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/"
+    ],
+    "documentationTitles": [
+      "Implement level 1 cache",
+      "Data API builder documentation"
+    ],
+    "generatedAt": "2026-09-17T00:25:07.936Z",
+    "lastValidatedAt": "2026-09-17T00:25:07.936Z",
+    "featureStatus": "GA",
+    "tags": ["data-api-builder-2", "l1-cache", "graphql"],
+    "conceptId": "dab-l1-response-cache-applies-to-rest-not-graphql",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh pass-1 lifecycle-r1 evidence addition. The prior technical lifecycle hold is preserved; this exact citation-bound snapshot requires new independent technical and adversarial review.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-17T00:25:07.927Z",
+    "confidenceReason": "Proposed maturity support is the directly training-linked production-ready catalog naming these DAB capabilities, not a copied GA flag, default enablement or missing Preview note."
+  },
+  {
+    "id": "dp800-20260916-d2-037",
+    "question": "A DAB GraphQL entity exposes database UnitCost as cost and AvailableUnits as available. A client must retrieve only rows with cost greater than 100 and available greater than zero, 25 at a time. A page returns hasNextPage = true and an opaque endCursor. Permissions and entity configuration are valid. Select two client behaviors that apply the filter and advance through the same result set.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Filter using UnitCost and AvailableUnits because those are the physical database column names."
+      },
+      {
+        "id": "b",
+        "text": "Use filter: { cost: { gt: 100 }, available: { gt: 0 } }."
+      },
+      {
+        "id": "c",
+        "text": "Request first: 25 again without after, treating the row limit as an advance instruction."
+      },
+      {
+        "id": "d",
+        "text": "Use the returned endCursor as after, retaining the same filter and first: 25."
+      }
+    ],
+    "correctAnswer": ["b", "d"],
+    "explanation": "Filter by exposed field names and continue with the server-returned cursor.",
+    "deepExplanation": "Field aliases, filtering and cursor pagination are separate API-contract details. Treat the cursor as opaque. The question does not promise a transactionally frozen multi-request result set if the underlying data changes between requests.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Physical names would be appropriate if exposed unchanged. The training says clients use mapped/exposed names, so these internal names do not match the stated GraphQL contract.",
+      "c": "first controls page size. Omitting after is appropriate for the initial page or restarting the result set, not advancing after the page already received."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Configure entities for REST and GraphQL, including data caching, pagination, searching, and filtering",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d2x-dab-entities-unit",
+      "dp800-d2x-dab-production-catalog"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql",
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/"
+    ],
+    "documentationTitles": [
+      "Define entities for REST and GraphQL",
+      "Data API builder documentation"
+    ],
+    "generatedAt": "2026-09-17T00:25:07.936Z",
+    "lastValidatedAt": "2026-09-17T00:25:07.936Z",
+    "featureStatus": "GA",
+    "tags": ["data-api-builder", "graphql", "filtering", "pagination"],
+    "conceptId": "dab-graphql-use-exposed-filter-fields-and-service-endcursor-for-pagination",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh pass-1 lifecycle-r1 evidence addition. The prior technical lifecycle hold is preserved; this exact citation-bound snapshot requires new independent technical and adversarial review.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-17T00:25:07.927Z",
+    "confidenceReason": "Proposed maturity support is the directly training-linked production-ready catalog naming these DAB capabilities, not a copied GA flag, default enablement or missing Preview note."
+  },
+  {
+    "id": "dp800-20260916-d2-040",
+    "question": "A DAB configuration contains Customer and Invoice table entities in the same file. Customers.CustomerId is a primary key; Invoices.CustomerId is a foreign key to it, and one customer can have several invoices. Both entities allow the caller to read. Which relationship on Customer supports a GraphQL traversal from one customer to its invoices?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Target Invoice with cardinality one, matching CustomerId to CustomerId."
+      },
+      {
+        "id": "b",
+        "text": "Target Invoice with cardinality many, matching CustomerId to CustomerId."
+      },
+      {
+        "id": "c",
+        "text": "Target Invoice with cardinality many, matching CustomerId to InvoiceId."
+      },
+      {
+        "id": "d",
+        "text": "Define a relationship on Invoice targeting Customer with cardinality one."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Configure a many relationship from Customer to Invoice on CustomerId.",
+    "deepExplanation": "Correct cardinality alone is insufficient; direction and join fields must also match the database contract. The same-file premise avoids the separate archived configuration-boundary issue.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Those fields express the foreign-key join, but cardinality one would describe a one-target relationship. The stated customer-to-invoices direction permits multiple target rows.",
+      "c": "Matching CustomerId to InvoiceId does not use the CustomerId foreign-key relationship stated in the stem. A different field pair would require a separately established relationship; no key status for InvoiceId is assumed.",
+      "d": "That is a valid inverse many-to-one traversal from an invoice to its customer. It does not define the requested relationship field on Customer for reaching multiple invoices."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Expose database objects, stored procedures, and views, including GraphQL relationships",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d2x-dab-entities-unit",
+      "dp800-d2-dab-objects",
+      "dp800-d2x-dab-production-catalog"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql",
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/4-expose-database-objects-stored-procedures-views",
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/"
+    ],
+    "documentationTitles": [
+      "Define entities for REST and GraphQL",
+      "Expose database objects, stored procedures, and views",
+      "Data API builder documentation"
+    ],
+    "generatedAt": "2026-09-17T00:25:07.936Z",
+    "lastValidatedAt": "2026-09-17T00:25:07.936Z",
+    "featureStatus": "GA",
+    "tags": ["data-api-builder", "graphql-relationships", "foreign-keys"],
+    "conceptId": "dab-graphql-one-to-many-relationship-direction-cardinality-and-join-fields",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh pass-1 lifecycle-r1 evidence addition. The prior technical lifecycle hold is preserved; this exact citation-bound snapshot requires new independent technical and adversarial review.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-17T00:25:07.927Z",
+    "confidenceReason": "Proposed maturity support is the directly training-linked production-ready catalog naming these DAB capabilities, not a copied GA flag, default enablement or missing Preview note."
+  }
+]

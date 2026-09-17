@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-direct-018": {
+      "generation": {
+        "questionFingerprint": "766effb9401adb0d7ec3a75231c01c4baf179897f9d327cf3435822ab1853f44",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T23:43:34.173Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "summary": "The frozen unit places pre-deployment preparation before schema execution. That can prepare an existing table, but the stated first deployment creates this table in the schema plan, so the reference data cannot be populated at that earlier point."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "summary": "The unit's failure warning concerns plain INSERT replay, not every use of INSERT. The repaired option now explicitly excludes existing-key checks and updates and replays the full set. It fails the retained-key and changed-value contract; a one-time empty target or a separately guarded missing-key-only workflow has different requirements."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "summary": "The unit runs versioned reference-data scripts after schema execution and demonstrates updating matched rows and inserting missing keys. That pattern supplies the required initial ordering and convergence. Equivalent correct reconciliation code is permitted; MERGE is not the exclusive implementation."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "summary": "The declarative schema model does not populate required lookup values; the source introduces data scripts specifically for that purpose. A schema-only deployment fits a contract with separate data provisioning, not this deployment's required reference-data convergence."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-032": {
+      "generation": {
+        "questionFingerprint": "34f231893ecb3b062cbfa939b87c6c940d720d718ddc87ae0f300694841426ca",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T23:43:34.173Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2x-pre-post-deployment",
+              "dp800-d2x-compare-project",
+              "dp800-d2x-testing-unit"
+            ],
+            "summary": "The pre/post product article separates calculation from execution, and the compare-project article generates deployment SQL from the current target. Completing a prerequisite before that generation makes its resulting schema an input. The testing unit supports validating the full sequence on a dedicated target, not assuming ordering proves safety."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-pre-post-deployment"],
+            "summary": "PreDeploy is a real supported deployment hook, but the source explicitly places plan calculation before it executes. This workflow is useful for compatible preparation before plan execution; it does not change the target schema used in that already completed calculation."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-pre-post-deployment"],
+            "summary": "PostDeploy is a real supported hook that runs after the deployment plan completes. It can handle post-schema work, but cannot supply a prerequisite schema state needed when that plan is calculated."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2x-compare-project",
+              "dp800-d2x-pre-post-deployment"
+            ],
+            "summary": "Generating and reviewing a saved deployment script is supported. That artifact represents the target state used at generation, however; performing a separate prerequisite afterward does not automatically regenerate it. The workflow can suit compatible intervening preparation, not a requirement to calculate from the new schema."
+          }
+        ]
+      }
+    }
+  }
+}

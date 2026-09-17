@@ -1,0 +1,515 @@
+[
+  {
+    "id": "dp800-20260916-d3-024",
+    "question": "A SQL Server 2025 RRF implementation stores nullable integer rank positions from 1 through 1,000; NULL means absence from that list. Every present contribution must be fractional and every absent contribution zero. The shown expression produces zeros or NULLs. Which replacement fixes arithmetic evaluation and missing-list handling without inventing a rank for an absent document?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "CAST(COALESCE(1/(60+kr),0) + COALESCE(1/(60+vr),0) AS decimal(18,8))"
+      },
+      {
+        "id": "b",
+        "text": "COALESCE(1.0/(60+kr),0.0) + COALESCE(1.0/(60+vr),0.0)"
+      },
+      {
+        "id": "c",
+        "text": "COALESCE(1.0/(60+kr) + 1.0/(60+vr),0.0)"
+      },
+      {
+        "id": "d",
+        "text": "1.0/(60+COALESCE(kr,0)) + 1.0/(60+COALESCE(vr,0))"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Use noninteger division for each contribution and replace each missing contribution, not its rank, with zero.",
+    "deepExplanation": "Casting after integer division cannot recover a fractional value already truncated to zero. Coalescing only the complete sum loses the present side when the other side is NULL. Substituting rank zero gives an absent list a positive 1/60 contribution. These are separate SQL evaluation errors, not a change to the stipulated RRF constant.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Both divisions still execute with integer operands before the final cast.",
+      "c": "A NULL on either side makes the sum NULL, so the outer COALESCE discards the other valid contribution.",
+      "d": "It turns absence into rank zero and awards a contribution the document did not earn."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Implement reciprocal rank fusion (RRF)",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d3-hybrid", "dp800-d3x-divide"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking",
+      "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/divide-transact-sql"
+    ],
+    "documentationTitles": [
+      "Implement hybrid search and ranking",
+      "/ (Division) (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.874Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+    "featureStatus": "GA",
+    "tags": ["rrf", "integer-division", "null-handling", "sql-expression"],
+    "codeLanguage": "sql",
+    "codeSnippet": "-- kr and vr are nullable int columns; present ranks are 1 through 1000.\nSELECT DocumentId,\n       CAST(1/(60+kr) + 1/(60+vr) AS decimal(18,8)) AS rrf_score\nFROM dbo.RankedDocuments;",
+    "conceptId": "sql-rrf-expression-prevents-integer-truncation-and-null-contribution-poisoning",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3-hybrid", "dp800-d3x-divide"],
+    "verificationNotes": "Independent third-context review recomputed expression outcomes rather than adopting pass 2. b alone preserves fractional and one-sided contributions. Reviewed every option, code, lifecycle, actual sources/provenance, explanation bounds, construction and related RRF candidates. Static T-SQL reasoning only; no SQL execution or precision/performance benchmark. Independent v2 rubric: 47/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence from the actual operator contract and explicit per-contribution SQL, with a concrete counterexample for each alternative.",
+    "verifiedAt": "2026-09-16T23:44:56.639Z"
+  },
+  {
+    "id": "dp800-20260916-d3-025",
+    "question": "A fixed SQL Server 2025 full-text/exact-vector benchmark has four relevant documents for each of two queries. Each displayed list contains three distinct documents; true marks a relevant result in rank order. Require mean relevance recall@3 ≥ 0.5 and measured p95 ≤ 100 ms, then maximize mean reciprocal rank, breaking ties by lower p95. Which measured pipeline wins?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keyword only."
+      },
+      {
+        "id": "b",
+        "text": "Vector only."
+      },
+      {
+        "id": "c",
+        "text": "Hybrid with a ten-candidate branch budget."
+      },
+      {
+        "id": "d",
+        "text": "Hybrid with a fifty-candidate branch budget."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Vector-only and hybrid-ten both have mean recall 0.5 and MRR 0.75; hybrid-ten wins their latency tie-break at 75 ms.",
+    "deepExplanation": "Keyword-only finds one of four relevant documents per query, failing recall. Vector-only and hybrid-ten each find two of four and place the first relevant result at ranks one and two across the two queries, so both have MRR (1 + 1/2)/2 = 0.75. Hybrid-fifty has better relevance in these fixtures but fails the latency ceiling. This selects a supplied benchmark result, not a universal best candidate budget.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Its mean relevance recall is only 0.25, below the required floor.",
+      "b": "It passes both gates but has the same MRR as hybrid-ten and a higher p95 of 90 ms.",
+      "d": "Its 140 ms p95 fails the latency gate despite the stronger relevance results."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Evaluate performance of vector and hybrid search",
+    "difficulty": "advanced",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d3-hybrid"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking"
+    ],
+    "documentationTitles": ["Implement hybrid search and ranking"],
+    "generatedAt": "2026-09-16T20:50:00.874Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+    "featureStatus": "GA",
+    "tags": [
+      "search-evaluation",
+      "relevance-recall",
+      "mrr",
+      "latency",
+      "candidate-budget"
+    ],
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"Keyword\": {\"q1\":[true,false,false],\"q2\":[false,true,false],\"p95_ms\":40},\n  \"Vector\": {\"q1\":[false,true,true],\"q2\":[true,true,false],\"p95_ms\":90},\n  \"Hybrid10\": {\"q1\":[true,true,false],\"q2\":[false,true,true],\"p95_ms\":75},\n  \"Hybrid50\": {\"q1\":[true,true,true],\"q2\":[true,true,true],\"p95_ms\":140}\n}",
+    "conceptId": "sql-hybrid-evaluation-separates-relevance-recall-first-hit-rank-and-latency-gates",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3-hybrid"],
+    "verificationNotes": "Independent third-context calculation evaluates every pipeline, enforces gates first and selects c after the MRR tie. Every option has an alternate requirement context. Reviewed actual training/provenance, objective scope, GA exact-search setting, fixture clarity and d3-019's distinct neighbor-overlap task. These are stipulated observations, not a live benchmark. Rubric: 46/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence in the unique fixture decision from independently calculated recall, first-hit MRR and ordered gates; no empirical performance generalization is endorsed.",
+    "verifiedAt": "2026-09-16T23:44:56.639Z"
+  },
+  {
+    "id": "dp800-direct-023",
+    "question": "On SQL Server 2025, VECTOR_DISTANCE computes exact distance without using a vector index, even when a vector index exists. Is this statement true or false?",
+    "questionType": "true-false",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "True"
+      },
+      {
+        "id": "b",
+        "text": "False"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "The statement is true: VECTOR_DISTANCE performs exact calculation without a vector index.",
+    "deepExplanation": "This is a basic function-contract check, not an implementation or performance-design problem. An approximate-search operation has separate API, platform and index prerequisites; it is not selected automatically by VECTOR_DISTANCE.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Index existence does not change VECTOR_DISTANCE into approximate index-assisted search. The source identifies VECTOR_SEARCH as a separate operation for that purpose."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Identify when to use vector-related types and functions for semantic searching, including VECTOR\\_NORMALIZE, VECTOR\\_DISTANCE, VECTORPROPERTY, and VECTOR\\_SEARCH",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d3-vector-distance"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+    ],
+    "documentationTitles": ["VECTOR_DISTANCE (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:50:00.879Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2025", "vector-distance", "exact-search"],
+    "conceptId": "sql-vector-distance-is-exact-and-does-not-use-vector-index",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3-vector-distance"],
+    "verificationNotes": "Independent PASS 3 derives a from the actual current VECTOR_DISTANCE body, not the technical key or installed review. Challenged index existence, approximate alternatives, float precision and scope. No SQL code was executed. Inspected actual canonical records and related candidates for scoped duplicate distinctions. Rubric: 46/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence because the direct current function contract explicitly addresses the purported index exception on the specified platform.",
+    "verifiedAt": "2026-09-16T23:44:56.639Z"
+  },
+  {
+    "id": "dp800-direct-024",
+    "question": "A SQL hybrid-search implementation uses RRF with k = 20 and contribution 1/(k + rank) from each list, with zero for an absent document. Document A is rank 1 only in the keyword list; B is rank 2 in both lists; C is rank 1 only in the vector list. Which document has the highest combined score?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "A, because rank 1 in the keyword list outweighs any rank-2 result"
+      },
+      {
+        "id": "b",
+        "text": "C, because a vector rank always has priority over a keyword rank"
+      },
+      {
+        "id": "c",
+        "text": "A and C tie for the highest score"
+      },
+      {
+        "id": "d",
+        "text": "B, because its two contributions sum to 2/22"
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "B has the highest combined score: 2/22 is greater than 1/21.",
+    "deepExplanation": "RRF combines rank-based contributions rather than comparing incompatible raw relevance scores. The value of k is supplied by this problem, not asserted as a universal SQL default or optimal setting.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A contributes 1/21, whereas B contributes 1/22 twice. The specified sum gives B the higher combined score.",
+      "b": "The stated formula gives equal treatment to each list; it supplies no automatic vector priority.",
+      "c": "A and C do tie at 1/21, but both scores are below B's 2/22."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Implement reciprocal rank fusion (RRF)",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d3-hybrid"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking"
+    ],
+    "documentationTitles": ["Implement hybrid search and ranking"],
+    "generatedAt": "2026-09-16T20:50:00.879Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+    "featureStatus": "Not applicable",
+    "tags": ["hybrid-search", "rrf", "ranking"],
+    "conceptId": "sql-hybrid-rrf-sums-reciprocal-rank-contributions",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent third-context review confirms d technically and separately withholds promotion for quality. Every option has actual-context and countercontext evidence. Not applicable is justified by stipulated mathematics, not unknown maturity. Comparison with d3-024 and direct-025 found distinct reasoning targets, not a blocking duplicate. Independent score: 43/48; qualityReviewed is false.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence in arithmetic and grounding, but insufficient confidence in strict assessment quality because the key exposes its calculation and alternatives are not equally plausible."
+  },
+  {
+    "id": "dp800-direct-025",
+    "question": "Two SQL ranked-result CTEs contain at most one row per DocumentId. Hybrid fusion must retain keyword-only, vector-only and shared documents, combine a shared document once by its ID, and assign zero to a missing list's contribution. Which join pattern provides the required candidate coverage?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "FULL OUTER JOIN on DocumentId, using COALESCE for the output ID and missing contributions"
+      },
+      {
+        "id": "b",
+        "text": "INNER JOIN on DocumentId, using zero for any missing contribution"
+      },
+      {
+        "id": "c",
+        "text": "LEFT JOIN from the keyword list to the vector list on DocumentId"
+      },
+      {
+        "id": "d",
+        "text": "CROSS JOIN the lists and keep one output row for every pair"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use a full outer join by the unique document key and fill absent contributions with zero.",
+    "deepExplanation": "Candidate inclusion is separate from the scoring formula. The unique-per-list key premise matters: a many-to-many join could otherwise duplicate shared documents. This does not adopt the training sample's unordered TOP clauses.",
+    "whyOtherAnswersAreWrong": {
+      "b": "An inner join removes documents absent from either list before a missing contribution could be filled with zero.",
+      "c": "This preserves keyword-only rows but loses documents that appear exclusively in the vector list.",
+      "d": "Pairing every keyword result with every vector result does not combine matching document IDs once and can multiply unrelated candidate rows."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Implement hybrid search",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d3-hybrid"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking"
+    ],
+    "documentationTitles": ["Implement hybrid search and ranking"],
+    "generatedAt": "2026-09-16T20:50:00.879Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+    "featureStatus": "GA",
+    "tags": ["hybrid-search", "candidate-union", "sql-joins"],
+    "conceptId": "sql-hybrid-fusion-preserves-either-list-with-full-outer-join",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3-hybrid"],
+    "verificationNotes": "Independent PASS 3 confirms a by overlapping, disjoint and empty-input reasoning. Challenged fanout, intersection, lexical-first and all-pairs policies, plus dirty/nullable-identity implementation limits without treating a pattern question as a full schema. Reviewed actual source/provenance and nearby concepts. Static relational reasoning only. Rubric: 45/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence in the join-family distinction under the supplied unique document-identity contract, not a claim that arbitrary dirty-key schemas repair themselves.",
+    "verifiedAt": "2026-09-16T23:44:56.639Z"
+  },
+  {
+    "id": "dp800-direct-046",
+    "question": "On SQL Server 2025, what vector does this expression produce, ignoring insignificant floating-point rounding?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Approximately [-0.428571, 0.571429]"
+      },
+      {
+        "id": "b",
+        "text": "Approximately [-0.75, 1.0]"
+      },
+      {
+        "id": "c",
+        "text": "Approximately [-0.6, 0.8]"
+      },
+      {
+        "id": "d",
+        "text": "Approximately [-3.0, 4.0]"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The norm2 length is 5, so the result is approximately [-0.6, 0.8].",
+    "deepExplanation": "The three supported norms use different denominators. Normalization changes scale, not direction; the norm2 calculation preserves the ratio and signs of these two components.",
+    "whyOtherAnswersAreWrong": {
+      "a": "These components divide the input by the sum of absolute values, 7, which is norm1 rather than the requested norm2.",
+      "b": "These components divide by the maximum absolute component, 4, which is norminf.",
+      "d": "That is the unnormalized input, whose Euclidean length is 5 rather than 1."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Identify when to use vector-related types and functions for semantic searching, including VECTOR\\_NORMALIZE, VECTOR\\_DISTANCE, VECTORPROPERTY, and VECTOR\\_SEARCH",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d3-vector-normalize"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-normalize-transact-sql"
+    ],
+    "documentationTitles": ["VECTOR_NORMALIZE (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:50:00.882Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2025", "vector-normalize", "euclidean-norm"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @v VECTOR(2) = '[-3,4]';\nSELECT VECTOR_NORMALIZE(@v, 'norm2');",
+    "conceptId": "sql-vector-normalize-euclidean-norm-calculation",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3-vector-normalize"],
+    "verificationNotes": "Independent PASS 3 re-derived c by checking norm1, norm2, norminf, unchanged input, signs and rounding. Read the actual function contract and immediate parent. Resolved pronoun/short-scenario warnings from the batch. Actual function claims stay GA; no live SQL ran. Rubric: 46/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence from explicit norm definitions and a nonzero vector whose denominators and direction can be checked without executing SQL.",
+    "verifiedAt": "2026-09-16T23:44:56.639Z"
+  },
+  {
+    "id": "dp800-direct-047",
+    "question": "An Azure SQL Database environment has the Preview vector-search feature and an earlier-version vector index. A valid VECTOR_SEARCH query uses that matching index with TOP_N = 5 and WHERE Approved = 1. Diagnostics show that its five nearest candidate rows all have Approved = 0, although other rows in the base table are approved. The query completes without an error but returns no rows. Which documented version-specific behavior explains this?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The WHERE predicate is applied after the earlier-version top-candidate pool is selected."
+      },
+      {
+        "id": "b",
+        "text": "A metric mismatch causes a warning and kNN fallback."
+      },
+      {
+        "id": "c",
+        "text": "An ambiguous distance column reference prevents the query from executing."
+      },
+      {
+        "id": "d",
+        "text": "A view was supplied where VECTOR_SEARCH requires a base table."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "With an earlier index version, filtering happens after the TOP_N candidate selection.",
+    "deepExplanation": "This is not a universal statement about current vector indexes. The latest version supports iterative filtering and a different query syntax, with regional rollout and Preview qualifications.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The scenario fixes a compatible matching index; the documented fallback is a different condition and does not explain this version's post-filter loss.",
+      "c": "The query successfully returns an empty set rather than the documented alias-ambiguity error.",
+      "d": "The stated input is a base table and the query completes; the unsupported-view restriction is not the explanation."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Implement vector search",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d3-vector-search"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql"
+    ],
+    "documentationTitles": ["VECTOR_SEARCH (Transact-SQL) (Preview)"],
+    "generatedAt": "2026-09-16T20:50:00.882Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+    "featureStatus": "Preview",
+    "tags": [
+      "azure-sql-database",
+      "preview",
+      "earlier-vector-index",
+      "post-filter"
+    ],
+    "conceptId": "sql-earlier-vector-index-top-n-pool-post-filter-empty-result",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3-vector-search"],
+    "verificationNotes": "Independent PASS 3 selects a from the actual earlier-index contract. Each alternative was tested against successful compatible execution and its own legitimate documented condition. Reviewed Preview, training/product conflicts, explanation bounds and nearby concepts. Static reasoning only; no SQL, recall experiment or new source-review date. Rubric: 45/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence because the current product expressly preserves the earlier empty-pool behavior and separately documents the alternative errors and fallback.",
+    "verifiedAt": "2026-09-16T23:44:56.639Z"
+  },
+  {
+    "id": "dp800-direct-048",
+    "question": "A Preview vector-search workload in an enabled Azure SQL Database environment must continue measuring Euclidean distance on its Embedding column. The only existing ANN index for that column uses cosine, so the query reports a compatibility warning and runs with kNN fallback. Which change supplies the missing ANN compatibility prerequisite without changing the required metric?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Change the query's metric to cosine and retain the existing index."
+      },
+      {
+        "id": "b",
+        "text": "Keep the Euclidean query and deliberately use kNN without a compatible ANN index."
+      },
+      {
+        "id": "c",
+        "text": "Create a Euclidean ANN index on a different vector column."
+      },
+      {
+        "id": "d",
+        "text": "Create the applicable vector index for Embedding using Euclidean distance."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Match the vector index to both Embedding and the Euclidean metric.",
+    "deepExplanation": "A compatible index is a prerequisite, not a promise that every latest-version query plan will choose ANN. The current optimizer may choose an exact strategy based on query characteristics.",
+    "whyOtherAnswersAreWrong": {
+      "a": "That can match the existing index but changes the explicitly required Euclidean metric.",
+      "b": "The documented fallback can execute the query, but it does not supply ANN compatibility.",
+      "c": "The reference requires the same column as well as the same metric; an index on another column does not meet that condition."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Evaluate vector index types and metrics",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["dp800-d3-vector-search"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql"
+    ],
+    "documentationTitles": ["VECTOR_SEARCH (Transact-SQL) (Preview)"],
+    "generatedAt": "2026-09-16T20:50:00.882Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+    "featureStatus": "Preview",
+    "tags": [
+      "azure-sql-database",
+      "preview",
+      "ann-index",
+      "metric-compatibility"
+    ],
+    "conceptId": "sql-ann-index-compatibility-requires-query-metric-and-column-match",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3-vector-search"],
+    "verificationNotes": "Independent PASS 3 selects d from exact same-column/same-metric evidence, while preserving legitimate fallback contexts. Challenged current Preview, optimizer behavior and separately admitted creation prerequisites. No permission completion, compulsory ANN performance, live SQL or deployment is asserted. Compared canonical and related concepts. Rubric: 46/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence in the narrow compatibility condition from direct current evidence; authorization and physical-plan choice remain separate, unpromised concerns.",
+    "verifiedAt": "2026-09-16T23:44:56.639Z"
+  },
+  {
+    "id": "dp800-direct-049",
+    "question": "An enabled Azure SQL Database table has a latest-version Preview vector index matching Embedding and cosine distance. @q is a valid nonnull VECTOR(1536) matching the column. The legacy query shown fails with Msg 42274. The application still needs to request up to five approximate results. Which paired edit repairs the version-specific syntax without changing that request?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Add WITH APPROXIMATE after TOP (5), but retain TOP_N = 5."
+      },
+      {
+        "id": "b",
+        "text": "Add WITH APPROXIMATE after TOP (5) and remove the TOP_N argument."
+      },
+      {
+        "id": "c",
+        "text": "Remove TOP_N but keep SELECT TOP (5) without WITH APPROXIMATE."
+      },
+      {
+        "id": "d",
+        "text": "Remove both TOP (5) and TOP_N, retaining the distance ordering."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Use SELECT TOP (5) WITH APPROXIMATE and omit the legacy TOP_N argument for the latest index version.",
+    "deepExplanation": "The current reference explicitly documents Msg 42274 when a latest index is queried with TOP_N. Removing only that argument changes the remaining TOP-plus-distance query to exact kNN semantics; removing both limits loses the requested cap. The repaired form requests approximate results without guaranteeing a particular physical plan or exactly five returned rows.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The latest-index prohibition on TOP_N remains, so adding the outer clause alone does not remove the documented incompatibility.",
+      "c": "The reference identifies TOP with distance ordering but without APPROXIMATE as exact kNN, not the requested approximate form.",
+      "d": "The resulting full-scan form no longer requests a five-row approximate cap."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Implement vector search",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "dp800-d3-vector-search",
+      "dp800-d3-vector-distance",
+      "dp800-d3-vector-type"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/data-types/vector-data-type"
+    ],
+    "documentationTitles": [
+      "VECTOR_SEARCH (Transact-SQL) (Preview)",
+      "VECTOR_DISTANCE (Transact-SQL)",
+      "Vector data type"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.882Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+    "featureStatus": "Preview",
+    "tags": [
+      "azure-sql-database",
+      "preview",
+      "latest-vector-index",
+      "query-migration"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT TOP (5) d.Id, r.distance\nFROM VECTOR_SEARCH(\n    TABLE = dbo.Documents AS d,\n    COLUMN = Embedding,\n    SIMILAR_TO = @q,\n    METRIC = 'cosine',\n    TOP_N = 5\n) AS r\nORDER BY r.distance;",
+    "conceptId": "azure-sql-latest-vector-index-approximate-top-syntax-migration",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d3-vector-search",
+      "dp800-d3-vector-distance",
+      "dp800-d3-vector-type"
+    ],
+    "verificationNotes": "Independent PASS 3 re-derived b from the frozen fresh candidate and actual current evidence. Challenged both edits and all alternatives, input type, aliases, distance-only order, platform/version/region, Preview and optimizer limits. No old key, rubric or approval was inherited. Static SQL only; no execution or gameplay installation. Rubric: 46/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence in the fresh paired repair because the current source explicitly documents both edits and alternate exact/full-scan forms; this review binds only the new fingerprint.",
+    "verifiedAt": "2026-09-16T23:44:56.639Z"
+  }
+]
