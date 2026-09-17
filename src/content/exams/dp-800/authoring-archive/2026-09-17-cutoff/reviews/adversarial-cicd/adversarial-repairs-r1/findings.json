@@ -1,0 +1,866 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-adversarial-cicd-adversarial-repairs-r1-20260916",
+  "pass": "fresh-independent-adversarial-pass-3",
+  "reviewerId": "dp800-adversarial-cicd-20260916",
+  "authorId": "dp800-expansion-author-secure-20260916",
+  "technicalReviewerId": "dp800-technical-cicd-adversarial-repairs-r1-20260916",
+  "objectiveVersion": "March 12, 2026",
+  "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+  "scope": "Only the two new candidates in secure/repairs/adversarial-cicd-r1, bound to the new technical-cicd/adversarial-repairs-r1 reviews dated 2026-09-17T00:43:29.833Z. Original final holds and the independent eight-item repairs-r1 reports remain historical and unchanged.",
+  "method": "Reread both complete authored snapshots and all four actual cited Microsoft Learn MCP bodies, including the matched-update/missing-insert example, exact pre-script planning order, target-dependent Script generation and behavioral-testing limits. Rechecked actual module/summary links and the frozen objective/provenance bindings. Every option challenge and all 24 rubric criteria below were independently authored for these new questions. Assembly copies judgments into schemas; hashes and prior approvals do not produce verdicts. No SQL, build, migration, comparison or live test was executed.",
+  "sourcePolicyObservations": [
+    "The reference-data unit's actual example separately updates matching keys and inserts missing keys after schema deployment. It does not establish that INSERT is always unsafe, that MERGE is mandatory, or that any reconciliation algorithm is concurrency-safe.",
+    "The product pre/post article explicitly places plan calculation before PreDeploy execution and PostDeploy after plan execution. Its statement that scripts are packaged but not model-validated is kept distinct from whether they are syntactically valid or safe at runtime.",
+    "The compare-project article makes the generated deployment script depend on the source model and target database used at generation. A later schema edit does not amount to a newly executed comparison.",
+    "All cited technical evidence retains its original retrieval and source-review timestamps. The current March 12, 2026 objective fingerprint, exact catalog approvals and finite credential/course/path/module/summary provenance remain required; no source approval is widened.",
+    "Both questions still make GA software claims about SQL projects, data scripts and SqlPackage. Intermediate or strategy wording is not a Not applicable lifecycle exemption. No preview IDE surface or registered-DAC DriftReport contract is invoked."
+  ],
+  "items": [
+    {
+      "questionId": "dp800-direct-018",
+      "verdict": "verified",
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "sourceSummaries": {
+        "dp800-d2-reference-data": "Independently reread Manage reference data and Write idempotent reference data scripts. The first places lookup population after the schema plan; the second describes every-deployment execution and illustrates matching-key UPDATE separately from missing-key INSERT. That concrete distinction supports both convergence requirements now in the stem, without making the source's MERGE example a universal implementation mandate."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "claimRepresented": "Populate the lookup rows before the initial schema plan creates their table.",
+          "whyIncorrectInContext": "The project creates the table during its first schema deployment, so the proposed earlier data step lacks its required target on that first run. Being feasible on a later existing-table run is not enough.",
+          "couldBeCorrectWhen": "The necessary table already exists before the deployment and data preparation must precede compatible schema operations. Adding an independent table-creation process would change the expressly stated first-deployment lifecycle.",
+          "sourceIds": ["dp800-d2-reference-data"],
+          "evidenceSummary": "The actual unit distinguishes pre-plan preparation from post-plan lookup population; the new candidate assigns initial table creation to the schema plan."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "claimRepresented": "Replay only the full unconditional INSERT set after every deployment, with no existing-row check or update.",
+          "whyIncorrectInContext": "This expressly excludes the existing-key handling needed on reruns and never updates changed values. Even hypothetically suppressing duplicate errors would leave existing reference values unconverged.",
+          "couldBeCorrectWhen": "An empty one-time table is intentionally loaded once with unique new keys and no updates are required. Guarded missing-key insertion is a different strategy, explicitly excluded by B, and alone would not meet this stem's changed-value requirement.",
+          "sourceIds": ["dp800-d2-reference-data"],
+          "evidenceSummary": "The source contrasts replayed plain INSERT with separate WHEN MATCHED UPDATE and WHEN NOT MATCHED INSERT behavior. Unlike the prior snapshot, B now explicitly forbids both checks and updates, and the stem requires both outcomes."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "claimRepresented": "Use a versioned post-deployment script that reconciles existing and missing reference keys.",
+          "whyIncorrectInContext": "Supported, not incorrect: the schema plan first provides the table, and reconciliation can then update changed values and insert absent keys across repeated deployments.",
+          "couldBeCorrectWhen": "The implemented script actually applies the versioned reference values to existing keys and inserts missing ones after schema completion. Any concurrency, deletion or transactional requirements would need separate implementation review.",
+          "sourceIds": ["dp800-d2-reference-data"],
+          "evidenceSummary": "The unit versions reference scripts alongside schema, runs post scripts after the plan and demonstrates both matching-row updates and missing-row insertion. No particular DML spelling is necessary to choose this strategy."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "claimRepresented": "Deploying the schema model alone delivers the required reference-row values and subsequent updates.",
+          "whyIncorrectInContext": "Table definitions do not supply this deployment contract's versioned values or their convergence. Omitting the data work leaves those requirements unimplemented.",
+          "couldBeCorrectWhen": "Data is not required at deployment or a separately specified provisioning process owns it. The current task explicitly includes the reference-data lifecycle, with no alternate provisioner.",
+          "sourceIds": ["dp800-d2-reference-data"],
+          "evidenceSummary": "The actual training introduces pre/post data scripts precisely because essential lookup/configuration rows are outside the declarative schema model."
+        }
+      ],
+      "challenges": {
+        "scope": "The table is initially absent, then retained with existing keys on later deployments. Both missing-key insertion and changed-value updates are required; this is not an append-only data load.",
+        "plan": "Initial schema-before-data ordering and later value convergence jointly determine the strategy. No cloud service plan, repository subscription or mandatory MERGE choice is involved.",
+        "role": "A real deployment identity needs appropriate data rights, but permission elevation cannot make unconditional insert replay perform the excluded updates. This is strategy review, not certification of an actual identity.",
+        "preconditions": "The repaired stem explicitly supplies stable keys, retained rows and changed values that must converge. The former unchanged-value/guarded-append countercontext is no longer compatible with B or sufficient for the new requirement.",
+        "featureStatus": "SQL project post-deployment data scripts and the stated SQL insert/update behavior are actual GA capabilities in the admitted training. No preview-only IDE operation is needed, and strategy wording is not a lifecycle exemption.",
+        "sourceChanges": "The same saved unit was reread; the source did not change. The new author's narrower option and expanded value requirement, not a fresh date attached to old evidence, resolve the prior contextual problem.",
+        "stemSufficiency": "C alone handles initial object availability and both rerun data outcomes. Hypothetical hidden update logic would contradict B's explicit exclusion rather than rescue it; no unstated table-creation or external data process is assumed.",
+        "explanationBounds": "The new explanation expressly accepts guarded INSERT elsewhere, does not require MERGE, and disclaims arbitrary-script concurrency safety. It also avoids inventing deletion of keys absent from the reference set or guaranteed atomicity.",
+        "reasoningDepth": "Intermediate is justified by applying object-creation order and repeated-run state to both existing-value updates and missing-key inserts. The question is not inflated into an Advanced data-migration design.",
+        "answerClues": "B is now the longest choice and explicitly bounded; the correct C is not identifiable as the uniquely long careful answer. The alternatives are relatively direct lifecycle mismatches, so distractor plausibility is reduced rather than scored as flawless."
+      },
+      "rubricScores": {
+        "alignment": 4,
+        "accuracy": 4,
+        "scenarioCompleteness": 4,
+        "answerUniqueness": 4,
+        "distractorPlausibility": 3,
+        "distractorEvidence": 4,
+        "documentationStrength": 4,
+        "citationSpecificity": 4,
+        "difficultyAuthenticity": 4,
+        "explanationQuality": 4,
+        "originality": 3,
+        "clarityAccessibility": 4
+      },
+      "rubricJustifications": {
+        "alignment": "Directly implements the current reference/static-data source-control subskill.",
+        "accuracy": "Correctly separates table creation, existing-row updates, missing-row insertion and unrelated concurrency guarantees.",
+        "scenarioCompleteness": "Initial absence, later retention, stable keys and changed-value convergence are now explicit.",
+        "answerUniqueness": "B explicitly excludes checks/updates, A fails initial availability and D omits required data; only C meets the complete contract.",
+        "distractorPlausibility": "Pre-data preparation, one-time insertion and schema-only delivery are legitimate elsewhere, but the strong constraints make them fairly easy exclusions.",
+        "distractorEvidence": "The source directly describes post-plan population and matching-update/missing-insert behavior supporting every contextual distinction.",
+        "documentationStrength": "The admitted teaching unit supplies a concrete two-branch reconciliation example and the needed deployment lifecycle.",
+        "citationSpecificity": "The cited data-script and idempotence sections cover the exact initial/rerun conditions rather than only general Git guidance.",
+        "difficultyAuthenticity": "Combining initial table availability with repeated updates/inserts honestly fits Intermediate implementation reasoning.",
+        "explanationQuality": "Repairs the INSERT overgeneralization explicitly and preserves legitimate alternative implementations and safety limits.",
+        "originality": "Original convergence-focused scenario, although post-deployment reference reconciliation is a standard documented pattern.",
+        "clarityAccessibility": "The repaired stem and unconditional option remove the previous unstated assumption without requiring executable SQL."
+      },
+      "qualityNotes": "Fresh independently scored 46/48. This is not the old hold with a new hash: each new requirement and the expressly unconditional B were challenged. Guarded missing-key insertion remains valid elsewhere, but cannot be substituted into B and does not perform the required changed-value updates. Distinct from d2-021's project-item packaging and d2-020's test-state isolation. No blocking semantic duplicate found in the inspected related items.",
+      "verificationNotes": "Fresh independent PASS 3 approves C only for this repaired fingerprint. Re-evaluated first-deployment absence, retained keys, changed values, guarded insertion, hypothetical duplicate suppression and external data provisioning. The new wording independently excludes the former B counterexample and the actual source demonstrates both required data outcomes. No SQL script or deployment was executed. The prior held ledger remains unchanged; this new review binds the fresh generation and technical stages, exact frozen source dates and current objective map.",
+      "confidenceReason": "High confidence in unique C because the repaired option now explicitly forbids existing-row handling and the stem independently requires updates as well as inserts. No unseen reconciliation implementation is certified.",
+      "holdReasons": [],
+      "rubricTotal": 46,
+      "rubricPasses": true,
+      "failedChecks": []
+    },
+    {
+      "questionId": "dp800-20260916-d2-032",
+      "verdict": "verified",
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "sourceSummaries": {
+        "dp800-d2x-pre-post-deployment": "Independently reread the opening product contract: the plan is calculated before PreDeploy executes, PreDeploy precedes execution of that plan, and PostDeploy follows it. Scripts are packaged outside model compilation. These are three distinct phases, not an automatic compare-again mechanism.",
+        "dp800-d2x-compare-project": "Reread Review deployment T-SQL scripts and the source/target comparison description. Script generates the proposed update from the .dacpac and target used at generation, allowing separate review and execution. The article does not claim a saved script recalculates a new plan after an unrelated schema change.",
+        "dp800-d2x-testing-unit": "Reread the distinction between structural build validation and live behavior, together with the isolated/known-state testing guidance. It supports validating the prerequisite and complete sequence, not treating correct stage ordering as proof of migration safety."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "claimRepresented": "Complete the prerequisite before generating the deployment script, then review and execute it.",
+          "whyIncorrectInContext": "Supported, not incorrect: the changed target schema already exists when SqlPackage performs the later source-to-target comparison, which is the required planning input.",
+          "couldBeCorrectWhen": "The separate stage finishes successfully against the same target and its resulting schema is visible to the subsequent comparison. The reviewed script must still be validated for that actual target and intended migration.",
+          "sourceIds": [
+            "dp800-d2x-pre-post-deployment",
+            "dp800-d2x-compare-project",
+            "dp800-d2x-testing-unit"
+          ],
+          "evidenceSummary": "The explicit plan-before-pre-script order and target-dependent Script generation require the prerequisite to precede generation; the testing unit independently limits any inference of runtime safety."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "claimRepresented": "Putting the prerequisite in PreDeploy makes its schema effect visible while the combined script is generated.",
+          "whyIncorrectInContext": "PreDeploy is executed only after the plan has already been calculated. Including it in the generated script schedules its later execution; it does not execute it before that script's comparison.",
+          "couldBeCorrectWhen": "The preparation is compatible with a plan calculated from the original target and need only precede plan execution. The current requirement explicitly needs the changed schema at calculation time.",
+          "sourceIds": [
+            "dp800-d2x-pre-post-deployment",
+            "dp800-d2x-compare-project"
+          ],
+          "evidenceSummary": "The product opening paragraph distinguishes calculation from PreDeploy execution, while the compare article treats Script as a separately generated artifact for review."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "claimRepresented": "PostDeploy can supply a prerequisite schema state for calculating the plan it follows.",
+          "whyIncorrectInContext": "PostDeploy runs after the schema plan executes and therefore cannot provide input to its earlier calculation.",
+          "couldBeCorrectWhen": "Work requires the new schema to exist first, such as post-plan reference data population or application defaults. That is the reverse dependency from the prerequisite stated here.",
+          "sourceIds": ["dp800-d2x-pre-post-deployment"],
+          "evidenceSummary": "The actual product article states post-deployment execution occurs after plan completion and illustrates a post script for application settings."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "claimRepresented": "Generate the plan first, change the schema, and execute the saved script as though it used the new schema.",
+          "whyIncorrectInContext": "The saved artifact was calculated from the earlier target. Changing execution order after generation does not retroactively make that comparison inspect the changed schema.",
+          "couldBeCorrectWhen": "The saved plan remains valid for the later execution context and no requirement demands recalculation from a changed target. If the new schema must be a planning input, a fresh generation is required instead.",
+          "sourceIds": [
+            "dp800-d2x-compare-project",
+            "dp800-d2x-pre-post-deployment"
+          ],
+          "evidenceSummary": "The compare article derives Script output from the supplied target at generation, and the pre/post contract separates calculating a plan from later executing its statements."
+        }
+      ],
+      "challenges": {
+        "scope": "The question concerns which schema is visible during SqlPackage comparison. It does not ask whether a prerequisite happens before some later statements, or choose Script versus an XML report. Registered-DAC drift history is unrelated.",
+        "plan": "All four workflows generate, review and execute a script; their substantive difference is the prerequisite's position relative to calculation. Merely reviewing a plan does not make its input current.",
+        "role": "Required permissions are supplied. This avoids inferring unauthorized schema edits while leaving the actual deployment identity and production approval process outside the strategy question.",
+        "preconditions": "The prerequisite must finish on the intended target before its changed schema can be read during comparison. An isolated target is available for validation; the option does not claim unfinished or invisible changes are sufficient.",
+        "featureStatus": "The documented SDK project hooks and SqlPackage Script contract are actual GA functionality. No preview graphical comparison UI or lifecycle-independent methodology shortcut is used.",
+        "sourceChanges": "The frozen product ordering and comparison bodies were reread, not redated. The revised alternatives, not a new date attached to the old longest-safe-answer construction, establish the new challenge.",
+        "stemSufficiency": "A alone places prerequisite execution before the required comparison. B and C package future work; D changes target state after the saved plan is generated. Runtime conditional statements would not constitute the newly required comparison unless another explicit generation occurred.",
+        "explanationBounds": "The explanation accurately states all three phases and requires full-sequence testing. It does not claim automatic replanning, safe arbitrary renames, rollback, atomicity or that model compilation validates deployment scripts.",
+        "reasoningDepth": "The current Intermediate task requires applying the calculation/execution boundary across four plausible sequences. It no longer declares the wrong assumption false in the stem or asks the reader to select the sole cautious answer.",
+        "answerClues": "All four options contain review and execution, use parallel workflow phrasing and have comparable lengths. A is not the only test/review recommendation. The remaining pronoun warning unambiguously refers to the changed target schema and saved script."
+      },
+      "rubricScores": {
+        "alignment": 4,
+        "accuracy": 4,
+        "scenarioCompleteness": 4,
+        "answerUniqueness": 4,
+        "distractorPlausibility": 4,
+        "distractorEvidence": 4,
+        "documentationStrength": 4,
+        "citationSpecificity": 4,
+        "difficultyAuthenticity": 4,
+        "explanationQuality": 4,
+        "originality": 3,
+        "clarityAccessibility": 4
+      },
+      "rubricJustifications": {
+        "alignment": "Directly addresses updating an SQL project and deploying changes under the current objective map.",
+        "accuracy": "The workflows are evaluated against the documented order of comparison, pre-script execution, plan execution and post-script execution.",
+        "scenarioCompleteness": "The required planning input, permissions and isolated target are enough to select the workflow without inventing a migration implementation.",
+        "answerUniqueness": "Only A completes the prerequisite before plan generation; B/C/D each place its effect after the deciding comparison.",
+        "distractorPlausibility": "PreDeploy, PostDeploy and saved-approved-script workflows are real practices that differ meaningfully in timing.",
+        "distractorEvidence": "The exact product phase order and target-dependent script-generation contract independently defeat each alternative.",
+        "documentationStrength": "Two direct product articles ground the timing distinction, and the testing unit supplies the safety boundary.",
+        "citationSpecificity": "The opening pre/post paragraph and Script-generation section directly answer the planning-input question.",
+        "difficultyAuthenticity": "Intermediate is authentic for applying a phase-order contract across plausible workflows without needing an Advanced migration design.",
+        "explanationQuality": "Explains why each order fails or succeeds and explicitly separates correct sequencing from runtime safety.",
+        "originality": "The balanced workflow alternatives are newly authored, while the underlying planning-order fact remains a standard documented contract.",
+        "clarityAccessibility": "Parallel choices, similar lengths and a focused stem remove the prior longest-safe-answer and disclosed-diagnosis shortcuts."
+      },
+      "qualityNotes": "Fresh independently scored 47/48. Actual new alternatives were challenged; no score was converted from the prior 43/48 hold. This asks about input state at calculation, distinct from direct-017's action/output choice and direct-018's row-convergence lifecycle. The balanced review wording makes all four workflows plausible, while the exact phase boundary uniquely selects A. No code was executed.",
+      "verificationNotes": "Fresh independent PASS 3 approves A for this rewritten Intermediate snapshot. Tried PreDeploy inclusion, PostDeploy placement, changed execution context after saving a script, and possible runtime conditions. None makes the required changed schema an input to the earlier comparison. The product bodies explicitly support that distinction; correct ordering is not claimed to prove migration safety. The new parallel choices no longer give the answer away as the only cautious workflow. No script, build, comparison or deployment was run. Earlier holds and every prior report remain unchanged.",
+      "confidenceReason": "High confidence in unique A from the explicit calculation/execution ordering and target-dependent Script generation. This confidence concerns the workflow contract, not the safety of an unseen prerequisite or deployment script.",
+      "holdReasons": [],
+      "rubricTotal": 47,
+      "rubricPasses": true,
+      "failedChecks": []
+    }
+  ],
+  "reviewedAt": "2026-09-17T00:54:28.926Z",
+  "objectiveRetrievedAt": "2026-09-16T19:04:50.543Z",
+  "selectedQuestionIds": ["dp800-direct-018", "dp800-20260916-d2-032"],
+  "counts": {
+    "selectedCandidates": 2,
+    "adversarialVerified": 2,
+    "manualReviewRequired": 0,
+    "rejected": 0,
+    "optionChallenges": 8,
+    "reviewChecks": 24,
+    "finalAttestations": 2,
+    "adversarialStages": 2,
+    "rubrics": 2,
+    "rubricCriteriaScored": 24,
+    "sourceReviewSnapshots": 4,
+    "distinctCitedSources": 4,
+    "ancestryInclusiveSources": 9,
+    "inspectedProvenanceEdges": 8,
+    "constructionWarnings": 1,
+    "blockingDuplicates": 0,
+    "installedPlayable": 0
+  },
+  "holds": [],
+  "scores": {
+    "dp800-direct-018": {
+      "total": 46,
+      "maximum": 48,
+      "passes": true
+    },
+    "dp800-20260916-d2-032": {
+      "total": 47,
+      "maximum": 48,
+      "passes": true
+    }
+  },
+  "freshBindings": [
+    {
+      "questionId": "dp800-direct-018",
+      "previousHeldFingerprint": "b3fa6425fe5e0f96edbae7f5a3ca5b49a3be5abdb87cfd01adfbbcaedebfbfe6",
+      "newQuestionFingerprint": "766effb9401adb0d7ec3a75231c01c4baf179897f9d327cf3435822ab1853f44",
+      "substantiveAuthoredChangeBeyondDates": true,
+      "generatedAt": "2026-09-16T23:43:34.173Z",
+      "technicalReviewedAt": "2026-09-17T00:43:29.833Z"
+    },
+    {
+      "questionId": "dp800-20260916-d2-032",
+      "previousHeldFingerprint": "7bff6269fe21d5659721f2f439b6a8425f3b2f77a29f51f0549dd2a4bca2434e",
+      "newQuestionFingerprint": "34f231893ecb3b062cbfa939b87c6c940d720d718ddc87ae0f300694841426ca",
+      "substantiveAuthoredChangeBeyondDates": true,
+      "generatedAt": "2026-09-16T23:43:34.173Z",
+      "technicalReviewedAt": "2026-09-17T00:43:29.833Z"
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "sourceId": "dp800-guide",
+      "url": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-800",
+      "title": "Study Guide for Exam DP-800: Developing AI-Enabled Database Solutions",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\guide.json",
+      "retrievedAt": "2026-09-16T19:04:50.543Z",
+      "lastReviewedAt": "2026-09-16T19:27:12.936Z",
+      "sha256": "9a102535996e4386ac2d6f34ed4e5dde616c044ba87ec62ab9cb56fc6bb89c38",
+      "technicalCitation": false
+    },
+    {
+      "sourceId": "dp800-d2-reference-data",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/03-configure-source-control-manage-reference-data",
+      "title": "Configure source control and manage reference data",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-03-configure-source-control-manage-reference-data.json",
+      "retrievedAt": "2026-09-16T19:33:04.473Z",
+      "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "sha256": "3bbe6dce25be134feccf35037afe3586448285b3687071c536def8bf88055b8e",
+      "technicalCitation": true
+    },
+    {
+      "sourceId": "dp800-d2-module-cicd",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/",
+      "title": "Implement CI/CD by using SQL database projects",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\module-cicd.json",
+      "retrievedAt": "2026-09-16T19:28:17.097Z",
+      "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "sha256": "91a0ff2e2aee81100b882c1d1d551ef510c986ff0ed6272b3373f7fa305f0679",
+      "technicalCitation": false
+    },
+    {
+      "sourceId": "dp800-training-secure",
+      "url": "https://learn.microsoft.com/en-us/training/paths/secure-optimize-deploy-database-solutions/",
+      "title": "Secure, optimize, and deploy database solutions",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\training-secure.json",
+      "retrievedAt": "2026-09-16T19:17:02.556Z",
+      "lastReviewedAt": "2026-09-16T19:27:12.936Z",
+      "sha256": "631521ba3cb3640ece3d8131dae7514bf92f2a5a8b99d0562f17d57d1ee1b7d6",
+      "technicalCitation": false
+    },
+    {
+      "sourceId": "dp800-course",
+      "url": "https://learn.microsoft.com/en-us/training/courses/dp-800t00",
+      "title": "Develop AI-enabled database solutions",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\course.json",
+      "retrievedAt": "2026-09-16T19:06:06.496Z",
+      "lastReviewedAt": "2026-09-16T19:27:12.936Z",
+      "sha256": "01304410f0db8458f74d7626d424b4b7199b639d9787aa43d7443847274e132b",
+      "technicalCitation": false
+    },
+    {
+      "sourceId": "dp800-d2x-pre-post-deployment",
+      "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts",
+      "title": "Pre-deployment and post-deployment scripts overview",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-pre-post-deployment.json",
+      "retrievedAt": "2026-09-16T19:43:06.749Z",
+      "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "sha256": "500951faa86dff6f346c1f261b8a7219517ffcbebe925b68c48a4eb9a81b0e7e",
+      "technicalCitation": true
+    },
+    {
+      "sourceId": "dp800-d2x-cicd-summary",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/10-summary",
+      "title": "Summary",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-10-summary.json",
+      "retrievedAt": "2026-09-16T19:33:17.548Z",
+      "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "sha256": "02e75a702f7987c8f1e6ec03230dc4b3ce7a34a04df05494dff39b213289e4d0",
+      "technicalCitation": false
+    },
+    {
+      "sourceId": "dp800-d2x-compare-project",
+      "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/howto/compare-database-project",
+      "title": "Compare a database and a project",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-compare-project.json",
+      "retrievedAt": "2026-09-16T19:43:11.829Z",
+      "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "sha256": "d308429781da373b708568bc388381397019c73f4d297d92fa3faf127ae56309",
+      "technicalCitation": true
+    },
+    {
+      "sourceId": "dp800-d2x-testing-unit",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+      "title": "Design and implement a testing strategy",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-07-design-implement-testing-strategy.json",
+      "retrievedAt": "2026-09-16T19:33:13.916Z",
+      "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "sha256": "d88b1fe9bbd5922d145c6f00833d1e1486db175184143fef905d16ca2b96a3ca",
+      "technicalCitation": true
+    }
+  ],
+  "inputSnapshot": [
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\verification-reviews.json",
+      "sha256": "e1be2705a6de740d7040e48f66e28d355f4c6ee16c47d669b30f6fbb72cb1af3"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\validation-metadata.json",
+      "sha256": "0c273054b378e38230dbed940204ad6f9c021e738e4bd8b437eb32cf90bec757"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\encounter-metadata.json",
+      "sha256": "3385685d5e8ed094f81a53ab5ec4ff3e2bef378e4ca89406630e63a625c2f86a"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\reviewed-candidates.json",
+      "sha256": "a4bbd6a935d3b466f9365164cf775519593897102a29062cd087126fb63296b7"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\findings.json",
+      "sha256": "ec74539ae3aaaef8b27b054afe2c642378808bcd5ef2a0145aad9b218c859568"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\repairs-r1\\verification-reviews.json",
+      "sha256": "341a0a8ffa469364284236cf028c4fc217d6c443ad9dcec263e73473d334186a"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\repairs-r1\\validation-metadata.json",
+      "sha256": "59b5a6ea5d42e6f60cefdbeba53dd02ae49e43b628203820863640a8440acf1a"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\repairs-r1\\encounter-metadata.json",
+      "sha256": "09ec39932648fa75f3d13953e4e2f064aca444c8ed0ee534737355f382f82a9c"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\repairs-r1\\reviewed-candidates.json",
+      "sha256": "58e4bae95d4e15708d17393f2fe8de3192e8ba768c1270bf4b41253de58e5bfb"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\repairs-r1\\findings.json",
+      "sha256": "c842516563a375e90f29681c46515f54354452f2d5534d0933ef2f70f3a8e444"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\repairs\\adversarial-cicd-r1\\candidates.json",
+      "sha256": "a8d53996b28455ee184db463fb27eb56489cfb6ec2734e040adff9e4f8e085e7"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\repairs\\adversarial-cicd-r1\\generation-output.json",
+      "sha256": "a59767baa6e6858d230607c58d27f355cb100a85b80823099709a0beca67c39f"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\repairs\\adversarial-cicd-r1\\validation-metadata.json",
+      "sha256": "b737b11cc62d14c850c7f03f6d580fdac965432f157cfe7c01cc6f6c544a8040"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\repairs\\adversarial-cicd-r1\\repair-edits.json",
+      "sha256": "ee2c4ed1c3c8765ec2dcd7dd393afa7d5c9bdbd6090684a244dccdea65a43b59"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\technical-cicd\\adversarial-repairs-r1\\technical-reviews.json",
+      "sha256": "e6176272bd49bc6e47c40a5ae0f7151f539fbe828c3ca963d0bb31f46ac3078f"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\technical-cicd\\adversarial-repairs-r1\\validation-metadata.json",
+      "sha256": "5074c7eb2ce1de21bdd4716d043beb069b217c3207deb14edfba850e0b3ee711"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\reviews\\technical-cicd\\adversarial-repairs-r1\\findings.json",
+      "sha256": "4ffd907cbbc40b4ade3b3fa8165cb9a1c7ed83b1d27d2a298ab14efc8325f332"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\objectives.json",
+      "sha256": "31145831d8edac3152d07a7899f377ab401a67210f8d2ac49599c3bc3a833630"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\guide.json",
+      "sha256": "9a102535996e4386ac2d6f34ed4e5dde616c044ba87ec62ab9cb56fc6bb89c38"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\credential.json",
+      "sha256": "d0ccc4731b1ee820c4df4fd98a40d2dda9ce59c450cd77d1252cd2a3e7d1587e"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\course.json",
+      "sha256": "01304410f0db8458f74d7626d424b4b7199b639d9787aa43d7443847274e132b"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\credential.html",
+      "sha256": "e4a0be5184c2b048c090f2e582f384bcba4ce3d9ed7a0b1b7044345638f615c9"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\course.html",
+      "sha256": "1dfe9f7d6268e920421f8dfdb93a914173d97d0f771b4eea3033e1848675e636"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\training-secure.html",
+      "sha256": "3cc80977e6d00f711893a5470896fefaa4abfb5032fbedd4441568ebfd9af0b6"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\credential-links.json",
+      "sha256": "a8454e375526fc57de97cf9daeaf55caa8442d9c72702fa4782bbf0592742137"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\course-links.json",
+      "sha256": "f013aca71daa02009fdb194b8539c3466e56932b491f3085a36c3869bbc4ec2c"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\root-curation.json",
+      "sha256": "2ca8f3cf5fb8a1ff8a25afee54cfec6adb4d51e56b9af4aae57cffe514f14ae9"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\sources.json",
+      "sha256": "02b870340c1ba52728eb51137853494f1aa8492e6b3d27b1bf53b1148014a686"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\source-registry.json",
+      "sha256": "22d549397e9f05d798a9f77ae8df6c0f53c0a0afc4f3ffee94543e5b82131dd9"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\evidence-index.json",
+      "sha256": "6f437dccb92b256cfb56d3b8e4c3355a39e7095a0d45af1c084507e91e576fca"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\validation-sources.json",
+      "sha256": "4e1be466f1aa348ccf2a9627128206eb793d4e6be867b73dd661709ccf8807d3"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\validation-source-registry.json",
+      "sha256": "5b261686ef8da4e81f4b3a5ce54332ea7da5b9421687c6d0fe7c3ef92e5d5d8f"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\validation-metadata.json",
+      "sha256": "3bedf58a860964e9b0cdbbc6c1b6f5a03a786254328612205d08bbf30642f9b2"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\candidates.json",
+      "sha256": "c0053a565c11c1ef81e801933d925812a2292521a94a5bb5a66d853038adb17e"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\roots\\sources.json",
+      "sha256": "00cbfbb8919d003e87c799c94b77ebc0c0732e2846ee31a1da800c0544a14aba"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\roots\\source-registry.json",
+      "sha256": "226c538f8c8f54a2ef8bc1df4f356a778ebdea55bd22db1f4da472f178047993"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\roots\\evidence-index.json",
+      "sha256": "1b8a3350f167612cc893cc393a4316d7d64d807b2ed0e67aaf2eb70046ff2359"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\repairs\\technical-r1\\candidates.json",
+      "sha256": "267c3655e2efdc54d01d1df35c60398975891c7e1e4bfb14a4570da8da18aabd"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\integration\\all-candidates.json",
+      "sha256": "82ff48d0817cc84292994657f6c60a4b8c58d931393ee75631c1e1b0f6efeaf5"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\integration\\combined-duplicates.txt",
+      "sha256": "d2786f60e9430a26c14c113197694b0c6e94e334efacb2463ffddb2380d4ea1c"
+    },
+    {
+      "path": "scripts\\review-helpers.ts",
+      "sha256": "76b4c8b98d11908d684139deb653b3d0128f98e7cad38a6e521a21614da5f238"
+    },
+    {
+      "path": "src\\features\\grounding\\workflow.ts",
+      "sha256": "e09ae7ba35719b24220f0ea891f5b404fca54fab1975dfb9f3688101ed2a817b"
+    },
+    {
+      "path": "src\\features\\dungeons\\schema.ts",
+      "sha256": "60ee7d8528de574b8e934044fc96562240747e956e87a9ae2b9388d75005dcd7"
+    },
+    {
+      "path": "src\\features\\dungeons\\threePass.ts",
+      "sha256": "e00f4b799657b93acb96feb0e8634983a517f61017d9b0d0500b1f1cac377641"
+    },
+    {
+      "path": "src\\features\\dungeons\\review.ts",
+      "sha256": "a056c165d921ce54defa67138674e1b8478fe50a941a16367df0d563c71d3c55"
+    },
+    {
+      "path": "src\\features\\dungeons\\readiness.ts",
+      "sha256": "8a5144c30adc5ea73b246d1711f85364ab9fe7f1e7a0e28e7fb421b8b26abace"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-03-configure-source-control-manage-reference-data.json",
+      "sha256": "3bbe6dce25be134feccf35037afe3586448285b3687071c536def8bf88055b8e"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\raw\\module-cicd.json",
+      "sha256": "91a0ff2e2aee81100b882c1d1d551ef510c986ff0ed6272b3373f7fa305f0679"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\training-secure.json",
+      "sha256": "631521ba3cb3640ece3d8131dae7514bf92f2a5a8b99d0562f17d57d1ee1b7d6"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-pre-post-deployment.json",
+      "sha256": "500951faa86dff6f346c1f261b8a7219517ffcbebe925b68c48a4eb9a81b0e7e"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-10-summary.json",
+      "sha256": "02e75a702f7987c8f1e6ec03230dc4b3ce7a34a04df05494dff39b213289e4d0"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-compare-project.json",
+      "sha256": "d308429781da373b708568bc388381397019c73f4d297d92fa3faf127ae56309"
+    },
+    {
+      "path": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-07-design-implement-testing-strategy.json",
+      "sha256": "d88b1fe9bbd5922d145c6f00833d1e1486db175184143fef905d16ca2b96a3ca"
+    }
+  ],
+  "duplicatesAndConstruction": {
+    "comparisonPopulation": 155,
+    "latestRepairsSubstitutedInMemoryOnly": true,
+    "duplicateChecks": [],
+    "constructionWarnings": [
+      {
+        "code": "pronoun-review",
+        "category": "quality",
+        "severity": "warning",
+        "questionIds": ["dp800-20260916-d2-032"],
+        "message": "Check pronoun references; this heuristic does not establish ambiguity."
+      }
+    ],
+    "semanticScope": "Both new candidates, every option and their nearest CI/CD neighbors were read. Per-item notes explain distinct runtime convergence, model packaging, fixture state and planning-input facts. Wider integrated comparison is deterministic, not exhaustive semantic certification."
+  },
+  "validation": {
+    "schemaCounts": {
+      "questions": 2,
+      "finalReviews": 2,
+      "validationStages": 2,
+      "envelopes": 2
+    },
+    "attestationFindings": [],
+    "threePassFindings": [],
+    "scopedPackageErrors": [],
+    "scopedPackageWarnings": [],
+    "scopedReviewedEligible": 2,
+    "readiness": {
+      "study": false,
+      "gauntlet": false,
+      "reasons": [
+        "Not every major floor has verified encounters.",
+        "Torchlight Run needs 25 verified encounters; 2 available.",
+        "Boss Gauntlet needs 75 verified encounters; 2 available.",
+        "Boss Gauntlet needs verified breadth across every skill.",
+        "Boss Gauntlet needs independently reviewed Advanced or Expert encounters."
+      ]
+    },
+    "recordedAttestationCommand": {
+      "command": "node --import tsx scripts\\verify-questions.ts --exam dp-800 --questions .grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\adversarial-repairs-r1\\reviewed-candidates.json --reviews .grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\adversarial-repairs-r1\\verification-reviews.json --manifest .grounding\\dp800-expansion-20260916\\secure\\validation-sources.json --taxonomy .grounding\\dp800-expansion-20260916\\objectives.json --source-registry .grounding\\dp800-expansion-20260916\\secure\\validation-source-registry.json --package-manifest src\\content\\exams\\dp-800\\manifest.json --validation-metadata .grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\adversarial-repairs-r1\\validation-metadata.json --encounter-metadata .grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\adversarial-repairs-r1\\encounter-metadata.json",
+      "exitCode": 0,
+      "checkedAt": "2026-09-17T00:54:29.447Z",
+      "result": {
+        "mode": "three-pass-recorded-attestations",
+        "metadataOnlyAuthoring": false,
+        "reviewFile": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-cicd\\adversarial-repairs-r1\\verification-reviews.json",
+        "consolidatedReviewLedger": null,
+        "attestationChecksPassed": true,
+        "disclaimer": "No answers generated or statuses changed. These checks do not prove factual correctness or reviewer independence; an actual separate reviewer must inspect MCP documentation.",
+        "statusCounts": {
+          "candidate": 0,
+          "verified": 2,
+          "manual-review-required": 0,
+          "rejected": 0,
+          "stale": 0
+        },
+        "totalCandidateRecords": 2,
+        "reviewedVerifiedQuestions": 2,
+        "playableVerifiedQuestions": 0,
+        "availability": {
+          "credentialStatus": "active",
+          "contentReadiness": "limited",
+          "studyEnabled": false,
+          "gauntletEnabled": false,
+          "reviewedButUnavailableQuestions": 2,
+          "reasons": [
+            "Not every major floor has verified encounters.",
+            "Torchlight Run needs 25 verified encounters; 2 available.",
+            "Boss Gauntlet needs 75 verified encounters; 2 available.",
+            "Boss Gauntlet needs verified breadth across every skill.",
+            "Boss Gauntlet needs independently reviewed Advanced or Expert encounters."
+          ],
+          "disclaimer": "Reviewed question content does not establish credential GA or active status. An otherwise ready package requires verified active identity or explicit catalog authorization for verified beta study access."
+        },
+        "threePass": {
+          "targetVerified": 150,
+          "verifiedShortfall": 148,
+          "minimumRubricScore": 44,
+          "maximumRubricScore": 48,
+          "stages": [
+            {
+              "questionId": "dp800-direct-018",
+              "generationRecorded": true,
+              "technicalVerdict": "verified",
+              "adversarialVerdict": "verified",
+              "failures": []
+            },
+            {
+              "questionId": "dp800-20260916-d2-032",
+              "generationRecorded": true,
+              "technicalVerdict": "verified",
+              "adversarialVerdict": "verified",
+              "failures": []
+            }
+          ],
+          "provenanceViolations": [],
+          "rubricDistribution": {
+            "alignment": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 2
+            },
+            "accuracy": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 2
+            },
+            "scenarioCompleteness": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 2
+            },
+            "answerUniqueness": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 2
+            },
+            "distractorPlausibility": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1,
+              "4": 1
+            },
+            "distractorEvidence": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 2
+            },
+            "documentationStrength": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 2
+            },
+            "citationSpecificity": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 2
+            },
+            "difficultyAuthenticity": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 2
+            },
+            "explanationQuality": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 2
+            },
+            "originality": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 2,
+              "4": 0
+            },
+            "clarityAccessibility": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 2
+            }
+          },
+          "rubricRecords": [
+            {
+              "questionId": "dp800-direct-018",
+              "objectiveVersion": "March 12, 2026",
+              "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+              "reviewerId": "dp800-adversarial-cicd-20260916",
+              "reviewedAt": "2026-09-17T00:54:28.926Z",
+              "notes": "alignment 4/4: Directly implements the current reference/static-data source-control subskill. accuracy 4/4: Correctly separates table creation, existing-row updates, missing-row insertion and unrelated concurrency guarantees. scenarioCompleteness 4/4: Initial absence, later retention, stable keys and changed-value convergence are now explicit. answerUniqueness 4/4: B explicitly excludes checks/updates, A fails initial availability and D omits required data; only C meets the complete contract. distractorPlausibility 3/4: Pre-data preparation, one-time insertion and schema-only delivery are legitimate elsewhere, but the strong constraints make them fairly easy exclusions. distractorEvidence 4/4: The source directly describes post-plan population and matching-update/missing-insert behavior supporting every contextual distinction. documentationStrength 4/4: The admitted teaching unit supplies a concrete two-branch reconciliation example and the needed deployment lifecycle. citationSpecificity 4/4: The cited data-script and idempotence sections cover the exact initial/rerun conditions rather than only general Git guidance. difficultyAuthenticity 4/4: Combining initial table availability with repeated updates/inserts honestly fits Intermediate implementation reasoning. explanationQuality 4/4: Repairs the INSERT overgeneralization explicitly and preserves legitimate alternative implementations and safety limits. originality 3/4: Original convergence-focused scenario, although post-deployment reference reconciliation is a standard documented pattern. clarityAccessibility 4/4: The repaired stem and unconditional option remove the previous unstated assumption without requiring executable SQL.",
+              "version": 2,
+              "scores": {
+                "alignment": 4,
+                "accuracy": 4,
+                "scenarioCompleteness": 4,
+                "answerUniqueness": 4,
+                "distractorPlausibility": 3,
+                "distractorEvidence": 4,
+                "documentationStrength": 4,
+                "citationSpecificity": 4,
+                "difficultyAuthenticity": 4,
+                "explanationQuality": 4,
+                "originality": 3,
+                "clarityAccessibility": 4
+              },
+              "total": 46
+            },
+            {
+              "questionId": "dp800-20260916-d2-032",
+              "objectiveVersion": "March 12, 2026",
+              "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+              "reviewerId": "dp800-adversarial-cicd-20260916",
+              "reviewedAt": "2026-09-17T00:54:28.926Z",
+              "notes": "alignment 4/4: Directly addresses updating an SQL project and deploying changes under the current objective map. accuracy 4/4: The workflows are evaluated against the documented order of comparison, pre-script execution, plan execution and post-script execution. scenarioCompleteness 4/4: The required planning input, permissions and isolated target are enough to select the workflow without inventing a migration implementation. answerUniqueness 4/4: Only A completes the prerequisite before plan generation; B/C/D each place its effect after the deciding comparison. distractorPlausibility 4/4: PreDeploy, PostDeploy and saved-approved-script workflows are real practices that differ meaningfully in timing. distractorEvidence 4/4: The exact product phase order and target-dependent script-generation contract independently defeat each alternative. documentationStrength 4/4: Two direct product articles ground the timing distinction, and the testing unit supplies the safety boundary. citationSpecificity 4/4: The opening pre/post paragraph and Script-generation section directly answer the planning-input question. difficultyAuthenticity 4/4: Intermediate is authentic for applying a phase-order contract across plausible workflows without needing an Advanced migration design. explanationQuality 4/4: Explains why each order fails or succeeds and explicitly separates correct sequencing from runtime safety. originality 3/4: The balanced workflow alternatives are newly authored, while the underlying planning-order fact remains a standard documented contract. clarityAccessibility 4/4: Parallel choices, similar lengths and a focused stem remove the prior longest-safe-answer and disclosed-diagnosis shortcuts.",
+              "version": 2,
+              "scores": {
+                "alignment": 4,
+                "accuracy": 4,
+                "scenarioCompleteness": 4,
+                "answerUniqueness": 4,
+                "distractorPlausibility": 4,
+                "distractorEvidence": 4,
+                "documentationStrength": 4,
+                "citationSpecificity": 4,
+                "difficultyAuthenticity": 4,
+                "explanationQuality": 4,
+                "originality": 3,
+                "clarityAccessibility": 4
+              },
+              "total": 47
+            }
+          ],
+          "disclaimer": "Recorded pass outputs and source receipts are checked structurally. Actual source meaning, reviewer independence and counterexamples require separate human/model review contexts."
+        },
+        "excludedQuestionIds": ["dp800-direct-018", "dp800-20260916-d2-032"],
+        "findings": [],
+        "questionFingerprints": {
+          "dp800-direct-018": "766effb9401adb0d7ec3a75231c01c4baf179897f9d327cf3435822ab1853f44",
+          "dp800-20260916-d2-032": "34f231893ecb3b062cbfa939b87c6c940d720d718ddc87ae0f300694841426ca"
+        }
+      }
+    },
+    "persistedArtifactsReparsed": true,
+    "persistedBindingsRechecked": true,
+    "authoredFieldsUnchanged": true,
+    "generationAndTechnicalUnchanged": true,
+    "substantiveAuthoredChangesNotDateOnlyRebinding": true,
+    "sourceDatesUnchanged": true,
+    "actualCatalogUsedWithoutApprovalExpansion": true,
+    "changedInputs": [],
+    "priorTenReportsUnchanged": true,
+    "historicalHoldsRemainUnchanged": true,
+    "liveDatabaseExecution": false,
+    "scopeCoverage": {
+      "reviewedCandidates": 2,
+      "majorDomainsRepresented": 1,
+      "totalObjectiveDomains": 3,
+      "allIntermediate": true,
+      "readinessNotAsserted": true,
+      "installedGameplayChanges": 0
+    }
+  }
+}

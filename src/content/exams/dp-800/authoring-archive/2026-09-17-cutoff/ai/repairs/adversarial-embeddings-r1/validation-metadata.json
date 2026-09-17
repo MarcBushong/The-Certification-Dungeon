@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-20260916-d3-005": {
+      "generation": {
+        "questionFingerprint": "5451c0103447fec5ccc87b4832bd3b498321cf8be3cf65cfeba9ff635c0d4dd0",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-17T01:13:22.376Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d3x-update", "dp800-d3-maintenance"],
+            "summary": "UPDATE modifies rows satisfying its predicate. The supplied current revision 42 passes >= 41, so this lower bound does not bind the payload to its source snapshot. A lower-bound test can serve a different range-selection task, but not equality with the captured generation revision."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3-maintenance", "dp800-d3x-update"],
+            "summary": "Comparing the stored payload's revision 40 with the worker's 41 prevents some output regressions but ignores newer source revision 42. It would suffice only with an additional no-intervening-source-change guarantee, expressly contradicted by this fixture."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3-maintenance", "dp800-d3x-update"],
+            "summary": "The application-supplied revision contract and ordinary UPDATE search condition allow the write only while source revision equals captured revision. This row fails 42=41, preserving its current state for a later retry. No native-vector, change-feed API or model return contract is claimed."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3-maintenance", "dp800-d3x-update"],
+            "summary": "Nonnull presence is true for the stored revision-40 text payload and does not reject this race. It could restrict a job to already populated records, but cannot establish correspondence with the latest source revision."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d3-007": {
+      "generation": {
+        "questionFingerprint": "9e18aa16f6532f9915d0fcb66fe223f10d6cfd1af481272da079919430b420ef",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-17T01:13:22.377Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d3-input-design", "dp800-d3x-from-clause"],
+            "summary": "An equality join returns each chunk with its one matching document, but it does not change the selected payload column. The fixture distinguishes whole-document and chunk-produced payloads. This selection could serve a design intentionally attaching document-level representations, not the required authoritative per-chunk output."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d3x-from-clause", "dp800-d3-input-design"],
+            "summary": "Selecting the chunk payload addresses representation identity, but CROSS JOIN still returns every document/chunk pair. That Cartesian relation can support a deliberate all-pairs analysis; it does not establish unique ownership in this multi-document batch."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d3x-from-clause"],
+            "summary": "Changing projected columns does not remove the cross-product rows. With at least two Documents, the same c tuple is returned multiple times. This could be harmless under a separately specified later deduplication or a single-document input, neither of which satisfies the stated exactly-one-row result here."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d3x-from-clause", "dp800-d3-input-design"],
+            "summary": "The FROM reference supplies the matching-pair semantics of an equality join; the given unique document key and valid chunk references yield one owner for every chunk. Selecting the supplied chunk-produced payload preserves the text/representation identity emphasized by the embedding-design training. All producer contracts are outside this fixed relational query."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d3-009": {
+      "generation": {
+        "questionFingerprint": "5a0aef709f44be824f334b99bb3be7cc1b95fa4e3a05c2e2a3b03f6c71af4bab",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-ai-20260916",
+        "generatedAt": "2026-09-17T01:13:22.377Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d3-vector-patterns-unit",
+              "dp800-d3-input-design",
+              "dp800-d3x-models-evaluate"
+            ],
+            "summary": "The training pairs query and stored representations from the same model and explains that models determine their vector representations. Under the supplied immutable-S, full-capacity and paired-routing assumptions, retaining complete A/A until complete B/B is ready preserves both compatibility and coverage. No database snapshot or routing API is asserted."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d3x-models-evaluate",
+              "dp800-d3-vector-patterns-unit"
+            ],
+            "summary": "Equal width is a supplied numeric property, not permission to ignore the explicitly rejected A/B comparisons. Immediate B queries could be valid if all served vectors were already B-compatible, but that is not the stated remaining A vector set."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d3-input-design",
+              "dp800-d3-vector-patterns-unit"
+            ],
+            "summary": "The scenario explicitly says scale normalization did not establish cross-encoder compatibility. Normalization could be sufficient for a different problem involving only scale within a compatible representation, but it does not meet this supplied model-space contract."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d3-input-design",
+              "dp800-d3-vector-patterns-unit"
+            ],
+            "summary": "Searching only converted rows can keep those individual comparisons within B's space, but drops part of the required immutable corpus S. Such a rollout could suit an offline or explicitly partial-coverage migration; neither is the service contract given here."
+          }
+        ]
+      }
+    }
+  }
+}

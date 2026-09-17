@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-adversarial-integration-20260916-lifecycle-r1",
+  "reviews": [
+    {
+      "questionId": "dp800-20260916-d2-036",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-integration-20260916",
+      "questionFingerprint": "0e64487d2c74ad9638b4c72994f000bac3ab5ba099b1df4544ef4ed76880da52",
+      "reviewedAt": "2026-09-17T01:10:38.213Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-dab-cache",
+          "url": "https://learn.microsoft.com/en-us/azure/data-api-builder/concept/cache/level-1",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-dab-cache.json",
+          "retrievedAt": "2026-09-16T19:53:57.887Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The actual version-2.0-and-later note bounds this L1 feature. Behavior explicitly limits it to REST, describes per-route/per-parameter entries and modification invalidation, and gives entity TTL precedence. The global/entity opt-in sections are separate eligibility requirements. These passages support REST cache-miss investigations but exclude explaining GraphQL reads as misses in this L1 cache."
+        },
+        {
+          "sourceId": "dp800-d2x-dab-production-catalog",
+          "url": "https://learn.microsoft.com/en-us/azure/data-api-builder/",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\repairs\\lifecycle-r1\\raw\\dab-documentation-root.json",
+          "retrievedAt": "2026-09-17T00:14:36.938Z",
+          "lastReviewedAt": "2026-09-17T00:25:07.927Z",
+          "supportingSummary": "The actual opening calls DAB production-ready, and REST API / Query operators & caching specifically names Level 1 cache (in-memory), linking to the same detailed cache article cited here. Together with that article's explicit 2.0-and-later availability, this is affirmative released-production context for the named REST L1 feature. I do not infer that every linked feature, older release, GraphQL cache or MCP integration inherits GA."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Parameter variation can distinguish eligible REST cache entries, but the actual L1 article excludes GraphQL endpoints. Investigating nonexistent GraphQL L1 entries does not account for the API-coverage boundary asked about here.",
+          "sourceIds": [
+            "dp800-d2x-dab-cache",
+            "dp800-d2x-dab-production-catalog"
+          ]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Modification invalidation is a documented L1 behavior for eligible cached results, not a reason for GraphQL's exclusion from this REST-only feature. The question does not establish GraphQL L1 entries to invalidate.",
+          "sourceIds": [
+            "dp800-d2x-dab-cache",
+            "dp800-d2x-dab-production-catalog"
+          ]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "A TTL controls lifetime after a request is eligible for this cache. Choosing an entity or global TTL cannot extend the documented L1 feature to GraphQL, so expiry is not the requested API-coverage diagnosis.",
+          "sourceIds": [
+            "dp800-d2x-dab-cache",
+            "dp800-d2x-dab-production-catalog"
+          ]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: the detailed product article explicitly limits L1 to REST endpoints. It is therefore appropriate to investigate this GraphQL data path separately rather than assume request variation, writes or expiry are misses in that L1 cache.",
+          "sourceIds": [
+            "dp800-d2x-dab-cache",
+            "dp800-d2x-dab-production-catalog"
+          ]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh independent PASS 3 re-read the new production-ready catalog, its actual training reference and the frozen detailed L1 body. D is supported; parameter, write and TTL alternatives were individually tested as legitimate REST contexts. The narrow GA label is affirmatively grounded, not extended to every catalog feature. Static review only.",
+      "confidenceReason": "High confidence in the DAB 2.0 REST-only L1 distinction and the claim-specific released-production context. This review does not certify GraphQL performance, distributed caching, every writer's invalidation behavior or unrelated catalog entries."
+    },
+    {
+      "questionId": "dp800-20260916-d2-037",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-integration-20260916",
+      "questionFingerprint": "fbb39cea8cb980948b54c4116debbe2c3750e1f9511f8f64148b7e14e0a96a5a",
+      "reviewedAt": "2026-09-17T01:10:38.213Z",
+      "verdict": "manual-review-required",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-dab-entities-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-3-define-entities-rest-graphql.json",
+          "retrievedAt": "2026-09-16T19:33:03.539Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The actual unit says clients use mapped names, documents first/after and returned endCursor, and uses typed GraphQL filter inputs generated from field data types. Its source example explicitly declares UnitPrice DECIMAL and UnitsInStock INT before demonstrating numeric gt literals. The candidate supplies new names and aliases but no numeric field types or generated input schema, so the literal numeric filter is only conditionally supported."
+        },
+        {
+          "sourceId": "dp800-d2x-dab-production-catalog",
+          "url": "https://learn.microsoft.com/en-us/azure/data-api-builder/",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\repairs\\lifecycle-r1\\raw\\dab-documentation-root.json",
+          "retrievedAt": "2026-09-17T00:14:36.938Z",
+          "lastReviewedAt": "2026-09-17T00:25:07.927Z",
+          "supportingSummary": "The actual root affirmatively describes DAB as production-ready and explicitly catalogs GraphQL filtering, projection, limiting and cursor pagination. I accept scoped maturity context for these ordinary GraphQL capabilities, but it cannot establish this hypothetical entity's scalar types, validate its literal numeric inputs, or turn navigation labels such as $filter into executable GraphQL syntax."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The entity is expressly said to expose cost and available as its field names. The unit instructs clients to use mapped names; valid database configuration does not expose UnitCost and AvailableUnits as alternate client names automatically.",
+          "sourceIds": [
+            "dp800-d2x-dab-entities-unit",
+            "dp800-d2x-dab-production-catalog"
+          ]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "ambiguous",
+          "rationale": "Supported only for a compatible numeric generated filter schema. The source explicitly makes filter types depend on field data types and demonstrates DECIMAL/INT columns. This stem provides names and aliases, not scalar types; calling a column UnitCost does not prove numeric GraphQL input compatibility, and valid entity configuration is not validation of this unexecuted query fragment.",
+          "sourceIds": [
+            "dp800-d2x-dab-entities-unit",
+            "dp800-d2x-dab-production-catalog"
+          ]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "first limits a request's page size; after supplies the continuation position. Omitting after does not instruct DAB to resume after this client's preceding page and is not a supported advancement operation.",
+          "sourceIds": [
+            "dp800-d2x-dab-entities-unit",
+            "dp800-d2x-dab-production-catalog"
+          ]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect as a continuation rule: the unit returns endCursor for subsequent after requests. Keeping the filter and first unchanged requests continuation of that query rather than decoding a cursor or treating page size as state. It does not cure an invalid filter input in B.",
+          "sourceIds": [
+            "dp800-d2x-dab-entities-unit",
+            "dp800-d2x-dab-production-catalog"
+          ]
+        }
+      ],
+      "checks": {
+        "answerDefensible": false,
+        "correctOptionsSupported": false,
+        "distractorsIncorrect": true,
+        "explanationsSupported": false,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": false,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": false
+      },
+      "verificationNotes": "Fresh independent PASS 3 accepts the claim-scoped production evidence but finds a separate implementation gap. The actual training example declares DECIMAL/INT fields and says filter input types depend on data types; the candidate only names UnitCost/AvailableUnits and their aliases. B's numeric literals are therefore conditional. D's cursor rule is supported. Static review found the gap; no GraphQL request was executed.",
+      "confidenceReason": "High confidence that the new root does not establish hypothetical entity scalar types. The intended filter is plausible for numeric fields, but this exact key needs that prerequisite rather than inference from business column names. The hold is technical completeness, not an unresolved lifecycle flag."
+    },
+    {
+      "questionId": "dp800-20260916-d2-040",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-integration-20260916",
+      "questionFingerprint": "004ccded2edb41920cd2a3dcb302c393568ac7f908fca14fbd2af9f5389cbb61",
+      "reviewedAt": "2026-09-17T01:10:38.213Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-dab-entities-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-3-define-entities-rest-graphql.json",
+          "retrievedAt": "2026-09-16T19:33:03.539Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Define entity relationships for GraphQL configures separate relationships on Product and Category, matching their CategoryID fields and distinguishing one versus many by traversal direction. The prose says many applies to a one-to-many direction. This supports a Customer-side many relationship using the declared CustomerId foreign key, not an inferred InvoiceId key or automatically generated inverse."
+        },
+        {
+          "sourceId": "dp800-d2-dab-objects",
+          "url": "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/4-expose-database-objects-stored-procedures-views",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\integration-4-expose-database-objects-stored-procedures-views.json",
+          "retrievedAt": "2026-09-16T19:33:05.627Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Define GraphQL relationships between entities shows explicit source.fields/target.fields joins and separately authored reverse relationships. Its Order-to-OrderDetail many example uses the shared OrderID key. These support direction, cardinality and join-field distinctions without adopting unrelated stored-procedure multiple-result-set or old sample-method claims."
+        },
+        {
+          "sourceId": "dp800-d2x-dab-production-catalog",
+          "url": "https://learn.microsoft.com/en-us/azure/data-api-builder/",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\repairs\\lifecycle-r1\\raw\\dab-documentation-root.json",
+          "retrievedAt": "2026-09-17T00:14:36.938Z",
+          "lastReviewedAt": "2026-09-17T00:25:07.927Z",
+          "supportingSummary": "The actual current root calls DAB production-ready and describes GraphQL schema-driven queries with relationships, explicitly linking Entity relationships in that API's capability section. I accept this as scoped released-production context for ordinary table-entity relationships, not as approval for every linked feature, cross-file relationship, SQL backend or configuration syntax."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The joined CustomerId fields are appropriate, but cardinality one describes at most one related target rather than the required collection. The declared Customer-to-Invoice direction permits multiple matching invoice rows.",
+          "sourceIds": ["dp800-d2x-dab-entities-unit", "dp800-d2-dab-objects"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: the owning entity is Customer, the target collection is Invoice, and CustomerId is the only declared key/foreign-key pair connecting them. Many matches the permitted multiple invoices, and both entities are already readable in the same file.",
+          "sourceIds": [
+            "dp800-d2x-dab-entities-unit",
+            "dp800-d2-dab-objects",
+            "dp800-d2x-dab-production-catalog"
+          ]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Correct cardinality cannot substitute for the specified join. The stem establishes Invoices.CustomerId as the foreign key to Customers.CustomerId, not InvoiceId; the alternative does not describe that relationship.",
+          "sourceIds": ["dp800-d2x-dab-entities-unit", "dp800-d2-dab-objects"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "This defines a legitimate Invoice-to-Customer traversal, but on the wrong owning entity for the task. The units explicitly configure each direction; an inverse one relationship is not the Customer-side collection definition requested.",
+          "sourceIds": ["dp800-d2x-dab-entities-unit", "dp800-d2-dab-objects"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh independent PASS 3 re-evaluated one/many cardinality, the declared key join and the inverse traversal from both actual unit examples. B remains unique, without assuming InvoiceId is a key or that an inverse is automatically generated. The new production-ready root is accepted only for ordinary GraphQL relationship maturity. Static review and unchanged history are preserved.",
+      "confidenceReason": "High confidence because the explicit data contract and both relationship examples resolve every option. The maturity assessment is limited to the named ordinary GraphQL relationship feature and does not approve unrelated catalog children or special deployment contexts."
+    }
+  ]
+}

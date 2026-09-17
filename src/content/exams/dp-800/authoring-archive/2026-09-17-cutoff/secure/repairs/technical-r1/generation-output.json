@@ -1,0 +1,984 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-expansion-secure-technical-r1-20260916",
+  "authorId": "dp800-expansion-author-secure-20260916",
+  "generatedAt": "2026-09-16T22:44:52.544Z",
+  "candidates": [
+    {
+      "id": "dp800-direct-014",
+      "question": "A read-only report runs several SELECT statements in one explicit SQL Server 2022 transaction. Each must use one consistent transaction-level versioned view while other sessions can commit ordinary row updates between the report's reads. RCSI and ALLOW_SNAPSHOT_ISOLATION are enabled. There is no DDL or special locking hint. Which session isolation level meets both requirements?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "READ COMMITTED under RCSI"
+        },
+        {
+          "id": "b",
+          "text": "SERIALIZABLE"
+        },
+        {
+          "id": "c",
+          "text": "SNAPSHOT"
+        },
+        {
+          "id": "d",
+          "text": "READ UNCOMMITTED"
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Use SNAPSHOT for the consistent transaction-level versioned view.",
+      "deepExplanation": "RCSI changes READ COMMITTED at statement scope; SNAPSHOT changes the consistency scope to the transaction. The scenario deliberately excludes DDL/schema-lock contention and writer update-conflict handling.",
+      "whyOtherAnswersAreWrong": {
+        "a": "RCSI provides a fresh statement-level view. Separate statements can therefore observe different committed versions within the same transaction.",
+        "b": "Serializable isolation protects the read set with locks, so conflicting row updates cannot freely commit while those read locks are held.",
+        "d": "This level can expose uncommitted changes and does not establish the required stable committed transaction-level snapshot."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "optimize-database-performance",
+      "subskill": "Preserve data integrity and consistency by using transaction isolation levels and concurrency controls",
+      "difficulty": "intermediate",
+      "complexity": "scenario-based",
+      "sourceIds": ["dp800-d2-isolation-unit", "dp800-d2-transaction-guide"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/03-preserve-data-integrity-isolation-levels",
+        "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide"
+      ],
+      "documentationTitles": [
+        "Preserve data integrity with transaction isolation levels and concurrency controls",
+        "Transaction locking and row versioning guide"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["sql-server-2022", "snapshot", "concurrency"],
+      "conceptId": "sql-snapshot-transaction-view-versus-rcsi-statement-view",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-010",
+      "question": "An Azure SQL logical server has a system-assigned identity and two user-assigned identities; ModelCaller is configured as the primary user-assigned identity. A correctly scoped Managed Identity credential invokes an existing Azure OpenAI endpoint with sp_invoke_external_rest_endpoint. SQL permissions, network access and the token audience are correct. Only the system-assigned identity has Cognitive Services OpenAI User. Which authorization change targets the identity the call actually uses?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Give the calling database user additional table SELECT permissions."
+        },
+        {
+          "id": "b",
+          "text": "Grant the Azure OpenAI role to the other, nonprimary user-assigned identity."
+        },
+        {
+          "id": "c",
+          "text": "Grant Cognitive Services OpenAI User on the Azure OpenAI resource to ModelCaller."
+        },
+        {
+          "id": "d",
+          "text": "Grant the role again to the system-assigned identity and leave both user-assigned identities unchanged."
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Authorize ModelCaller, the primary user-assigned identity used by the outgoing credential.",
+      "deepExplanation": "A SQL caller, a logical-server identity and the remote service's RBAC principal are distinct. Credential authentication is not always system-assigned. The endpoint's supported API and existing deployment are stipulated; the documentation's preview API example is not asserted as GA.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Table SELECT can authorize reading the payload's source data. It does not authorize the outgoing managed identity at Azure OpenAI, and SQL permissions are already complete.",
+        "b": "A different user-assigned identity could be used if selected as primary in a different configuration. With multiple identities here, the documented selection is the configured primary, ModelCaller.",
+        "d": "The system-assigned identity is used when no user-assigned identity is assigned. Regranting its role does not change the primary-user-assigned identity selection in this configuration."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "implement-data-security-and-compliance",
+      "subskill": "Secure model endpoints, including Managed Identity",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d2x-external-rest"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql"
+      ],
+      "documentationTitles": [
+        "sys.sp_invoke_external_rest_endpoint (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["azure-sql-database", "model-endpoint", "managed-identity"],
+      "conceptId": "azure-sql-rest-managed-identity-prefers-primary-user-assigned-identity",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-016",
+      "question": "A SQL Server 2022 transaction uses SNAPSHOT to read a balance and calculate a debit. After that read, another transaction commits an update to the same row. The first transaction then attempts its UPDATE and encounters an update conflict. There are no external side effects, and bounded retries are permitted. Which response preserves the calculation's consistency?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Start a fresh transaction, reread the balance and re-evaluate the debit before retrying the complete operation."
+        },
+        {
+          "id": "b",
+          "text": "Wait in the failed transaction until the other writer releases its lock, then reuse the calculated value."
+        },
+        {
+          "id": "c",
+          "text": "Submit only the old calculated UPDATE value in a new transaction without rereading."
+        },
+        {
+          "id": "d",
+          "text": "Treat the conflict as successful optimistic concurrency and commit the original debit."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "Retry the complete read-calculate-write operation under a new transaction snapshot.",
+      "deepExplanation": "SNAPSHOT stabilizes reads but does not silently authorize overwriting a concurrently changed row. This is a write-conflict decision, distinct from choosing transaction-level versus statement-level read consistency and from deadlock-victim selection.",
+      "whyOtherAnswersAreWrong": {
+        "b": "Waiting can resolve ordinary lock blocking while a transaction is still valid. Here the other writer has committed and the snapshot transaction has encountered a terminating update conflict.",
+        "c": "A new transaction could accept an update based on a fresh valid context, but reusing the old calculation skips the business decision against the now-current balance. It does not preserve the stated read-calculate-write consistency.",
+        "d": "A successful uncontested SNAPSHOT write can commit normally. An update conflict instead terminates the transaction; it is not evidence that the intended debit was accepted."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "optimize-database-performance",
+      "subskill": "Preserve data integrity and consistency by using transaction isolation levels and concurrency controls",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d2-transaction-guide", "dp800-d2-isolation-unit"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide",
+        "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/03-preserve-data-integrity-isolation-levels"
+      ],
+      "documentationTitles": [
+        "Transaction locking and row versioning guide",
+        "Preserve data integrity with transaction isolation levels and concurrency controls"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["sql-server-2022", "snapshot", "optimistic-concurrency"],
+      "conceptId": "sql-snapshot-write-conflict-retry-must-reread-and-recompute-business-decision",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-017",
+      "question": "A SQL Server 2022 query became slower after a release. Database-level historical query capture was active across both periods and its records remain available. The engineer must compare plan changes over that window and check whether current operators process more rows than estimated. Diagnostic permissions and a representative test execution are available. Select two diagnostic steps.",
+      "questionType": "multi-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Compare the query's plan variants and time-windowed runtime statistics in Query Store."
+        },
+        {
+          "id": "b",
+          "text": "Rank cached statements by CPU and logical reads using sys.dm_exec_query_stats."
+        },
+        {
+          "id": "c",
+          "text": "Inspect missing-index DMVs for equality, inequality and included-column recommendations."
+        },
+        {
+          "id": "d",
+          "text": "Capture the representative execution's actual plan and compare estimated with observed operator row counts."
+        }
+      ],
+      "correctAnswer": ["a", "d"],
+      "explanation": "Use Query Store for history and an actual plan for observed current operator behavior.",
+      "deepExplanation": "Historical aggregates and per-operator execution evidence answer different questions. A row-estimate mismatch is a diagnostic clue, not automatic proof that a particular index or statistics update is the solution.",
+      "whyOtherAnswersAreWrong": {
+        "b": "Cached-plan aggregates help prioritize statements by resource use. They do not provide the requested retained plan-version timeline or measured row counts for individual operators.",
+        "c": "Missing-index DMVs suggest candidate access paths. They are useful when evaluating index changes, but do not supply the historical plan comparison or actual operator cardinalities requested here."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "optimize-database-performance",
+      "subskill": "Evaluate query performance by using query execution plans, dynamic management views (DMVs), Query Store, and Query Performance Insight",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d2-query-store", "dp800-d2-plans-unit"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store",
+        "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/04-evaluate-query-performance"
+      ],
+      "documentationTitles": [
+        "Monitor performance by using the Query Store",
+        "Evaluate query performance with execution plans and DMVs"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["sql-server-2022", "execution-plans", "query-store"],
+      "conceptId": "sql-query-regression-combine-persisted-plan-history-with-actual-runtime-plan",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-018",
+      "question": "A SQL Server 2022 blocking snapshot shows UPDATE request 61 waiting on session 58, and UPDATE request 58 waiting on session 52. Session 52 is sleeping with one open transaction after an UPDATE and has no active request. An authorized operator must locate the transaction keeping this chain waiting. Which investigation should come first?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Inspect session 61's execution plan and test whether an index could reduce its lock footprint."
+        },
+        {
+          "id": "b",
+          "text": "Inspect session 58's UPDATE predicate and test whether smaller batches could shorten its transaction."
+        },
+        {
+          "id": "c",
+          "text": "Inspect system_health deadlock reports and plan recovery for a recorded victim."
+        },
+        {
+          "id": "d",
+          "text": "Inspect session 52's open transaction and coordinate completion or rollback with its owning application."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "Follow the waiting chain to session 52, then investigate its open transaction with the application owner.",
+      "deepExplanation": "Session 58 is both a blocker and a waiter; the observed chain leads farther upstream to sleeping session 52. An active-request view does not establish that an idle session ended its transaction. Coordinate authorized completion or rollback rather than automatically issuing KILL or treating this live blocking chain as a rolled-back deadlock victim.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Index analysis can help when a resource-intensive statement is the cause of long lock holding. Session 61 is a downstream waiter in this snapshot; tuning it does not first identify the upstream transaction keeping the chain blocked.",
+        "b": "Narrower predicates or batches can shorten a blocking transaction. Here session 58 is itself waiting on session 52, so starting with its workload misses the upstream open transaction.",
+        "c": "SQL Server's system_health session records deadlocks, and victim recovery is appropriate for a captured deadlock incident. The supplied waiting chain instead leads to a still-open sleeping transaction; a historical victim report is not the first investigation of that transaction."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "optimize-database-performance",
+      "subskill": "Identify and resolve query performance issues, including blocking and deadlocks",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": [
+        "dp800-d2-deadlock-unit",
+        "dp800-d2-plans-unit",
+        "dp800-d2-transaction-guide"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/06-identify-resolve-blocking-deadlocks",
+        "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/04-evaluate-query-performance",
+        "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide"
+      ],
+      "documentationTitles": [
+        "Identify and resolve blocking and deadlocks",
+        "Evaluate query performance with execution plans and DMVs",
+        "Transaction locking and row versioning guide"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["sql-server-2022", "blocking", "transaction-lifecycle"],
+      "conceptId": "sql-blocking-chain-sleeping-head-blocker-retains-open-write-transaction",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-019",
+      "question": "A SQL Server 2022 project builds successfully. Its existing procedure test checks that one result row is returned, but a defect returns an incorrect invoice total. A separate risk is that an order procedure and its trigger leave inconsistent inventory after a multi-step workflow. An isolated test database is available. Select two complementary additions that test these two risks.",
+      "questionType": "multi-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Repeat the same successful build as the only additional gate."
+        },
+        {
+          "id": "b",
+          "text": "Add a unit test with a known fixture and an expected Scalar Value for the invoice total."
+        },
+        {
+          "id": "c",
+          "text": "Replace the amount assertion with another Row Count check on the same one-row result."
+        },
+        {
+          "id": "d",
+          "text": "Add a deployed integration test that runs the related workflow and asserts the resulting order and inventory state."
+        }
+      ],
+      "correctAnswer": ["b", "d"],
+      "explanation": "Add a value-focused unit assertion and a workflow-focused integration test.",
+      "deepExplanation": "Compilation, row shape, scalar correctness and cross-object state are separate test dimensions. These additions target the stated defects without replacing the useful build and cardinality checks already present.",
+      "whyOtherAnswersAreWrong": {
+        "a": "A model build validates syntax and references. It is useful for structural changes but does not establish the invoice amount or end-to-end inventory effects.",
+        "c": "Row Count is appropriate when cardinality is the requirement. The supplied defect preserves row count while changing the amount, so this does not address it."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "implement-ci-cd-by-using-sql-database-projects",
+      "subskill": "Design and implement a testing strategy, including unit tests and integration tests",
+      "difficulty": "intermediate",
+      "complexity": "architecture-design",
+      "sourceIds": ["dp800-d2x-testing-unit", "dp800-d2-project-build"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+        "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects"
+      ],
+      "documentationTitles": [
+        "Design and implement a testing strategy",
+        "Create, build, and validate SQL database projects"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["sql-database-projects", "testing", "integration-tests"],
+      "conceptId": "sql-project-testing-value-assertions-and-cross-object-workflow-integration",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-023",
+      "question": "A team converts an original SQL project containing required SQLCLR objects to Microsoft.Build.Sql SDK style. SQL Server 2022 remains the deployment target. They want to use a Linux .NET SqlPackage deployment agent but cannot remove the CLR objects. Which build/deploy split respects the documented SQLCLR exception?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Build the CLR-containing project with a plain cross-platform .NET toolchain because SDK conversion removes the exception."
+        },
+        {
+          "id": "b",
+          "text": "Delete the CLR objects from the project so the Linux build succeeds, then treat the artifact as equivalent."
+        },
+        {
+          "id": "c",
+          "text": "Keep the project in its original format because SDK-style projects cannot represent SQLCLR at all."
+        },
+        {
+          "id": "d",
+          "text": "Build with the required .NET Framework toolchain, then deploy the resulting .dacpac using SqlPackage on .NET."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "Retain the .NET Framework build requirement for SQLCLR, but use cross-platform SqlPackage for the built artifact.",
+      "deepExplanation": "Project representation, compilation prerequisites and artifact deployment are different stages. SDK conversion does not make every dependency cross-platform, nor does a build-stage requirement necessarily bind the deploy stage to the same runtime.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Ordinary SDK-style SQL projects support cross-platform .NET builds. The product article explicitly retains the .NET Framework build requirement for projects containing SQLCLR objects.",
+        "b": "Removing SQLCLR would remove the particular build requirement, but it also removes required application functionality. That could fit a redesigned non-CLR application, not this preservation requirement.",
+        "c": "The documentation says both original and SDK-style projects support SQLCLR with .NET Framework builds. Keeping the original format is an option for other toolchain reasons, not a representation necessity."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "implement-ci-cd-by-using-sql-database-projects",
+      "subskill": "Create, build, and validate database models by using SQL Database Projects, including SDK-style models",
+      "difficulty": "intermediate",
+      "complexity": "architecture-design",
+      "sourceIds": ["dp800-d2x-sql-projects", "dp800-d2x-project-automation"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-database-projects",
+        "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-projects-automation"
+      ],
+      "documentationTitles": [
+        "What are SQL database projects?",
+        "SQL projects automation"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["sdk-style-sql-project", "sqlclr", "deployment-toolchain"],
+      "conceptId": "sdk-sqlclr-project-build-requires-net-framework-while-dacpac-deploy-can-use-net",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-026",
+      "question": "Two SQL Server 2022 project branches merge cleanly as text. One removes LegacyCode in favor of RouteCode; the other adds a view that still references LegacyCode. The accepted change requires the old column to be removed and the new view retained. The merged model fails reference validation. Which resolution preserves both accepted intentions?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Keep LegacyCode permanently so the view compiles without modification."
+        },
+        {
+          "id": "b",
+          "text": "Rename the view's SQL file without changing the view definition."
+        },
+        {
+          "id": "c",
+          "text": "Update the view to the intended RouteCode contract, then rebuild and test the merged behavior."
+        },
+        {
+          "id": "d",
+          "text": "Discard the view branch because Git did not flag the dependency automatically."
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Resolve the schema dependency, then validate the merged model and behavior.",
+      "deepExplanation": "Git reconciles text, not SQL object semantics. The required removal and retained view together determine the repair; keeping a deprecated column or dropping the view would satisfy compilation by abandoning an accepted requirement.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Retaining an old column can be part of an explicitly approved compatibility transition. It contradicts the stated accepted removal requirement and leaves the intended migration incomplete.",
+        "b": "File naming can improve project organization, but the broken reference is inside the view's T-SQL. A filesystem rename does not reconcile it with RouteCode.",
+        "d": "Choosing one branch can be appropriate when the other change is intentionally rejected. Here both intentions are accepted, and Git's lack of a text conflict is not a reason to discard required functionality."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "implement-ci-cd-by-using-sql-database-projects",
+      "subskill": "Manage branching, pull requests, and conflict resolution",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": [
+        "dp800-d2x-branching-unit",
+        "dp800-d2-project-build",
+        "dp800-d2x-testing-unit"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/04-manage-branching-pull-requests-conflict-resolution",
+        "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects",
+        "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy"
+      ],
+      "documentationTitles": [
+        "Manage branching, pull requests, and conflict resolution",
+        "Create, build, and validate SQL database projects",
+        "Design and implement a testing strategy"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": [
+        "sql-database-projects",
+        "merge-conflicts",
+        "reference-validation"
+      ],
+      "conceptId": "sql-project-clean-text-merge-can-break-cross-object-references",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-027",
+      "question": "Two feature branches propose incompatible definitions of an SQL Server 2022 import column. One keeps it nullable because an approved input flow omits the value; the other makes it NOT NULL because a new procedure assumes it exists. Either definition can compile alone. No replacement business rule has been agreed. What is the appropriate pull-request resolution before merging?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Accept the newer branch's definition because a successful build proves both workflows are preserved."
+        },
+        {
+          "id": "b",
+          "text": "Keep both declarations under different filenames so the deployment can decide."
+        },
+        {
+          "id": "c",
+          "text": "Require only a clean Git merge and defer all null-input tests until production."
+        },
+        {
+          "id": "d",
+          "text": "Reconcile the two workflow requirements with their owners, implement one coherent schema/procedure contract, and test the affected inputs before approval."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "Resolve the business contract, then implement and test a coherent merged design.",
+      "deepExplanation": "This is not a request to invent a missing business rule. The evidence supports a review workflow that exposes incompatible assumptions. Compilation is necessary but insufficient to decide whether nullable input is valid.",
+      "whyOtherAnswersAreWrong": {
+        "a": "A build checks structural validity, not compatibility with both business flows. Choosing the newer definition is reasonable only after intentionally retiring or adapting the conflicting contract.",
+        "b": "Separate source files help organize distinct objects. They do not resolve incompatible definitions of the same object or establish which nullability contract dependent procedures should use.",
+        "c": "Clean text merging is useful but cannot validate nullable-input behavior. Deferring these known contract checks discards the purpose of PR review and isolated database tests."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "implement-ci-cd-by-using-sql-database-projects",
+      "subskill": "Manage branching, pull requests, and conflict resolution",
+      "difficulty": "intermediate",
+      "complexity": "architecture-design",
+      "sourceIds": [
+        "dp800-d2x-branching-unit",
+        "dp800-d2x-testing-unit",
+        "dp800-d2x-sql-projects"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/04-manage-branching-pull-requests-conflict-resolution",
+        "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+        "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-database-projects"
+      ],
+      "documentationTitles": [
+        "Manage branching, pull requests, and conflict resolution",
+        "Design and implement a testing strategy",
+        "What are SQL database projects?"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["sql-server-2022", "pull-requests", "contract-compatibility"],
+      "conceptId": "sql-merge-nullability-conflict-requires-business-contract-resolution-beyond-build",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-030",
+      "question": "A production SQL Server 2022 hotfix added an approved index outside the normal project workflow. A monitoring tool also created an unrelated object that must remain outside the application's SQL model. The maintainer needs to incorporate only the approved hotfix into the project before a later deployment. Which comparison workflow has the right direction and selection?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Use the project as source and production as target, then apply all differences to production."
+        },
+        {
+          "id": "b",
+          "text": "Use production as source and the project as target, select the approved index difference, and review the resulting source change."
+        },
+        {
+          "id": "c",
+          "text": "Use production as source and import every difference without reviewing object ownership."
+        },
+        {
+          "id": "d",
+          "text": "Compare the previous two build .dacpac files without connecting to production."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Compare production to the project and import only the approved hotfix difference.",
+      "deepExplanation": "Direction determines which side would change, and selection determines what is adopted. Importing a hotfix is a reviewed source update, not permission to deploy immediately or to assume all target-only objects will be dropped.",
+      "whyOtherAnswersAreWrong": {
+        "a": "That direction brings a live target toward the project's state and can be appropriate when the project is authoritative and drift should be undone. It is not the direction for retaining the approved production hotfix in source.",
+        "c": "A complete import is useful when intentionally baselining the entire live schema. Here it would also add an object explicitly excluded from the application model.",
+        "d": "Artifact comparisons help identify differences between releases. They cannot reveal a hotfix that exists only in the live database and in neither artifact."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "implement-ci-cd-by-using-sql-database-projects",
+      "subskill": "Detect schema drift by using SQL Database Projects",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": [
+        "dp800-d2x-compare-project",
+        "dp800-d2x-schema-compare",
+        "dp800-d2-drift"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/howto/compare-database-project",
+        "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/schema-comparison",
+        "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/05-detect-resolve-schema-drift"
+      ],
+      "documentationTitles": [
+        "Compare a database and a project",
+        "Schema comparison overview",
+        "Detect and resolve schema drift"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": [
+        "sql-database-projects",
+        "schema-drift",
+        "hotfix-reconciliation"
+      ],
+      "conceptId": "sql-schema-drift-selective-live-database-to-project-hotfix-import",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-031",
+      "question": "Two maintainers compare the same live database and SQL project. One reports an index difference; the other reports none. Their saved .scmp files use different excluded object types, and the second excludes indexes. Index drift is in scope for the release. What should the team do before accepting a repeatable drift check?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Accept the zero-difference result because a saved .scmp contains a verified snapshot of every object."
+        },
+        {
+          "id": "b",
+          "text": "Exclude indexes in both files so the results agree without further review."
+        },
+        {
+          "id": "c",
+          "text": "Agree and version the intended comparison options and included types, then rerun the current comparison."
+        },
+        {
+          "id": "d",
+          "text": "Reverse source and target but retain the index exclusion, expecting the missing index difference to appear."
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Align the saved comparison scope to the required objects and rerun it.",
+      "deepExplanation": "A deterministic tool can produce a misleadingly clean result when configured to ignore the relevant object type. The team's repeatable artifact should be a reviewed comparison configuration, not an unqualified zero-difference conclusion.",
+      "whyOtherAnswersAreWrong": {
+        "a": "An .scmp saves comparison configuration, including endpoints/options/exclusions. It is useful for repeating a recipe, not proof of complete current schema equality when relevant objects are excluded.",
+        "b": "Excluding an object type can be valid when it is intentionally outside the comparison scope. Here indexes are explicitly in scope, so matching the blind spot would not detect required drift.",
+        "d": "Reversing comparison direction changes the proposed target actions. It does not remove an explicit object-type exclusion; direction alone cannot expose excluded index differences."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "implement-ci-cd-by-using-sql-database-projects",
+      "subskill": "Detect schema drift by using SQL Database Projects",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/schema-comparison",
+        "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/05-detect-resolve-schema-drift"
+      ],
+      "documentationTitles": [
+        "Schema comparison overview",
+        "Detect and resolve schema drift"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": [
+        "sql-database-projects",
+        "schema-comparison",
+        "drift-diagnostics"
+      ],
+      "conceptId": "sql-schema-compare-exclusions-can-hide-drift-scmp-is-comparison-recipe",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-033",
+      "question": "An Azure Repos SQL project currently builds only after changes reach main, then deploys its .dacpac automatically. The team now requires a successful model build before a PR can merge and a separate human approval before the tested artifact reaches production. Existing identity and network permissions are adequate. Select two controls that protect the two different boundaries.",
+      "questionType": "multi-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Configure required build validation on the target branch for the SQL project PR."
+        },
+        {
+          "id": "b",
+          "text": "Require only a linked work item on the PR."
+        },
+        {
+          "id": "c",
+          "text": "Apply only a timed deployment delay without requiring an approver."
+        },
+        {
+          "id": "d",
+          "text": "Configure an approval on the production deployment environment before the artifact is published."
+        }
+      ],
+      "correctAnswer": ["a", "d"],
+      "explanation": "Use required PR build validation and a separate production deployment approval.",
+      "deepExplanation": "Merge admission and deployment authorization occur at different times. Keep the tested .dacpac as the artifact moving through the pipeline; neither a work-item link nor a wait timer substitutes for the requested technical and human gates.",
+      "whyOtherAnswersAreWrong": {
+        "b": "A linked work item improves traceability and can be a useful policy. It does not itself compile the SQL model or provide the requested production approval.",
+        "c": "Timing controls can enforce a pause or business window. A delay without approval does not supply the explicitly required human decision."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "implement-ci-cd-by-using-sql-database-projects",
+      "subskill": "Design and implement controls for deployment pipelines, including branching policies, triggers in approvals, authentication tables, and code owners",
+      "difficulty": "intermediate",
+      "complexity": "architecture-design",
+      "sourceIds": [
+        "dp800-d2x-branch-policies",
+        "dp800-d2x-pipeline-unit",
+        "dp800-d2x-project-automation"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/azure/devops/repos/git/branch-policies-overview",
+        "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/06-implement-cicd-pipelines",
+        "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-projects-automation"
+      ],
+      "documentationTitles": [
+        "About branches and branch policies",
+        "Implement CI/CD pipelines",
+        "SQL projects automation"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["azure-repos", "sql-cicd", "deployment-controls"],
+      "conceptId": "sql-pipeline-pr-build-validation-and-production-environment-approval-separate-gates",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-034",
+      "question": "A reviewed .dacpac must deploy to an Azure SQL Database reachable only through the organization's private network. The current public hosted agent can authenticate but has no route to the database. Production approval and SQL permissions are already correct; opening public database access is prohibited. Which pipeline design addresses the missing control without rebuilding the tested artifact?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Repeat Azure sign-in on the same network-isolated hosted agent."
+        },
+        {
+          "id": "b",
+          "text": "Regenerate the .dacpac on the public agent using a newer SqlPackage version."
+        },
+        {
+          "id": "c",
+          "text": "Use an authorized self-hosted deployment agent with private reachability to download and publish the approved artifact."
+        },
+        {
+          "id": "d",
+          "text": "Enable a temporary public database endpoint for the duration of deployment."
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Run the approved deployment from an authorized agent with private network reachability.",
+      "deepExplanation": "A valid identity does not create a network path. Preserve artifact provenance and approvals while changing the deploy execution location; do not solve connectivity by violating the stated exposure policy.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Authentication is required for authorized deployment, but the scenario already establishes it. Repeating sign-in does not give the agent a route into the private network.",
+        "b": "Tool updates can address compatibility problems. They do not establish private network reachability, and rebuilding would unnecessarily replace the tested artifact.",
+        "d": "Temporary public access can be a deliberately authorized connectivity approach in another environment. The explicit no-public-access policy rules it out here."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "implement-ci-cd-by-using-sql-database-projects",
+      "subskill": "Design and implement controls for deployment pipelines, including branching policies, triggers in approvals, authentication tables, and code owners",
+      "difficulty": "intermediate",
+      "complexity": "architecture-design",
+      "sourceIds": ["dp800-d2x-project-automation"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-projects-automation"
+      ],
+      "documentationTitles": ["SQL projects automation"],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["sql-cicd", "private-network", "deployment-agent"],
+      "conceptId": "sql-private-deployment-runner-network-boundary-independent-of-authentication",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-036",
+      "question": "An operator is investigating repeated database reads from a standalone DAB 2.0 GraphQL endpoint after configuring L1 caching. Which diagnostic path accounts for the cache's documented API coverage?",
+      "questionType": "single-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Investigate request-parameter variation as the reason repeated requests use different cached entries."
+        },
+        {
+          "id": "b",
+          "text": "Investigate entity writes as the reason cached query results are being invalidated."
+        },
+        {
+          "id": "c",
+          "text": "Investigate the effective TTL as the reason cached entries expire between requests."
+        },
+        {
+          "id": "d",
+          "text": "Investigate GraphQL performance separately because the documented L1 cache serves REST endpoints."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "The documented DAB L1 cache applies to REST endpoints, so GraphQL reads are outside that cache's scope.",
+      "deepExplanation": "Parameter variation, data-write invalidation and TTL expiration are legitimate cache-miss investigations for eligible REST requests. Check API applicability before assuming the GraphQL path has L1 entries to diagnose. This boundary concerns DAB's documented L1 feature, not every possible GraphQL optimization.",
+      "whyOtherAnswersAreWrong": {
+        "a": "L1 works per route and parameter, so parameter variation can matter for eligible REST requests. It does not explain GraphQL behavior as an L1 cache miss because the documented L1 feature excludes that API.",
+        "b": "Create, update and delete operations invalidate cached results under the documented cache behavior. That is a plausible REST cache-miss diagnosis, not the reason GraphQL traffic is outside L1 applicability.",
+        "c": "TTL governs how long eligible cached entries remain valid. Examining expiry can diagnose REST misses, but changing an entry's lifetime does not extend L1 to GraphQL."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "integrate-sql-solutions-with-azure-services",
+      "subskill": "Configure entities for REST and GraphQL, including data caching, pagination, searching, and filtering",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d2x-dab-cache"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/azure/data-api-builder/concept/cache/level-1"
+      ],
+      "documentationTitles": ["Implement level 1 cache"],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["data-api-builder-2", "l1-cache", "graphql"],
+      "conceptId": "dab-l1-response-cache-applies-to-rest-not-graphql",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-037",
+      "question": "A DAB GraphQL entity exposes database UnitCost as cost and AvailableUnits as available. A client must retrieve only rows with cost greater than 100 and available greater than zero, 25 at a time. A page returns hasNextPage = true and an opaque endCursor. Permissions and entity configuration are valid. Select two client behaviors that apply the filter and advance through the same result set.",
+      "questionType": "multi-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Filter using UnitCost and AvailableUnits because those are the physical database column names."
+        },
+        {
+          "id": "b",
+          "text": "Use filter: { cost: { gt: 100 }, available: { gt: 0 } }."
+        },
+        {
+          "id": "c",
+          "text": "Request first: 25 again without after, treating the row limit as an advance instruction."
+        },
+        {
+          "id": "d",
+          "text": "Use the returned endCursor as after, retaining the same filter and first: 25."
+        }
+      ],
+      "correctAnswer": ["b", "d"],
+      "explanation": "Filter by exposed field names and continue with the server-returned cursor.",
+      "deepExplanation": "Field aliases, filtering and cursor pagination are separate API-contract details. Treat the cursor as opaque. The question does not promise a transactionally frozen multi-request result set if the underlying data changes between requests.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Physical names would be appropriate if exposed unchanged. The training says clients use mapped/exposed names, so these internal names do not match the stated GraphQL contract.",
+        "c": "first controls page size. Omitting after is appropriate for the initial page or restarting the result set, not advancing after the page already received."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "integrate-sql-solutions-with-azure-services",
+      "subskill": "Configure entities for REST and GraphQL, including data caching, pagination, searching, and filtering",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d2x-dab-entities-unit"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql"
+      ],
+      "documentationTitles": ["Define entities for REST and GraphQL"],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["data-api-builder", "graphql", "filtering", "pagination"],
+      "conceptId": "dab-graphql-use-exposed-filter-fields-and-service-endcursor-for-pagination",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-040",
+      "question": "A DAB configuration contains Customer and Invoice table entities in the same file. Customers.CustomerId is a primary key; Invoices.CustomerId is a foreign key to it, and one customer can have several invoices. Both entities allow the caller to read. Which relationship on Customer supports a GraphQL traversal from one customer to its invoices?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Target Invoice with cardinality one, matching CustomerId to CustomerId."
+        },
+        {
+          "id": "b",
+          "text": "Target Invoice with cardinality many, matching CustomerId to CustomerId."
+        },
+        {
+          "id": "c",
+          "text": "Target Invoice with cardinality many, matching CustomerId to InvoiceId."
+        },
+        {
+          "id": "d",
+          "text": "Define a relationship on Invoice targeting Customer with cardinality one."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Configure a many relationship from Customer to Invoice on CustomerId.",
+      "deepExplanation": "Correct cardinality alone is insufficient; direction and join fields must also match the database contract. The same-file premise avoids the separate archived configuration-boundary issue.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Those fields express the foreign-key join, but cardinality one would describe a one-target relationship. The stated customer-to-invoices direction permits multiple target rows.",
+        "c": "Matching CustomerId to InvoiceId does not use the CustomerId foreign-key relationship stated in the stem. A different field pair would require a separately established relationship; no key status for InvoiceId is assumed.",
+        "d": "That is a valid inverse many-to-one traversal from an invoice to its customer. It does not define the requested relationship field on Customer for reaching multiple invoices."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "integrate-sql-solutions-with-azure-services",
+      "subskill": "Expose database objects, stored procedures, and views, including GraphQL relationships",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d2x-dab-entities-unit", "dp800-d2-dab-objects"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql",
+        "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/4-expose-database-objects-stored-procedures-views"
+      ],
+      "documentationTitles": [
+        "Define entities for REST and GraphQL",
+        "Expose database objects, stored procedures, and views"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["data-api-builder", "graphql-relationships", "foreign-keys"],
+      "conceptId": "dab-graphql-one-to-many-relationship-direction-cardinality-and-join-fields",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    },
+    {
+      "id": "dp800-20260916-d2-043",
+      "question": "An instrumented API backed by Azure SQL has intermittent slow requests. Application Insights already contains correlated request and SQL dependency spans for affected calls. Daily database-duration averages look normal, but the engineer must determine how much of one slow request was spent in its SQL calls before changing indexes. Which investigation uses the appropriate evidence?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Use the daily average SQL duration alone to conclude the database contributed no latency to the incident."
+        },
+        {
+          "id": "b",
+          "text": "Open the affected correlated transaction and examine its request/dependency timing breakdown."
+        },
+        {
+          "id": "c",
+          "text": "Check only the API's most recent successful availability test."
+        },
+        {
+          "id": "d",
+          "text": "Create indexes for every exposed entity before examining any incident trace."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Inspect the slow request's correlated dependency trace before choosing database changes.",
+      "deepExplanation": "Instrumented trace evidence can distinguish database time from other request processing, while aggregate averages describe a different population. This question stipulates collected spans; a connection string alone is not claimed to provide complete instrumentation.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Aggregate duration is useful for trends, but can conceal an intermittent request's timing. It does not attribute SQL time to the specific affected request.",
+        "c": "Availability tests establish reachability/responsiveness for the tested path and time. They do not substitute for the SQL dependency timings within the already observed slow request.",
+        "d": "Index changes may help a demonstrated query bottleneck. Without attributing the slow request to SQL behavior, broad changes are not an evidence-based diagnosis of this incident."
+      },
+      "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+      "skill": "integrate-sql-solutions-with-azure-services",
+      "subskill": "Recommend Azure Monitor configurations, including Application Insights and Log Analytics",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d2x-monitor-unit", "dp800-d2x-app-insights"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/6-recommend-azure-monitor-configurations",
+        "https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview"
+      ],
+      "documentationTitles": [
+        "Recommend Azure monitor configurations",
+        "Introduction to Application Insights - OpenTelemetry observability"
+      ],
+      "generatedAt": "2026-09-16T22:44:52.544Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "featureStatus": "GA",
+      "tags": ["azure-monitor", "application-insights", "distributed-tracing"],
+      "conceptId": "azure-monitor-correlated-request-dependency-trace-before-database-tuning",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Fresh pass-1 technical-r1 repair. Prior technical holds remain frozen; this exact snapshot awaits a new independent technical pass and a distinct adversarial pass.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+      "confidenceReason": "Grounded authoring repair against unchanged frozen source snapshots; no independent approval is carried forward."
+    }
+  ]
+}

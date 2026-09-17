@@ -1,0 +1,3189 @@
+[
+  {
+    "id": "dp800-direct-001",
+    "question": "A billing table on SQL Server 2022 has a nullable Amount column and an enabled CHECK (Amount > 0) constraint. Existing data has been cleaned. Future inserts must reject NULL and nonpositive amounts, while different invoices may have equal positive amounts. Which change meets these requirements?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep Amount nullable and add DEFAULT (1)."
+      },
+      {
+        "id": "b",
+        "text": "Keep Amount nullable and add UNIQUE (Amount)."
+      },
+      {
+        "id": "c",
+        "text": "Make Amount NOT NULL and retain CHECK (Amount > 0)."
+      },
+      {
+        "id": "d",
+        "text": "Keep Amount nullable and replace the CHECK with CHECK (Amount >= 0)."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Combine NOT NULL with the existing positive-value CHECK.",
+    "deepExplanation": "A CHECK rejects FALSE, not UNKNOWN. An explicit nullability constraint closes the NULL gap without introducing an unwanted uniqueness requirement. Defaults and broader numeric predicates enforce different rules.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A default supplies an omitted value but does not reject an explicitly supplied NULL. The existing CHECK also permits UNKNOWN, so nullability must be constrained.",
+      "b": "UNIQUE addresses duplicate values rather than the required nullability rule. It permits a NULL in this setting and would reject equal positive amounts that the scenario permits.",
+      "d": "The replacement permits zero, contrary to the required positive domain, and a comparison with NULL still evaluates to UNKNOWN rather than FALSE."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement database constraints, including PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, and DEFAULT",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d1-constraints", "dp800-d1-unique-check"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/6-design-implement-constraints",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints"
+    ],
+    "documentationTitles": [
+      "Enforce data integrity with constraints",
+      "Unique constraints and check constraints"
+    ],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "constraints", "null-semantics"],
+    "conceptId": "sql-check-unknown-requires-explicit-nullability",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-002",
+    "question": "In a SQL Server 2022 import service, RecordId is already the primary key. TenantId, ExternalCode and Revision are NOT NULL. A tenant can have many different codes, and different tenants can reuse a code, but a tenant/code pair must occur only once even when Revision differs. Which additional constraint enforces this rule?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "UNIQUE (TenantId, ExternalCode)"
+      },
+      {
+        "id": "b",
+        "text": "UNIQUE (ExternalCode)"
+      },
+      {
+        "id": "c",
+        "text": "UNIQUE (TenantId)"
+      },
+      {
+        "id": "d",
+        "text": "UNIQUE (TenantId, ExternalCode, Revision)"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Constrain the business-key tuple (TenantId, ExternalCode), not its individual columns or a larger tuple.",
+    "deepExplanation": "Composite uniqueness is evaluated across exactly the listed columns. Adding Revision weakens the requested pair-level rule, while using only one component imposes a broader uniqueness restriction than required.",
+    "whyOtherAnswersAreWrong": {
+      "b": "This rejects reuse of a code across different tenants, although the scenario explicitly allows that reuse.",
+      "c": "This permits only one record per tenant and therefore rejects the required multiple different codes for one tenant.",
+      "d": "Different Revision values make distinct three-column tuples, so the same tenant/code pair could be inserted more than once."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement database constraints, including PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, and DEFAULT",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-unique-check"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints"
+    ],
+    "documentationTitles": ["Unique constraints and check constraints"],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "composite-key", "uniqueness"],
+    "conceptId": "sql-composite-unique-business-key-scope",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-003",
+    "question": "Run this script in SQL Server 2022 using SSMS, with the required permissions and no existing dbo.DispatchNumber sequence. There are no concurrent sequence calls, server restarts or other statements. What value does the final SELECT return?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "700"
+      },
+      {
+        "id": "b",
+        "text": "702"
+      },
+      {
+        "id": "c",
+        "text": "No value, because ROLLBACK removes the sequence."
+      },
+      {
+        "id": "d",
+        "text": "701"
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "The final call returns 701; sequence allocation is not rolled back with the transaction.",
+    "deepExplanation": "A sequence generates values independently of whether a row is inserted or a transaction commits. The explicit assumptions exclude additional allocations, restart operations and cache-loss scenarios.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The first NEXT VALUE FOR allocates 700 outside transaction rollback semantics. Rolling back the transaction does not make that number available again.",
+      "b": "Only one preceding call has consumed a value. With increment 1 and no other allocations or restart effects, the next value is not two increments beyond the start.",
+      "c": "The sequence was created before BEGIN TRANSACTION. The rollback does not remove that pre-existing sequence or undo its allocation."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement SEQUENCES",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-sequences"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/sequence-numbers/sequence-numbers"
+    ],
+    "documentationTitles": ["Sequence numbers"],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "sequence", "transactions"],
+    "codeLanguage": "sql",
+    "codeSnippet": "CREATE SEQUENCE dbo.DispatchNumber\n    AS bigint START WITH 700 INCREMENT BY 1;\nGO\nBEGIN TRANSACTION;\nDECLARE @reserved bigint = NEXT VALUE FOR dbo.DispatchNumber;\nROLLBACK TRANSACTION;\nSELECT NEXT VALUE FOR dbo.DispatchNumber AS FollowingNumber;",
+    "conceptId": "sql-sequence-allocation-survives-transaction-rollback",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-004",
+    "question": "A migration administrator on SQL Server 2022 has permission to alter tables. A view uses explicit two-part object names and references a column that must not be dropped while the view depends on it. The administrator will not first change or drop the view. Which view attribute makes an incompatible ALTER TABLE DROP COLUMN fail?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "WITH CHECK OPTION"
+      },
+      {
+        "id": "b",
+        "text": "WITH SCHEMABINDING"
+      },
+      {
+        "id": "c",
+        "text": "WITH ENCRYPTION"
+      },
+      {
+        "id": "d",
+        "text": "WITH VIEW_METADATA"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "SCHEMABINDING protects the view's referenced schema from incompatible changes.",
+    "deepExplanation": "This is a dependency constraint, not an authorization boundary against an administrator who first removes the binding. The other listed attributes address writable-view criteria, definition text or client metadata.",
+    "whyOtherAnswersAreWrong": {
+      "a": "CHECK OPTION constrains data modifications made through the view to its selection criteria; it is not a dependency-binding rule for ALTER TABLE.",
+      "c": "ENCRYPTION protects the stored view-definition text from ordinary inspection; it does not establish schema-binding dependency protection.",
+      "d": "VIEW_METADATA changes metadata exposed for supported client browsing operations; it does not bind the underlying schema against the specified column drop."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create views",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d1-create-view"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql"
+    ],
+    "documentationTitles": ["CREATE VIEW (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "views", "schema-binding"],
+    "conceptId": "sql-schema-bound-view-blocks-dependent-column-drop",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-005",
+    "question": "An audit trigger on a SQL Server 2022 table must log the old and new decimal Price for every row whose value actually changes in a multirow UPDATE. ItemId is the unchanged primary key, Price is NOT NULL, and no other triggers interfere. Which rowset expression correctly identifies the audit rows?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "SELECT TOP (1) i.ItemId, d.Price, i.Price FROM inserted i JOIN deleted d ON d.ItemId = i.ItemId WHERE i.Price <> d.Price"
+      },
+      {
+        "id": "b",
+        "text": "SELECT i.ItemId, d.Price, i.Price FROM inserted i JOIN deleted d ON d.Price = i.Price"
+      },
+      {
+        "id": "c",
+        "text": "SELECT i.ItemId, d.Price, i.Price FROM inserted i CROSS JOIN deleted d WHERE i.Price <> d.Price"
+      },
+      {
+        "id": "d",
+        "text": "SELECT i.ItemId, d.Price, i.Price FROM inserted i JOIN deleted d ON d.ItemId = i.ItemId WHERE i.Price <> d.Price"
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Treat inserted and deleted as rowsets, join by the unchanged key, and compare the values.",
+    "deepExplanation": "The expression must handle every affected row, preserve each row's identity and distinguish an actual value change from a statement merely targeting the column. NOT NULL and the unchanged key make the comparison and pairing unambiguous.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The stable-key comparison is appropriate, but TOP (1) limits the audit to one changed row and loses additional changes from the same statement.",
+      "b": "Matching by Price rather than the unchanged ItemId does not pair each item with its own previous row. It can match unchanged or unrelated items instead of the required actual per-item changes.",
+      "c": "Cross-pairing affected rowsets does not associate each item's new value with its own prior value, so unrelated items can produce incorrect audit pairs."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create triggers",
+    "difficulty": "advanced",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d1-triggers", "dp800-d1-create-trigger"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-programmability-objects/6-create-triggers",
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql"
+    ],
+    "documentationTitles": ["Create triggers", "CREATE TRIGGER (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "triggers", "multirow-update"],
+    "conceptId": "sql-dml-trigger-pairs-old-new-rowsets-by-stable-key",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-006",
+    "question": "Two separate SELECT statements in one SQL Server 2022 connection must reuse the same expensive intermediate result. Its producing query must execute once, and the rows must remain available after the first SELECT finishes. The connection can create temporary tables. Which design provides that explicitly materialized, reusable result?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Populate a local temporary table once, then query it from both statements."
+      },
+      {
+        "id": "b",
+        "text": "Declare one CTE before the first SELECT, then reference its name in the second."
+      },
+      {
+        "id": "c",
+        "text": "Repeat the same CTE definition independently before each SELECT."
+      },
+      {
+        "id": "d",
+        "text": "Create an ordinary non-indexed view containing the producing query and query it twice."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Materialize the intermediate rows in a local temporary table and reuse that table.",
+    "deepExplanation": "A CTE is a statement-scoped expression, not a persisted cache. Repeated definitions and ordinary views do not meet the explicit materialization requirement. This does not assert that the optimizer can never introduce an internal spool within one query.",
+    "whyOtherAnswersAreWrong": {
+      "b": "A CTE is scoped to its following statement, so its name does not provide a persisted result for a second statement.",
+      "c": "Separate CTE definitions do not store one shared result; each statement defines its own producing query rather than reusing one materialized execution.",
+      "d": "An ordinary non-indexed view stores a query definition, not the intermediate rows required here. It is not the explicitly materialized shared result requested."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write common table expressions (CTEs)",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-cte", "dp800-d1-views"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/with-common-table-expression-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/implement-programmability-objects/2-create-views"
+    ],
+    "documentationTitles": [
+      "WITH common_table_expression (Transact-SQL)",
+      "Create views"
+    ],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "cte", "materialization"],
+    "conceptId": "sql-cte-statement-scope-versus-reusable-temporary-materialization",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-007",
+    "question": "An event report on SQL Server 2022 must retain every row and compute a lifetime running Amount separately for each tenant. EventTime values can tie; EventId is unique within a tenant and breaks those ties. All values are non-null, and tenants can have many events. Which expression implements that ordering and cumulative scope?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "SUM(Amount) OVER (ORDER BY EventTime, EventId ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)"
+      },
+      {
+        "id": "b",
+        "text": "SUM(Amount) OVER (PARTITION BY TenantId ORDER BY EventTime, EventId ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)"
+      },
+      {
+        "id": "c",
+        "text": "SUM(Amount) OVER (PARTITION BY TenantId ORDER BY EventTime RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)"
+      },
+      {
+        "id": "d",
+        "text": "SUM(Amount) OVER (PARTITION BY TenantId ORDER BY EventTime, EventId ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Use tenant partitioning, the complete deterministic order and an unbounded-preceding ROWS frame.",
+    "deepExplanation": "Partitioning, ordering and frame boundaries answer different requirements. Satisfying only two leaves either cross-tenant aggregation, incorrect tie handling or a bounded rolling calculation.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Without PARTITION BY TenantId, the window combines tenants instead of restarting the cumulative calculation independently for each tenant.",
+      "c": "Ordering only by EventTime omits the required key tie-breaker, and RANGE groups timestamp peers rather than advancing in the required event-key order.",
+      "d": "This frame includes only the previous and current rows. It is a two-event sliding sum rather than a lifetime cumulative total for tenants with more events."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include window functions",
+    "difficulty": "advanced",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d1-over"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql"
+    ],
+    "documentationTitles": ["SELECT - OVER clause (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "window-functions", "running-total"],
+    "conceptId": "sql-running-window-partition-order-and-row-frame",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-008",
+    "question": "For a SQL Server 2022 report, equal Priority values must receive the same rank, and the next distinct Priority value must receive the next consecutive rank without a gap. Which ranking function directly provides those semantics when ordered by Priority?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "ROW_NUMBER()"
+      },
+      {
+        "id": "b",
+        "text": "RANK()"
+      },
+      {
+        "id": "c",
+        "text": "DENSE_RANK()"
+      },
+      {
+        "id": "d",
+        "text": "NTILE(4)"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "DENSE_RANK preserves ties without leaving rank gaps.",
+    "deepExplanation": "Tie handling distinguishes dense ranking from unique row numbering and competition ranking. NTILE answers a distribution-into-groups requirement instead.",
+    "whyOtherAnswersAreWrong": {
+      "a": "ROW_NUMBER assigns a distinct sequential number to every row, including rows with equal ordering values, so it does not give tied priorities the same rank.",
+      "b": "RANK gives ties the same rank but leaves gaps before the next distinct value, contrary to the consecutive-rank requirement.",
+      "d": "NTILE divides ordered rows into a specified number of approximately equal groups; it does not assign one consecutive rank per distinct priority value."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include window functions",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d1-window-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/3-window-functions"
+    ],
+    "documentationTitles": ["Apply window functions for analytics"],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "ranking", "ties"],
+    "conceptId": "sql-dense-rank-preserves-ties-without-rank-gaps",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-009",
+    "question": "A database team uses GitHub Copilot with repository instruction support enabled. SQL naming and review guidance should be included automatically as repository-wide context instead of being pasted into each chat or invoked as a reusable task prompt. Which documented repository file should hold that guidance?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": ".github/prompts/sql-review.prompt.md"
+      },
+      {
+        "id": "b",
+        "text": "A comment block in the currently open SQL script"
+      },
+      {
+        "id": "c",
+        "text": "A prompt pasted into the current chat only"
+      },
+      {
+        "id": "d",
+        "text": ".github/copilot-instructions.md"
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Use .github/copilot-instructions.md for the shared repository instructions.",
+    "deepExplanation": "Instruction files provide contextual guidance rather than an enforcement guarantee. Reusable task prompts and one-off chat prompts serve different scopes, so they do not meet the stated automatic repository-context requirement.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A .prompt.md file represents a reusable task prompt. That differs from the repository-wide instruction file included automatically for the stated purpose.",
+      "b": "Open-file code can provide context to an assistant, but a comment in one SQL script is not the documented automatically included repository instruction file.",
+      "c": "A chat-local prompt repeats context for that conversation and does not supply the shared repository instruction file requested."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Create and configure GitHub Copilot instruction files",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d1-ai-instructions", "dp800-d1-ai-security"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/6-create-configure-copilot-instruction-files",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/3-interpret-security-impact"
+    ],
+    "documentationTitles": [
+      "Create and configure GitHub Copilot instruction files",
+      "Interpret security impact of using AI-assisted tools"
+    ],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["copilot", "sql-development", "repository-instructions"],
+    "conceptId": "copilot-repository-instructions-versus-reusable-task-prompts",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-010",
+    "question": "An AI assistant reaches SQL Server through an MCP connection for approved read tasks. After the connection is established, which control determines the database operations its principal is authorized to perform, rather than merely guiding suggestions or controlling network reachability?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The connection principal's database permissions"
+      },
+      {
+        "id": "b",
+        "text": "Repository instructions describing preferred SQL"
+      },
+      {
+        "id": "c",
+        "text": "The endpoint's private-network configuration"
+      },
+      {
+        "id": "d",
+        "text": "Human review of the generated query text"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use database permissions to enforce the connection principal's authorization.",
+    "deepExplanation": "Model guidance, network controls and review processes serve useful but different purposes. The database principal should possess only the operations approved for its workflow; this is a control-layer distinction, not an advanced architecture claim.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Custom instructions provide model context and guidance, not a replacement for database authorization.",
+      "c": "Network configuration controls reachability and network exposure, not the SQL permissions held by an established connection's principal.",
+      "d": "Review is a workflow control for assessing proposed SQL. It does not itself grant or revoke the database principal's permissions."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Interpret security impact of using AI-assisted tools",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d1-ai-security", "dp800-d1-ai-instructions"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/3-interpret-security-impact",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/6-create-configure-copilot-instruction-files"
+    ],
+    "documentationTitles": [
+      "Interpret security impact of using AI-assisted tools",
+      "Create and configure GitHub Copilot instruction files"
+    ],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["mcp", "least-privilege", "ai-assisted-sql"],
+    "conceptId": "sql-mcp-read-only-authorization-independent-of-model-guidance",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-028",
+    "question": "A SQL Server 2022 database uses compatibility level 160. The nvarchar(max) variable @document contains valid JSON with one top-level message property whose string value has 5,100 characters. JSON_VALUE(@document, '$.message') returns SQL NULL. The application needs the complete scalar text, not the surrounding JSON document. Which replacement returns it?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "SELECT JSON_VALUE(@document, 'strict $.message');"
+      },
+      {
+        "id": "b",
+        "text": "SELECT message FROM OPENJSON(@document) WITH (message nvarchar(max) '$.message');"
+      },
+      {
+        "id": "c",
+        "text": "SELECT JSON_QUERY(@document, '$.message');"
+      },
+      {
+        "id": "d",
+        "text": "SELECT JSON_QUERY(@document);"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Use an explicit nvarchar(max) column in OPENJSON to extract the entire message.",
+    "deepExplanation": "The NULL does not imply that the key is absent. JSON_VALUE without RETURNING has a 4,000-character result limit; strict mode changes the failure behavior, not that limit. The SQL Server 2022 scope excludes newer native-json RETURNING syntax.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Strict JSON_VALUE raises an error for a scalar over 4,000 characters instead of returning the required complete text.",
+      "c": "JSON_QUERY extracts an object or array, not this scalar string; in lax mode it returns NULL for that scalar.",
+      "d": "Omitting the path returns the whole JSON object, not the required scalar message text."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "dp800-d1-json-value",
+      "dp800-d1-openjson",
+      "dp800-d1-json-query"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-value-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-query-transact-sql"
+    ],
+    "documentationTitles": [
+      "JSON_VALUE (Transact-SQL)",
+      "OPENJSON (Transact-SQL)",
+      "JSON_QUERY (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:16:16.290Z",
+    "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "json", "scalar-length"],
+    "conceptId": "sql-json-value-overlength-scalar-openjson-max-projection",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-029",
+    "question": "On SQL Server 2022 at compatibility level 160, the database and @payload use a case-insensitive collation. The shown query returns SQL NULL for its sku column. Keep that output column name and the input unchanged. Which replacement WITH clause reads the product identifier?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "WITH (sku nvarchar(20))"
+      },
+      {
+        "id": "b",
+        "text": "WITH (sku nvarchar(20) '$.SKU[0]')"
+      },
+      {
+        "id": "c",
+        "text": "WITH (sku nvarchar(20) '$.SKU')"
+      },
+      {
+        "id": "d",
+        "text": "WITH (sku nvarchar(20) '$.category')"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Map the SQL output column explicitly to '$.SKU'.",
+    "deepExplanation": "OPENJSON's matching of JSON path steps and default WITH column names is case-sensitive and collation-unaware. Output alias spelling and property-path spelling are separate choices.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Default mapping selects lowercase sku, which is absent; case-insensitive database collation does not change the BIN2 property comparison.",
+      "b": "This requests an array element, but the actual uppercase SKU property contains a scalar string rather than an array.",
+      "d": "This returns the existing category text spare, not the product identifier."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-openjson"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql"
+    ],
+    "documentationTitles": ["OPENJSON (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:16:16.290Z",
+    "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "openjson", "case-sensitive-path"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @payload nvarchar(max) = N'{\"SKU\":\"R-84\",\"category\":\"spare\"}';\nSELECT sku FROM OPENJSON(@payload) WITH (sku nvarchar(20));",
+    "conceptId": "sql-openjson-case-sensitive-property-mapping-independent-collation",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-030",
+    "question": "An ingestion procedure on SQL Server 2022, compatibility level 160, must return the entire detail object in one nvarchar(max) column for later processing. It must not flatten the object's fields. Which column definition should replace the placeholder?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "detail nvarchar(max) '$.detail' AS JSON"
+      },
+      {
+        "id": "b",
+        "text": "detail nvarchar(max) '$.detail'"
+      },
+      {
+        "id": "c",
+        "text": "detail int '$.detail.items'"
+      },
+      {
+        "id": "d",
+        "text": "detail nvarchar(max) '$.detail.memo'"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use nvarchar(max) with AS JSON for the nested object.",
+    "deepExplanation": "The explicit schema distinguishes scalar extraction from fragment extraction. Increasing the text column length alone does not make a scalar projection return an object.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Without AS JSON the projection expects a scalar; this object yields NULL in the default lax mode.",
+      "c": "This extracts only the numeric items field and returns an integer, losing the required object.",
+      "d": "This extracts only the scalar memo text, not the complete object."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-openjson"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql"
+    ],
+    "documentationTitles": ["OPENJSON (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:16:16.290Z",
+    "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "openjson", "nested-json"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @payload nvarchar(max) = N'{\"detail\":{\"items\":2,\"memo\":\"ship\"}}';\nSELECT detail FROM OPENJSON(@payload)\nWITH (/* column definition */);",
+    "conceptId": "sql-openjson-as-json-nested-fragment-typed-projection",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-031",
+    "question": "A SQL Server 2022 database uses compatibility level 160. An incoming JSON object contains both a literal dotted key and a nested object. What does this query return for the selected column?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "B2"
+      },
+      {
+        "id": "b",
+        "text": "SQL NULL"
+      },
+      {
+        "id": "c",
+        "text": "{\"code\":\"B2\"}"
+      },
+      {
+        "id": "d",
+        "text": "A7"
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "The result is A7 from the literal top-level key billing.code.",
+    "deepExplanation": "Brackets delimit the SQL column name; they do not turn its dot into a JSON path separator. An explicit '$.billing.code' column path would select the different nested value.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A dotted SQL column name is matched literally; it does not imply the nested path $.billing.code.",
+      "b": "The exact literal billing.code key exists and contains a scalar, so the default mapping finds A7.",
+      "c": "The column has neither a path to billing nor AS JSON, so it does not return that nested object."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-openjson"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql"
+    ],
+    "documentationTitles": ["OPENJSON (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:16:16.290Z",
+    "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "openjson", "literal-json-key"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @payload nvarchar(max) = N'{\"billing.code\":\"A7\",\"billing\":{\"code\":\"B2\"}}';\nSELECT [billing.code]\nFROM OPENJSON(@payload) WITH ([billing.code] nvarchar(10));",
+    "conceptId": "sql-openjson-dotted-column-name-literal-key-versus-nested-path",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-032",
+    "question": "On SQL Server 2022 at compatibility level 160, a validator must select only JSON numeric tokens from this default-schema OPENJSON result. Quoted numeric strings must not qualify. Which filter should replace the placeholder?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "WHERE [type] = 1"
+      },
+      {
+        "id": "b",
+        "text": "WHERE [type] = 2"
+      },
+      {
+        "id": "c",
+        "text": "WHERE [type] = 3"
+      },
+      {
+        "id": "d",
+        "text": "WHERE [type] = 0"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Filter the default-schema type column for 2.",
+    "deepExplanation": "The value column is nvarchar(max), so its SQL type alone does not establish the original JSON token type. OPENJSON exposes the discriminator only with the default schema, not with a WITH projection.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Default-schema type 1 identifies JSON strings, including the quoted value in label.",
+      "c": "Type 3 identifies JSON true/false tokens, not numbers.",
+      "d": "Type 0 identifies JSON null values, not numbers."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d1-openjson"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql"
+    ],
+    "documentationTitles": ["OPENJSON (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:16:16.290Z",
+    "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "openjson", "json-token-types"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT [key], [value]\nFROM OPENJSON(N'{\"count\":8,\"label\":\"8\",\"enabled\":true,\"missing\":null}')\n/* filter */;",
+    "conceptId": "sql-openjson-default-type-discriminator-number-versus-numeric-string",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-034",
+    "question": "On SQL Server 2022, a patch operation must retain the existing contact property but replace its value with JSON null. The unrelated revision property must remain unchanged. Which expression returns the required patched document?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "JSON_MODIFY(@payload, 'strict $.contact', NULL)"
+      },
+      {
+        "id": "b",
+        "text": "JSON_MODIFY(@payload, 'lax $.contact', NULL)"
+      },
+      {
+        "id": "c",
+        "text": "JSON_MODIFY(@payload, '$.contact', N'null')"
+      },
+      {
+        "id": "d",
+        "text": "JSON_MODIFY(@payload, '$.contact', N'')"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use strict mode with SQL NULL on the existing contact path.",
+    "deepExplanation": "Deletion, JSON null, the string \"null\", and an empty string are different document states. The path's known existence removes the separate strict-mode missing-property error case.",
+    "whyOtherAnswersAreWrong": {
+      "b": "For an existing key, lax mode with SQL NULL deletes the property rather than retaining it.",
+      "c": "The nvarchar new value is text, so this stores the JSON string \"null\", not the JSON null token.",
+      "d": "This stores an empty JSON string, not a null value."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-json-modify"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-modify-transact-sql"
+    ],
+    "documentationTitles": ["JSON_MODIFY (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:16:16.290Z",
+    "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "json-modify", "null-versus-absence"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @payload nvarchar(max) = N'{\"contact\":\"ops\",\"revision\":6}';",
+    "conceptId": "sql-json-modify-strict-null-keeps-existing-key",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-035",
+    "question": "A SQL Server 2022 application passes an updated attempt value as an nvarchar parameter. Ignoring insignificant whitespace, which JSON document does this expression return?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "An attempt property with the JSON number 3"
+      },
+      {
+        "id": "b",
+        "text": "An attempt property with the JSON number 2"
+      },
+      {
+        "id": "c",
+        "text": "No attempt property, leaving an empty object"
+      },
+      {
+        "id": "d",
+        "text": "An attempt property with the JSON string \"3\""
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "The new property value is the JSON string \"3\".",
+    "deepExplanation": "A numeric-looking string is still a text-typed SQL argument. If the contract requires a JSON number, validate and convert the value to the intended numeric SQL type before passing it.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The supplied new value is nvarchar, so it is stored as text rather than automatically treated as a JSON number.",
+      "b": "The existing path is updated with a nonnull new value; the old numeric value is not retained.",
+      "c": "The new value is nonnull text; lax-mode deletion applies to a SQL NULL new value instead."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d1-json-modify"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-modify-transact-sql"
+    ],
+    "documentationTitles": ["JSON_MODIFY (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:16:16.290Z",
+    "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "json-modify", "sql-value-type"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @next nvarchar(10) = N'3';\nSELECT JSON_MODIFY(N'{\"attempt\":2}', '$.attempt', @next);",
+    "conceptId": "sql-json-modify-sql-input-type-determines-json-number-or-string",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-036",
+    "question": "Run the following SQL Server 2022 code with the valid JSON shown. Ignore insignificant whitespace. Which complete document is returned by the final SELECT?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "{\"stages\":[\"queue\",\"validate\"]}"
+      },
+      {
+        "id": "b",
+        "text": "{\"stages\":[\"queue\",\"validate\",\"verify\"]}"
+      },
+      {
+        "id": "c",
+        "text": "{\"stages\":[\"receive\",\"validate\",\"verify\",\"queue\"]}"
+      },
+      {
+        "id": "d",
+        "text": "{\"stages\":\"queue\"}"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "The assigned first call extends stages to three elements; the final call replaces only element zero with queue.",
+    "deepExplanation": "After SET, @payload contains receive, validate and verify in that order. The next path is $.stages[0], not the array path with an append modifier, so it changes receive to queue while leaving validate and verify intact. JSON_MODIFY returns the changed document; the first result was explicitly assigned, and the final returned value is what SELECT exposes.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This loses verify and would fit applying the indexed replacement to the original two-element input without preserving the first call's result. The script assigns the append result before the SELECT.",
+      "c": "This would fit a second append of queue to $.stages. The displayed second path addresses existing element zero instead.",
+      "d": "This would fit updating $.stages to the scalar queue. The actual path is $.stages[0], so it updates one member rather than replacing the array."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-modify-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server"
+    ],
+    "documentationTitles": [
+      "JSON_MODIFY (Transact-SQL)",
+      "JSON data in SQL Server"
+    ],
+    "generatedAt": "2026-09-16T21:16:50.204Z",
+    "lastValidatedAt": "2026-09-16T21:16:50.204Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "json-array", "append", "mutation-trace"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @payload nvarchar(max) = N'{\"stages\":[\"receive\",\"validate\"]}';\nSET @payload = JSON_MODIFY(@payload, 'append $.stages', N'verify');\nSELECT JSON_MODIFY(@payload, '$.stages[0]', N'queue') AS Result;",
+    "conceptId": "sql-json-modify-append-preserves-existing-array-elements",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-037",
+    "question": "An Azure SQL Database API distinguishes an omitted optional key from a key whose value is JSON null or an empty string. It must include the code and numeric zero but omit the SQL NULL comment value. Which constructor satisfies that contract?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "JSON_OBJECT('code':@code, 'retry':@retry, 'comment':@comment NULL ON NULL)"
+      },
+      {
+        "id": "b",
+        "text": "JSON_OBJECT('code':@code, 'retry':@retry, 'comment':@comment)"
+      },
+      {
+        "id": "c",
+        "text": "JSON_OBJECT('code':@code, 'retry':@retry, 'comment':@comment ABSENT ON NULL)"
+      },
+      {
+        "id": "d",
+        "text": "JSON_OBJECT('code':@code, 'retry':@retry, 'comment':N'' ABSENT ON NULL)"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Specify ABSENT ON NULL.",
+    "deepExplanation": "The null policy concerns SQL NULL values, not numeric zero or empty strings. JSON_OBJECT's default is explicit null inclusion; ABSENT ON NULL must be specified when omission is the intended contract.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This retains comment with a JSON null value, which differs from the required omission.",
+      "b": "JSON_OBJECT defaults to NULL ON NULL, so omitting the clause still retains comment as JSON null.",
+      "d": "The supplied empty string is nonnull, so this retains comment as an empty JSON string instead of omitting the key."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-json-object"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-object-transact-sql"
+    ],
+    "documentationTitles": ["JSON_OBJECT (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:16:16.290Z",
+    "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+    "featureStatus": "GA",
+    "tags": ["azure-sql-database", "json-object", "optional-properties"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @code nvarchar(10) = N'R9', @retry int = 0, @comment nvarchar(100) = NULL;\nSELECT /* constructor */;",
+    "conceptId": "sql-json-object-absent-on-null-omits-only-null-valued-keys",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-direct-038",
+    "question": "In Azure SQL Database, an export must produce [\"z\",null,\"a\"] from the shown rows: array positions follow Position and a missing Label occupies a JSON null slot. Which aggregate expression satisfies both requirements?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "JSON_ARRAYAGG(Label ORDER BY Position NULL ON NULL)"
+      },
+      {
+        "id": "b",
+        "text": "JSON_ARRAYAGG(Label ORDER BY Position ABSENT ON NULL)"
+      },
+      {
+        "id": "c",
+        "text": "JSON_ARRAYAGG(Label ORDER BY Position DESC NULL ON NULL)"
+      },
+      {
+        "id": "d",
+        "text": "JSON_ARRAYAGG(Label ORDER BY Position DESC ABSENT ON NULL)"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Order inside JSON_ARRAYAGG by Position and specify NULL ON NULL.",
+    "deepExplanation": "The two clauses control different parts of the contract. ABSENT ON NULL is the aggregate's default, so preserving positional gaps must be explicit. This question uses the documented Azure SQL Database aggregate; it does not assume that JSON_ARRAYAGG is available on SQL Server 2022.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Ordering is correct but ABSENT ON NULL removes the middle element, producing only the two strings.",
+      "c": "The null slot remains, but descending Position reverses the two labels and does not produce the requested array.",
+      "d": "This both reverses the positional order and removes the null element."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-json-arrayagg"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-arrayagg-transact-sql"
+    ],
+    "documentationTitles": ["JSON_ARRAYAGG (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:16:16.290Z",
+    "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+    "featureStatus": "GA",
+    "tags": ["azure-sql-database", "json-arrayagg", "ordered-export"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT /* aggregate expression */\nFROM (VALUES (10, N'z'), (20, NULL), (30, N'a')) AS Input(Position, Label);",
+    "conceptId": "azure-sql-json-arrayagg-aggregate-order-and-null-position-preservation",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-001",
+    "question": "A SQL Server 2022 ingestion table stores signed measurements from -99,999.9999 through 99,999.9999. Every value in that range must retain four fractional digits exactly. Among these definitions, which has the smallest declared precision that meets the requirement and remains in the five-byte DECIMAL storage tier?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Measurement decimal(8,4)"
+      },
+      {
+        "id": "b",
+        "text": "Measurement decimal(9,3)"
+      },
+      {
+        "id": "c",
+        "text": "Measurement decimal(9,4)"
+      },
+      {
+        "id": "d",
+        "text": "Measurement decimal(10,4)"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "decimal(9,4) provides five integral digits and four fractional digits, using the precision-1-through-9 storage tier.",
+    "deepExplanation": "Precision counts digits on both sides of the decimal point; scale reserves the fractional digits. The required five integral plus four fractional digits need precision 9. The sign is not an additional precision digit. Increasing precision to 10 moves to nine bytes without being required for the stated range.",
+    "whyOtherAnswersAreWrong": {
+      "a": "With scale 4, precision 8 leaves only four integral digits and cannot represent the required extremes.",
+      "b": "Scale 3 cannot retain an input such as 1.2345 exactly; lowering scale can round it.",
+      "d": "This fits the values but has greater declared precision and uses nine storage bytes rather than five."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement tables, including data types, size, columns, indexes, and column store indexes",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-decimal"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/data-types/decimal-and-numeric-transact-sql"
+    ],
+    "documentationTitles": ["decimal and numeric (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:29:17.791Z",
+    "lastValidatedAt": "2026-09-16T20:29:17.791Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "decimal", "precision-scale", "table-design"],
+    "conceptId": "sql-decimal-integral-fractional-capacity-and-storage-tier",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-002",
+    "question": "A SQL Server 2022 table has a clustered rowstore primary key and no columnstore index. Columns include Settled bit, EventDate date, Amount decimal(18,2), and Payload nvarchar(max). Analytics scan settled rows and aggregate Amount by EventDate; frequently changing unsettled rows must stay outside the new columnar structure. Preserve the clustered rowstore. Required filtered-index SET options and ALTER permission are already in place. Which design meets these conditions?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Add a nonclustered columnstore on (EventDate, Amount) filtered by Settled = 1."
+      },
+      {
+        "id": "b",
+        "text": "Replace the clustered rowstore with a clustered columnstore containing the entire table."
+      },
+      {
+        "id": "c",
+        "text": "Add a nonclustered columnstore on (EventDate, Amount) without a filter predicate."
+      },
+      {
+        "id": "d",
+        "text": "Add a nonclustered columnstore on (EventDate, Amount, Payload) filtered by Settled = 1."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use a filtered nonclustered columnstore over the supported analytic columns, alongside the existing rowstore.",
+    "deepExplanation": "A nonclustered columnstore is a secondary columnar copy, so the transactional clustered rowstore remains. Its filter excludes unsettled rows from that structure. Payload is not needed for the aggregate and nvarchar(max) is unsupported in a nonclustered columnstore. This provides an eligible access structure, not a guarantee of a particular plan or speedup.",
+    "whyOtherAnswersAreWrong": {
+      "b": "A clustered columnstore changes the base organization and includes all rows, violating both rowstore preservation and the unsettled-row exclusion.",
+      "c": "The rowstore remains, but unsettled rows also enter the columnar structure, contrary to the explicit filter requirement.",
+      "d": "The filter is appropriate, but the included nvarchar(max) column is not supported in a nonclustered columnstore."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement tables, including data types, size, columns, indexes, and column store indexes",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": ["dp800-d1x-columnstore", "dp800-d1x-indexes-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-columnstore-index-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/4-design-implement-indexes"
+    ],
+    "documentationTitles": [
+      "CREATE COLUMNSTORE INDEX (Transact-SQL)",
+      "Optimize with indexes"
+    ],
+    "generatedAt": "2026-09-16T20:29:17.791Z",
+    "lastValidatedAt": "2026-09-16T20:29:17.791Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "columnstore",
+      "operational-analytics",
+      "filtered-index"
+    ],
+    "conceptId": "sql-filtered-ncci-preserves-rowstore-excludes-hot-rows-and-lob",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-003",
+    "question": "On SQL Server 2022, a current table already has its primary key and a valid PERIOD FOR SYSTEM_TIME with nonnull datetime2(7) endpoints. A proposed user-defined history table matches its columns and types but adds ArchiveBatchId and a PRIMARY KEY on (RecordId, ValidFrom). All periods are valid and nonoverlapping. ArchiveBatchId can be stored separately. Which two changes are required before using this history table for system versioning? Choose two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Remove the history table's PRIMARY KEY constraint."
+      },
+      {
+        "id": "b",
+        "text": "Replace the history primary key with a UNIQUE index on the same columns."
+      },
+      {
+        "id": "c",
+        "text": "Move ArchiveBatchId elsewhere and remove that extra history-table column."
+      },
+      {
+        "id": "d",
+        "text": "Set DATA_CONSISTENCY_CHECK = OFF instead of changing the history schema."
+      },
+      {
+        "id": "e",
+        "text": "Change the history period columns to date while retaining datetime2(7) in the current table."
+      }
+    ],
+    "correctAnswer": ["a", "c"],
+    "explanation": "Remove the history primary key and make its column schema align exactly with the current table.",
+    "deepExplanation": "A temporal current table needs a primary key, but its history table cannot have one or a unique index. History must also align in column count, names, order and data types. The stated valid periods close the separate temporal-data question; disabling a data consistency check does not legalize an incompatible history schema.",
+    "whyOtherAnswersAreWrong": {
+      "b": "History tables cannot have unique indexes either, so replacing the key with one does not remove the restriction.",
+      "d": "The option controls existing period-data checking, not the independent history schema and constraint requirements.",
+      "e": "That introduces a period-column type mismatch instead of making the schemas align."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement specialized tables, including in-memory, temporal, external, ledger, and graph",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-create-temporal"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/tables/creating-a-system-versioned-temporal-table"
+    ],
+    "documentationTitles": ["Create a system-versioned temporal table"],
+    "generatedAt": "2026-09-16T20:29:17.791Z",
+    "lastValidatedAt": "2026-09-16T20:29:17.791Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "temporal-tables", "history-schema"],
+    "conceptId": "sql-temporal-history-schema-alignment-and-no-unique-constraints",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-004",
+    "question": "A SQL Server 2022 external table reads a supported Azure-storage file source through an already configured data source and file format. Connectivity and permissions are verified. The files now contain ShipmentCode as text, including 'R-91' and '00027', with a validated maximum of 30 characters. The external column is still int, and SELECT fails while converting those file values. All codes must be returned unchanged. Which repair addresses the failure?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the external int column and cast ShipmentCode to nvarchar(30) in the SELECT list."
+      },
+      {
+        "id": "b",
+        "text": "Recreate the external table metadata with a compatible nvarchar(30) ShipmentCode column."
+      },
+      {
+        "id": "c",
+        "text": "Keep the external int column and filter the source to numeric-only shipment codes."
+      },
+      {
+        "id": "d",
+        "text": "Recreate the external table metadata with ShipmentCode widened from int to bigint."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Correct the external column's declared type so file values can be read as the required text.",
+    "deepExplanation": "The external schema is the contract used when rows are read. Conversion into a declared int occurs before a later text projection can repair it; a larger integer still cannot represent R-91 or preserve leading zeros as text. Recreating this external metadata is distinct from changing or importing the underlying files. Other column definitions must continue matching the actual file schema.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The file value must first satisfy the external int schema; a later SELECT cast cannot restore text that failed parsing or leading zeros already converted away.",
+      "c": "Discarding alphanumeric codes violates the requirement to return all shipment codes unchanged.",
+      "d": "bigint increases numeric range but still cannot represent the alphanumeric code or preserve text formatting."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement specialized tables, including in-memory, temporal, external, ledger, and graph",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d1x-external-table", "dp800-d1x-tables-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-table-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/3-design-implement-tables"
+    ],
+    "documentationTitles": [
+      "CREATE EXTERNAL TABLE (Transact-SQL)",
+      "Build effective tables"
+    ],
+    "generatedAt": "2026-09-16T20:29:17.791Z",
+    "lastValidatedAt": "2026-09-16T20:29:17.791Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "external-tables", "schema-on-read"],
+    "conceptId": "sql-external-file-schema-type-contract-before-projection",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-005",
+    "question": "A SQL Server 2022 graph edge records one active delivery route, from a depot node to a destination node, with user-defined RouteCode and Cost attributes. Both endpoint nodes exist. A reroute must keep the origin, RouteCode and Cost, connect to a different destination, and leave exactly one active route. A new generated edge ID is acceptable. Which implementation respects SQL graph's endpoint restrictions?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "UPDATE the existing edge's $to_id to the new destination's $node_id, leaving its other values unchanged."
+      },
+      {
+        "id": "b",
+        "text": "UPDATE a user-defined DestinationLabel on the existing edge and keep its original $to_id."
+      },
+      {
+        "id": "c",
+        "text": "INSERT a second edge with the new endpoint and copied attributes, retaining the original edge."
+      },
+      {
+        "id": "d",
+        "text": "In one transaction, replace the old edge with a new edge using the retained origin, new endpoint and copied attributes."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Replace the relationship row transactionally; SQL graph does not allow UPDATE of an edge's endpoint pseudo-columns.",
+    "deepExplanation": "$from_id and $to_id determine graph connectivity and cannot be changed by UPDATE. Copy the user attributes, preserve the intended origin node reference, create the new directed connection and remove the previous edge in the same transaction. The order can honor any application uniqueness constraints. Updating a descriptive attribute does not reroute MATCH traversal, and retaining both edges violates the single-route requirement.",
+    "whyOtherAnswersAreWrong": {
+      "a": "SQL graph prohibits UPDATE of $to_id and $from_id; accepting a new edge ID permits the supported replacement approach.",
+      "b": "A user-defined label is mutable but does not change the endpoint used by graph traversal.",
+      "c": "Adding the new edge without removing the previous one leaves two relationships rather than the required replacement."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement specialized tables, including in-memory, temporal, external, ledger, and graph",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-graph-architecture", "dp800-d1x-graph-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/graphs/sql-graph-architecture",
+      "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/7-graph-queries"
+    ],
+    "documentationTitles": [
+      "SQL Graph Architecture",
+      "Traverse relationships with graph queries"
+    ],
+    "generatedAt": "2026-09-16T20:29:17.791Z",
+    "lastValidatedAt": "2026-09-16T20:29:17.791Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "graph-tables", "edge-replacement"],
+    "conceptId": "sql-graph-endpoint-change-requires-transactional-edge-replacement",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-006",
+    "question": "On SQL Server 2022, a table stores valid JSON in Payload nvarchar(max). An independent ingestion check guarantees $.sku is a nonnull string of at most 30 UTF-16 code units. An index on SkuKey AS JSON_VALUE(Payload, '$.sku') warns about an 8,000-byte possible key. Queries may use the new computed column. Which change bounds the key without truncating any valid SKU?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the JSON_VALUE expression unchanged and make SkuKey PERSISTED before indexing it."
+      },
+      {
+        "id": "b",
+        "text": "Define SkuKey as CONVERT(nvarchar(30), JSON_VALUE(Payload, '$.sku')) and index SkuKey."
+      },
+      {
+        "id": "c",
+        "text": "Define SkuKey as CONVERT(nvarchar(10), JSON_VALUE(Payload, '$.sku')) and index SkuKey."
+      },
+      {
+        "id": "d",
+        "text": "Keep the JSON_VALUE expression unchanged and add more included columns to the same index."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Cast the extracted key to the validated nvarchar(30) domain and index that computed value.",
+    "deepExplanation": "JSON_VALUE without RETURNING exposes nvarchar(4000), whose potential 8,000-byte value exceeds the 1,700-byte nonclustered index-key bound. The independently enforced 30-code-unit maximum makes the narrower projection safe. Persisting the computed value or covering extra columns does not change its key type. A still narrower cast could collapse distinct valid identifiers, so size reduction must follow the real domain.",
+    "whyOtherAnswersAreWrong": {
+      "a": "PERSISTED changes base storage of the computed value, not the nvarchar(4000) return type or key-width bound.",
+      "c": "Valid 11–30-code-unit SKUs would be truncated, violating exact identifier preservation.",
+      "d": "Included columns can reduce lookups but do not narrow the existing key expression."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement JSON columns and indexes",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-index-json", "dp800-d1-json-value"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/json/index-json-data",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-value-transact-sql"
+    ],
+    "documentationTitles": ["Index JSON data", "JSON_VALUE (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:29:17.791Z",
+    "lastValidatedAt": "2026-09-16T20:29:17.791Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "json-columns", "computed-index", "key-width"],
+    "conceptId": "sql-json-computed-index-safe-narrow-type-versus-persistence",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-007",
+    "question": "A SQL Server 2022 product catalog has stable ProductId, CategoryId and Price fields. CategoryId must use an engine-enforced foreign key and Price must be an exact nonnull numeric column. Category-specific attributes change frequently, and adding a category must not require table DDL. Which storage design meets these requirements?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Put every field in one nvarchar(max) JSON document and use only ISJSON to validate each row."
+      },
+      {
+        "id": "b",
+        "text": "Use typed core columns and add a separate typed nullable column whenever a new category introduces an attribute."
+      },
+      {
+        "id": "c",
+        "text": "Use typed constrained core columns and an nvarchar(max) JSON column for variable category attributes."
+      },
+      {
+        "id": "d",
+        "text": "Use typed core columns and create a new category-specific detail table whenever a new category is introduced."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Keep stable relational invariants in typed columns and use JSON for the variable attributes.",
+    "deepExplanation": "JSON complements relational structure rather than replacing it. Typed core columns retain numeric and foreign-key enforcement, while the variable document can accommodate new attribute shapes without category-driven DDL. JSON syntax validation can be added to the text column, but syntax validity alone is not the complete business schema.",
+    "whyOtherAnswersAreWrong": {
+      "a": "ISJSON checks JSON validity, not the required typed Price column or CategoryId foreign-key relationship.",
+      "b": "Adding columns for new attributes requires the DDL that the requirement excludes.",
+      "d": "Creating a detail table for each new category also requires category-driven DDL."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement JSON columns and indexes",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "dp800-d1-json-columns-unit",
+      "dp800-d1x-json-overview",
+      "dp800-d1x-primary-foreign"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/7-design-implement-json",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints"
+    ],
+    "documentationTitles": [
+      "Manage JSON columns and indexes",
+      "JSON data in SQL Server",
+      "Primary and foreign key constraints"
+    ],
+    "generatedAt": "2026-09-16T21:16:50.204Z",
+    "lastValidatedAt": "2026-09-16T21:16:50.204Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "json-columns",
+      "relational-design",
+      "schema-flexibility"
+    ],
+    "conceptId": "sql-hybrid-json-variable-attributes-retain-relational-core-invariants",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-008",
+    "question": "On SQL Server 2022, Ticket.OwnerId is NOT NULL with DEFAULT (0) and an enabled foreign key to Owner.OwnerId using ON DELETE SET DEFAULT. Owner 7 has tickets; owner 0 does not exist. Deleting owner 7 fails. Tickets must survive, retain a nonnull valid owner reference, and move to the reserved 'unassigned' owner 0 when an owner is deleted. Which repair satisfies that contract?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Create the valid unassigned Owner row with OwnerId = 0 and keep the existing delete action."
+      },
+      {
+        "id": "b",
+        "text": "Make Ticket.OwnerId nullable and change the foreign key's delete action to SET NULL."
+      },
+      {
+        "id": "c",
+        "text": "Keep Ticket.OwnerId nonnull and change the foreign key's delete action to CASCADE."
+      },
+      {
+        "id": "d",
+        "text": "Keep the present data and change the foreign key's delete action to NO ACTION."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Seed the referenced fallback row; a DEFAULT value is not an exemption from foreign-key integrity.",
+    "deepExplanation": "SET DEFAULT assigns 0 to the affected child keys, but that nonnull value must still reference an existing Owner. A valid reserved owner 0 makes the declared fallback meaningful. SET NULL, CASCADE and NO ACTION are legitimate policies with different consequences, but none meets this combination of retained tickets, nonnull fallback and permitted owner deletion.",
+    "whyOtherAnswersAreWrong": {
+      "b": "This can retain tickets but produces NULL, not the required valid nonnull owner 0 reference.",
+      "c": "ON DELETE CASCADE deletes the referencing tickets rather than reassigning them.",
+      "d": "NO ACTION continues to block deletion while tickets reference owner 7."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement database constraints, including PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, and DEFAULT",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d1x-primary-foreign", "dp800-d1-constraints"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/6-design-implement-constraints"
+    ],
+    "documentationTitles": [
+      "Primary and foreign key constraints",
+      "Enforce data integrity with constraints"
+    ],
+    "generatedAt": "2026-09-16T20:36:26.857Z",
+    "lastValidatedAt": "2026-09-16T20:36:26.857Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "foreign-key",
+      "set-default",
+      "referential-actions"
+    ],
+    "conceptId": "sql-foreign-key-set-default-requires-valid-fallback-parent",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-009",
+    "question": "Execute this SQL Server 2022 script in SSMS with the required permissions and no existing dbo.PairNumber. There are no concurrent callers, restarts or additional statements. What values are returned by the two SELECT statements?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "First SELECT: (40, 45); second SELECT: 50."
+      },
+      {
+        "id": "b",
+        "text": "First SELECT: (40, 45); second SELECT: 45."
+      },
+      {
+        "id": "c",
+        "text": "First SELECT: (40, 40); second SELECT: 50."
+      },
+      {
+        "id": "d",
+        "text": "First SELECT: (40, 40); second SELECT: 45."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "References to the same sequence share one allocated value for a row within a statement; the next statement allocates the next value.",
+    "deepExplanation": "The first SELECT produces one row and names the same sequence twice, so both expressions yield 40. This is not two independent increments within that output row. The following SELECT is a new allocation and returns 45 under INCREMENT BY 5. Sequence behavior is not inferred from the number of textual function occurrences alone.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This incorrectly consumes one new value per textual occurrence in the first row.",
+      "b": "The first row cannot contain two different allocations from these two same-sequence references; it also inconsistently reuses 45 in the next statement.",
+      "c": "The first row is correct, but only one value has been allocated before the second statement, so 50 skips an unstated call."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement SEQUENCES",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-sequences"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/sequence-numbers/sequence-numbers"
+    ],
+    "documentationTitles": ["Sequence numbers"],
+    "generatedAt": "2026-09-16T20:36:26.857Z",
+    "lastValidatedAt": "2026-09-16T20:36:26.857Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "sequence", "per-row-allocation"],
+    "codeLanguage": "sql",
+    "codeSnippet": "CREATE SEQUENCE dbo.PairNumber AS int\n    START WITH 40 INCREMENT BY 5 NO CACHE;\nGO\nSELECT NEXT VALUE FOR dbo.PairNumber AS LeftNo,\n       NEXT VALUE FOR dbo.PairNumber AS RightNo;\nSELECT NEXT VALUE FOR dbo.PairNumber AS AfterNo;",
+    "conceptId": "sql-same-sequence-references-share-allocation-within-one-output-row",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-010",
+    "question": "On SQL Server 2022, two live tables use different partition schemes, PS_A and PS_B, both based on PF_EventMonth. An upcoming SPLIT RANGE targets an empty partition. All affected filegroups are online, indexes are enabled, and permissions are sufficient. PS_A has NEXT USED set; PS_B does not. Which maintenance plan addresses both the prerequisite and the operation's scope?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Set NEXT USED on PS_A again and treat the split as affecting only the table currently being maintained."
+      },
+      {
+        "id": "b",
+        "text": "Set NEXT USED on PS_B and coordinate the split for every table and index using PF_EventMonth."
+      },
+      {
+        "id": "c",
+        "text": "Create an extra online filegroup without assigning PS_B's NEXT USED, then split both tables."
+      },
+      {
+        "id": "d",
+        "text": "Pause queries against the PS_B table and split PF_EventMonth without changing PS_B's NEXT USED."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Every scheme using the function needs NEXT USED; changing the shared function affects all dependent tables and indexes atomically.",
+    "deepExplanation": "The prerequisite belongs to each partition scheme, not just the one that prompted the maintenance. Merely having an online filegroup or stopping a workload does not assign that scheme's next partition destination. ALTER PARTITION FUNCTION operates on the shared function and cannot be scoped to one consuming table by intent or connection context.",
+    "whyOtherAnswersAreWrong": {
+      "a": "PS_B still lacks NEXT USED, and a shared function is not altered only for the selected table.",
+      "c": "An available filegroup is not the same as marking it NEXT USED for PS_B.",
+      "d": "Pausing queries does not remove PS_B's dependency or satisfy its NEXT USED requirement."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement partitioning for tables and indexes",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d1x-alter-partition"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-partition-function-transact-sql"
+    ],
+    "documentationTitles": ["ALTER PARTITION FUNCTION (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:36:26.857Z",
+    "lastValidatedAt": "2026-09-16T20:36:26.857Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "partitioning", "shared-function", "next-used"],
+    "conceptId": "sql-shared-partition-function-split-requires-each-scheme-next-used",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-011",
+    "question": "A SQL Server 2022 fact table has a clustered columnstore index. The oldest monthly partition and its neighbor both contain rows. A job tries MERGE RANGE at their shared boundary to archive the oldest month. The old rows must leave the live table but remain in an archive. A separate switch-out routine already satisfies all source, target and index requirements. Which plan meets the goal?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Run the validated switch-out for the old partition, then merge the now-unneeded boundary with that partition empty."
+      },
+      {
+        "id": "b",
+        "text": "Run MERGE RANGE directly; removing the boundary moves the old rows into the archive automatically."
+      },
+      {
+        "id": "c",
+        "text": "Split the populated old columnstore partition first, then treat the split as the archival operation."
+      },
+      {
+        "id": "d",
+        "text": "Drop the columnstore index and merge the populated partitions, without running the switch-out routine."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Archive the rows separately, leaving the old partition empty, before removing the boundary.",
+    "deepExplanation": "MERGE RANGE combines partitions and retains their values in a remaining partition; it is not an archive or purge operation. The product also forbids merging two nonempty columnstore partitions. The stipulated validated switch-out resolves the data movement goal and empties the old partition, so the subsequent boundary cleanup no longer attempts that prohibited merge.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The merge is prohibited with both columnstore partitions nonempty and would not independently archive data even without that restriction.",
+      "c": "A populated partition with a columnstore index cannot be split by this route, and splitting alone does not transfer rows to an archive.",
+      "d": "Removing columnstore can remove that merge restriction, but the rows remain in the live merged partition rather than the archive."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-database-objects",
+    "subskill": "Design and implement partitioning for tables and indexes",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-alter-partition", "dp800-d1x-partitioning-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-partition-function-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/8-design-implement-partitioning"
+    ],
+    "documentationTitles": [
+      "ALTER PARTITION FUNCTION (Transact-SQL)",
+      "Partition tables for scale"
+    ],
+    "generatedAt": "2026-09-16T20:36:26.857Z",
+    "lastValidatedAt": "2026-09-16T20:36:26.857Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "columnstore",
+      "partition-maintenance",
+      "archival"
+    ],
+    "conceptId": "sql-partition-merge-retains-data-and-needs-empty-columnstore-side",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-012",
+    "question": "A SQL Server 2022 view exposes JobId and Ready from dbo.Job, filters WHERE Ready = 1, and uses WITH CHECK OPTION. A test login can update both the view and the base table. No trigger or table constraint prohibits Ready = 0. Starting from the same Ready = 1 row in separate tests, what happens when the login changes Ready to 0 through each object?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Both updates succeed because the row was visible when each statement began."
+      },
+      {
+        "id": "b",
+        "text": "Both updates fail because CHECK OPTION applies to every update of the base row."
+      },
+      {
+        "id": "c",
+        "text": "The view update succeeds; the direct base-table update fails."
+      },
+      {
+        "id": "d",
+        "text": "The view update fails; the direct base-table update can succeed."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "CHECK OPTION requires rows modified through the view to remain visible, but does not constrain direct base-table updates.",
+    "deepExplanation": "The view predicate is checked against the resulting row, not only the initially visible row. Setting Ready to 0 through the view breaks that condition. The direct update bypasses this view-scoped check and is allowed under the explicitly supplied permissions and absence of another prohibiting rule.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Initial visibility is insufficient; CHECK OPTION requires post-update visibility for modifications through the view.",
+      "b": "The product explicitly limits CHECK OPTION to modifications through the view, not direct changes to its base table.",
+      "c": "This reverses the control's scope: it restricts the view update, not the permitted base-table update."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create views",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d1-create-view"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql"
+    ],
+    "documentationTitles": ["CREATE VIEW (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:36:26.857Z",
+    "lastValidatedAt": "2026-09-16T20:36:26.857Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "views", "check-option", "update-scope"],
+    "conceptId": "sql-view-check-option-post-update-visibility-not-base-table-rule",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-013",
+    "question": "A SQL Server 2022 scalar UDF is already schema-bound. It looks up a rate in dbo.DailyRate using GETDATE(), then calculates an amount. A computed column calling it cannot be indexed. Each booked row can instead store its agreed rate, and recalculation must use that recorded rate rather than today's rate. Which redesign addresses both the volatile dependency and the UDF's table access?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Replace GETDATE() with a date parameter but keep the dbo.DailyRate lookup inside the UDF."
+      },
+      {
+        "id": "b",
+        "text": "Add a schema-bound wrapper that calls the same existing rate-lookup UDF."
+      },
+      {
+        "id": "c",
+        "text": "Pass the row's amount and recorded rate into a schema-bound UDF that performs only deterministic decimal calculations."
+      },
+      {
+        "id": "d",
+        "text": "Keep the existing function body and make the calling computed column PERSISTED."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Make the rate an explicit recorded input and keep the function free of clock and table dependencies.",
+    "deepExplanation": "SCHEMABINDING protects dependencies but does not make GETDATE deterministic or remove UserDataAccess. Passing the booked rate allows a pure repeatable calculation and addresses these two blockers. Other computed-column index prerequisites, including valid types and SET options, still need to be satisfied; the redesign is not a blanket claim that every calling expression is indexable.",
+    "whyOtherAnswersAreWrong": {
+      "a": "An explicit date removes the clock dependency, but the UDF still accesses user data, which violates the documented indexed-computed-column UDF conditions.",
+      "b": "A wrapper does not eliminate the underlying GETDATE or table access.",
+      "d": "Persistence does not waive the determinism or no-user-data-access conditions."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create scalar functions",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "dp800-d1x-create-function",
+      "dp800-d1x-udf-overview",
+      "dp800-d1x-scalar-unit"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/user-defined-functions/user-defined-functions",
+      "https://learn.microsoft.com/en-us/training/modules/implement-programmability-objects/4-create-scalar-functions"
+    ],
+    "documentationTitles": [
+      "CREATE FUNCTION (Transact-SQL)",
+      "User-defined functions",
+      "Create scalar functions"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "scalar-udf", "determinism", "computed-column"],
+    "conceptId": "sql-indexed-scalar-udf-explicit-snapshot-inputs-no-table-or-clock",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-014",
+    "question": "SQL Server 2022 has CLR enabled and an approved registered scalar method that returns 'unassigned' when its argument is NULL. The SQL function wrapper explicitly declares RETURNS NULL ON NULL INPUT. True or false: callers can rely on receiving 'unassigned' whenever they pass SQL NULL to that wrapper.",
+    "questionType": "true-false",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "True"
+      },
+      {
+        "id": "b",
+        "text": "False"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "False. The wrapper permits SQL Server to return NULL without invoking the CLR method.",
+    "deepExplanation": "A fallback implemented inside the method is not a guarantee when the SQL declaration permits null-call short-circuiting. CALLED ON NULL INPUT is the documented declaration for invoking the method with NULL; the wrapper declaration takes precedence over a conflicting method null-call attribute. This item concerns the registered SQL Server CLR scalar form, not CLR support in Azure SQL Database.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The method's fallback code may not run under RETURNS NULL ON NULL INPUT. The documented wrapper option, not the mere existence of fallback code, controls this call contract."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create scalar functions",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d1x-create-function"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql"
+    ],
+    "documentationTitles": ["CREATE FUNCTION (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "clr-scalar-udf", "null-call-contract"],
+    "conceptId": "sql-clr-scalar-wrapper-null-short-circuit-precedes-method-fallback",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-015",
+    "question": "On SQL Server 2022, the shown inline TVF counts ready lots for each warehouse. ANSI_WARNINGS is ON and counts fit int. The report currently includes warehouses with no ready lots. Keep the count for warehouses that have ready lots, but exclude the others. Which two independent changes would each meet that requirement? Choose two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Add WHERE r.ReadyCount > 0 to the outer SELECT."
+      },
+      {
+        "id": "b",
+        "text": "Add HAVING COUNT(*) > 0 to the TVF's aggregate SELECT."
+      },
+      {
+        "id": "c",
+        "text": "Change the outer CROSS APPLY to OUTER APPLY, without adding a predicate."
+      },
+      {
+        "id": "d",
+        "text": "Replace COUNT(*) with COUNT(1) in the TVF, without adding a predicate."
+      },
+      {
+        "id": "e",
+        "text": "Add WHERE r.ReadyCount IS NOT NULL to the outer SELECT."
+      }
+    ],
+    "correctAnswer": ["a", "b"],
+    "explanation": "Filter the aggregate value outside the TVF, or filter the aggregate row inside it with HAVING.",
+    "deepExplanation": "An ungrouped COUNT returns one row containing zero when no lots match. CROSS APPLY therefore has a nonempty right rowset and keeps the warehouse. An outer positive-count predicate removes that row; a HAVING predicate inside the TVF removes the aggregate row before APPLY. Changing APPLY flavor or testing nonnullness does not distinguish zero from a positive count.",
+    "whyOtherAnswersAreWrong": {
+      "c": "OUTER APPLY preserves at least as many left rows and does not filter an existing zero-count aggregate row.",
+      "d": "The constant 1 is nonnull for every matched row, so COUNT(1) has the same zero-count result here.",
+      "e": "A successful zero count is not NULL under these conditions, so this retains warehouses with no ready lots."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create table-valued functions",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "dp800-d1x-create-function",
+      "dp800-d1x-count",
+      "dp800-d1x-from",
+      "dp800-d1x-select"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/count-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql"
+    ],
+    "documentationTitles": [
+      "CREATE FUNCTION (Transact-SQL)",
+      "COUNT (Transact-SQL)",
+      "FROM clause plus JOIN, APPLY, PIVOT (Transact-SQL)",
+      "SELECT (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "inline-tvf", "apply", "aggregate-cardinality"],
+    "codeLanguage": "sql",
+    "codeSnippet": "CREATE FUNCTION dbo.ReadyLotCount(@WarehouseId int)\nRETURNS TABLE\nAS RETURN\n(\n    SELECT COUNT(*) AS ReadyCount\n    FROM dbo.Lot\n    WHERE WarehouseId = @WarehouseId AND Ready = 1\n);\nGO\nSELECT w.WarehouseId, r.ReadyCount\nFROM dbo.Warehouse AS w\nCROSS APPLY dbo.ReadyLotCount(w.WarehouseId) AS r;",
+    "conceptId": "sql-aggregate-tvf-zero-row-value-versus-empty-apply-input",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-016",
+    "question": "A SQL Server 2022 inline TVF is used by several applications. Its replacement needs a declared return-table variable populated by multiple statements. The old function must remain callable while applications migrate. Which deployment approach supports that change of function kind?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "ALTER the existing inline TVF into a multistatement TVF under its current name."
+      },
+      {
+        "id": "b",
+        "text": "Use CREATE OR ALTER under the current name to bypass the inline-to-multistatement restriction."
+      },
+      {
+        "id": "c",
+        "text": "Set INLINE = OFF on the existing function to convert its table-return form automatically."
+      },
+      {
+        "id": "d",
+        "text": "Create the multistatement TVF under a new name, migrate callers, then retire the old function."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Deploy a separately named replacement; ALTER FUNCTION cannot convert an inline TVF into a multistatement TVF.",
+    "deepExplanation": "The two table-valued forms have different definition shapes, and the alteration contract explicitly prohibits switching between them. CREATE OR ALTER does not evade the restriction for an existing function. A new name allows both interfaces to coexist during a deliberate caller and permission migration; INLINE for scalar-UDF optimization is not this object-kind conversion.",
+    "whyOtherAnswersAreWrong": {
+      "a": "ALTER FUNCTION explicitly prohibits changing an inline function into a multistatement function.",
+      "b": "The existing object follows the alteration path, so CREATE OR ALTER does not remove that restriction.",
+      "c": "The scalar-UDF inlining option does not transform an inline TVF into a return-table-variable implementation."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create table-valued functions",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-alter-function", "dp800-d1x-create-function"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-function-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql"
+    ],
+    "documentationTitles": [
+      "ALTER FUNCTION (Transact-SQL)",
+      "CREATE FUNCTION (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "table-valued-functions", "function-migration"],
+    "conceptId": "sql-tvf-kind-change-requires-replacement-not-alter",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-017",
+    "question": "Inside a SQL Server 2022 procedure, @Tag is an nvarchar(80) input and may contain apostrophes. dbo.Tagged.Tag is nvarchar(80); counts fit int. The dynamic statement text must stay unchanged, and the caller variable @Matches must receive the computed count. Which replacement for the EXEC call supplies the required input and output bindings?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "EXEC sys.sp_executesql @sql, N'@p nvarchar(80), @n int OUTPUT', @p = @Tag, @n = @Matches OUTPUT;"
+      },
+      {
+        "id": "b",
+        "text": "EXEC sys.sp_executesql @sql, N'@Tag nvarchar(80), @n int OUTPUT', @Tag = @Tag, @n = @Matches OUTPUT;"
+      },
+      {
+        "id": "c",
+        "text": "EXEC sys.sp_executesql @sql, N'@p nvarchar(80), @n int OUTPUT', @p = @Tag, @n = @Matches;"
+      },
+      {
+        "id": "d",
+        "text": "DECLARE @p nvarchar(80) = @Tag, @n int; EXEC sys.sp_executesql @sql;"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Declare the dynamic batch's @p and @n, bind @p as a data value, and mark @n OUTPUT at both declaration and call sites.",
+    "deepExplanation": "sp_executesql compiles a separate batch, so caller-local variables are not visible merely because they have the same names. The parameter definition must use the names in the dynamic text. The @n declaration allows an output value, while OUTPUT on @Matches propagates it back to the caller. Passing @Tag separately handles apostrophes as data without string substitution.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The definition declares @Tag, but the dynamic statement references @p, leaving @p unbound.",
+      "c": "The dynamic count is computed, but omission of OUTPUT on the caller binding prevents the result from being returned into @Matches.",
+      "d": "Variables declared in the calling scope do not become visible to the separate sp_executesql batch."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create stored procedures",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-executesql", "dp800-d1x-count"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-executesql-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/count-transact-sql"
+    ],
+    "documentationTitles": [
+      "sp_executesql (Transact-SQL)",
+      "COUNT (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "stored-procedures",
+      "dynamic-sql",
+      "parameter-binding"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @Matches int;\nDECLARE @sql nvarchar(max) =\n    N'SELECT @n = COUNT(*) FROM dbo.Tagged WHERE Tag = @p;';\nEXEC sys.sp_executesql @sql;\nSELECT @Matches AS Matches;",
+    "conceptId": "sql-dynamic-batch-typed-input-and-output-scope-binding",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-018",
+    "question": "A SQL Server 2022 procedure executes the shown statements. Exactly three rows satisfy the UPDATE, permissions are sufficient, and no triggers or other statements intervene. What does SET NOCOUNT ON change about the observed result?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "ChangedRows is 3, and the ordinary affected-row messages are still emitted."
+      },
+      {
+        "id": "b",
+        "text": "No SELECT result is returned because NOCOUNT suppresses all result sets."
+      },
+      {
+        "id": "c",
+        "text": "ChangedRows is 3, while ordinary affected-row messages are suppressed."
+      },
+      {
+        "id": "d",
+        "text": "ChangedRows is 0 because NOCOUNT stops updating @@ROWCOUNT."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "NOCOUNT suppresses row-count messages, not the explicit SELECT or the updating of @@ROWCOUNT.",
+    "deepExplanation": "The UPDATE sets @@ROWCOUNT to three. The immediately following SELECT reads that value and returns a one-row result containing 3. SET NOCOUNT ON suppresses the per-statement affected-row protocol messages; it does not disable DML, erase the server-side count or hide selected data.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The explicit row value is correct, but NOCOUNT ON suppresses the ordinary affected-row messages.",
+      "b": "Explicit SELECT data still returns; only the count messages are suppressed.",
+      "d": "The documented @@ROWCOUNT behavior continues under NOCOUNT ON."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create stored procedures",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-nocount"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/set-nocount-transact-sql"
+    ],
+    "documentationTitles": ["SET NOCOUNT (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "stored-procedures", "nocount", "rowcount"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SET NOCOUNT ON;\nUPDATE dbo.Job SET Processed = 1 WHERE Processed = 0;\nSELECT @@ROWCOUNT AS ChangedRows;",
+    "conceptId": "sql-nocount-suppresses-messages-not-rowcount-or-select-results",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-019",
+    "question": "An updatable SQL Server 2022 view filters BranchId = 7 and uses WITH CHECK OPTION. A new INSTEAD OF INSERT trigger must translate legacy inputs before writing base rows. The team must continue rejecting every resulting row outside branch 7, including in multirow inserts. Which deployment respects both the trigger restriction and the existing admission rule?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep CHECK OPTION and add an AFTER INSERT trigger on the view to translate and validate rows."
+      },
+      {
+        "id": "b",
+        "text": "Keep CHECK OPTION and add an INSTEAD OF INSERT trigger on the view to translate and validate rows."
+      },
+      {
+        "id": "c",
+        "text": "Remove CHECK OPTION and add an INSTEAD OF INSERT trigger that inserts translated rows, relying only on the view's WHERE filter."
+      },
+      {
+        "id": "d",
+        "text": "Remove CHECK OPTION and add an INSTEAD OF INSERT trigger that explicitly validates all translated BranchId values before base writes."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Remove the incompatible CHECK OPTION declaration, then enforce the equivalent admission rule explicitly in the INSTEAD OF trigger.",
+    "deepExplanation": "SQL Server does not allow an INSTEAD OF trigger on an updatable view that has CHECK OPTION, and views do not support AFTER triggers. Replacing the view's ordinary insertion path does not make its WHERE clause a sufficient check on inserted values. The trigger must validate the complete translated rowset and preserve base constraints before performing the approved writes.",
+    "whyOtherAnswersAreWrong": {
+      "a": "AFTER triggers cannot target views.",
+      "b": "An INSTEAD OF trigger cannot be added while the updatable view retains CHECK OPTION.",
+      "c": "Removing CHECK OPTION without replacing its admission check loses the explicit guarantee that all inserted values satisfy BranchId = 7."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create triggers",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-create-trigger", "dp800-d1-create-view"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql"
+    ],
+    "documentationTitles": [
+      "CREATE TRIGGER (Transact-SQL)",
+      "CREATE VIEW (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "triggers",
+      "updatable-view",
+      "admission-control"
+    ],
+    "conceptId": "sql-instead-of-view-trigger-replaces-check-option-with-explicit-rowset-rule",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-020",
+    "question": "A SQL Server 2022 AFTER UPDATE trigger maintains Invoice.Total from detail amounts. One statement moves a 30-unit detail from invoice 1 to invoice 2 while changing it to 40, and changes another invoice-1 detail from 20 to 15. Totals were correct at 100 and 50 before the statement. No other writes intervene. Which set-based strategy produces totals 65 and 90 without losing a parent present in only one transition rowset?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Group inserted amounts by InvoiceId and add those sums to the existing header totals."
+      },
+      {
+        "id": "b",
+        "text": "UNION ALL positive inserted amounts with negative deleted amounts, group by InvoiceId, and add each net delta once."
+      },
+      {
+        "id": "c",
+        "text": "Inner join inserted and deleted sums by InvoiceId, then update only the invoices returned by that join."
+      },
+      {
+        "id": "d",
+        "text": "Read one inserted/deleted detail pair into scalar variables and apply its difference to a single header."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Aggregate the signed union of the two transition rowsets by parent, then apply each net delta once.",
+    "deepExplanation": "Invoice 1 loses 30 and 20 and gains 15, giving a net -35 and total 65. Invoice 2 gains 40, giving total 90, even though it has no deleted row in this update. A signed UNION ALL retains both contributions without requiring the same parent in both rowsets. The trigger must handle the statement's whole rowset rather than assume one changed detail.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Adding only new amounts neglects removal of old contributions, incorrectly retaining amounts being replaced or moved.",
+      "c": "Invoice 2 appears only in inserted, so an inner join to deleted sums omits its required +40 change.",
+      "d": "A scalar pair does not represent all modified rows and cannot account for both parent changes reliably."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "implement-programmability-objects",
+    "subskill": "Create triggers",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d1-create-trigger",
+      "dp800-d1-triggers",
+      "dp800-d1x-select"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/implement-programmability-objects/6-create-triggers",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql"
+    ],
+    "documentationTitles": [
+      "CREATE TRIGGER (Transact-SQL)",
+      "Create triggers",
+      "SELECT (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:51:19.433Z",
+    "lastValidatedAt": "2026-09-16T20:51:19.433Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "multirow-trigger",
+      "signed-delta",
+      "parent-transfer"
+    ],
+    "conceptId": "sql-trigger-parent-transfer-signed-union-deltas-cover-both-rowsets",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-021",
+    "question": "On SQL Server 2022, dbo.Link has int columns FromId and ToId and can contain cycles. The query must enumerate walks from node 1 using at most three edges. Some retained path strings exceed 20 characters, but all fit nvarchar(200). The shown CTE has a type mismatch and relies on an outer depth filter. Which repair makes the types agree and bounds recursion without truncating valid paths?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Cast the anchor path to nvarchar(200), but leave depth filtering only in the outer SELECT."
+      },
+      {
+        "id": "b",
+        "text": "Cast the recursive path to nvarchar(20) and add WHERE r.Depth < 3 to the recursive member."
+      },
+      {
+        "id": "c",
+        "text": "Leave the path casts unchanged and add OPTION (MAXRECURSION 3) to the outer SELECT."
+      },
+      {
+        "id": "d",
+        "text": "Cast the anchor path to nvarchar(200) and add WHERE r.Depth < 3 to the recursive member."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Match the anchor's path type to the recursive nvarchar(200) type and stop producing rows after depth three.",
+    "deepExplanation": "Recursive CTE columns must have the same types in anchor and recursive members, including string width. A predicate on the recursive input depth prevents a depth-three row from generating a depth-four row. Filtering final output does not terminate a cyclic recursion, and MAXRECURSION is an error safeguard rather than a request to return a truncated walk.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This fixes the type mismatch but leaves cycles able to keep generating deeper rows; the output filter is not a recursive termination predicate.",
+      "b": "The types agree but valid paths longer than 20 characters can be truncated.",
+      "c": "A recursion limit does not fix incompatible column types or implement the requested terminating walk logic."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write common table expressions (CTEs)",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/with-common-table-expression-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/2-common-table-expressions"
+    ],
+    "documentationTitles": [
+      "WITH common_table_expression (Transact-SQL)",
+      "Organize queries with common table expressions"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "recursive-cte",
+      "type-equality",
+      "termination"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "WITH Walk AS\n(\n    SELECT CAST(1 AS int) AS NodeId, 0 AS Depth,\n           CAST(N'1' AS nvarchar(20)) AS NodePath\n    UNION ALL\n    SELECT l.ToId, r.Depth + 1,\n           CAST(r.NodePath + N'/' + CONVERT(nvarchar(11), l.ToId)\n                AS nvarchar(200))\n    FROM Walk AS r\n    JOIN dbo.Link AS l ON l.FromId = r.NodeId\n)\nSELECT NodeId, Depth, NodePath\nFROM Walk\nWHERE Depth <= 3;",
+    "conceptId": "sql-recursive-cte-path-type-and-member-depth-bound",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-022",
+    "question": "A SQL Server 2022 report shows meter readings from @Cutoff onward, but each delta must compare with that meter's immediately preceding reading even when it is before @Cutoff. Values are nonnull, can rise or fall, and (ReadingTime, ReadingId) uniquely orders each meter. The first displayed delta is unexpectedly NULL although an older reading exists. Which change fixes the rowset used by LAG?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the WHERE clause in place and give LAG a default of zero."
+      },
+      {
+        "id": "b",
+        "text": "Compute LAG in an inner query over the complete relevant meter history, then apply the cutoff in an outer query."
+      },
+      {
+        "id": "c",
+        "text": "Keep the WHERE clause in place and replace LAG with LEAD."
+      },
+      {
+        "id": "d",
+        "text": "Keep the WHERE clause in place and increase LAG's offset from one to two."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Calculate the preceding-reading value before applying the display-only time filter.",
+    "deepExplanation": "At this query level, WHERE removes older rows before the SELECT-list window expression is evaluated. LAG cannot see a row that is no longer in its partition. An inner calculation over the required history followed by an outer report filter preserves the previous-reading comparison without displaying the older rows. No particular physical plan or IGNORE NULLS behavior is assumed.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Zero is not the missing historical reading and fabricates a different delta rather than restoring that row to the window.",
+      "c": "LEAD looks forward, not to the immediately preceding reading.",
+      "d": "A larger offset does not restore filtered-out history and requests the wrong predecessor distance."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include window functions",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d1x-lag", "dp800-d1x-select", "dp800-d1-window-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/lag-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/3-window-functions"
+    ],
+    "documentationTitles": [
+      "LAG (Transact-SQL)",
+      "SELECT (Transact-SQL)",
+      "Apply window functions for analytics"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "lag", "window-input", "report-boundary"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT MeterId, ReadingTime, ReadingId,\n       Reading - LAG(Reading) OVER\n           (PARTITION BY MeterId ORDER BY ReadingTime, ReadingId) AS Delta\nFROM dbo.MeterReading\nWHERE ReadingTime >= @Cutoff;",
+    "conceptId": "sql-lag-history-window-before-display-cutoff-filter",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-023",
+    "question": "On SQL Server 2025, a text transformation must turn ab:12|cd:34 into 12-ab|34-cd. The pattern captures the letters as group 1 and digits as group 2. Which replacement and occurrence values complete the REGEXP_REPLACE call?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Replacement N'\\2-\\1'; occurrence 0."
+      },
+      {
+        "id": "b",
+        "text": "Replacement N'\\1-\\2'; occurrence 0."
+      },
+      {
+        "id": "c",
+        "text": "Replacement N'\\2-\\1'; occurrence 1."
+      },
+      {
+        "id": "d",
+        "text": "Replacement N'\\2-\\1'; occurrence 2."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use group 2 followed by group 1, and occurrence zero to replace every match.",
+    "deepExplanation": "SQL's documented replacement syntax uses backslash-number references to captured groups. The surrounding pipe is outside each matched token and remains unchanged. Occurrence zero means all matches; one or two changes only that numbered token. The proposed call uses the current SQL Server 2025 function contract rather than a different engine's replacement convention.",
+    "whyOtherAnswersAreWrong": {
+      "b": "This produces ab-12|cd-34, retaining letters before digits instead of swapping the captured groups.",
+      "c": "This changes only ab:12, leaving cd:34 unchanged.",
+      "d": "This changes only cd:34, leaving ab:12 unchanged."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include regular expressions, such as REGEXP\\_LIKE, REGEXP\\_REPLACE, REGEXP\\_SUBSTR, REGEXP\\_INSTR, REGEXP\\_COUNT, REGEXP\\_MATCHES, and REGEXP\\_SPLIT\\_TO\\_TABLE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-regexp-replace", "dp800-d1x-regex-overview"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-replace-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/regular-expressions/overview"
+    ],
+    "documentationTitles": [
+      "REGEXP_REPLACE (Transact-SQL)",
+      "Regular expressions"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2025", "regex", "capture-replacement", "occurrence"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @raw nvarchar(40) = N'ab:12|cd:34';\nSELECT REGEXP_REPLACE(\n    @raw, N'([a-z]{2}):([0-9]{2})',\n    /* replacement */, 1, /* occurrence */, 'c'\n);",
+    "conceptId": "sql-regexp-replace-capture-order-and-all-occurrences",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-024",
+    "question": "A SQL Server 2025 database uses a case-insensitive collation. Evaluate the following REGEXP_SUBSTR call using its explicit flags, occurrence and capture-group arguments. Which text is returned?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "17"
+      },
+      {
+        "id": "b",
+        "text": "28"
+      },
+      {
+        "id": "c",
+        "text": "39"
+      },
+      {
+        "id": "d",
+        "text": "A=39"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The last flag is c, so the lowercase token is excluded; the second uppercase match is A=39, and group 2 returns 39.",
+    "deepExplanation": "Regex matching does not inherit the database's linguistic case-insensitivity. For contradictory i and c flags, the last one wins. Case-sensitive [A-Z] matches A=28 and A=39, not a=17. Occurrence 2 selects the latter match and capture group 2 selects only its digits; group zero would return the entire match.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This would require selecting the first case-insensitive match, not the second match under the final c flag.",
+      "b": "This is the first case-sensitive match, or the second case-insensitive match; neither is the specified combination.",
+      "d": "This is the whole selected match. The explicit group argument is 2, not 0."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include regular expressions, such as REGEXP\\_LIKE, REGEXP\\_REPLACE, REGEXP\\_SUBSTR, REGEXP\\_INSTR, REGEXP\\_COUNT, REGEXP\\_MATCHES, and REGEXP\\_SPLIT\\_TO\\_TABLE",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-regexp-substr", "dp800-d1x-regex-overview"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-substr-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/regular-expressions/overview"
+    ],
+    "documentationTitles": [
+      "REGEXP_SUBSTR (Transact-SQL)",
+      "Regular expressions"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2025", "regexp-substr", "flags", "capture-group"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT REGEXP_SUBSTR(\n    N'a=17; A=28; A=39',\n    N'([A-Z])=([0-9]+)',\n    1, 2, 'ic', 2\n);",
+    "conceptId": "sql-regexp-substr-conflicting-flags-occurrence-and-group-trace",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-025",
+    "question": "A SQL Server 2025 workflow explicitly uses the Preview fuzzy-string functions. It retains all bounded, nonnull candidate name pairs, but computes EDIT_DISTANCE(LeftName, RightName, 2) for final ranking. Several distinct pairs receive 3. The requirement is ordering by exact edit count, even when it exceeds two; names vary in length. Which change meets that requirement?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the capped distance and use the pair ID to resolve every tie at 3."
+      },
+      {
+        "id": "b",
+        "text": "Replace the capped distance with EDIT_DISTANCE_SIMILARITY and order that score descending."
+      },
+      {
+        "id": "c",
+        "text": "Set maximum_distance to 0 so every nonidentical pair is assigned a common small value."
+      },
+      {
+        "id": "d",
+        "text": "Compute EDIT_DISTANCE without maximum_distance for the ranking and order the exact value ascending."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Use an uncapped distance for exact edit-count ranking; the capped 3 value means greater than two, not exactly three.",
+    "deepExplanation": "The current Preview contract returns maximum_distance + 1 when the actual value exceeds a nonnegative cap. Distances four and seven can therefore both appear as three under a cap of two. A tie-breaker cannot recover the lost distance. Similarity is normalized by maximum string length, so its ordering is a different metric rather than an exact edit-count substitute.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Pair ID produces an arbitrary order within the collapsed over-cap group, not exact distance order.",
+      "b": "Length-normalized similarity can rank pairs differently from raw edit count.",
+      "c": "A zero cap collapses all positive distances rather than recovering their exact values."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include fuzzy string matching functions, such as EDIT\\_DISTANCE, EDIT\\_DISTANCE\\_SIMILARITY, and JARO\\_WINKLER\\_DISTANCE",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-edit-distance", "dp800-d1x-edit-similarity"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/edit-distance-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/edit-distance-similarity-transact-sql"
+    ],
+    "documentationTitles": [
+      "EDIT_DISTANCE (Transact-SQL) preview",
+      "EDIT_DISTANCE_SIMILARITY (Transact-SQL) preview"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "Preview",
+    "tags": [
+      "sql-server-2025",
+      "preview",
+      "fuzzy-matching",
+      "distance-ranking"
+    ],
+    "conceptId": "sql-preview-edit-distance-cap-sentinel-is-not-exact-ranking",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-026",
+    "question": "On SQL Server 2022, dbo.Depot is a node table and dbo.Route is a directed edge table whose endpoints run from origin to destination. The report needs distinct other depots reachable from depot 10 by exactly two open routes. The FROM clause uses r1 and r2 for the two route occurrences. Which MATCH condition completes the query?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "MATCH(s<-(r1)-m<-(r2)-d)"
+      },
+      {
+        "id": "b",
+        "text": "MATCH(s-(r1)->m-(r2)->d)"
+      },
+      {
+        "id": "c",
+        "text": "MATCH(s-(r1)->m-(r1)->d)"
+      },
+      {
+        "id": "d",
+        "text": "MATCH(s-(r1)->m<-(r2)-d)"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Follow two directed edges forward using a separate edge alias for each hop.",
+    "deepExplanation": "The first route goes from s to m and the second from m to d. Distinct aliases permit traversing the same edge table twice. The remaining predicates constrain the start and open status, while DISTINCT collapses multiple qualifying paths to the same destination. Reversing an arrow changes the relationship being searched rather than making a route bidirectional.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This finds paths directed toward s, not two outgoing routes from s.",
+      "c": "An edge alias cannot be repeated inside one MATCH pattern; r2 is needed for the second occurrence.",
+      "d": "Both s and d point into m, so this finds another origin sharing a destination rather than a forward second hop."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write graph queries that use the MATCH operator",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-match", "dp800-d1x-graph-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/match-sql-graph",
+      "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/7-graph-queries"
+    ],
+    "documentationTitles": [
+      "MATCH (Transact-SQL)",
+      "Traverse relationships with graph queries"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "graph-match", "two-hop", "direction"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT DISTINCT d.DepotId\nFROM dbo.Depot AS s, dbo.Route AS r1,\n     dbo.Depot AS m, dbo.Route AS r2, dbo.Depot AS d\nWHERE /* MATCH condition */\n  AND s.DepotId = 10\n  AND d.DepotId <> s.DepotId\n  AND r1.IsOpen = 1 AND r2.IsOpen = 1;",
+    "conceptId": "sql-match-two-forward-hops-distinct-edge-aliases",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-027",
+    "question": "On SQL Server 2022, dbo.Test has a nullable Result column. A batch is eligible only if it has at least one test and every test has Result = 'pass'. NULL must count as not passed. Which predicate returns exactly the eligible batches, including correct treatment of empty batches and mixed results?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId) AND NOT EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId AND t.Result <> 'pass')"
+      },
+      {
+        "id": "b",
+        "text": "EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId AND t.Result = 'pass') AND NOT EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId AND t.Result IS NULL)"
+      },
+      {
+        "id": "c",
+        "text": "EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId) AND NOT EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId AND (t.Result <> 'pass' OR t.Result IS NULL))"
+      },
+      {
+        "id": "d",
+        "text": "NOT EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId AND (t.Result <> 'pass' OR t.Result IS NULL))"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Require at least one related row and exclude any related row that is non-pass or NULL.",
+    "deepExplanation": "NOT EXISTS expresses that no counterexample exists, but it is also true for a batch with no tests. A separate EXISTS closes that empty-batch gap. In the counterexample predicate, Result <> 'pass' does not identify NULL, so IS NULL must be explicit. Both subqueries remain correlated to the current batch.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A NULL result does not satisfy the <> comparison, so this admits batches whose only problematic results are NULL.",
+      "b": "This admits a batch containing both pass and fail results, provided no result is NULL.",
+      "d": "An empty batch has no counterexample and therefore qualifies, contrary to the required at-least-one-test condition."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write correlated queries",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d1x-exists",
+      "dp800-d1x-correlated-unit",
+      "dp800-d1x-subqueries"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/exists-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/8-correlated-queries",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/performance/subqueries"
+    ],
+    "documentationTitles": [
+      "EXISTS (Transact-SQL)",
+      "Compare rows with correlated subqueries",
+      "Subqueries (SQL Server)"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "correlated-subquery",
+      "not-exists",
+      "null-semantics"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT b.BatchId\nFROM dbo.Batch AS b\nWHERE /* eligibility predicate */;",
+    "conceptId": "sql-correlated-all-pass-needs-nonempty-and-null-counterexample",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-028",
+    "question": "A SQL Server 2022 procedure owns the sole active transaction. Inside CATCH after a failed write, XACT_STATE() is -1 and @@TRANCOUNT is 1. Partial business changes must be undone, a same-database log row must be committed, and the original SQL exception must reach the caller. The logging routine succeeds outside the failed transaction. Which sequence meets all three requirements?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "ROLLBACK the transaction; write the log in autocommit scope; use bare THROW inside CATCH."
+      },
+      {
+        "id": "b",
+        "text": "Write the log inside the current transaction; ROLLBACK; use bare THROW inside CATCH."
+      },
+      {
+        "id": "c",
+        "text": "COMMIT the current transaction; write the log; use bare THROW inside CATCH."
+      },
+      {
+        "id": "d",
+        "text": "ROLLBACK the transaction; write the log in autocommit scope; RETURN a negative integer status."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Roll back before any log write, then rethrow the caught exception rather than replacing it with a return status.",
+    "deepExplanation": "An uncommittable transaction can perform reads or a full rollback but cannot write or commit. Because this procedure owns the sole transaction, rollback establishes the stated autocommit logging scope. Bare THROW inside CATCH propagates the existing exception. A procedure return code is a different channel and does not fulfill the required original exception contract.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The log INSERT is a write and is not allowed in the current uncommittable transaction; it also would not survive its rollback.",
+      "c": "XACT_STATE = -1 explicitly prohibits committing this transaction.",
+      "d": "A negative return code does not re-raise the original SQL exception required by the caller."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Implement error handling",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "dp800-d1x-try-catch",
+      "dp800-d1x-throw",
+      "dp800-d1x-procedures-unit"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/try-catch-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/throw-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/implement-programmability-objects/3-create-stored-procedures"
+    ],
+    "documentationTitles": [
+      "TRY...CATCH (Transact-SQL)",
+      "THROW (Transact-SQL)",
+      "Create stored procedures"
+    ],
+    "generatedAt": "2026-09-16T21:16:50.204Z",
+    "lastValidatedAt": "2026-09-16T21:16:50.204Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "error-handling", "xact-state", "durable-log"],
+    "conceptId": "sql-uncommittable-catch-rollback-before-log-and-original-rethrow",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-029",
+    "question": "Run the two variants separately in SQL Server 2022 using SSMS. dbo.NoSuchTable does not exist, the connection remains open, and no other error occurs. Variant A references it directly at the same level as TRY...CATCH; variant B places that SELECT in sp_executesql. Which CATCH behavior follows from the execution-level distinction?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Both variants enter their associated CATCH blocks because TRY catches every name-resolution error."
+      },
+      {
+        "id": "b",
+        "text": "Neither variant enters CATCH because name-resolution errors are never catchable."
+      },
+      {
+        "id": "c",
+        "text": "Variant A enters CATCH; variant B bypasses CATCH because its SQL text is dynamic."
+      },
+      {
+        "id": "d",
+        "text": "Variant A bypasses its CATCH; variant B's lower-level compilation error is caught by its outer CATCH."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "The dynamic batch creates a lower execution level that the surrounding TRY...CATCH can handle.",
+    "deepExplanation": "TRY...CATCH does not handle same-level compilation or object-name-resolution errors of this kind. sp_executesql compiles and executes its statement as a separate batch at a lower level; the outer CATCH can handle that failure. This is not a claim that dynamic SQL errors are ignored, or that all errors—including connection termination—are catchable.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The product explicitly excludes same-level compilation and name-resolution errors from that CATCH scope.",
+      "b": "The product explicitly permits an outer CATCH to handle compilation errors arising at a lower execution level.",
+      "c": "This reverses the distinction: separating the dynamic batch creates the catching boundary rather than defeating it."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Implement error handling",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/try-catch-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-executesql-transact-sql"
+    ],
+    "documentationTitles": [
+      "TRY...CATCH (Transact-SQL)",
+      "sp_executesql (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "try-catch",
+      "compilation-scope",
+      "dynamic-batch"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "-- Variant A: execute separately.\nBEGIN TRY\n    SELECT * FROM dbo.NoSuchTable;\nEND TRY\nBEGIN CATCH\n    SELECT ERROR_NUMBER() AS CaughtError;\nEND CATCH;\nGO\n-- Variant B: execute separately.\nBEGIN TRY\n    EXEC sys.sp_executesql N'SELECT * FROM dbo.NoSuchTable;';\nEND TRY\nBEGIN CATCH\n    SELECT ERROR_NUMBER() AS CaughtError;\nEND CATCH;",
+    "conceptId": "sql-try-catch-name-resolution-depends-on-compilation-level",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-030",
+    "question": "A Fabric data agent currently has access to public catalog tables and restricted customer tables. A new external MCP workflow is approved to use only catalog data. The developer has legitimate Fabric read access to both sets and assumes a read-only agent and a region-local Fabric capacity settle data-handling compliance. Which two deployment controls address the remaining exposure? Choose two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Review and approve the external MCP client's processing, storage and geographic handling of returned responses."
+      },
+      {
+        "id": "b",
+        "text": "Treat the Fabric capacity's region as proof that the external client's response processing stays in that region."
+      },
+      {
+        "id": "c",
+        "text": "Limit the workflow's agent configuration and identity rights to the approved catalog data."
+      },
+      {
+        "id": "d",
+        "text": "Retain customer-table access because read-only operations cannot expose restricted information."
+      },
+      {
+        "id": "e",
+        "text": "Use a private network path as a replacement for reviewing the external client's response-handling terms."
+      }
+    ],
+    "correctAnswer": ["a", "c"],
+    "explanation": "Approve the receiving client's data handling and constrain the workflow to its approved data, rather than equating read-only access with safe disclosure.",
+    "deepExplanation": "The Fabric MCP article warns that returned responses can leave Fabric's geographic or compliance boundary and follow the client's terms. Legitimate read permissions do not mean every resulting disclosure is approved for a different workflow. Restricting configured sources and workflow rights reduces unnecessary exposure; network controls remain useful but do not decide how an external client stores or processes responses.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The receiving MCP client can process or store responses outside the Fabric boundary, independently of the capacity's location.",
+      "d": "Read-only queries can still return restricted data; the lack of writes is not a disclosure safeguard.",
+      "e": "A private network controls transport exposure, not the receiving client's subsequent data processing or storage."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Interpret security impact of using AI-assisted tools",
+    "difficulty": "advanced",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "dp800-d1x-fabric-mcp",
+      "dp800-d1x-fabric-agent-overview",
+      "dp800-d1-ai-security"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/fabric/data-science/data-agent-mcp-server",
+      "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/3-interpret-security-impact"
+    ],
+    "documentationTitles": [
+      "Data agent as Model Context Protocol server",
+      "Fabric data agent concepts",
+      "Interpret security impact of using AI-assisted tools"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.772Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.772Z",
+    "featureStatus": "GA",
+    "tags": ["fabric-data-agent", "mcp", "data-boundary", "least-privilege"],
+    "conceptId": "fabric-mcp-response-client-boundary-separate-from-read-authorization",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-031",
+    "question": "SSMS 22 has the AI Assistance workload installed, and its SQL database connection and network are working. Copilot is inactive. The active GitHub account has no Copilot access, while another available GitHub account has an active Copilot entitlement. Organizational policy permits use. Which change directly addresses the missing prerequisite?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Upgrade the connected SQL Server instance while keeping the same active GitHub account."
+      },
+      {
+        "id": "b",
+        "text": "Grant the SQL login broader database permissions while keeping the same active GitHub account."
+      },
+      {
+        "id": "c",
+        "text": "Sign in with and activate the GitHub account that has Copilot access."
+      },
+      {
+        "id": "d",
+        "text": "Change the preferred chat model without changing the active GitHub account."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Activate a GitHub account with Copilot access; the database connection does not supply that entitlement.",
+    "deepExplanation": "The supported host components, internet access and organizational approval are already present. Copilot's account prerequisite is separate from SQL authentication and database privileges. Switching models is a later chat configuration task, not a replacement for account access.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Changing the database engine does not grant Copilot access to the current GitHub account.",
+      "b": "SQL permissions control database operations, not GitHub Copilot entitlement.",
+      "d": "A model preference does not give the active account access to Copilot."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Enable GitHub Copilot and Microsoft Copilot in Fabric",
+    "difficulty": "beginner",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "dp800-d1x-enable-unit",
+      "dp800-d1-ai-security",
+      "dp800-d1x-model-tools-unit"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/4-enable-github-copilot-fabric-copilot",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/3-interpret-security-impact",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/5-configure-model-mcp-tool-options"
+    ],
+    "documentationTitles": [
+      "Enable GitHub Copilot and Fabric Copilot",
+      "Interpret security impact of using AI-assisted tools",
+      "Configure model and model context protocol (MCP) tool options in a GitHub Copilot or Fabric Copilot chat session"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.772Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.772Z",
+    "featureStatus": "GA",
+    "tags": ["ssms-22", "copilot-enablement", "account-entitlement"],
+    "conceptId": "ssms-copilot-active-github-entitlement-distinct-from-sql-login",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-032",
+    "question": "A development Fabric workspace is still assigned to a trial capacity. The team has an approved paid F4 capacity in a supported region and will move this workspace there for Copilot use. Tenant Copilot settings include the users and are delegated to capacity administrators, but the F4 capacity's Copilot setting is off. All applicable data-processing settings and user permissions are otherwise satisfied. Which two changes complete this setup? Choose two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Buy GitHub Copilot subscriptions for the workspace users instead of changing Fabric configuration."
+      },
+      {
+        "id": "b",
+        "text": "Enable the delegated Copilot setting for the intended F4 capacity and approved users."
+      },
+      {
+        "id": "c",
+        "text": "Assign the workspace to that approved Copilot-enabled paid F4 capacity."
+      },
+      {
+        "id": "d",
+        "text": "Keep the workspace on trial capacity and rely only on the tenant-level toggle."
+      },
+      {
+        "id": "e",
+        "text": "Grant users SQL database administrator rights instead of enabling the capacity setting."
+      }
+    ],
+    "correctAnswer": ["b", "c"],
+    "explanation": "Enable the delegated setting on the target capacity and place the workspace on that supported paid capacity.",
+    "deepExplanation": "Tenant enablement does not complete delegated capacity configuration. The workspace also must be assigned to a supported Copilot-enabled capacity for the chosen setup. F4 satisfies the documented paid F2-or-higher requirement; a GitHub Copilot subscription and SQL privileges belong to different control layers.",
+    "whyOtherAnswersAreWrong": {
+      "a": "GitHub Copilot entitlement does not enable Copilot for a Fabric capacity or change workspace placement.",
+      "d": "The documented setup requires a supported paid capacity and the delegated capacity setting, not only a tenant toggle.",
+      "e": "Database administration rights do not replace Fabric capacity enablement."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Enable GitHub Copilot and Microsoft Copilot in Fabric",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-fabric-enable", "dp800-d1x-enable-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/fabric/fundamentals/copilot-enable-fabric",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/4-enable-github-copilot-fabric-copilot"
+    ],
+    "documentationTitles": [
+      "Enable and configure Copilot in Microsoft Fabric",
+      "Enable GitHub Copilot and Fabric Copilot"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.772Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.772Z",
+    "featureStatus": "GA",
+    "tags": ["fabric-copilot", "capacity-delegation", "workspace-assignment"],
+    "conceptId": "fabric-copilot-delegated-capacity-and-workspace-placement-gates",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-033",
+    "question": "VS Code is open on the correct workspace in Copilot Agent mode. A SQL MCP server is connected and authenticated, and an approved schema-inspection tool is listed but disabled for this chat. Both available models support tool use. Switching models does not make replies reflect a newly added database column. The task requires live schema retrieval, not another static description. Which configuration action addresses that missing context?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Enable the approved schema-inspection tool for the chat and verify a fresh tool call returns the current schema."
+      },
+      {
+        "id": "b",
+        "text": "Keep the tool disabled and select the other model again as the sole context-retrieval change."
+      },
+      {
+        "id": "c",
+        "text": "Keep the tool disabled and grant the connection principal database-owner permissions."
+      },
+      {
+        "id": "d",
+        "text": "Keep the tool disabled and add a static schema description to repository instructions."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Activate the permitted live tool; choosing a model does not itself enable a disabled MCP tool.",
+    "deepExplanation": "Model selection affects the responding model, while per-session tool configuration determines which registered tools it can use. Authentication and sufficient permissions have already been confirmed. Enabling the approved metadata tool and checking its actual result addresses live context without broadening database privileges or treating a static instruction file as retrieval.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The tool remains disabled, so another model selection does not perform the required live retrieval.",
+      "c": "Additional privileges do not enable the disabled tool and exceed the stated already-sufficient access.",
+      "d": "Static instructions can guide responses but do not meet the explicit live-schema-retrieval requirement."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Configure model and Model Context Protocol (MCP) tool options in a GitHub Copilot or Copilot in Fabric chat session",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "dp800-d1x-model-tools-unit",
+      "dp800-d1x-mcp-vscode",
+      "dp800-d1-ai-instructions"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/5-configure-model-mcp-tool-options",
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/mcp/quickstart-visual-studio-code",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/6-create-configure-copilot-instruction-files"
+    ],
+    "documentationTitles": [
+      "Configure model and model context protocol (MCP) tool options in a GitHub Copilot or Fabric Copilot chat session",
+      "Quickstart: Use SQL MCP Server with Visual Studio Code locally",
+      "Create and configure GitHub Copilot instruction files"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.772Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.772Z",
+    "featureStatus": "GA",
+    "tags": ["vscode", "mcp-tools", "model-selection", "schema-context"],
+    "conceptId": "copilot-model-selection-separate-from-enabled-live-mcp-tools",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-034",
+    "question": "A local VS Code workspace uses DAB 2.x as its SQL MCP server. The database configuration is valid, runtime.mcp.enabled is true, dab is on PATH, and only role catalog-reader has the required entity read permissions. The team wants VS Code to own the child process, with no HTTP listener or separately managed terminal. Which server definition meets those transport and access requirements?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "{\"type\":\"http\",\"url\":\"http://localhost:5000/mcp\"}"
+      },
+      {
+        "id": "b",
+        "text": "{\"type\":\"stdio\",\"command\":\"dab\",\"args\":[\"start\",\"--mcp-stdio\",\"role:catalog-reader\",\"--loglevel\",\"error\",\"--config\",\"${workspaceFolder}/dab-config.json\"]}"
+      },
+      {
+        "id": "c",
+        "text": "{\"type\":\"stdio\",\"command\":\"dab\",\"args\":[\"start\",\"role:catalog-reader\",\"--loglevel\",\"error\",\"--config\",\"${workspaceFolder}/dab-config.json\"]}"
+      },
+      {
+        "id": "d",
+        "text": "{\"type\":\"stdio\",\"command\":\"dab\",\"args\":[\"start\",\"--mcp-stdio\",\"role:anonymous\",\"--loglevel\",\"error\",\"--config\",\"${workspaceFolder}/dab-config.json\"]}"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Use VS Code-managed stdio, explicitly start DAB in MCP stdio mode, and select the permitted catalog-reader role.",
+    "deepExplanation": "The current quickstart distinguishes HTTP, where a separate server must be running, from stdio, where VS Code starts and stops the child process. The --mcp-stdio flag selects the required transport behavior. The role must match the configured entity permissions; the quickstart's anonymous example is not a permission grant for this workspace.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This connects to a separately running HTTP service, contrary to the stated no-listener and VS Code-owned-process requirement.",
+      "c": "The definition does not request DAB's MCP stdio startup mode.",
+      "d": "anonymous is not the role granted the required entity read permissions in the stated configuration."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Configure model and Model Context Protocol (MCP) tool options in a GitHub Copilot or Copilot in Fabric chat session",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-mcp-vscode"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/mcp/quickstart-visual-studio-code"
+    ],
+    "documentationTitles": [
+      "Quickstart: Use SQL MCP Server with Visual Studio Code locally"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.772Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.772Z",
+    "featureStatus": "GA",
+    "tags": ["vscode", "sql-mcp", "dab-2", "stdio", "role-scope"],
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"servers\": {\n    \"catalog-sql\": \"Replace this placeholder with one server definition\"\n  }\n}",
+    "conceptId": "sql-mcp-vscode-stdio-lifecycle-startup-flag-and-permitted-role",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-035",
+    "question": "Repository instructions are already enabled for a database project targeting SQL Server 2022. The shared instruction file still says to use SQL Server 2025's native json type for new JSON columns, and generated migrations fail on the actual target. Future chats must automatically receive accurate project constraints. Which instruction-maintenance change best addresses the mismatch?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the native-json instruction and switch the preferred model for later migration requests."
+      },
+      {
+        "id": "b",
+        "text": "Keep the shared instruction and place the SQL Server 2022 guidance only in a manually invoked migration prompt."
+      },
+      {
+        "id": "c",
+        "text": "Update the shared instructions with the SQL Server 2022 target and validated nvarchar JSON patterns, then test representative prompts."
+      },
+      {
+        "id": "d",
+        "text": "Replace the specific instruction with 'use the newest SQL features' without identifying the project's target version."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Correct the shared target-version guidance and provide compatible, checked examples rather than leave a contradictory automatic instruction in place.",
+    "deepExplanation": "The current training recommends specific instructions, examples, iteration and keeping guidance current. SQL Server 2022 can use JSON text in nvarchar and the established JSON functions, but not the native json type introduced for newer targets. Updating the repository context fixes the identified mismatch; generated migrations still require technical review and target-platform validation.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Another model does not repair the explicit incorrect repository constraint automatically supplied to it.",
+      "b": "An invoked task prompt can help that invocation, but the stale shared instruction remains the automatic context for other chats.",
+      "d": "Removing the target version leaves vague guidance and continues inviting features unavailable on the deployed platform."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Create and configure GitHub Copilot instruction files",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d1-ai-instructions",
+      "dp800-d1-json-columns-unit",
+      "dp800-d1x-json-overview"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/6-create-configure-copilot-instruction-files",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/7-design-implement-json",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server"
+    ],
+    "documentationTitles": [
+      "Create and configure GitHub Copilot instruction files",
+      "Manage JSON columns and indexes",
+      "JSON data in SQL Server"
+    ],
+    "generatedAt": "2026-09-16T21:16:50.204Z",
+    "lastValidatedAt": "2026-09-16T21:16:50.204Z",
+    "featureStatus": "GA",
+    "tags": [
+      "copilot-instructions",
+      "sql-server-2022",
+      "target-version",
+      "grounded-guidance"
+    ],
+    "conceptId": "copilot-sql-repository-target-version-corrects-stale-feature-guidance",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  },
+  {
+    "id": "dp800-20260916-d1-036",
+    "question": "An integration will query approved lakehouse tables through a Fabric data agent. Paid capacity, tenant settings and source read permissions are satisfied. The draft client builds the agent's MCP URL before publishing the agent, requests an Azure Resource Manager token, and sends a plain JSON question as if the endpoint were a REST query API. Which three corrections are required? Choose three.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the agent unpublished; a correctly constructed MCP URL activates it on the first request."
+      },
+      {
+        "id": "b",
+        "text": "Publish the configured data agent before attempting to use its MCP endpoint."
+      },
+      {
+        "id": "c",
+        "text": "Keep the Azure Resource Manager token because all Microsoft cloud APIs accept the same token audience."
+      },
+      {
+        "id": "d",
+        "text": "Obtain a Fabric token for https://api.fabric.microsoft.com/.default with the required workspace and agent access."
+      },
+      {
+        "id": "e",
+        "text": "Keep sending an arbitrary REST-style question body without the MCP initialization and tool message flow."
+      },
+      {
+        "id": "f",
+        "text": "Use MCP initialization, discover the advertised tool and input schema, then call that tool through MCP."
+      }
+    ],
+    "correctAnswer": ["b", "d", "f"],
+    "explanation": "Publish the agent, authenticate to Fabric rather than ARM, and follow the MCP protocol and discovered tool schema.",
+    "deepExplanation": "The current product article states that even a correctly built endpoint URL fails before publication. Every request requires a valid Fabric bearer token with access to the target artifact. The endpoint is an MCP server over streamable HTTP, not a generic REST question API; initialization and tool discovery establish how the client calls the single advertised data-agent tool.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Publication is an explicit prerequisite and is not replaced by constructing the URL.",
+      "c": "The product requires the Fabric token scope; an ARM audience is not interchangeable merely because both services are Microsoft cloud APIs.",
+      "e": "An arbitrary JSON body skips the MCP handshake, discovery and tool-call format required by the endpoint."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Connect to MCP server endpoints, including Microsoft SQL Server and Fabric lakehouse",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-fabric-mcp", "dp800-d1x-fabric-agent-overview"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/fabric/data-science/data-agent-mcp-server",
+      "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent"
+    ],
+    "documentationTitles": [
+      "Data agent as Model Context Protocol server",
+      "Fabric data agent concepts"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.772Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.772Z",
+    "featureStatus": "GA",
+    "tags": [
+      "fabric-data-agent",
+      "lakehouse",
+      "mcp-client",
+      "token-scope",
+      "publication"
+    ],
+    "conceptId": "fabric-data-agent-mcp-publication-fabric-token-and-protocol-flow",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "",
+    "requiresManualReview": true,
+    "confidenceReason": ""
+  }
+]

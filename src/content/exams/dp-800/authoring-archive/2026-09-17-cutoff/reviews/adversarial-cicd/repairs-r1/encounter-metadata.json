@@ -1,0 +1,491 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-20260916-d2-019": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "108310ff8617cad64b724fbd45e4b4f70ee77c50e5e662461c68304e48ee928e",
+      "sourceIds": ["dp800-d2x-testing-unit", "dp800-d2-project-build"],
+      "retrievedAt": "2026-09-16T19:33:13.916Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2x-testing-unit"],
+          "summary": "Supported, not incorrect: a wrong amount can leave one result row intact, while an expected-value assertion distinguishes the stated calculation defect. Alternative context: The fixture has an independently known total and the assertion selects the intended result cell. It complements rather than replaces the workflow-level test. Evidence: The unit defines Scalar Value as checking a particular result cell and illustrates an expected total for known inputs."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d2x-testing-unit"],
+          "summary": "Supported, not incorrect: observing the combined sequence and final state tests the cross-object risk that a focused invoice assertion does not cover. Alternative context: The related objects are deployed to an isolated known-state database and the test actually runs the relevant sequence and checks its outcomes. Evidence: The integration section specifically covers sequences of procedure calls, triggers and database state after related operations."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2-project-build", "dp800-d2x-testing-unit"],
+          "summary": "It repeats structural validation and does not assert either the invoice amount or the workflow's resulting inventory state. Alternative context: The risk being tested is a syntax, reference or target-platform regression. That build remains useful alongside, not instead of, behavioral tests. Evidence: The two bodies distinguish model syntax/reference checks from unit result assertions and deployed integration behavior."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2x-testing-unit"],
+          "summary": "The defect already preserves cardinality, so another count of that same result still cannot distinguish the incorrect amount. The reference to replacing an amount assertion is editorially awkward, but supplies no defensible competing answer. Alternative context: Cardinality itself is the requirement. A differently constructed query whose rows encode a value predicate would be another test, not the unchanged one-row result specified here. Evidence: The source explicitly separates Row Count from Scalar Value conditions; the candidate fixes the result's row count while changing its value."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-17T00:25:10.601Z",
+        "notes": "alignment 4/4: Directly addresses the current testing strategy including unit and integration tests subskill. accuracy 4/4: The key correctly distinguishes scalar correctness, result cardinality and workflow outcomes. scenarioCompleteness 4/4: Both risks, the unchanged one-row result and an isolated target are supplied. answerUniqueness 4/4: Only B,D adds assertions that distinguish the stated two risks. distractorPlausibility 3/4: Repeating a build or a row-count check is a credible coverage shortcut, though the stem makes their insufficiency apparent. distractorEvidence 4/4: The actual definitions of all three test layers and two result conditions support the exclusions. documentationStrength 4/4: Direct training supplies test contracts, with the build unit independently bounding structural validation. citationSpecificity 4/4: The exact Scalar Value, Row Count and integration sections support the option distinctions. difficultyAuthenticity 3/4: Intermediate fits the two direct mappings, but little diagnosis is left to perform. explanationQuality 4/4: Explains complementary coverage without discarding valuable existing checks or overpromising exhaustive correctness. originality 3/4: Original invoice/order framing expresses familiar documented test-layer distinctions. clarityAccessibility 3/4: The two-risk structure is readable; C's reference to an amount assertion not yet present is a minor editorial defect.",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 3
+        }
+      }
+    },
+    "dp800-20260916-d2-023": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "f148cfffa882dc8b88a4cd557f7b72ff8ea6a1fc2c5de56e46ef1cf60b3d8706",
+      "sourceIds": ["dp800-d2x-sql-projects", "dp800-d2x-project-automation"],
+      "retrievedAt": "2026-09-16T19:54:04.430Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": [
+            "dp800-d2x-sql-projects",
+            "dp800-d2x-project-automation"
+          ],
+          "summary": "Supported, not incorrect: it preserves the mandatory build dependency without unnecessarily imposing it on the independent Linux deployment agent. Alternative context: The required project is built with a suitable .NET Framework toolchain and its resulting .dacpac is delivered to an authorized, configured .NET SqlPackage agent. Actual server CLR configuration and assembly trust still require implementation validation. Evidence: The SQLCLR exception explicitly permits .NET deployment after the Framework build; automation documents cross-platform SqlPackage and separated artifact flow."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2x-sql-projects"],
+          "summary": "The explicit SQLCLR exception survives the format conversion. General cross-platform SDK support does not override a dependency the product article specifically retains. Alternative context: The project has no SQLCLR objects requiring .NET Framework and its remaining build requirements support the selected cross-platform .NET environment. Evidence: Original projects vs SDK-style projects describes cross-platform support and then explicitly carves out CLR-containing builds."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": [
+            "dp800-d2x-sql-projects",
+            "dp800-d2x-project-automation"
+          ],
+          "summary": "Removing required objects abandons functionality the question says must remain. A successful smaller model is not equivalent to the specified project. Alternative context: An approved redesign removes or replaces CLR-dependent functionality and the resulting changed contract is validated. That is not the preservation requirement here. Evidence: The product defines the package as the compiled modeled schema and supports retaining SQLCLR through the required build toolchain; automation deploys that actual artifact."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2x-sql-projects"],
+          "summary": "The product explicitly supports SQLCLR in both formats. The limitation concerns build runtime, not inability to represent the objects after conversion. Alternative context: A team keeps the original format for its approved IDE or other toolchain constraints. That decision would not follow from the false representation prohibition stated by C. Evidence: The SQLCLR paragraph expressly allows conversion and both formats, while the separate Visual Studio version note describes other tool-surface limitations."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-17T00:25:10.601Z",
+        "notes": "alignment 4/4: Directly addresses SDK-style database model creation/build validation. accuracy 4/4: Representation, Framework compilation and cross-platform artifact deployment match the explicit exception. scenarioCompleteness 4/4: The required objects, desired project format, engine and deployment-agent location are stated. answerUniqueness 4/4: Only D preserves the required objects and respects both build and deployment contracts. distractorPlausibility 4/4: Confusing SDK portability, eliminating the blocker and assuming unsupported representation are realistic migration mistakes. distractorEvidence 4/4: The product paragraph explicitly refutes A/C, while model preservation and artifact flow refute B. documentationStrength 4/4: Direct product sources supply both the exact exception and cross-platform deployment behavior. citationSpecificity 4/4: The cited SQLCLR paragraph states the distinction almost verbatim as a product contract. difficultyAuthenticity 3/4: Intermediate fits applying one specialized documented exception, not solving an advanced design problem. explanationQuality 4/4: Keeps build requirements from incorrectly propagating to the deploy runtime. originality 3/4: Original agent-placement framing around a familiar documented portability exception. clarityAccessibility 4/4: The question consistently distinguishes the server target, build toolchain and deployment agent.",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d2-026": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "bda29b8b04fe1540a04a543703bfbfac80b09fe29db1b3c23cb30b912e5bcac3",
+      "sourceIds": [
+        "dp800-d2x-branching-unit",
+        "dp800-d2-project-build",
+        "dp800-d2x-testing-unit"
+      ],
+      "retrievedAt": "2026-09-16T19:33:13.916Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": [
+            "dp800-d2x-branching-unit",
+            "dp800-d2-project-build",
+            "dp800-d2x-testing-unit"
+          ],
+          "summary": "Supported, not incorrect: it keeps the required view and removes its dependency on the column that must disappear, then checks structure and intended results. Alternative context: The view is updated to the accepted RouteCode meaning and its affected behavior is tested. This is not a recommendation for a blind textual replacement where the data semantics differ. Evidence: The sources jointly support semantic merge resolution, post-merge reference validation and separate business-result testing."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2x-branching-unit", "dp800-d2-project-build"],
+          "summary": "It abandons the accepted requirement to remove LegacyCode. Making the old view compile by retaining its dependency is not preserving both accepted intentions. Alternative context: An explicitly approved compatibility transition keeps the old column while consumers migrate. That different decision must change the removal contract, not silently override it. Evidence: The branching unit requires reviewing impact and reconciling object definitions; model compilation only checks the selected schema, not whether an accepted requirement was discarded."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2-project-build", "dp800-d2x-branching-unit"],
+          "summary": "The stale reference is inside the view definition. Renaming its source file without modifying that definition leaves the broken column dependency intact. Alternative context: Only source-file organization is wrong and the SQL definition already references valid objects. That is not the reported model error. Evidence: Build validation checks references in the SQL objects, while the branching example places conflict resolution in the actual schema definitions."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d2x-branching-unit", "dp800-d2x-testing-unit"],
+          "summary": "A clean text merge does not settle SQL semantics or business acceptance. Deleting the view violates an explicit retained-functionality requirement. Alternative context: The proposed view is intentionally rejected by the owners and its required functionality is withdrawn. No such decision exists in this scenario. Evidence: The branching unit warns that Git can miss cross-object failures and assigns them to review/build validation, not automatic rejection of another branch's intent."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-17T00:25:10.601Z",
+        "notes": "alignment 4/4: Directly applies branching, pull requests and conflict resolution to database semantics. accuracy 4/4: The key repairs the actual reference and distinguishes model validity from behavioral correctness. scenarioCompleteness 4/4: The old/new columns, failing reference and accepted retention/removal requirements are explicit. answerUniqueness 4/4: Only C satisfies both accepted intentions without preserving the stale dependency. distractorPlausibility 3/4: Compatibility retention and branch rejection are real choices elsewhere; file renaming is a weaker shortcut. distractorEvidence 4/4: Actual merge/reference/test sections support each rejection and bounded alternative context. documentationStrength 4/4: Three direct units substantiate semantic merge review, structural validation and behavior tests. citationSpecificity 4/4: The branching body specifically discusses renames merged with old references. difficultyAuthenticity 3/4: Intermediate is appropriate, but the cause and desired contract are already disclosed. explanationQuality 4/4: Preserves accepted intent and does not equate a green build with correct application behavior. originality 3/4: Original RouteCode/view framing is close to the standard documented dependency example. clarityAccessibility 4/4: The old reference and required replacement are named consistently, with clear pronoun referents.",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d2-027": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "340bacb78821f29c511a289f986c9487e7c04fa1ee46b884c6af01ac761182a2",
+      "sourceIds": [
+        "dp800-d2x-branching-unit",
+        "dp800-d2x-testing-unit",
+        "dp800-d2x-sql-projects"
+      ],
+      "retrievedAt": "2026-09-16T19:43:04.751Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": [
+            "dp800-d2x-branching-unit",
+            "dp800-d2x-testing-unit",
+            "dp800-d2x-sql-projects"
+          ],
+          "summary": "Supported, not incorrect: it resolves the deliberately unspecified business policy rather than pretending compilation chooses it, then validates the implemented agreement. Alternative context: Stakeholders must reconcile valid but conflicting assumptions. The eventual solution might alter callers, defaults or nullability, but those choices require a policy decision not supplied by the stem. Evidence: PR impact review, one declarative object definition and known-input behavioral tests jointly support the process recommendation without inventing a particular SQL repair."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2x-branching-unit", "dp800-d2x-testing-unit"],
+          "summary": "Compilation does not establish the omitted-value business policy or preserve both behaviors. Recency is not evidence that the approved input flow was intentionally adapted. Alternative context: Owners explicitly retire or adapt the prior contract and behavioral tests validate the replacement. The reason would then be the approved policy and evidence, not build success alone. Evidence: PR review addresses breaking changes, and the testing unit expressly separates correct results from successful compilation."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2x-sql-projects", "dp800-d2x-branching-unit"],
+          "summary": "A declarative project needs one coherent definition of this object. Separate filenames cannot choose the unresolved business contract or make incompatible declarations jointly authoritative. Alternative context: The files describe genuinely different objects under an explicitly designed architecture. That does not resolve competing definitions of the same import column. Evidence: The product's one-declaration rule and the branching unit's explicit conflict-resolution step require a single reviewed current schema."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2x-branching-unit", "dp800-d2x-testing-unit"],
+          "summary": "Text reconciliation cannot validate the incompatible input assumptions. Deferring all those checks leaves the disclosed compatibility issue unresolved at PR approval. Alternative context: A separate later production observation supplements already resolved and tested preproduction behavior. It cannot replace all tests of this known unresolved contract. Evidence: The sources require semantic review and isolated database tests to catch behavior problems before deployment; clean merging alone is explicitly insufficient."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-17T00:25:10.601Z",
+        "notes": "alignment 4/4: Addresses pull-request semantic conflict resolution under the current branching subskill. accuracy 4/4: Compilation, single-object modeling and business compatibility are correctly kept distinct. scenarioCompleteness 4/4: Competing assumptions and the absence of replacement agreement are sufficient for this process question. answerUniqueness 4/4: D alone obtains a coherent policy and tests it instead of appealing to recency, filenames or text merging. distractorPlausibility 2/4: All three distractors visibly shortcut a known review duty, and D's comprehensive wording makes the answer easier. distractorEvidence 4/4: Direct sources independently disprove build-as-behavior proof, duplicate modeling and deferred-only tests. documentationStrength 4/4: The branching, testing and model product sources give a coherent foundation for the bounded process recommendation. citationSpecificity 4/4: The actual PR impact questions, behavioral-test boundary and one-definition rule support the exact claims. difficultyAuthenticity 3/4: Intermediate fits recognizing a semantic conflict, but no detailed design decision remains to be made. explanationQuality 4/4: Does not invent the missing policy or conflate nullable schema with every omitted-value behavior. originality 3/4: Original nullability/workflow framing around a familiar collaborative review principle. clarityAccessibility 4/4: The intended process task and two competing workflows are explicit and readable.",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 2,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d2-030": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "c02507c5d098e41ed6814bf421a540d3395d805cf7909847503b8c5c3b0c1101",
+      "sourceIds": [
+        "dp800-d2x-compare-project",
+        "dp800-d2x-schema-compare",
+        "dp800-d2-drift"
+      ],
+      "retrievedAt": "2026-09-16T19:43:11.829Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": [
+            "dp800-d2x-compare-project",
+            "dp800-d2x-schema-compare",
+            "dp800-d2-drift"
+          ],
+          "summary": "Supported, not incorrect: production supplies the accepted hotfix definition, the project is the side that must adopt it, and selective import avoids the unrelated excluded object. Alternative context: The hotfix is approved and its dependencies are consistent with the application model. The resulting source diff still needs review; selecting an index is not a guarantee that arbitrary dependent exclusions are possible. Evidence: The product sources support database-to-project selective synchronization, and the actual training gives the approved-hotfix-versus-unrelated-object distinction."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": [
+            "dp800-d2x-compare-project",
+            "dp800-d2x-schema-compare"
+          ],
+          "summary": "This selects production as the side to change, while the requested change belongs in the project. Applying all differences also ignores the selective reviewed adoption task. Alternative context: The reviewed project is authoritative and approved drift must be reversed in a database, with actual target changes assessed before application. Evidence: Both product sources define direction by the side that will be updated: target is made consistent with source, not the reverse."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": [
+            "dp800-d2x-schema-compare",
+            "dp800-d2-drift",
+            "dp800-d2x-compare-project"
+          ],
+          "summary": "The monitoring object's exclusion is an explicit requirement. An unfiltered import would disregard that ownership boundary even though its overall direction is correct. Alternative context: An authorized initial baseline intentionally adopts the entire relevant live schema, with no stated exclusion and with a reviewed ownership decision. Evidence: The sources permit full or selective sets and describe choosing specific approved hotfix differences rather than uncritically importing everything."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": [
+            "dp800-d2x-compare-project",
+            "dp800-d2x-schema-compare",
+            "dp800-d2-drift"
+          ],
+          "summary": "They compare represented release models, not the uninspected current production database. No captured live-hotfix artifact is provided, so that input set cannot justify this current live-to-source adoption. Alternative context: The task is to compare two known captured release models, or the relevant live state has first been deliberately captured and its provenance checked. Neither is the proposed comparison of previous builds alone. Evidence: The product distinguishes connected database, project and .dacpac inputs; the training explains why out-of-workflow live changes need inspection and reconciliation."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-17T00:25:10.601Z",
+        "notes": "alignment 4/4: Directly applies detecting and reconciling SQL-project schema drift. accuracy 4/4: Direction, subset selection and live versus stored-model inputs match the documented contracts. scenarioCompleteness 4/4: The approved live change, excluded object and project-update goal are all explicit. answerUniqueness 4/4: Only B changes the correct side with the required selective adoption. distractorPlausibility 4/4: Reversing direction, importing all changes and comparing release artifacts are legitimate nearby workflows. distractorEvidence 4/4: Actual product input/direction/selection definitions and the training example support each exclusion. documentationStrength 4/4: Two product articles and the directly linked training unit substantiate the complete distinction. citationSpecificity 4/4: The cited material directly addresses database-to-project selection and approved hotfix adoption. difficultyAuthenticity 3/4: Intermediate is appropriate for an explicit two-part direction/scope task, with limited diagnostic uncertainty. explanationQuality 4/4: Preserves the source-review boundary and avoids the source's unsupported universal-drop claim. originality 3/4: Original phrasing of a standard hotfix/monitoring example; conceptual novelty is limited. clarityAccessibility 4/4: The source/target goal and excluded ownership are clearly stated without requiring a UI image.",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d2-031": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "c2dab15167f1916462352f65c93341b5f4f725b879eb5579870b75afad95c752",
+      "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+      "retrievedAt": "2026-09-16T19:43:09.743Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+          "summary": "Supported, not incorrect: it corrects the index omission and makes the repeated comparison apply the agreed settings instead of accepting a misleading clean result. Alternative context: Maintainers can access the intended current source/target and include the required object types. The resulting output still needs review; matching settings is not an eternal freshness guarantee. Evidence: The product defines scope controls and reusable .scmp definitions; the unit recommends versioning these comparison settings for repeatable drift checks."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+          "summary": "The file is a configuration recipe and explicitly excludes the object type whose drift matters. A clean scoped result cannot prove equality outside that scope. Alternative context: A newly executed comparison includes the required objects with reviewed options and its result is evaluated within that declared scope. The saved configuration alone is still not a complete schema snapshot. Evidence: The product enumerates .scmp connection settings, comparison options and excluded types; the training recommends rerunning consistent intended settings."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+          "summary": "Output agreement obtained by excluding required indexes preserves the blind spot. It fails the explicit requirement to detect index drift. Alternative context: Indexes are intentionally outside the agreed comparison objective. They are expressly inside scope in this release. Evidence: The product permits object-type exclusions, and the training frames options as a way to focus on meaningful differences, not to erase in-scope ones."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+          "summary": "Reversal changes which side would receive changes; it does not remove the still-configured index exclusion. Alternative context: The required object types are already included and the remaining defect is selecting the wrong side to update. Then reversing direction addresses that different problem. Evidence: Both bodies discuss direction separately from scope/options, and .scmp stores exclusions as their own configuration."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-17T00:25:10.601Z",
+        "notes": "alignment 4/4: Directly tests reliability of SQL-project schema drift detection. accuracy 4/4: .scmp recipe contents, object exclusions and direction are correctly distinguished. scenarioCompleteness 4/4: The two recipes, exact exclusion and required object type are supplied. answerUniqueness 4/4: Only C includes the required indexes and recomputes current evidence. distractorPlausibility 3/4: Snapshot confusion and reversal are plausible mistakes, while knowingly matching the blind spot is weaker. distractorEvidence 4/4: The product's explicit file-content and scope definitions support every exclusion. documentationStrength 4/4: Direct product detail is corroborated by the relevant drift teaching section. citationSpecificity 4/4: The actual .scmp and included-object-type sections precisely cover the deciding claims. difficultyAuthenticity 3/4: Intermediate fits one disclosed configuration correction; no advanced diagnostic inference is needed. explanationQuality 4/4: Shows why repeatability must encode intended scope rather than freeze a misleading conclusion. originality 3/4: Original two-maintainer disagreement illustrates a familiar scope-configuration issue. clarityAccessibility 4/4: Consistent object/type terminology and concrete settings make the task clear without an actual .scmp file.",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d2-033": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "98172963e71501157ed489457abe3308b633c6f80035d470b14e253376d6dd0d",
+      "sourceIds": [
+        "dp800-d2x-branch-policies",
+        "dp800-d2x-pipeline-unit",
+        "dp800-d2x-project-automation"
+      ],
+      "retrievedAt": "2026-09-16T19:54:04.430Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2x-branch-policies", "dp800-d2x-pipeline-unit"],
+          "summary": "Supported, not incorrect: configured as required, this moves structural validation to merge admission rather than waiting until the change has reached main. Alternative context: The policy invokes the intended model build for the relevant PR changes and is enforced in the normal merge workflow. It does not itself supply production approval or make privileged bypass impossible. Evidence: The branch-policy table explicitly describes pre-merging/building PR changes; the unit names Build Validation for SQL project PRs."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": [
+            "dp800-d2x-project-automation",
+            "dp800-d2x-pipeline-unit"
+          ],
+          "summary": "Supported, not incorrect: an environment approval places the requested human decision at the production deployment boundary, complementing A's earlier PR build gate. Alternative context: The production deployment job actually targets the protected environment and publishes the approved tested package. Publishing here means deploying to production, not the earlier upload to artifact storage. Evidence: Both sources describe environment-based production approvals and an artifact flow that separates build from the later deployment job."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": [
+            "dp800-d2x-branch-policies",
+            "dp800-d2x-project-automation"
+          ],
+          "summary": "Traceability does not execute the model build or obtain a human approval for deploying the tested artifact. Alternative context: The requirement is linking changes to planned work, or this policy supplements independently configured validation and approval controls. Evidence: The policy article explicitly assigns linked work items to traceability, while the automation article separately describes deployment approvals."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": [
+            "dp800-d2x-project-automation",
+            "dp800-d2x-pipeline-unit"
+          ],
+          "summary": "Elapsed time does not constitute human approval. The option explicitly omits the approver the scenario requires. Alternative context: A release only needs a business-hours window or deliberate pause, or timing is an additional constraint alongside an independently required approval. Evidence: The automation source distinguishes approval gates from business-hours restrictions; the training separately lists human reviewers and timing controls."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-17T00:25:10.601Z",
+        "notes": "alignment 4/4: Directly maps to the current pipeline-controls subskill without rewriting its official wording. accuracy 4/4: Required build validation and production environment approval have the stated distinct effects. scenarioCompleteness 4/4: The current post-merge weakness, new build/approval requirements and adequate identity/network are explicit. answerUniqueness 4/4: Only A,D jointly supply the requested technical and human gates. distractorPlausibility 3/4: Work-item policy and timing controls are real mechanisms but clearly insufficient as the stated sole controls. distractorEvidence 4/4: The policy and automation articles directly distinguish traceability, builds, timing and approvals. documentationStrength 4/4: Actual Azure Repos and SQL automation product sources corroborate the linked training descriptions. citationSpecificity 4/4: The relevant policy-table rows and environment-approval section cover the precise choices. difficultyAuthenticity 3/4: Intermediate fits two complementary placements with little unresolved design complexity. explanationQuality 4/4: Separates admission and authorization while preserving the tested artifact and avoiding universal bypass claims. originality 3/4: Original before/after pipeline framing uses familiar documented gate types. clarityAccessibility 4/4: The two required controls and Select two instruction are clear; production context resolves 'published'.",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    },
+    "dp800-20260916-d2-034": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "2fceab4287d80d1468b2937a12604bd6967101507fc4dc8b2dc64ba8862ab5b6",
+      "sourceIds": ["dp800-d2x-project-automation"],
+      "retrievedAt": "2026-09-16T19:54:04.430Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2x-project-automation"],
+          "summary": "Supported, not incorrect: it changes the execution location to one that has the missing route while retaining artifact identity and existing approvals. Alternative context: The agent actually has private DNS/routing/access and compatible deployment tooling, can obtain the approved artifact, and uses the authorized SQL identity. The word self-hosted alone is not proof of those properties; the option explicitly supplies reachability. Evidence: The self-hosted section explicitly names privately isolated databases, and Artifact flow describes downloading and deploying the same build output in a separate job."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2x-project-automation"],
+          "summary": "Authentication is already correct and the agent still has no route. Repeating the identity step does not change its network location or reachability. Alternative context: The agent already has a valid network path and the actual failure is an expired or incorrect authentication session. The stated failure is different. Evidence: The automation article treats authentication capabilities separately from self-hosted placement for private-network access."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2x-project-automation"],
+          "summary": "A different tool or package does not supply a network route and would replace the artifact the scenario requires preserving. SqlPackage deployment tooling is not a substitute for the project's actual build process. Alternative context: An approved new release addresses an actual tool/schema compatibility problem with suitable build tooling and renewed tests. It would still need independent network access before deployment. Evidence: The source separates building the project from publishing its package and identifies custom tooling and private connectivity as different agent considerations."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d2x-project-automation"],
+          "summary": "It solves a different connectivity problem by violating an explicit exposure constraint. Temporariness is not an exception the scenario authorizes. Alternative context: Security policy intentionally permits a reviewed public access window with suitable controls. That authorization is expressly absent here. Evidence: The article discusses hosted-runner firewall mechanisms as distinct from self-hosted placement for nonpublic databases; the candidate's policy selects the latter boundary."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-17T00:25:10.601Z",
+        "notes": "alignment 4/4: Applies secure deployment pipeline execution controls to a private SQL target. accuracy 4/4: Network reachability, authentication, tooling and artifact identity are correctly separated. scenarioCompleteness 4/4: The missing route, correct identity/approval, public-exposure prohibition and artifact constraint are explicit. answerUniqueness 4/4: Only C adds the required execution path without changing the tested package or violating exposure policy. distractorPlausibility 3/4: Repeated login, tool changes and temporary exposure are recognizable shortcuts, though the diagnosed constraint makes them easy to reject. distractorEvidence 4/4: The automation article's separate identity, tooling, hosted firewall and self-hosted-network sections support the contextual exclusions. documentationStrength 4/4: Direct product guidance specifically recommends self-hosted deployment for databases not exposed publicly. citationSpecificity 4/4: The Self-hosted environments and Artifact flow sections directly support the key's two properties. difficultyAuthenticity 3/4: Intermediate is sufficient for a single disclosed boundary, not an Advanced architecture exercise. explanationQuality 4/4: Preserves authorization and provenance without making self-hosting a connectivity guarantee. originality 3/4: Original reviewed-artifact/private-target framing uses a common documented agent-placement pattern. clarityAccessibility 4/4: The missing property and prohibited workaround are clear without requiring network diagrams or secrets.",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        }
+      }
+    }
+  }
+}

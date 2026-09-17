@@ -1,0 +1,609 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-adversarial-cicd-repairs-r1-20260916",
+  "reviews": [
+    {
+      "questionId": "dp800-20260916-d2-019",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-cicd-20260916",
+      "questionFingerprint": "108310ff8617cad64b724fbd45e4b4f70ee77c50e5e662461c68304e48ee928e",
+      "reviewedAt": "2026-09-17T00:25:10.601Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-testing-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-07-design-implement-testing-strategy.json",
+          "retrievedAt": "2026-09-16T19:33:13.916Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread Test conditions and Design an integration testing approach: Scalar Value checks a returned cell, Row Count checks cardinality, and integration scenarios inspect related operations and resulting state on a deployed database. Setup/cleanup and an isolated target remain necessary; no test code is implied to have run."
+        },
+        {
+          "sourceId": "dp800-d2-project-build",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-02-create-build-validate-sql-database-projects.json",
+          "retrievedAt": "2026-09-16T19:33:00.260Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread the model build's reference and target-syntax checks. These validate structure and produce a .dacpac, not the invoice calculation or a procedure/trigger workflow's business results. Repeating an unchanged green build cannot add those missing assertions."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "It repeats structural validation and does not assert either the invoice amount or the workflow's resulting inventory state. Alternative context: The risk being tested is a syntax, reference or target-platform regression. That build remains useful alongside, not instead of, behavioral tests. Evidence: The two bodies distinguish model syntax/reference checks from unit result assertions and deployed integration behavior.",
+          "sourceIds": ["dp800-d2-project-build", "dp800-d2x-testing-unit"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: a wrong amount can leave one result row intact, while an expected-value assertion distinguishes the stated calculation defect. Alternative context: The fixture has an independently known total and the assertion selects the intended result cell. It complements rather than replaces the workflow-level test. Evidence: The unit defines Scalar Value as checking a particular result cell and illustrates an expected total for known inputs.",
+          "sourceIds": ["dp800-d2x-testing-unit"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The defect already preserves cardinality, so another count of that same result still cannot distinguish the incorrect amount. The reference to replacing an amount assertion is editorially awkward, but supplies no defensible competing answer. Alternative context: Cardinality itself is the requirement. A differently constructed query whose rows encode a value predicate would be another test, not the unchanged one-row result specified here. Evidence: The source explicitly separates Row Count from Scalar Value conditions; the candidate fixes the result's row count while changing its value.",
+          "sourceIds": ["dp800-d2x-testing-unit"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: observing the combined sequence and final state tests the cross-object risk that a focused invoice assertion does not cover. Alternative context: The related objects are deployed to an isolated known-state database and the test actually runs the relevant sequence and checks its outcomes. Evidence: The integration section specifically covers sequences of procedure calls, triggers and database state after related operations.",
+          "sourceIds": ["dp800-d2x-testing-unit"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh independent PASS 3 on technical-r1. Tried row-count-as-value-proxy, integration-only coverage and repeated-build alternatives; the stipulated same one-row result rules out the first, and B,D is the only complementary behavioral pair. Actual source definitions were reread. The current Intermediate framing is supportable, with item-specific clarity and construction deductions rather than full marks. No test SQL or live runner was executed; codeReviewed is static semantics. Exact objective and fresh generation/technical bindings are required.",
+      "confidenceReason": "High confidence in B,D from the actual condition definitions and workflow-testing examples; no claim is made about an unseen test implementation. Editorial warnings are nonblocking at 44/48."
+    },
+    {
+      "questionId": "dp800-20260916-d2-023",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-cicd-20260916",
+      "questionFingerprint": "f148cfffa882dc8b88a4cd557f7b72ff8ea6a1fc2c5de56e46ef1cf60b3d8706",
+      "reviewedAt": "2026-09-17T00:25:10.601Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-sql-projects",
+          "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-database-projects",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-sql-projects.json",
+          "retrievedAt": "2026-09-16T19:43:04.751Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread the final SQLCLR exception: both formats can represent SQLCLR, but the project build still requires .NET Framework after SDK conversion. Once built, the .dacpac can be deployed using SqlPackage on .NET or .NET Framework. VS Code SDK GA and Visual Studio SDK preview remain separate UI facts."
+        },
+        {
+          "sourceId": "dp800-d2x-project-automation",
+          "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-projects-automation",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-project-automation.json",
+          "retrievedAt": "2026-09-16T19:54:04.430Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The automation article separates building the project from publishing its completed artifact and explicitly says SqlPackage runs on Windows, Linux and macOS. Linux/macOS agents may require tool installation; it does not claim the required CLR-containing project build becomes portable."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The explicit SQLCLR exception survives the format conversion. General cross-platform SDK support does not override a dependency the product article specifically retains. Alternative context: The project has no SQLCLR objects requiring .NET Framework and its remaining build requirements support the selected cross-platform .NET environment. Evidence: Original projects vs SDK-style projects describes cross-platform support and then explicitly carves out CLR-containing builds.",
+          "sourceIds": ["dp800-d2x-sql-projects"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Removing required objects abandons functionality the question says must remain. A successful smaller model is not equivalent to the specified project. Alternative context: An approved redesign removes or replaces CLR-dependent functionality and the resulting changed contract is validated. That is not the preservation requirement here. Evidence: The product defines the package as the compiled modeled schema and supports retaining SQLCLR through the required build toolchain; automation deploys that actual artifact.",
+          "sourceIds": [
+            "dp800-d2x-sql-projects",
+            "dp800-d2x-project-automation"
+          ]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The product explicitly supports SQLCLR in both formats. The limitation concerns build runtime, not inability to represent the objects after conversion. Alternative context: A team keeps the original format for its approved IDE or other toolchain constraints. That decision would not follow from the false representation prohibition stated by C. Evidence: The SQLCLR paragraph expressly allows conversion and both formats, while the separate Visual Studio version note describes other tool-surface limitations.",
+          "sourceIds": ["dp800-d2x-sql-projects"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: it preserves the mandatory build dependency without unnecessarily imposing it on the independent Linux deployment agent. Alternative context: The required project is built with a suitable .NET Framework toolchain and its resulting .dacpac is delivered to an authorized, configured .NET SqlPackage agent. Actual server CLR configuration and assembly trust still require implementation validation. Evidence: The SQLCLR exception explicitly permits .NET deployment after the Framework build; automation documents cross-platform SqlPackage and separated artifact flow.",
+          "sourceIds": [
+            "dp800-d2x-sql-projects",
+            "dp800-d2x-project-automation"
+          ]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh independent PASS 3: challenged general SDK portability, removal of CLR objects, retained original-format UI constraints and confusion between Linux deployment agent and SQL host. D survives all stated constraints. Reread the actual product exception and automation prerequisites. The new Intermediate label is appropriate but earns reduced depth credit. No code, CLR build, assembly activation or database deployment was executed. This approval binds only the new technical-r1 fingerprint and independently scored rubric.",
+      "confidenceReason": "High confidence in D because the product explicitly separates the mandatory Framework build from supported .NET deployment of the completed artifact; implementation prerequisites remain outside this static strategy review."
+    },
+    {
+      "questionId": "dp800-20260916-d2-026",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-cicd-20260916",
+      "questionFingerprint": "bda29b8b04fe1540a04a543703bfbfac80b09fe29db1b3c23cb30b912e5bcac3",
+      "reviewedAt": "2026-09-17T00:25:10.601Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-branching-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/04-manage-branching-pull-requests-conflict-resolution",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-04-manage-branching-pull-requests-conflict-resolution.json",
+          "retrievedAt": "2026-09-16T19:33:06.646Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread Validate after resolving conflicts: independently changed files can merge cleanly while a renamed column leaves an old reference. The unit requires semantic review and rebuilding after resolution; Git conflict detection is not SQL dependency validation."
+        },
+        {
+          "sourceId": "dp800-d2-project-build",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-02-create-build-validate-sql-database-projects.json",
+          "retrievedAt": "2026-09-16T19:33:00.260Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread model validation's requirement for referenced columns and objects to exist. It supports repairing the view definition rather than its filename, but a successful build alone does not attest the intended behavior."
+        },
+        {
+          "sourceId": "dp800-d2x-testing-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-07-design-implement-testing-strategy.json",
+          "retrievedAt": "2026-09-16T19:33:13.916Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The actual testing body distinguishes a structurally valid model from correct results and deployed workflows. It supports the additional behavioral test after the merged schema/reference contract is repaired."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "It abandons the accepted requirement to remove LegacyCode. Making the old view compile by retaining its dependency is not preserving both accepted intentions. Alternative context: An explicitly approved compatibility transition keeps the old column while consumers migrate. That different decision must change the removal contract, not silently override it. Evidence: The branching unit requires reviewing impact and reconciling object definitions; model compilation only checks the selected schema, not whether an accepted requirement was discarded.",
+          "sourceIds": ["dp800-d2x-branching-unit", "dp800-d2-project-build"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The stale reference is inside the view definition. Renaming its source file without modifying that definition leaves the broken column dependency intact. Alternative context: Only source-file organization is wrong and the SQL definition already references valid objects. That is not the reported model error. Evidence: Build validation checks references in the SQL objects, while the branching example places conflict resolution in the actual schema definitions.",
+          "sourceIds": ["dp800-d2-project-build", "dp800-d2x-branching-unit"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: it keeps the required view and removes its dependency on the column that must disappear, then checks structure and intended results. Alternative context: The view is updated to the accepted RouteCode meaning and its affected behavior is tested. This is not a recommendation for a blind textual replacement where the data semantics differ. Evidence: The sources jointly support semantic merge resolution, post-merge reference validation and separate business-result testing.",
+          "sourceIds": [
+            "dp800-d2x-branching-unit",
+            "dp800-d2-project-build",
+            "dp800-d2x-testing-unit"
+          ]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "A clean text merge does not settle SQL semantics or business acceptance. Deleting the view violates an explicit retained-functionality requirement. Alternative context: The proposed view is intentionally rejected by the owners and its required functionality is withdrawn. No such decision exists in this scenario. Evidence: The branching unit warns that Git can miss cross-object failures and assigns them to review/build validation, not automatic rejection of another branch's intent.",
+          "sourceIds": ["dp800-d2x-branching-unit", "dp800-d2x-testing-unit"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh independent PASS 3: challenged a retained-column compatibility bridge, source-file renaming, abandonment of the view and blind textual replacement. The accepted requirements and testing clause make C uniquely supportable. Actual source bodies were reread; no concrete view SQL, build or tests were executed. The Intermediate label reflects a routine disclosed diagnosis, with item-specific depth and distractor deductions. Fresh generation, technical stage and objective bindings are preserved exactly.",
+      "confidenceReason": "High confidence in C as a strategy preserving both accepted intentions. Correct implementation of the RouteCode semantics remains to be established by actual source changes and tests outside this review."
+    },
+    {
+      "questionId": "dp800-20260916-d2-027",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-cicd-20260916",
+      "questionFingerprint": "340bacb78821f29c511a289f986c9487e7c04fa1ee46b884c6af01ac761182a2",
+      "reviewedAt": "2026-09-17T00:25:10.601Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-branching-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/04-manage-branching-pull-requests-conflict-resolution",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-04-manage-branching-pull-requests-conflict-resolution.json",
+          "retrievedAt": "2026-09-16T19:33:06.646Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread PR review questions about breaking queries/procedures and the need to reconcile changed object definitions. It supports reviewing both intended workflows, not picking the newest branch solely because its build is green."
+        },
+        {
+          "sourceId": "dp800-d2x-testing-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-07-design-implement-testing-strategy.json",
+          "retrievedAt": "2026-09-16T19:33:13.916Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The unit explicitly says code can compile while returning incorrect results or missing validation. Known-input tests and deployed integration checks provide evidence about behavior that compilation alone cannot supply."
+        },
+        {
+          "sourceId": "dp800-d2x-sql-projects",
+          "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-database-projects",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-sql-projects.json",
+          "retrievedAt": "2026-09-16T19:43:04.751Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The product states that each object has one current declarative definition, with reference/syntax validation against the target. Duplicate filenames do not create alternative runtime policies or resolve a single column's conflicting contract."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Compilation does not establish the omitted-value business policy or preserve both behaviors. Recency is not evidence that the approved input flow was intentionally adapted. Alternative context: Owners explicitly retire or adapt the prior contract and behavioral tests validate the replacement. The reason would then be the approved policy and evidence, not build success alone. Evidence: PR review addresses breaking changes, and the testing unit expressly separates correct results from successful compilation.",
+          "sourceIds": ["dp800-d2x-branching-unit", "dp800-d2x-testing-unit"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "A declarative project needs one coherent definition of this object. Separate filenames cannot choose the unresolved business contract or make incompatible declarations jointly authoritative. Alternative context: The files describe genuinely different objects under an explicitly designed architecture. That does not resolve competing definitions of the same import column. Evidence: The product's one-declaration rule and the branching unit's explicit conflict-resolution step require a single reviewed current schema.",
+          "sourceIds": ["dp800-d2x-sql-projects", "dp800-d2x-branching-unit"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Text reconciliation cannot validate the incompatible input assumptions. Deferring all those checks leaves the disclosed compatibility issue unresolved at PR approval. Alternative context: A separate later production observation supplements already resolved and tested preproduction behavior. It cannot replace all tests of this known unresolved contract. Evidence: The sources require semantic review and isolated database tests to catch behavior problems before deployment; clean merging alone is explicitly insufficient.",
+          "sourceIds": ["dp800-d2x-branching-unit", "dp800-d2x-testing-unit"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: it resolves the deliberately unspecified business policy rather than pretending compilation chooses it, then validates the implemented agreement. Alternative context: Stakeholders must reconcile valid but conflicting assumptions. The eventual solution might alter callers, defaults or nullability, but those choices require a policy decision not supplied by the stem. Evidence: PR impact review, one declarative object definition and known-input behavioral tests jointly support the process recommendation without inventing a particular SQL repair.",
+          "sourceIds": [
+            "dp800-d2x-branching-unit",
+            "dp800-d2x-testing-unit",
+            "dp800-d2x-sql-projects"
+          ]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh independent PASS 3: challenged defaults, caller adaptation, newer-branch selection, duplicate declarations and delayed production observations. Those possibilities need an agreed policy; they do not justify the alternative answers' unsupported reasoning. D remains unique without inventing a SQL repair. Actual evidence was reread. The current Intermediate snapshot meets 44/48 with explicit distractor and answer-cue deductions. No DDL, procedure or tests were executed. This approval does not renew any old authored fingerprint.",
+      "confidenceReason": "High confidence in D as a bounded review-and-validation process. The exact replacement business rule is intentionally unapproved, and the weak-distractor construction remains transparently scored."
+    },
+    {
+      "questionId": "dp800-20260916-d2-030",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-cicd-20260916",
+      "questionFingerprint": "c02507c5d098e41ed6814bf421a540d3395d805cf7909847503b8c5c3b0c1101",
+      "reviewedAt": "2026-09-17T00:25:10.601Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-compare-project",
+          "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/howto/compare-database-project",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-compare-project.json",
+          "retrievedAt": "2026-09-16T19:43:11.829Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread the product's reversible comparison direction and ability to apply a selected subset from a live database into a project. Comparing saved artifacts is a different input choice and cannot establish the current live state without examining it."
+        },
+        {
+          "sourceId": "dp800-d2x-schema-compare",
+          "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/schema-comparison",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-schema-compare.json",
+          "retrievedAt": "2026-09-16T19:43:09.743Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The actual overview defines results as actions that make the target match the source and permits excluding individual differences. It warns that dependent objects can constrain exclusions. That qualification is not a reason to import an explicitly unrelated monitoring object."
+        },
+        {
+          "sourceId": "dp800-d2-drift",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/05-detect-resolve-schema-drift",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-05-detect-resolve-schema-drift.json",
+          "retrievedAt": "2026-09-16T19:33:08.760Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The training specifically describes adopting an approved production hotfix into project source while leaving an unrelated monitoring object out. Its unconditional dropping rhetoric is rejected; the repaired explanation correctly avoids promising what every future Publish will drop."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "This selects production as the side to change, while the requested change belongs in the project. Applying all differences also ignores the selective reviewed adoption task. Alternative context: The reviewed project is authoritative and approved drift must be reversed in a database, with actual target changes assessed before application. Evidence: Both product sources define direction by the side that will be updated: target is made consistent with source, not the reverse.",
+          "sourceIds": ["dp800-d2x-compare-project", "dp800-d2x-schema-compare"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: production supplies the accepted hotfix definition, the project is the side that must adopt it, and selective import avoids the unrelated excluded object. Alternative context: The hotfix is approved and its dependencies are consistent with the application model. The resulting source diff still needs review; selecting an index is not a guarantee that arbitrary dependent exclusions are possible. Evidence: The product sources support database-to-project selective synchronization, and the actual training gives the approved-hotfix-versus-unrelated-object distinction.",
+          "sourceIds": [
+            "dp800-d2x-compare-project",
+            "dp800-d2x-schema-compare",
+            "dp800-d2-drift"
+          ]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The monitoring object's exclusion is an explicit requirement. An unfiltered import would disregard that ownership boundary even though its overall direction is correct. Alternative context: An authorized initial baseline intentionally adopts the entire relevant live schema, with no stated exclusion and with a reviewed ownership decision. Evidence: The sources permit full or selective sets and describe choosing specific approved hotfix differences rather than uncritically importing everything.",
+          "sourceIds": [
+            "dp800-d2x-schema-compare",
+            "dp800-d2-drift",
+            "dp800-d2x-compare-project"
+          ]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "They compare represented release models, not the uninspected current production database. No captured live-hotfix artifact is provided, so that input set cannot justify this current live-to-source adoption. Alternative context: The task is to compare two known captured release models, or the relevant live state has first been deliberately captured and its provenance checked. Neither is the proposed comparison of previous builds alone. Evidence: The product distinguishes connected database, project and .dacpac inputs; the training explains why out-of-workflow live changes need inspection and reconciliation.",
+          "sourceIds": [
+            "dp800-d2x-compare-project",
+            "dp800-d2x-schema-compare",
+            "dp800-d2-drift"
+          ]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh independent PASS 3: challenged reversed synchronization, full baselining, older artifact comparisons and dependency-limited selection. The stated approved hotfix and unrelated excluded object leave B uniquely defensible. Reread both product bodies and the training, rejecting universal Publish-drop behavior and avoiding registered-DAC DriftReport assumptions. The Intermediate label fits the actual task with depth/originality deductions. No database comparison or deployment was run; only the new authored fingerprint is approved.",
+      "confidenceReason": "High confidence in B from exact source-to-target semantics and selective-import evidence. No guarantee is made about an uninspected dependency graph or a future deployment plan."
+    },
+    {
+      "questionId": "dp800-20260916-d2-031",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-cicd-20260916",
+      "questionFingerprint": "c2dab15167f1916462352f65c93341b5f4f725b879eb5579870b75afad95c752",
+      "reviewedAt": "2026-09-17T00:25:10.601Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-schema-compare",
+          "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/schema-comparison",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-schema-compare.json",
+          "retrievedAt": "2026-09-16T19:43:09.743Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread Schema comparison options and Schema compare files: included object types and ignored differences control scope; .scmp stores connection information, options and excluded types for rerunning a comparison. It is not a snapshot proof of current equality."
+        },
+        {
+          "sourceId": "dp800-d2-drift",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/05-detect-resolve-schema-drift",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-05-detect-resolve-schema-drift.json",
+          "retrievedAt": "2026-09-16T19:33:08.760Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The saved drift unit recommends versioning .scmp settings so checks use the intended consistent scope. It also distinguishes comparison direction from the chosen relevant differences. Its unrelated unconditional dropping language is not used."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The file is a configuration recipe and explicitly excludes the object type whose drift matters. A clean scoped result cannot prove equality outside that scope. Alternative context: A newly executed comparison includes the required objects with reviewed options and its result is evaluated within that declared scope. The saved configuration alone is still not a complete schema snapshot. Evidence: The product enumerates .scmp connection settings, comparison options and excluded types; the training recommends rerunning consistent intended settings.",
+          "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Output agreement obtained by excluding required indexes preserves the blind spot. It fails the explicit requirement to detect index drift. Alternative context: Indexes are intentionally outside the agreed comparison objective. They are expressly inside scope in this release. Evidence: The product permits object-type exclusions, and the training frames options as a way to focus on meaningful differences, not to erase in-scope ones.",
+          "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: it corrects the index omission and makes the repeated comparison apply the agreed settings instead of accepting a misleading clean result. Alternative context: Maintainers can access the intended current source/target and include the required object types. The resulting output still needs review; matching settings is not an eternal freshness guarantee. Evidence: The product defines scope controls and reusable .scmp definitions; the unit recommends versioning these comparison settings for repeatable drift checks.",
+          "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Reversal changes which side would receive changes; it does not remove the still-configured index exclusion. Alternative context: The required object types are already included and the remaining defect is selecting the wrong side to update. Then reversing direction addresses that different problem. Evidence: Both bodies discuss direction separately from scope/options, and .scmp stores exclusions as their own configuration.",
+          "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh independent PASS 3: challenged a saved-snapshot interpretation, deliberately out-of-scope indexes, direction reversal and stale evidence after saving settings. C uniquely restores the release's declared scope and requests a current run. The actual product and teaching bodies were reread, including UI availability qualifications. No .scmp operation, database access or comparison was executed. This Intermediate fingerprint earns 45/48 independently, not through renewing the earlier Advanced record.",
+      "confidenceReason": "High confidence in C from the explicit .scmp and scope contracts. Actual comparison output and completeness beyond the stated index scope are not attested."
+    },
+    {
+      "questionId": "dp800-20260916-d2-033",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-cicd-20260916",
+      "questionFingerprint": "98172963e71501157ed489457abe3308b633c6f80035d470b14e253376d6dd0d",
+      "reviewedAt": "2026-09-17T00:25:10.601Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-branch-policies",
+          "url": "https://learn.microsoft.com/en-us/azure/devops/repos/git/branch-policies-overview",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-branch-policies.json",
+          "retrievedAt": "2026-09-16T19:43:14.027Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread the policy table: build validation pre-merges and builds PR changes, while linked work items provide traceability. Policies are off by default and must be configured; this is not proof that an existing repository is protected or that administrative bypass is impossible."
+        },
+        {
+          "sourceId": "dp800-d2x-pipeline-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/06-implement-cicd-pipelines",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-06-implement-cicd-pipelines.json",
+          "retrievedAt": "2026-09-16T19:33:11.257Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The Azure DevOps branch-policy section separates PR builds from production environment reviewers. Its build/deploy outline passes a built .dacpac to deployment. GitHub-specific protection entitlements and the unit's blanket CODEOWNERS claims are not adopted."
+        },
+        {
+          "sourceId": "dp800-d2x-project-automation",
+          "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-projects-automation",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-project-automation.json",
+          "retrievedAt": "2026-09-16T19:54:04.430Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "The actual automation article documents Azure DevOps environment approval gates and business-hours restrictions as different controls, and describes a deploy job downloading the same previously built artifact, potentially after manual approval."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: configured as required, this moves structural validation to merge admission rather than waiting until the change has reached main. Alternative context: The policy invokes the intended model build for the relevant PR changes and is enforced in the normal merge workflow. It does not itself supply production approval or make privileged bypass impossible. Evidence: The branch-policy table explicitly describes pre-merging/building PR changes; the unit names Build Validation for SQL project PRs.",
+          "sourceIds": ["dp800-d2x-branch-policies", "dp800-d2x-pipeline-unit"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Traceability does not execute the model build or obtain a human approval for deploying the tested artifact. Alternative context: The requirement is linking changes to planned work, or this policy supplements independently configured validation and approval controls. Evidence: The policy article explicitly assigns linked work items to traceability, while the automation article separately describes deployment approvals.",
+          "sourceIds": [
+            "dp800-d2x-branch-policies",
+            "dp800-d2x-project-automation"
+          ]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Elapsed time does not constitute human approval. The option explicitly omits the approver the scenario requires. Alternative context: A release only needs a business-hours window or deliberate pause, or timing is an additional constraint alongside an independently required approval. Evidence: The automation source distinguishes approval gates from business-hours restrictions; the training separately lists human reviewers and timing controls.",
+          "sourceIds": [
+            "dp800-d2x-project-automation",
+            "dp800-d2x-pipeline-unit"
+          ]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: an environment approval places the requested human decision at the production deployment boundary, complementing A's earlier PR build gate. Alternative context: The production deployment job actually targets the protected environment and publishes the approved tested package. Publishing here means deploying to production, not the earlier upload to artifact storage. Evidence: Both sources describe environment-based production approvals and an artifact flow that separates build from the later deployment job.",
+          "sourceIds": [
+            "dp800-d2x-project-automation",
+            "dp800-d2x-pipeline-unit"
+          ]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh independent PASS 3: challenged optional/default-off policies, unused environments, work-item traceability, time-only gates and administrative bypass. A,D remains the correct configured pattern for normal PR and production workflow boundaries. Actual Azure Repos and automation evidence was reread without borrowing GitHub source approvals or plan features. No policy object, YAML, build or deployment was executed. The Intermediate snapshot earns 45/48 with honest answer-cue deductions and exact new-stage bindings.",
+      "confidenceReason": "High confidence in A,D from provider-specific policy and deployment evidence. This is a reviewed control-design choice, not proof of live enforcement or invulnerability to authorized administrators."
+    },
+    {
+      "questionId": "dp800-20260916-d2-034",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-cicd-20260916",
+      "questionFingerprint": "2fceab4287d80d1468b2937a12604bd6967101507fc4dc8b2dc64ba8862ab5b6",
+      "reviewedAt": "2026-09-17T00:25:10.601Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-project-automation",
+          "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-projects-automation",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-project-automation.json",
+          "retrievedAt": "2026-09-16T19:54:04.430Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread Self-hosted environments: access to databases not exposed publicly is an explicit reason to use a self-hosted deployment agent. The same body separates artifact build/download/deploy and authentication support. Tool installation, identity and network placement are distinct requirements, not automatic benefits of self-hosting."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Authentication is already correct and the agent still has no route. Repeating the identity step does not change its network location or reachability. Alternative context: The agent already has a valid network path and the actual failure is an expired or incorrect authentication session. The stated failure is different. Evidence: The automation article treats authentication capabilities separately from self-hosted placement for private-network access.",
+          "sourceIds": ["dp800-d2x-project-automation"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "A different tool or package does not supply a network route and would replace the artifact the scenario requires preserving. SqlPackage deployment tooling is not a substitute for the project's actual build process. Alternative context: An approved new release addresses an actual tool/schema compatibility problem with suitable build tooling and renewed tests. It would still need independent network access before deployment. Evidence: The source separates building the project from publishing its package and identifies custom tooling and private connectivity as different agent considerations.",
+          "sourceIds": ["dp800-d2x-project-automation"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: it changes the execution location to one that has the missing route while retaining artifact identity and existing approvals. Alternative context: The agent actually has private DNS/routing/access and compatible deployment tooling, can obtain the approved artifact, and uses the authorized SQL identity. The word self-hosted alone is not proof of those properties; the option explicitly supplies reachability. Evidence: The self-hosted section explicitly names privately isolated databases, and Artifact flow describes downloading and deploying the same build output in a separate job.",
+          "sourceIds": ["dp800-d2x-project-automation"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "It solves a different connectivity problem by violating an explicit exposure constraint. Temporariness is not an exception the scenario authorizes. Alternative context: Security policy intentionally permits a reviewed public access window with suitable controls. That authorization is expressly absent here. Evidence: The article discusses hosted-runner firewall mechanisms as distinct from self-hosted placement for nonpublic databases; the candidate's policy selects the latter boundary.",
+          "sourceIds": ["dp800-d2x-project-automation"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh independent PASS 3: challenged authentication retries, changed artifacts/tooling, publicly accessible alternatives and the false assumption that all self-hosted agents are privately connected. C explicitly includes the needed reachability and preserves the reviewed artifact. Actual product sections were reread. Intermediate accurately reflects the disclosed boundary; plausibility and depth deductions remain. No network probe, SQL connection, build or deployment was executed. Only this new technical-r1 snapshot receives the attestation.",
+      "confidenceReason": "High confidence in C as the bounded placement pattern supported by the product source. The real agent's routing, DNS, tools, credentials and deployment result are not independently exercised here."
+    }
+  ]
+}

@@ -1,0 +1,2653 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-expansion-ai-20260916",
+  "authorId": "dp800-expansion-author-ai-20260916",
+  "generatedAt": "2026-09-16T21:09:02.730Z",
+  "candidates": [
+    {
+      "id": "dp800-20260916-d3-001",
+      "question": "A database-backed support assistant must read text and images, handle English and Spanish, and produce schema-valid JSON within a measured p95 target of 900 ms. The following hypothetical model profiles are stipulated evaluation results, not vendor specifications. Which profile meets every requirement?",
+      "questionType": "single-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Text input; English and Spanish; schema-valid JSON; p95 400 ms."
+        },
+        {
+          "id": "b",
+          "text": "Text and image input; English only; schema-valid JSON; p95 650 ms."
+        },
+        {
+          "id": "c",
+          "text": "Text and image input; English and Spanish; schema-valid JSON; p95 850 ms."
+        },
+        {
+          "id": "d",
+          "text": "Text and image input; English and Spanish; prose output only; p95 600 ms."
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Profile c meets the modality, language, output-format and measured-latency requirements together.",
+      "deepExplanation": "Model evaluation is a conjunction of workload requirements rather than a contest for the smallest latency number. These are supplied test profiles. Passing this comparison does not establish a named model's availability or guarantee future production latency.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Its faster response does not compensate for its missing image-input capability.",
+        "b": "It fails the Spanish requirement even though its modality, output and latency fit.",
+        "d": "A prose-only result does not meet the stated programmatic JSON-output contract."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Evaluate external models, including multimodal, multilanguage, sizes, and structured output",
+      "difficulty": "intermediate",
+      "complexity": "scenario-based",
+      "sourceIds": ["dp800-d3x-models-evaluate"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/02-understand-evaluate-models-sql-database-workloads"
+      ],
+      "documentationTitles": [
+        "Understand and evaluate models for SQL database workloads"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.860Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.860Z",
+      "featureStatus": "Not applicable",
+      "tags": [
+        "model-evaluation",
+        "multimodal",
+        "multilingual",
+        "structured-output",
+        "hypothetical-data"
+      ],
+      "conceptId": "model-selection-conjoins-modality-language-output-and-measured-latency",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-002",
+      "question": "Choose an embedding-stage/generator pair for the hypothetical sequential pipeline below. All four components pass the required language and quality tests. Context cannot be dropped, and the planning contract counts input plus reserved output against the generator window. Which pair meets both the window and latency budgets?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Embedding E2 followed by generator G2."
+        },
+        {
+          "id": "b",
+          "text": "Embedding E1 followed by generator G2."
+        },
+        {
+          "id": "c",
+          "text": "Embedding E2 followed by generator G1."
+        },
+        {
+          "id": "d",
+          "text": "Embedding E1 followed by generator G1."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "The generator needs 5,900 tokens of capacity. E2 plus G2 uses an 8,192-token window and 690 ms of the 750 ms sequential budget.",
+      "deepExplanation": "The token requirement is 800 + 4 × 1,100 + 700. G1 fails that requirement regardless of embedding-stage speed. G2 fits, but E1 plus G2 requires 800 ms, while E2 plus G2 requires 690 ms. Latencies are stipulated additive planning bounds, not independently sampled percentiles whose sum is being presented as a measured p95.",
+      "whyOtherAnswersAreWrong": {
+        "b": "The 8,192-token generator fits the context, but 200 + 600 = 800 ms exceeds the latency budget.",
+        "c": "The 490 ms pipeline fits the latency budget, but G1's 4,096-token window cannot hold the required 5,900 tokens.",
+        "d": "Its 600 ms latency fits, but the generator still lacks the required context capacity."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Evaluate external models, including multimodal, multilanguage, sizes, and structured output",
+      "difficulty": "advanced",
+      "complexity": "architecture-design",
+      "sourceIds": ["dp800-d3x-models-evaluate"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/02-understand-evaluate-models-sql-database-workloads"
+      ],
+      "documentationTitles": [
+        "Understand and evaluate models for SQL database workloads"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.860Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.860Z",
+      "featureStatus": "Not applicable",
+      "tags": [
+        "model-selection",
+        "context-budget",
+        "sequential-pipeline",
+        "hypothetical-data"
+      ],
+      "codeLanguage": "json",
+      "codeSnippet": "{\n  \"sequential_budget_ms\": 750,\n  \"instruction_and_question_tokens\": 800,\n  \"required_context_chunks\": 4,\n  \"tokens_per_chunk\": 1100,\n  \"reserved_output_tokens\": 700,\n  \"embedding_stage_bounds_ms\": {\"E1\": 200, \"E2\": 90},\n  \"generator_profiles\": {\n    \"G1\": {\"window_tokens\": 4096, \"generation_bound_ms\": 400},\n    \"G2\": {\"window_tokens\": 8192, \"generation_bound_ms\": 600}\n  }\n}",
+      "conceptId": "model-pipeline-selection-composes-context-reserve-and-sequential-latency",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-003",
+      "question": "A SQL Server 2025 application has retrieved its context and prepared a payload accepted by its remote chat endpoint. REST invocation, authentication and caller permissions are already configured. The team also has an EMBEDDINGS external model. Which plan uses the documented interface to obtain generated answer text? The local ONNX alternative is Preview.",
+      "questionType": "single-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Pass the chat payload to AI_GENERATE_EMBEDDINGS using the existing EMBEDDINGS model."
+        },
+        {
+          "id": "b",
+          "text": "Register MODEL_TYPE = CHAT_COMPLETIONS and invoke it with AI_GENERATE_EMBEDDINGS."
+        },
+        {
+          "id": "c",
+          "text": "Select the local ONNX Runtime Preview format while keeping MODEL_TYPE = EMBEDDINGS."
+        },
+        {
+          "id": "d",
+          "text": "POST the prepared payload to the chat endpoint with sp_invoke_external_rest_endpoint."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "Use the configured REST endpoint for the chat-generation request; the documented external-model type is EMBEDDINGS.",
+      "deepExplanation": "The roles of embedding generation and language-model generation are different. Changing an embedding object's transport format does not turn its operation into chat completion. The Preview label is explicit because a choice discusses local ONNX support; it does not reclassify the remote REST procedure as Preview.",
+      "whyOtherAnswersAreWrong": {
+        "a": "An embedding invocation generates a vector representation, not the required chat answer.",
+        "b": "CHAT_COMPLETIONS is not an accepted MODEL_TYPE in the current external-model reference.",
+        "c": "The local ONNX Preview path still uses an EMBEDDINGS model type and does not implement this remote chat request."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Create and manage external models",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": [
+        "dp800-d3-create-external-model",
+        "dp800-d3-generate-embeddings",
+        "dp800-d3x-rest-endpoint",
+        "dp800-d3-rag-responses"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-model-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql",
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses"
+      ],
+      "documentationTitles": [
+        "CREATE EXTERNAL MODEL (Transact-SQL)",
+        "AI_GENERATE_EMBEDDINGS (Transact-SQL)",
+        "sys.sp_invoke_external_rest_endpoint (Transact-SQL)",
+        "Generate and process RAG responses"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.860Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.860Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "external-model",
+        "embedding-versus-generation",
+        "sql-server-2025",
+        "onnx-preview"
+      ],
+      "conceptId": "sql-external-model-embedding-type-is-not-a-chat-generation-interface",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-004",
+      "question": "In an approved SQL Server 2025 Windows lab, a local ONNX embedding model is being configured using the documented Preview path. PREVIEW_FEATURES is ON and file permissions are ready. The supplied directories contain the listed files; external AI runtimes are still disabled. Which configuration plan addresses both runtime enablement and the two different path roles?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Enable external REST endpoints; set LOCATION to the model directory and LOCAL_RUNTIME_PATH to the runtime directory."
+        },
+        {
+          "id": "b",
+          "text": "Enable external AI runtimes; set LOCATION to the model directory and LOCAL_RUNTIME_PATH to the runtime directory."
+        },
+        {
+          "id": "c",
+          "text": "Enable external AI runtimes; set LOCATION to the runtime directory and LOCAL_RUNTIME_PATH to the model directory."
+        },
+        {
+          "id": "d",
+          "text": "Enable external AI runtimes; set LOCATION to model.onnx itself and LOCAL_RUNTIME_PATH to the runtime directory."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Enable 'external AI runtimes enabled'; point LOCATION at the model directory and LOCAL_RUNTIME_PATH at the runtime-library directory.",
+      "deepExplanation": "The local Preview workflow has a database Preview gate, a server local-runtime gate and distinct artifact directories. The model directory supplies model.onnx and tokenizer.json; the runtime directory supplies the runtime and tokenizer libraries. The stated permissions and previously enabled Preview gate are prerequisites, not additional missing repairs.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Enabling HTTPS REST invocation addresses a remote call path, not the disabled local AI runtime.",
+        "c": "It enables the right runtime but swaps model artifacts with runtime libraries.",
+        "d": "The documented LOCATION for this local path is the directory containing both model artifacts, not the individual model.onnx file."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Create and manage external models",
+      "difficulty": "advanced",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3-create-external-model"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-model-transact-sql"
+      ],
+      "documentationTitles": ["CREATE EXTERNAL MODEL (Transact-SQL)"],
+      "generatedAt": "2026-09-16T20:50:00.860Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.860Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "sql-server-2025",
+        "local-onnx",
+        "preview",
+        "external-model",
+        "runtime-prerequisites"
+      ],
+      "codeLanguage": "json",
+      "codeSnippet": "{\n  \"model_directory\": \"C:\\\\SqlAI\\\\models\\\\Support\",\n  \"model_files\": [\"model.onnx\", \"tokenizer.json\"],\n  \"runtime_directory\": \"C:\\\\SqlAI\\\\runtime\",\n  \"runtime_files\": [\"onnxruntime.dll\", \"tokenizers_cpp.dll\"]\n}",
+      "conceptId": "sql-local-onnx-preview-separates-runtime-enablement-model-and-library-paths",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-005",
+      "question": "A SQL Server 2025 worker reads document revision 41, generates its embedding outside the write transaction, then runs the shown update. Revision 42 has meanwhile committed; the stored embedding still represents revision 40. SourceRevision is an application-maintained number that changes with the text. Which additional predicate rejects this stale write so the worker can reread and regenerate?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "AND SourceRevision >= @revision"
+        },
+        {
+          "id": "b",
+          "text": "AND EmbeddingRevision < @revision"
+        },
+        {
+          "id": "c",
+          "text": "AND SourceRevision = @revision"
+        },
+        {
+          "id": "d",
+          "text": "AND Embedding IS NOT NULL"
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Require the current source revision to equal the revision used to generate the proposed embedding.",
+      "deepExplanation": "A changed-row notification is not a guarantee that asynchronous work is still current when it finishes. Here 42 does not equal 41, so the guarded update affects no row and the worker can retry from current text. Comparing only the old embedding revision accepts a newer-than-old but still obsolete result. This is a persistence guard, not a complete exactly-once consumer.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Revision 42 satisfies >= 41, so this admits the stale revision-41 vector.",
+        "b": "The old embedding revision is 40, so 40 < 41 also admits a vector that is behind the current text.",
+        "d": "An existing embedding says nothing about whether the completed work represents the current source revision."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Choose an embedding maintenance method, including table triggers, Change Tracking, Azure Functions with SQL trigger binding, Azure Logic Apps, CDC, CES, and Microsoft Foundry",
+      "difficulty": "advanced",
+      "complexity": "troubleshooting",
+      "sourceIds": [
+        "dp800-d3-maintenance",
+        "dp800-d3x-update",
+        "dp800-d3-vector-type"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/05-generate-maintain-embeddings-sql-database-workloads",
+        "https://learn.microsoft.com/en-us/sql/t-sql/queries/update-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/data-types/vector-data-type"
+      ],
+      "documentationTitles": [
+        "Generate and maintain embeddings for SQL database workloads",
+        "UPDATE (Transact-SQL)",
+        "Vector data type"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.860Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.860Z",
+      "featureStatus": "GA",
+      "tags": [
+        "embedding-maintenance",
+        "asynchronous-worker",
+        "revision-guard",
+        "sql-server-2025"
+      ],
+      "codeLanguage": "sql",
+      "codeSnippet": "-- Id is the primary key. @id identifies the document.\n-- @revision = 41; @embedding is its completed VECTOR(3).\nUPDATE dbo.Documents\nSET Embedding = @embedding,\n    EmbeddingRevision = @revision\nWHERE Id = @id\n/* add predicate here */;",
+      "conceptId": "sql-embedding-worker-guards-persistence-against-concurrent-source-revision",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-006",
+      "question": "An Azure SQL Database team can tolerate scheduled embedding refresh. It must coordinate an approved embedding-service call with a notification to another system using a low-code workflow designer, without deploying custom function code or adding generation work to table writes. Connectivity and access are already established. Which maintenance approach best matches those constraints?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Run embedding generation synchronously in a table trigger."
+        },
+        {
+          "id": "b",
+          "text": "Orchestrate the scheduled refresh and notification in Azure Logic Apps."
+        },
+        {
+          "id": "c",
+          "text": "Implement both operations in custom Azure Function code with a SQL trigger."
+        },
+        {
+          "id": "d",
+          "text": "Configure Microsoft Foundry model hosting without a change-processing workflow."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Azure Logic Apps matches the stated low-code orchestration and scheduled-maintenance requirements.",
+      "deepExplanation": "Maintenance selection includes execution location, latency and orchestration style. A function-based worker can also coordinate services, but it violates this team's explicit no-custom-function-code condition. Model hosting and evaluation are separate from detecting changes, persisting embeddings and sending notifications.",
+      "whyOtherAnswersAreWrong": {
+        "a": "It puts remote generation on the write path, contrary to the stated constraint.",
+        "c": "It can offload work, but requires the custom function deployment the team has ruled out.",
+        "d": "Model hosting alone supplies neither the scheduled refresh workflow nor the second-system notification."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Choose an embedding maintenance method, including table triggers, Change Tracking, Azure Functions with SQL trigger binding, Azure Logic Apps, CDC, CES, and Microsoft Foundry",
+      "difficulty": "intermediate",
+      "complexity": "scenario-based",
+      "sourceIds": ["dp800-d3-maintenance"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/05-generate-maintain-embeddings-sql-database-workloads"
+      ],
+      "documentationTitles": [
+        "Generate and maintain embeddings for SQL database workloads"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.860Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.860Z",
+      "featureStatus": "GA",
+      "tags": [
+        "embedding-maintenance",
+        "logic-apps",
+        "orchestration",
+        "low-code"
+      ],
+      "conceptId": "embedding-maintenance-low-code-cross-system-orchestration-versus-detection-and-hosting",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-007",
+      "question": "On SQL Server 2025 at compatibility level 170, documents have unique DocumentId values and each produces multiple chunks. Model access, chunk input limits and destination vector width are validated. The empty destination must receive one row per source document/chunk, with the embedding generated from that row's ChunkText. Which repair fixes both defects in the shown insertion?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Join Chunks to Documents on DocumentId, but continue embedding d.Body."
+        },
+        {
+          "id": "b",
+          "text": "Keep the CROSS JOIN, but pass c.chunk to AI_GENERATE_EMBEDDINGS."
+        },
+        {
+          "id": "c",
+          "text": "Select DISTINCT over the current CROSS JOIN, retaining the existing embedding input."
+        },
+        {
+          "id": "d",
+          "text": "Join on DocumentId and pass c.chunk to AI_GENERATE_EMBEDDINGS."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "Correlate each chunk with its own document and generate the vector from the chunk text being stored.",
+      "deepExplanation": "The CTE already produces the correct document/chunk relationship through CROSS APPLY. The later CROSS JOIN destroys that relationship by pairing every document with every chunk. Independently, embedding d.Body represents the entire document rather than c.chunk. Fixing only one defect leaves either incorrect ownership or a text/vector mismatch.",
+      "whyOtherAnswersAreWrong": {
+        "a": "It repairs ownership but still generates whole-document vectors for rows labeled with individual chunks.",
+        "b": "It repairs the embedding input but still associates each chunk with unrelated DocumentId values.",
+        "c": "DISTINCT does not restore the missing document relationship or change what text is embedded."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Design and implement chunks for embeddings",
+      "difficulty": "advanced",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d3-generate-chunks", "dp800-d3-generate-embeddings"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-chunks-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql"
+      ],
+      "documentationTitles": [
+        "AI_GENERATE_CHUNKS (Transact-SQL)",
+        "AI_GENERATE_EMBEDDINGS (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.867Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.867Z",
+      "featureStatus": "GA",
+      "tags": [
+        "chunking",
+        "cross-apply",
+        "source-lineage",
+        "embedding-input",
+        "sql-server-2025"
+      ],
+      "codeLanguage": "sql",
+      "codeSnippet": "WITH Chunks AS (\n    SELECT d.DocumentId, c.chunk_order, c.chunk\n    FROM dbo.Documents AS d\n    CROSS APPLY AI_GENERATE_CHUNKS(\n        SOURCE = d.Body, CHUNK_TYPE = FIXED, CHUNK_SIZE = 600\n    ) AS c\n)\nINSERT dbo.ChunkVectors(DocumentId, ChunkOrder, ChunkText, Embedding)\nSELECT d.DocumentId, c.chunk_order, c.chunk,\n       AI_GENERATE_EMBEDDINGS(d.Body USE MODEL SupportEmbedding)\nFROM dbo.Documents AS d\nCROSS JOIN Chunks AS c;",
+      "conceptId": "sql-chunk-embedding-pipeline-preserves-source-correlation-and-text-vector-identity",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-008",
+      "question": "A multilingual handbook uses fixed character chunks before embedding. Tests find some 400-character chunks contain 620 model tokens, exceeding the stipulated 512-token limit. Other chunks separate a restriction from the sentence it qualifies. Which revised preparation policy addresses both observed failures without assuming a fixed characters-to-tokens ratio?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Use 512 characters for every chunk and keep the existing boundaries."
+        },
+        {
+          "id": "b",
+          "text": "Validate token counts for the chosen model and use context-preserving boundaries or overlap within the limit."
+        },
+        {
+          "id": "c",
+          "text": "Keep the oversized chunks but normalize each generated vector to unit length."
+        },
+        {
+          "id": "d",
+          "text": "Split each document into single words without retaining neighboring context."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Check actual model-token counts while preserving enough neighboring text to retain the qualifying context.",
+      "deepExplanation": "Input-size compliance and semantic completeness are different design requirements. A character limit cannot be assumed to enforce the measured token limit, while extremely small chunks can lose meaning. Boundary and overlap choices must be evaluated on this corpus rather than treated as universally optimal numbers.",
+      "whyOtherAnswersAreWrong": {
+        "a": "The measured character/token mismatch already disproves a one-to-one size rule.",
+        "c": "Post-generation vector scaling does not repair an oversized model input or missing source context.",
+        "d": "Short units may fit the limit but discard the neighboring qualification that the tests require."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Design and implement chunks for embeddings",
+      "difficulty": "intermediate",
+      "complexity": "architecture-design",
+      "sourceIds": ["dp800-d3-input-design", "dp800-d3x-models-evaluate"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/04-design-embeddings-sql-database-workloads",
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/02-understand-evaluate-models-sql-database-workloads"
+      ],
+      "documentationTitles": [
+        "Design embeddings for SQL database workloads",
+        "Understand and evaluate models for SQL database workloads"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.867Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.867Z",
+      "featureStatus": "Not applicable",
+      "tags": [
+        "chunking",
+        "token-budget",
+        "semantic-boundaries",
+        "multilingual",
+        "methodology"
+      ],
+      "conceptId": "embedding-chunk-design-jointly-validates-token-limits-and-context-completeness",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-009",
+      "question": "A SQL Server 2025 search application will replace embedding model A with model B. Both return 1,536 components, but the supplied model contracts say their coordinates are not interchangeable. Queries must cover the entire corpus throughout backfill. Which rollout preserves meaningful comparisons while moving to B?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Keep A queries on A vectors; build a separate complete B-vector snapshot, validate it, then switch query encoding and storage together."
+        },
+        {
+          "id": "b",
+          "text": "Encode queries with B immediately and compare them with the remaining A vectors because their dimensions match."
+        },
+        {
+          "id": "c",
+          "text": "Normalize A vectors and compare them with B queries without regenerating the corpus."
+        },
+        {
+          "id": "d",
+          "text": "Replace A vectors in place and search only the rows already converted to B during backfill."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "Maintain a matched encoder/vector snapshot until the replacement corpus is complete and validated, then switch them together.",
+      "deepExplanation": "Vector width is a storage contract, not a model-space compatibility guarantee. The query-pattern training uses the same model for query and stored vectors. A separate replacement snapshot avoids mixing spaces and preserves full-corpus coverage while backfill runs; it requires extra storage and explicit routing rather than promising a free migration.",
+      "whyOtherAnswersAreWrong": {
+        "b": "Equal component counts do not override the stated incompatibility of the two coordinate systems.",
+        "c": "Normalization changes scale, not the supplied models' incompatible semantic coordinate systems.",
+        "d": "It avoids comparing A with B only by dropping the not-yet-converted part of the required searchable corpus."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Generate embeddings",
+      "difficulty": "advanced",
+      "complexity": "architecture-design",
+      "sourceIds": [
+        "dp800-d3-generate-embeddings",
+        "dp800-d3-vector-patterns-unit",
+        "dp800-d3-vector-normalize",
+        "dp800-d3-vector-type"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql",
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/05-implement-vector-search-query-patterns",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-normalize-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/data-types/vector-data-type"
+      ],
+      "documentationTitles": [
+        "AI_GENERATE_EMBEDDINGS (Transact-SQL)",
+        "Implement vector search query patterns",
+        "VECTOR_NORMALIZE (Transact-SQL)",
+        "Vector data type"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.867Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.867Z",
+      "featureStatus": "GA",
+      "tags": [
+        "embedding-generation",
+        "model-migration",
+        "matched-snapshots",
+        "corpus-coverage"
+      ],
+      "conceptId": "embedding-model-migration-routes-query-and-corpus-snapshots-without-mixing-spaces",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-010",
+      "question": "Two SQL Server 2025 jobs use different configured remote models through AI_GENERATE_EMBEDDINGS. Intermittent failures occur during the endpoint calls. The operator needs model identity, HTTP status and error information for those calls, rather than merely measuring incomplete table rows. Which documented diagnostic pair is relevant?",
+      "questionType": "single-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "The source-row count and the count of NULL embedding values."
+        },
+        {
+          "id": "b",
+          "text": "The query vector's norm and each stored vector's norm."
+        },
+        {
+          "id": "c",
+          "text": "VECTORPROPERTY with Dimensions and BaseType on stored vectors."
+        },
+        {
+          "id": "d",
+          "text": "The ai_generate_embeddings_summary and external_rest_endpoint_summary extended events."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "The embedding and external-REST summary events expose the request/response diagnostic information needed.",
+      "deepExplanation": "Generation completeness, vector metadata and remote-call outcomes are different observability layers. The named events are documented for troubleshooting model calls and underlying REST requests. The answer does not assume that enabling an event automatically creates a retention, privacy or monitoring policy.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Counts show completion gaps but cannot identify the HTTP status or failing model call.",
+        "b": "Vector lengths describe generated data, not the remote transport failure.",
+        "c": "Dimensions and BaseType inspect vector metadata rather than request or response errors."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Generate embeddings",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": [
+        "dp800-d3-generate-embeddings",
+        "dp800-d3x-vector-property",
+        "dp800-d3-vector-normalize"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vectorproperty-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-normalize-transact-sql"
+      ],
+      "documentationTitles": [
+        "AI_GENERATE_EMBEDDINGS (Transact-SQL)",
+        "VECTORPROPERTY (Transact-SQL)",
+        "VECTOR_NORMALIZE (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.867Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.867Z",
+      "featureStatus": "GA",
+      "tags": [
+        "embedding-generation",
+        "extended-events",
+        "remote-call-diagnostics",
+        "sql-server-2025"
+      ],
+      "conceptId": "sql-embedding-generation-diagnostics-correlate-model-and-rest-summary-events",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-011",
+      "question": "A SQL Server 2025 catalog has a populated English full-text index and valid same-model float32 embeddings. One screen must match the indexed phrase \"carbon shaft\"; another supports conceptual discovery even when users and documents use different wording. Which two query choices match their respective screen's intent? Select two.",
+      "questionType": "multi-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Use a quoted CONTAINS phrase condition for the exact-phrase screen."
+        },
+        {
+          "id": "b",
+          "text": "Use embedding distance alone to enforce the exact phrase's presence."
+        },
+        {
+          "id": "c",
+          "text": "Use a query embedding and VECTOR_DISTANCE for conceptual discovery."
+        },
+        {
+          "id": "d",
+          "text": "Use an unconstrained FREETEXT expansion as an exact-phrase requirement."
+        }
+      ],
+      "correctAnswer": ["a", "c"],
+      "explanation": "A quoted full-text phrase condition implements the lexical requirement; semantic distance supports concept-oriented discovery.",
+      "deepExplanation": "Matching an indexed phrase and retrieving semantically similar descriptions are different contracts. Linguistic expansion does not require the complete exact phrase, and vector similarity does not require particular words to occur. The scenario supplies the necessary indexes and compatible embeddings; it does not claim any particular result is guaranteed relevant.",
+      "whyOtherAnswersAreWrong": {
+        "b": "A semantically related document can lack the exact words, so distance is not the required phrase predicate.",
+        "d": "FREETEXT expands the search linguistically instead of enforcing the quoted phrase condition."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Choose from full-text, semantic vector, and hybrid search",
+      "difficulty": "intermediate",
+      "complexity": "scenario-based",
+      "sourceIds": [
+        "dp800-d3x-search-choice",
+        "dp800-d3x-fulltext-unit",
+        "dp800-d3-vector-distance"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/02-choose-intelligent-search-approach",
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/03-implement-full-text-search",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+      ],
+      "documentationTitles": [
+        "Choose an intelligent search approach",
+        "Implement full-text search",
+        "VECTOR_DISTANCE (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.867Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.867Z",
+      "featureStatus": "GA",
+      "tags": [
+        "search-selection",
+        "full-text",
+        "semantic-search",
+        "query-intent"
+      ],
+      "conceptId": "sql-search-routes-exact-indexed-phrase-versus-conceptual-discovery",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-012",
+      "question": "A SQL Server 2025 hybrid catalog search combines full-text results with exact vector results. Every returned row must be in stock and approved for a requested market, and ineligible rows must not consume either branch's candidate budget. Which design enforces that contract while retaining both ranking signals?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Embed stock and market labels and let similarity determine whether a row is eligible."
+        },
+        {
+          "id": "b",
+          "text": "Apply the eligibility predicates only after selecting and fusing both branches' limited candidate pools."
+        },
+        {
+          "id": "c",
+          "text": "Apply relational eligibility predicates in each branch before its ordered candidate limit, then fuse eligible results."
+        },
+        {
+          "id": "d",
+          "text": "Apply eligibility only to the full-text branch and leave the vector branch unrestricted."
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Keep mandatory eligibility as relational predicates before each branch's candidate limit, then combine the eligible ranked lists.",
+      "deepExplanation": "Ranking represents relevance, not a hard stock or market rule. A final eligibility filter can prevent displaying invalid rows, but it cannot recover eligible documents that an earlier limited pool displaced. This scenario uses exact vector search, not the version-specific filtering semantics of Preview VECTOR_SEARCH.",
+      "whyOtherAnswersAreWrong": {
+        "a": "A similarity score is not an equality or Boolean eligibility check on the current relational values.",
+        "b": "It filters too late to prevent ineligible rows consuming the already limited candidate pools.",
+        "d": "The unrestricted vector branch can still introduce ineligible rows into the fused set."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Choose from full-text, semantic vector, and hybrid search",
+      "difficulty": "advanced",
+      "complexity": "architecture-design",
+      "sourceIds": [
+        "dp800-d3-hybrid",
+        "dp800-d3x-top",
+        "dp800-d3-vector-distance"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking",
+        "https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+      ],
+      "documentationTitles": [
+        "Implement hybrid search and ranking",
+        "TOP (Transact-SQL)",
+        "VECTOR_DISTANCE (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.867Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.867Z",
+      "featureStatus": "GA",
+      "tags": [
+        "hybrid-search",
+        "eligibility",
+        "candidate-budgets",
+        "relational-filtering"
+      ],
+      "conceptId": "sql-hybrid-search-applies-hard-eligibility-before-each-candidate-budget",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-013",
+      "question": "An Azure SQL Database table has a populated English full-text index on Body. Indexing checks confirm the sample words remain single tokens as written. The search must match any token beginning with calib, even without the word sensor, but not an interior calib substring. Which predicate implements that lexical requirement?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "CONTAINS(Body, N'\"calib\"')"
+        },
+        {
+          "id": "b",
+          "text": "Body LIKE N'%calib%'"
+        },
+        {
+          "id": "c",
+          "text": "CONTAINS(Body, N'\"calib*\"')"
+        },
+        {
+          "id": "d",
+          "text": "CONTAINS(Body, N'\"calib*\" AND \"sensor\"')"
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Use a quoted full-text prefix term with the asterisk inside the quotes.",
+      "deepExplanation": "The full-text prefix condition matches tokens that start with calib, unlike a character-pattern search that can also match the interior of precalibration. Adding an AND sensor condition would exclude a required calibration guide. The explicit indexing premise avoids relying on an unexamined language-specific word-breaking outcome.",
+      "whyOtherAnswersAreWrong": {
+        "a": "It requests the exact term calib rather than the required family of words beginning with that prefix.",
+        "b": "The character pattern also matches calib inside the supplied precalibration token.",
+        "d": "It adds a sensor requirement that is absent from the requested search contract."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Implement full-text search",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3x-fulltext-unit", "dp800-d3x-containstable"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/03-implement-full-text-search",
+        "https://learn.microsoft.com/en-us/sql/relational-databases/system-functions/containstable-transact-sql"
+      ],
+      "documentationTitles": [
+        "Implement full-text search",
+        "CONTAINSTABLE (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.872Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.872Z",
+      "featureStatus": "GA",
+      "tags": [
+        "full-text",
+        "prefix-term",
+        "token-versus-substring",
+        "azure-sql-database"
+      ],
+      "codeLanguage": "sql",
+      "codeSnippet": "-- Representative Body values and their confirmed indexed words:\n-- 'calibrated sensor'      -> should match\n-- 'calibration guide'      -> should match\n-- 'precalibration guide'   -> should not match",
+      "conceptId": "sql-full-text-prefix-term-differs-from-interior-substring-and-extra-term-restriction",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-014",
+      "question": "In Azure SQL Database, Papers has PaperId as its primary key, but the full-text index uses the separate unique SearchKey. The application needs the five highest-ranked published matches, breaking relevance ties by PaperId. More than five published matches exist, while the five global highest matches are unpublished. Which repair fixes the shown query's key mapping and premature candidate limit?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Join p.SearchKey to ft.[KEY], remove top_n_by_rank, filter Published, and apply outer TOP (5) ordered by ft.RANK DESC, p.PaperId ASC."
+        },
+        {
+          "id": "b",
+          "text": "Join p.SearchKey to ft.[KEY], retain top_n_by_rank = 5, then filter Published and order the surviving rows."
+        },
+        {
+          "id": "c",
+          "text": "Keep the PaperId-to-KEY join, remove top_n_by_rank, and apply the published filter before an ordered outer TOP (5)."
+        },
+        {
+          "id": "d",
+          "text": "Join p.SearchKey to ft.[KEY], remove top_n_by_rank, filter Published, and apply outer TOP (5) ordered by ft.[KEY] DESC."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "Use the actual full-text key, let published matches reach the relational filter, and select the ordered top five afterward.",
+      "deepExplanation": "CONTAINSTABLE's KEY is the configured full-text key, not necessarily the table's primary key. Its top_n_by_rank limit can discard all published rows before WHERE runs. Removing that inner limit and using the correct join allows TOP and the required relevance/tie ordering to act on published matches.",
+      "whyOtherAnswersAreWrong": {
+        "b": "The inner function has already kept only five unpublished hits, so the later filter cannot recover the desired published matches.",
+        "c": "The full-text index identifies rows by SearchKey, so leaving the PaperId join does not restore the required row mapping.",
+        "d": "KEY identifies a row; descending KEY order does not implement relevance rank and the required PaperId tie-break."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Implement full-text search",
+      "difficulty": "advanced",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d3x-containstable", "dp800-d3x-top"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/relational-databases/system-functions/containstable-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql"
+      ],
+      "documentationTitles": [
+        "CONTAINSTABLE (Transact-SQL)",
+        "TOP (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.872Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.872Z",
+      "featureStatus": "GA",
+      "tags": [
+        "full-text",
+        "ranked-retrieval",
+        "key-mapping",
+        "filter-placement",
+        "azure-sql-database"
+      ],
+      "codeLanguage": "sql",
+      "codeSnippet": "SELECT p.PaperId, ft.[RANK]\nFROM dbo.Papers AS p\nJOIN CONTAINSTABLE(\n    dbo.Papers, Body, N'\"calibration drift\"', 5\n) AS ft ON p.PaperId = ft.[KEY]\nWHERE p.Published = 1\nORDER BY ft.[RANK] DESC, p.PaperId ASC;",
+      "conceptId": "sql-full-text-ranked-published-search-fixes-key-mapping-and-prelimit-filter-loss",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-015",
+      "question": "A SQL Server 2025 design will store 60,000 float32 vectors. The vector-component budget is 300 MiB, excluding all row and index overhead. The stipulated model configurations below have measured task quality, and the minimum accepted score is 91. Which configuration fits the native dimension limit, component budget and quality floor?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "1,536 dimensions with measured quality 93."
+        },
+        {
+          "id": "b",
+          "text": "1,024 dimensions with measured quality 92."
+        },
+        {
+          "id": "c",
+          "text": "768 dimensions with measured quality 88."
+        },
+        {
+          "id": "d",
+          "text": "2,048 dimensions with measured quality 94."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "The 1,024-dimensional configuration uses 245,760,000 component bytes, or 234.375 MiB, and its supplied quality score meets the floor.",
+      "deepExplanation": "The default float32 representation uses four bytes per component and supports at most 1,998 dimensions. At 1,536 dimensions the components alone need 351.5625 MiB. The smaller 768 configuration fits storage but fails the stipulated quality floor. No assumption is made that quality universally rises with dimensionality or that component bytes equal total database storage.",
+      "whyOtherAnswersAreWrong": {
+        "a": "60,000 × 1,536 × 4 bytes exceeds the 300 MiB component budget.",
+        "c": "Its measured quality 88 is below the required 91 despite its smaller footprint.",
+        "d": "2,048 exceeds the documented native limit of 1,998 and also exceeds the component budget."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Design for vector data, including vector data type, vector indexes, and size",
+      "difficulty": "intermediate",
+      "complexity": "architecture-design",
+      "sourceIds": ["dp800-d3-vector-type", "dp800-d3x-models-evaluate"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/data-types/vector-data-type",
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/02-understand-evaluate-models-sql-database-workloads"
+      ],
+      "documentationTitles": [
+        "Vector data type",
+        "Understand and evaluate models for SQL database workloads"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.872Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.872Z",
+      "featureStatus": "GA",
+      "tags": [
+        "vector-storage",
+        "float32",
+        "capacity-planning",
+        "measured-quality",
+        "sql-server-2025"
+      ],
+      "conceptId": "sql-vector-storage-selection-combines-component-bytes-dimension-limit-and-measured-quality",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-016",
+      "question": "A document store in Azure SQL Database uses a latest-version Preview vector index with automatic DML maintenance enabled. An application changes a document's Body but leaves its Embedding value unchanged. Index maintenance is healthy, yet searches still reflect the old wording. What addresses the missing maintenance layer?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Recreate the vector index over the same unchanged Embedding values."
+        },
+        {
+          "id": "b",
+          "text": "Enable ALLOW_STALE_VECTOR_INDEX so the new text can affect similarity."
+        },
+        {
+          "id": "c",
+          "text": "Change the distance metric while retaining the old Embedding values."
+        },
+        {
+          "id": "d",
+          "text": "Generate and persist embeddings from the changed text through the refresh workflow."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "Index maintenance is not embedding generation; the stored vector must be refreshed from the new text.",
+      "deepExplanation": "There are separate source-text, embedding and index states. A healthy current index can accurately index a semantically obsolete vector. The latest format maintains vector DML, but it does not infer a model invocation whenever some other text column changes. Refreshing the actual vector supplies the changed indexed value.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Rebuilding over the same vectors does not make those vectors represent the new Body.",
+        "b": "The older-index stale-write setting is not the missing generation process in this latest-index scenario.",
+        "c": "A different distance formula does not regenerate the representation of the modified text."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Design for vector data, including vector data type, vector indexes, and size",
+      "difficulty": "advanced",
+      "complexity": "troubleshooting",
+      "sourceIds": [
+        "dp800-d3x-create-vector-index",
+        "dp800-d3-maintenance",
+        "dp800-d3-generate-embeddings",
+        "dp800-d3-vector-distance"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-vector-index-transact-sql",
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/05-generate-maintain-embeddings-sql-database-workloads",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+      ],
+      "documentationTitles": [
+        "CREATE VECTOR INDEX (Transact-SQL) (Preview)",
+        "Generate and maintain embeddings for SQL database workloads",
+        "AI_GENERATE_EMBEDDINGS (Transact-SQL)",
+        "VECTOR_DISTANCE (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.872Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.872Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "vector-index",
+        "latest-index",
+        "preview",
+        "embedding-freshness",
+        "maintenance-layers"
+      ],
+      "conceptId": "sql-latest-vector-index-dml-maintenance-does-not-regenerate-text-embeddings",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-017",
+      "question": "A team imports an Azure SQL Database into a region with latest Preview vector-index support. The table's clustered primary key is valid. The initial load has 130 rows but only 95 nonnull vectors. The deployment artifact creates schema before data. Which plan respects both vector-index deployment ordering and its creation data requirement?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Keep the vector index in the import artifact and generate the missing vectors after the import finishes."
+        },
+        {
+          "id": "b",
+          "text": "Exclude the vector index from import, load at least 100 nonnull vectors, then create the index."
+        },
+        {
+          "id": "c",
+          "text": "Exclude the vector index from import, load the stated 130 rows, then create it before generating more vectors."
+        },
+        {
+          "id": "d",
+          "text": "Exclude the vector index from import, create it on the empty target table, then load the vectors."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Create the vector index after importing data and reaching at least 100 nonnull vector values.",
+      "deepExplanation": "The current reference excludes vector indexes from DacPac/BACPAC deployment because schema creation precedes loading the required data. The creation minimum counts nonnull vectors, not total rows. The supplied clustered key clears a different prerequisite; it does not waive either ordering or data requirements.",
+      "whyOtherAnswersAreWrong": {
+        "a": "The schema-first import attempts index creation before the required vectors have been loaded.",
+        "c": "The load contains only 95 nonnull vectors, so 130 total rows do not meet the minimum.",
+        "d": "An empty target has none of the required vector data at the moment of index creation."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Design for vector data, including vector data type, vector indexes, and size",
+      "difficulty": "advanced",
+      "complexity": "architecture-design",
+      "sourceIds": ["dp800-d3x-create-vector-index"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-vector-index-transact-sql"
+      ],
+      "documentationTitles": ["CREATE VECTOR INDEX (Transact-SQL) (Preview)"],
+      "generatedAt": "2026-09-16T20:50:00.872Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.872Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "vector-index",
+        "deployment-order",
+        "nonnull-vectors",
+        "preview",
+        "azure-sql-database"
+      ],
+      "conceptId": "sql-vector-index-deployment-defers-creation-until-nonnull-vector-minimum",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-018",
+      "question": "On SQL Server 2025, @queryVector and @storedVector are valid, nonnull, nonzero native vectors. Before attempting a comparison, a diagnostic must report each vector's component count without rescaling either value. Which function/property combination directly returns those counts?",
+      "questionType": "single-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "VECTORPROPERTY(vector, 'Dimensions') for each vector."
+        },
+        {
+          "id": "b",
+          "text": "VECTOR_NORMALIZE(vector, 'norm2') for each vector."
+        },
+        {
+          "id": "c",
+          "text": "VECTORPROPERTY(vector, 'BaseType') for each vector."
+        },
+        {
+          "id": "d",
+          "text": "VECTOR_DISTANCE('cosine', @queryVector, @storedVector)."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "VECTORPROPERTY with Dimensions returns the integer component count of its input vector.",
+      "deepExplanation": "Metadata inspection is different from normalizing vector scale or calculating a distance. Matching dimensions is useful validation, but is not proof that two vectors share a model space or provide relevant search results.",
+      "whyOtherAnswersAreWrong": {
+        "b": "It returns a rescaled vector, not a component-count metadata value.",
+        "c": "BaseType reports the element type name rather than the number of dimensions.",
+        "d": "It attempts a pairwise distance calculation instead of reporting the two dimension counts."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Identify when to use vector-related types and functions for semantic searching, including VECTOR\\_NORMALIZE, VECTOR\\_DISTANCE, VECTORPROPERTY, and VECTOR\\_SEARCH",
+      "difficulty": "beginner",
+      "complexity": "concept-recall",
+      "sourceIds": [
+        "dp800-d3x-vector-property",
+        "dp800-d3-vector-normalize",
+        "dp800-d3-vector-distance"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vectorproperty-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-normalize-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+      ],
+      "documentationTitles": [
+        "VECTORPROPERTY (Transact-SQL)",
+        "VECTOR_NORMALIZE (Transact-SQL)",
+        "VECTOR_DISTANCE (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T21:09:02.686Z",
+      "lastValidatedAt": "2026-09-16T21:09:02.686Z",
+      "featureStatus": "GA",
+      "tags": ["vectorproperty", "dimensions", "metadata", "sql-server-2025"],
+      "conceptId": "sql-vectorproperty-dimensions-inspects-component-count-without-normalization",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-019",
+      "question": "For a Preview vector-search evaluation in Azure SQL Database, feature availability is confirmed and every configuration uses the same snapshot, filters, metric and k = 5. Mean recall@5 across the two cases must be at least 0.8 and measured p95 at most 90 ms. The labels identify test configurations, not SQL options. Which configuration meets both gates?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Fast ANN."
+        },
+        {
+          "id": "b",
+          "text": "Exact nearest-neighbor search."
+        },
+        {
+          "id": "c",
+          "text": "Wide ANN."
+        },
+        {
+          "id": "d",
+          "text": "Balanced ANN."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "Balanced ANN finds four of the exact five neighbors for each query, giving mean recall@5 = 0.8, and its p95 is 75 ms.",
+      "deepExplanation": "Fast ANN has recall 2/5 and 3/5, averaging 0.5. Wide ANN and exact search preserve all five neighbors in these fixtures but exceed the latency gate. This is a measured decision for the fixed evaluation, not a universal row-count threshold, claim of perfect semantic relevance or guarantee about future traffic.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Its mean recall is 0.5, below 0.8, despite the lower latency.",
+        "b": "It supplies the exact baseline but its measured 110 ms p95 exceeds the allowed 90 ms.",
+        "c": "It meets recall but its 95 ms p95 exceeds the latency gate."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Choose between using ANN and ENN for vector search",
+      "difficulty": "advanced",
+      "complexity": "architecture-design",
+      "sourceIds": [
+        "dp800-d3-prepare-vectors-unit",
+        "dp800-d3-vector-search",
+        "dp800-d3-vector-distance"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/04-prepare-sql-vector-search",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+      ],
+      "documentationTitles": [
+        "Prepare SQL for vector search",
+        "VECTOR_SEARCH (Transact-SQL) (Preview)",
+        "VECTOR_DISTANCE (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.874Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "ann-versus-enn",
+        "recall-at-k",
+        "benchmark",
+        "preview",
+        "fixed-snapshot"
+      ],
+      "codeLanguage": "json",
+      "codeSnippet": "{\n  \"query_1\": {\n    \"exact\": [1,2,3,4,5],\n    \"Fast\": [1,2,6,7,8],\n    \"Balanced\": [1,2,3,4,9],\n    \"Wide\": [1,2,3,4,5]\n  },\n  \"query_2\": {\n    \"exact\": [11,12,13,14,15],\n    \"Fast\": [11,12,13,16,17],\n    \"Balanced\": [11,12,13,14,18],\n    \"Wide\": [11,12,13,14,15]\n  },\n  \"measured_p95_ms\": {\"Fast\":35,\"Balanced\":75,\"Wide\":95,\"Exact\":110}\n}",
+      "conceptId": "sql-ann-enn-selection-measures-exact-neighbor-overlap-and-latency-on-matched-fixtures",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-020",
+      "question": "Before choosing a metric for a Preview DiskANN index in an enabled Azure SQL Database lab, a team validates its model's stipulated scoring contract: larger unnormalized q·v is better, and magnitude must remain meaningful. Which index metric and exact validation ordering implement that contract for the shown vectors?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "METRIC = 'dot'; order VECTOR_DISTANCE('dot', @q, v) descending."
+        },
+        {
+          "id": "b",
+          "text": "METRIC = 'dot'; order VECTOR_DISTANCE('dot', @q, v) ascending."
+        },
+        {
+          "id": "c",
+          "text": "METRIC = 'cosine'; order VECTOR_DISTANCE('cosine', @q, v) ascending."
+        },
+        {
+          "id": "d",
+          "text": "METRIC = 'euclidean'; order VECTOR_DISTANCE('euclidean', @q, v) ascending."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "SQL's dot distance is the negative dot product, so ascending distance implements descending unnormalized q·v.",
+      "deepExplanation": "The raw products for A, B and C are 4, 3 and 1; SQL dot distances are -4, -3 and -1. Cosine changes the objective by ignoring magnitude, and Euclidean measures a different geometry. VECTOR_DISTANCE remains an exact validation operation even though the selected metric will also configure a Preview index.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Descending negative dot distance reverses the required preference.",
+        "c": "Cosine does not preserve the stipulated magnitude-sensitive scoring objective.",
+        "d": "Euclidean proximity is not the specified unnormalized dot-product score."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Evaluate vector index types and metrics",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": [
+        "dp800-d3-vector-distance",
+        "dp800-d3x-create-vector-index"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-vector-index-transact-sql"
+      ],
+      "documentationTitles": [
+        "VECTOR_DISTANCE (Transact-SQL)",
+        "CREATE VECTOR INDEX (Transact-SQL) (Preview)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.874Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "vector-metric",
+        "negative-dot",
+        "diskann",
+        "preview",
+        "magnitude"
+      ],
+      "codeLanguage": "sql",
+      "codeSnippet": "DECLARE @q VECTOR(2) = '[1,0]';\nDECLARE @a VECTOR(2) = '[4,6]';\nDECLARE @b VECTOR(2) = '[3,0]';\nDECLARE @c VECTOR(2) = '[1,1]';",
+      "conceptId": "sql-negative-dot-distance-orders-magnitude-sensitive-model-scores-ascending",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-021",
+      "question": "An enabled Azure SQL Database uses a latest-version Preview vector index and a valid matching query vector. A report must request a global pool of up to 20 approximate document matches, count those rows by Category, then show the three largest categories with alphabetical tie-breaking. Which rewrite preserves those stages and the current approximate-query restrictions?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Use inner TOP (20) WITH APPROXIMATE ordered only by distance; group its output in an outer query with TOP (3) ordered by count descending, Category ascending."
+        },
+        {
+          "id": "b",
+          "text": "Group by Category inside the TOP WITH APPROXIMATE query; order that same query by count descending and Category ascending."
+        },
+        {
+          "id": "c",
+          "text": "Request up to 20 matches separately for each Category; combine those pools, then retain the three categories with the largest counts."
+        },
+        {
+          "id": "d",
+          "text": "Use inner TOP (3) WITH APPROXIMATE ordered by distance and Category; then count its output by Category without another limit."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "Separate approximate candidate selection from aggregation and final category ordering.",
+      "deepExplanation": "The latest approximate layer requires distance-only ascending ordering; GROUP BY and secondary ordering belong in an outer query over its results. The 20-document cap and three-category cap apply to different objects. Per-category retrieval would change the global-pool semantics, while applying a three-document cap too early changes the report.",
+      "whyOtherAnswersAreWrong": {
+        "b": "Grouping and ordering by count in the approximate layer violate the documented subquery pattern and distance-only ordering restriction.",
+        "c": "Twenty candidates per category are not the requested global pool of up to twenty documents.",
+        "d": "It both changes the document budget to three and adds a disallowed secondary ordering key inside the approximate layer."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Implement vector search",
+      "difficulty": "advanced",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3-vector-search", "dp800-d3x-top"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql"
+      ],
+      "documentationTitles": [
+        "VECTOR_SEARCH (Transact-SQL) (Preview)",
+        "TOP (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.874Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "vector-search",
+        "latest-index",
+        "preview",
+        "aggregation",
+        "query-layers"
+      ],
+      "codeLanguage": "sql",
+      "codeSnippet": "-- The attempted single-layer report is not valid for this contract.\nSELECT TOP (3) WITH APPROXIMATE\n    d.Category, COUNT(*) AS Hits\nFROM VECTOR_SEARCH(\n    TABLE = dbo.Documents AS d,\n    COLUMN = Embedding,\n    SIMILAR_TO = @q,\n    METRIC = 'cosine'\n) AS r\nGROUP BY d.Category\nORDER BY Hits DESC, d.Category ASC;",
+      "conceptId": "sql-latest-vector-search-separates-global-document-cap-from-outer-category-aggregation",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-022",
+      "question": "In an enabled Azure SQL Database Preview environment, a latest-version vector index matches the query's column and metric. The optimizer selects kNN for a selective filter. An engineer wants a controlled comparison that forces ANN for this benchmark, not a claim that ANN is better in production. Which change uses the documented control?",
+      "questionType": "single-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Drop the vector index and keep the same approximate request."
+        },
+        {
+          "id": "b",
+          "text": "Remove WITH APPROXIMATE while keeping TOP and distance ordering."
+        },
+        {
+          "id": "c",
+          "text": "Keep TOP WITH APPROXIMATE and the compatible index, and add WITH (FORCE_ANN_ONLY) to the VECTOR_SEARCH result alias."
+        },
+        {
+          "id": "d",
+          "text": "Change the query to a metric for which the column has no matching ANN index."
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "FORCE_ANN_ONLY is the documented hint for forcing the approximate index strategy when its prerequisites are present.",
+      "deepExplanation": "Latest-version optimization can legitimately choose kNN despite a compatible index. The hint requires both an index and a TOP WITH APPROXIMATE query; it is not a way to manufacture a missing index. Benchmark the resulting latency and recall instead of treating forced ANN as an automatic improvement.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Without the index the approximate index strategy is unavailable.",
+        "b": "TOP ordered by distance without APPROXIMATE uses exact kNN semantics.",
+        "d": "A metric mismatch removes ANN compatibility and leads to the documented fallback rather than forcing ANN."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Choose between using ANN and ENN for vector search",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3-vector-search"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql"
+      ],
+      "documentationTitles": ["VECTOR_SEARCH (Transact-SQL) (Preview)"],
+      "generatedAt": "2026-09-16T20:50:00.874Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "ann-versus-knn",
+        "force-ann-only",
+        "benchmark",
+        "preview",
+        "latest-index"
+      ],
+      "conceptId": "sql-latest-vector-search-force-ann-only-is-a-benchmark-control-not-a-performance-promise",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-023",
+      "question": "A SQL Server 2025 hybrid pipeline receives one row per DocumentId in each hit table. Nonnull keyword scores and vector distances have no ties. It needs each branch's best ten, then the five highest fused scores; fused-score ties may be in any order. RRF arithmetic is already correct. Which repair makes all three candidate limits honor their intended ranking?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Keep the three CTEs unchanged and sort only the final output by rrf_score."
+        },
+        {
+          "id": "b",
+          "text": "Order TOP in K by KeywordScore DESC and in V by Distance ASC, but leave F's TOP unordered."
+        },
+        {
+          "id": "c",
+          "text": "Order F's TOP by rrf_score DESC, but rely on each branch's RANK window to control its TOP."
+        },
+        {
+          "id": "d",
+          "text": "Add query-level ORDER BY to K's TOP, V's TOP and F's TOP using their respective intended scores."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "Each TOP must have the appropriate query-level ORDER BY in its own scope.",
+      "deepExplanation": "A RANK window computes a position; it does not supply the query-level ordering that defines TOP's selected subset. Likewise, sorting after an unordered fusion cap cannot recover a higher-scoring row that the cap discarded. The necessary orders are KeywordScore DESC in K, Distance ASC in V and rrf_score DESC in F.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Final presentation sorting cannot repair any of the three earlier unordered selections.",
+        "b": "The branch pools become correct, but F can still discard the best fused rows before final sorting.",
+        "c": "The fusion limit becomes correct only over whichever arbitrary branch rows survived; a window order does not bind branch TOP."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Implement hybrid search",
+      "difficulty": "advanced",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d3-hybrid", "dp800-d3x-top", "dp800-d3x-rank"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking",
+        "https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/rank-transact-sql"
+      ],
+      "documentationTitles": [
+        "Implement hybrid search and ranking",
+        "TOP (Transact-SQL)",
+        "RANK (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.874Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+      "featureStatus": "GA",
+      "tags": ["hybrid-search", "rank-fusion", "top-ordering", "query-scope"],
+      "codeLanguage": "sql",
+      "codeSnippet": "WITH K AS (\n    SELECT TOP (10) DocumentId,\n        RANK() OVER (ORDER BY KeywordScore DESC) AS kr\n    FROM dbo.KeywordHits\n), V AS (\n    SELECT TOP (10) DocumentId,\n        RANK() OVER (ORDER BY Distance ASC) AS vr\n    FROM dbo.VectorHits\n), F AS (\n    SELECT TOP (5) COALESCE(K.DocumentId,V.DocumentId) AS DocumentId,\n        COALESCE(1.0/(30+kr),0.0) + COALESCE(1.0/(30+vr),0.0) AS rrf_score\n    FROM K FULL OUTER JOIN V ON K.DocumentId = V.DocumentId\n)\nSELECT DocumentId, rrf_score FROM F ORDER BY rrf_score DESC;",
+      "conceptId": "sql-hybrid-shortlists-bind-top-ordering-in-each-branch-and-fusion-scope",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-024",
+      "question": "A SQL Server 2025 RRF implementation stores nullable integer rank positions from 1 through 1,000; NULL means absence from that list. Every present contribution must be fractional and every absent contribution zero. The shown expression produces zeros or NULLs. Which replacement fixes arithmetic evaluation and missing-list handling without inventing a rank for an absent document?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "CAST(COALESCE(1/(60+kr),0) + COALESCE(1/(60+vr),0) AS decimal(18,8))"
+        },
+        {
+          "id": "b",
+          "text": "COALESCE(1.0/(60+kr),0.0) + COALESCE(1.0/(60+vr),0.0)"
+        },
+        {
+          "id": "c",
+          "text": "COALESCE(1.0/(60+kr) + 1.0/(60+vr),0.0)"
+        },
+        {
+          "id": "d",
+          "text": "1.0/(60+COALESCE(kr,0)) + 1.0/(60+COALESCE(vr,0))"
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Use noninteger division for each contribution and replace each missing contribution, not its rank, with zero.",
+      "deepExplanation": "Casting after integer division cannot recover a fractional value already truncated to zero. Coalescing only the complete sum loses the present side when the other side is NULL. Substituting rank zero gives an absent list a positive 1/60 contribution. These are separate SQL evaluation errors, not a change to the stipulated RRF constant.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Both divisions still execute with integer operands before the final cast.",
+        "c": "A NULL on either side makes the sum NULL, so the outer COALESCE discards the other valid contribution.",
+        "d": "It turns absence into rank zero and awards a contribution the document did not earn."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Implement reciprocal rank fusion (RRF)",
+      "difficulty": "advanced",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d3-hybrid", "dp800-d3x-divide"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking",
+        "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/divide-transact-sql"
+      ],
+      "documentationTitles": [
+        "Implement hybrid search and ranking",
+        "/ (Division) (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.874Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+      "featureStatus": "GA",
+      "tags": ["rrf", "integer-division", "null-handling", "sql-expression"],
+      "codeLanguage": "sql",
+      "codeSnippet": "-- kr and vr are nullable int columns; present ranks are 1 through 1000.\nSELECT DocumentId,\n       CAST(1/(60+kr) + 1/(60+vr) AS decimal(18,8)) AS rrf_score\nFROM dbo.RankedDocuments;",
+      "conceptId": "sql-rrf-expression-prevents-integer-truncation-and-null-contribution-poisoning",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-025",
+      "question": "A fixed SQL Server 2025 full-text/exact-vector benchmark has four relevant documents for each of two queries. Each displayed list contains three distinct documents; true marks a relevant result in rank order. Require mean relevance recall@3 ≥ 0.5 and measured p95 ≤ 100 ms, then maximize mean reciprocal rank, breaking ties by lower p95. Which measured pipeline wins?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Keyword only."
+        },
+        {
+          "id": "b",
+          "text": "Vector only."
+        },
+        {
+          "id": "c",
+          "text": "Hybrid with a ten-candidate branch budget."
+        },
+        {
+          "id": "d",
+          "text": "Hybrid with a fifty-candidate branch budget."
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Vector-only and hybrid-ten both have mean recall 0.5 and MRR 0.75; hybrid-ten wins their latency tie-break at 75 ms.",
+      "deepExplanation": "Keyword-only finds one of four relevant documents per query, failing recall. Vector-only and hybrid-ten each find two of four and place the first relevant result at ranks one and two across the two queries, so both have MRR (1 + 1/2)/2 = 0.75. Hybrid-fifty has better relevance in these fixtures but fails the latency ceiling. This selects a supplied benchmark result, not a universal best candidate budget.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Its mean relevance recall is only 0.25, below the required floor.",
+        "b": "It passes both gates but has the same MRR as hybrid-ten and a higher p95 of 90 ms.",
+        "d": "Its 140 ms p95 fails the latency gate despite the stronger relevance results."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Evaluate performance of vector and hybrid search",
+      "difficulty": "advanced",
+      "complexity": "scenario-based",
+      "sourceIds": ["dp800-d3-hybrid"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking"
+      ],
+      "documentationTitles": ["Implement hybrid search and ranking"],
+      "generatedAt": "2026-09-16T20:50:00.874Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+      "featureStatus": "GA",
+      "tags": [
+        "search-evaluation",
+        "relevance-recall",
+        "mrr",
+        "latency",
+        "candidate-budget"
+      ],
+      "codeLanguage": "json",
+      "codeSnippet": "{\n  \"Keyword\": {\"q1\":[true,false,false],\"q2\":[false,true,false],\"p95_ms\":40},\n  \"Vector\": {\"q1\":[false,true,true],\"q2\":[true,true,false],\"p95_ms\":90},\n  \"Hybrid10\": {\"q1\":[true,true,false],\"q2\":[false,true,true],\"p95_ms\":75},\n  \"Hybrid50\": {\"q1\":[true,true,true],\"q2\":[true,true,true],\"p95_ms\":140}\n}",
+      "conceptId": "sql-hybrid-evaluation-separates-relevance-recall-first-hit-rank-and-latency-gates",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-026",
+      "question": "A database-backed assistant answers questions about policies that change during the day. Responses must be based on the policy records retrieved for that request, and the application must retain which records supplied the context. The model's weights are not updated for each policy edit. Which design matches this requirement?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Use a one-time fine-tuned snapshot and answer later questions without retrieving policy records."
+        },
+        {
+          "id": "b",
+          "text": "Cache one unversioned policy summary and reuse it for every request after edits."
+        },
+        {
+          "id": "c",
+          "text": "Ask the model to infer the organization's current policies from general pretrained knowledge."
+        },
+        {
+          "id": "d",
+          "text": "Retrieve applicable current records, include their content in the prompt, and retain the request's source identifiers."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "RAG supplies request-relevant database content to the model and can retain the records used for that request.",
+      "deepExplanation": "Retrieval, prompt augmentation and generation are distinct stages. This design addresses the changing-source and traceability requirements without claiming that RAG automatically guarantees freshness, authorization or factual answers. The application still owns retrieval correctness, access checks and response validation.",
+      "whyOtherAnswersAreWrong": {
+        "a": "A frozen training snapshot without request-time retrieval cannot account for the stated intervening policy edits.",
+        "b": "An unversioned reused summary does not establish which current records informed a later request.",
+        "c": "General pretrained knowledge is not evidence of this organization's current policy records."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-retrieval-augmented-generation-rag",
+      "subskill": "Identify use cases for RAG",
+      "difficulty": "intermediate",
+      "complexity": "architecture-design",
+      "sourceIds": ["dp800-d3x-rag-architecture"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/2-identify-rag-use-cases-architecture"
+      ],
+      "documentationTitles": ["Identify RAG use cases and architecture"],
+      "generatedAt": "2026-09-16T20:50:00.877Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+      "featureStatus": "Not applicable",
+      "tags": [
+        "rag",
+        "changing-knowledge",
+        "source-traceability",
+        "methodology"
+      ],
+      "conceptId": "rag-request-time-retrieval-and-source-traceability-for-changing-domain-knowledge",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-027",
+      "question": "An Azure SQL Database procedure will send a RAG prompt with sp_invoke_external_rest_endpoint. The validated endpoint contract requires a root messages array with system and user objects, each having string content. @user contains retrieved context plus the question, including quotes, backslashes and a newline. Which expression preserves both that structure and the complete string values?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "JSON_OBJECT('messages': JSON_ARRAY(JSON_OBJECT('role':'system','content':@system), JSON_OBJECT('role':'user','content':@user)))"
+        },
+        {
+          "id": "b",
+          "text": "N'{\"messages\":[{\"role\":\"system\",\"content\":\"' + @system + N'\"},{\"role\":\"user\",\"content\":\"' + @user + N'\"}]}'"
+        },
+        {
+          "id": "c",
+          "text": "JSON_OBJECT('messages': JSON_OBJECT('system':@system, 'user':@user))"
+        },
+        {
+          "id": "d",
+          "text": "JSON_OBJECT('messages': JSON_ARRAY(JSON_OBJECT('role':'system','content':@system), JSON_OBJECT('role':'user','content':JSON_QUERY(@context))))"
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "Use JSON constructors for the messages array and its role/content objects, leaving the prepared user message as a string value.",
+      "deepExplanation": "JSON_OBJECT escapes string characters and preserves nested constructor arrays and objects. Manual syntax concatenation does not escape the quotes, backslashes and newline in @user. Valid JSON alone is not enough: messages must remain an array and user.content must contain the prepared text, not the raw retrieved array. None of these formatting choices enforces model grounding by itself.",
+      "whyOtherAnswersAreWrong": {
+        "b": "The source strings are inserted into JSON syntax without JSON escaping, so the supplied characters break the intended encoding.",
+        "c": "It creates a messages object instead of the required array of role/content objects.",
+        "d": "It puts the retrieved array in user.content and omits the prepared question-containing string."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-retrieval-augmented-generation-rag",
+      "subskill": "Create a prompt by using the sp\\_invoke\\_external\\_rest\\_endpoint stored procedure",
+      "difficulty": "advanced",
+      "complexity": "technical-implementation",
+      "sourceIds": [
+        "dp800-d3x-rag-prompts",
+        "dp800-d3x-json-object",
+        "dp800-d3x-json-query",
+        "dp800-d3x-rest-endpoint"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/4-augment-prompts-database-context",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-object-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-query-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql"
+      ],
+      "documentationTitles": [
+        "Augment prompts with database context",
+        "JSON_OBJECT (Transact-SQL)",
+        "JSON_QUERY (Transact-SQL)",
+        "sys.sp_invoke_external_rest_endpoint (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.877Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+      "featureStatus": "GA",
+      "tags": [
+        "rag-prompt",
+        "json-construction",
+        "escaping",
+        "message-schema",
+        "azure-sql-database"
+      ],
+      "codeLanguage": "sql",
+      "codeSnippet": "DECLARE @system nvarchar(max) = N'Use the supplied catalog; identify missing information.';\nDECLARE @context nvarchar(max) = N'[{\"item\":\"Sleeve\",\"size\":8}]';\nDECLARE @question nvarchar(max) = N'Can the 8\" sleeve be used with C:\\kits?' + NCHAR(10) + N'Explain using the catalog.';\nDECLARE @user nvarchar(max) = @context + NCHAR(10) + @question;\n-- Select the expression to assign to @payload before the approved REST call.",
+      "conceptId": "sql-rag-prompt-construction-preserves-message-shape-and-escapes-context-strings",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-028",
+      "question": "An Azure SQL Database procedure has already constructed @prompt as a valid nvarchar(max) JSON chat request accepted by its approved endpoint. The request contains nested messages. Authentication and URL configuration are valid. Which argument assignment sends that prompt as the request body rather than misusing headers, the URL or the response variable?",
+      "questionType": "single-select",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Set @headers = @prompt and send @payload = N'{}'."
+        },
+        {
+          "id": "b",
+          "text": "Set @payload = @prompt, @method = 'POST', and capture @response OUTPUT."
+        },
+        {
+          "id": "c",
+          "text": "Append the complete prompt JSON to @url and omit @payload."
+        },
+        {
+          "id": "d",
+          "text": "Initialize @response with @prompt and omit @payload."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "The payload argument carries the prepared request body; response OUTPUT captures what the endpoint returns.",
+      "deepExplanation": "The REST procedure separates URL, flat header metadata, body and output. A nested chat request belongs in @payload under the stipulated endpoint contract. Preparing valid prompt JSON and passing it to the correct transport parameter are separate tasks; the API does not infer the body from another variable.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Headers are a flat JSON metadata object, not a replacement for the nested request body.",
+        "c": "The endpoint expects the prompt in its body, and URL/query-string arguments are not the payload parameter.",
+        "d": "The response parameter is for returned data, not the outgoing prompt."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-retrieval-augmented-generation-rag",
+      "subskill": "Create a prompt by using the sp\\_invoke\\_external\\_rest\\_endpoint stored procedure",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3x-rag-prompts"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql",
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/4-augment-prompts-database-context"
+      ],
+      "documentationTitles": [
+        "sys.sp_invoke_external_rest_endpoint (Transact-SQL)",
+        "Augment prompts with database context"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.877Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+      "featureStatus": "GA",
+      "tags": [
+        "rag-prompt",
+        "rest-payload",
+        "request-versus-response",
+        "azure-sql-database"
+      ],
+      "conceptId": "sql-rag-prepared-prompt-binds-to-rest-payload-not-headers-or-response",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-029",
+      "question": "An Azure SQL Database query returns exactly two context rows. The receiving prompt formatter requires an items root containing an array of both rows, and a SQL NULL Note must remain an explicit JSON null rather than disappear. Which FOR JSON suffix satisfies that serialization contract?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "FOR JSON PATH, WITHOUT_ARRAY_WRAPPER"
+        },
+        {
+          "id": "b",
+          "text": "FOR JSON PATH, ROOT('items')"
+        },
+        {
+          "id": "c",
+          "text": "FOR JSON PATH, INCLUDE_NULL_VALUES, WITHOUT_ARRAY_WRAPPER"
+        },
+        {
+          "id": "d",
+          "text": "FOR JSON PATH, INCLUDE_NULL_VALUES, ROOT('items')"
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "Retain the default array, add ROOT('items'), and include null-valued properties explicitly.",
+      "deepExplanation": "Array shape, root naming and null representation are independent controls. WITHOUT_ARRAY_WRAPPER is intended for a single-row object, not this two-row array contract. Preserving a null can communicate that a field is present but unknown; it is not the same as omitting the field or replacing it with an empty string.",
+      "whyOtherAnswersAreWrong": {
+        "a": "It removes the array wrapper, adds no items root and still omits null-valued properties.",
+        "b": "It supplies the correct root and array, but default formatting omits the NULL Note.",
+        "c": "It retains null properties but removes the array and does not supply the required root."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-retrieval-augmented-generation-rag",
+      "subskill": "Convert structured data to JSON for language model processing",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3-for-json", "dp800-d3-rag-context"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server",
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/3-prepare-retrieval-context-augmentation"
+      ],
+      "documentationTitles": [
+        "Format query results as JSON with FOR JSON",
+        "Prepare retrieval context for augmentation"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.877Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+      "featureStatus": "GA",
+      "tags": [
+        "rag-context",
+        "for-json",
+        "null-preservation",
+        "multirow-array"
+      ],
+      "codeLanguage": "sql",
+      "codeSnippet": "SELECT ProductId, Note\nFROM (VALUES\n    (17, CAST(NULL AS nvarchar(50))),\n    (23, N'Restocked')\n) AS ContextRows(ProductId, Note)\nORDER BY ProductId\n-- append one FOR JSON suffix",
+      "conceptId": "sql-rag-json-context-preserves-explicit-null-within-rooted-multirow-array",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-030",
+      "question": "During an Azure SQL Database RAG gateway test, sp_invoke_external_rest_endpoint returns 0 and the response shown. The application currently marks every zero-return call as 'answer generated'. Which interpretation identifies why that rule is insufficient without treating a received 204 as a transport failure?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "A zero return value proves that the model supplied a nonempty answer string."
+        },
+        {
+          "id": "b",
+          "text": "HTTP 204 proves that the database could not make the HTTPS call."
+        },
+        {
+          "id": "c",
+          "text": "The HTTP call succeeded, but the application must separately validate that an answer payload exists."
+        },
+        {
+          "id": "d",
+          "text": "The missing result property means the stored procedure failed to capture any HTTP status."
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Zero indicates a received successful 2xx HTTP status, not a validated generated answer; 204 omits the result payload.",
+      "deepExplanation": "Transport success and application-level response sufficiency are different checks. The reference explicitly allows result to be omitted for 204 No Content. An inability to make the HTTPS call instead throws an exception. This is a supplied gateway fixture, not an assertion that every model's chat endpoint returns 204.",
+      "whyOtherAnswersAreWrong": {
+        "a": "The return code does not validate a provider schema or the presence of answer text.",
+        "b": "A received 204 is a 2xx success; failure to make the call is a different exception path.",
+        "d": "The supplied envelope contains the HTTP status even though it has no result body."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-retrieval-augmented-generation-rag",
+      "subskill": "Send results to language model",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3-rag-responses"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql",
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses"
+      ],
+      "documentationTitles": [
+        "sys.sp_invoke_external_rest_endpoint (Transact-SQL)",
+        "Generate and process RAG responses"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.877Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+      "featureStatus": "GA",
+      "tags": [
+        "rag-generation",
+        "http-204",
+        "transport-success",
+        "response-validation"
+      ],
+      "codeLanguage": "json",
+      "codeSnippet": "{\"response\":{\"status\":{\"http\":{\"code\":204,\"description\":\"No Content\"}},\"headers\":{}}}",
+      "conceptId": "sql-rag-http-success-does-not-prove-answer-body-on-no-content-response",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-031",
+      "question": "An Azure SQL Database RAG job sends 40 independent prepared requests through an approved Azure Functions gateway. Its tested contract accepts at most five requests per payload. The database allows 12 concurrent outbound calls; eight slots remain reserved for other work. With these reservations held fixed, which plan minimizes call count without exceeding either limit?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Launch eight five-request calls together and rely on @retry_count to absorb database worker-limit errors."
+        },
+        {
+          "id": "b",
+          "text": "Send eight five-request batches with at most four calls in flight at once."
+        },
+        {
+          "id": "c",
+          "text": "Send four ten-request batches with at most four calls in flight at once."
+        },
+        {
+          "id": "d",
+          "text": "Launch forty single-request calls together and increase each call's timeout."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Five requests per call require eight calls, and 12 minus eight reserved slots permits at most four concurrent calls.",
+      "deepExplanation": "Batch size and concurrency are separate budgets. The documented batching recommendation reduces HTTP overhead only when the receiving endpoint actually accepts the batch shape, as stipulated here. Retries and timeouts do not increase outbound-worker capacity, and the procedure's HTTP retry list does not turn a worker-limit plan into valid concurrency control.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Eight simultaneous calls exceed the four available slots; retry settings do not reserve additional workers.",
+        "c": "Ten requests per payload exceed the explicitly tested gateway limit of five.",
+        "d": "Forty simultaneous calls exceed the available slots and use more calls than valid batching requires."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-retrieval-augmented-generation-rag",
+      "subskill": "Send results to language model",
+      "difficulty": "advanced",
+      "complexity": "architecture-design",
+      "sourceIds": ["dp800-d3x-rest-endpoint", "dp800-d3-for-json"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server"
+      ],
+      "documentationTitles": [
+        "sys.sp_invoke_external_rest_endpoint (Transact-SQL)",
+        "Format query results as JSON with FOR JSON"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.877Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+      "featureStatus": "GA",
+      "tags": [
+        "rag-transport",
+        "batching",
+        "outbound-concurrency",
+        "capacity-budget",
+        "azure-sql-database"
+      ],
+      "conceptId": "sql-rag-batched-transport-respects-gateway-batch-size-and-outbound-worker-budget",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-032",
+      "question": "Azure SQL Database at compatibility level 170 receives the valid nvarchar(max) response shown. HTTP success is already checked. message.content is a string shorter than 4,000 characters containing another JSON document. The application needs one Answer scalar and the complete Citations array as JSON text. Which parsing plan respects both encoding layers and the array type?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Extract content with JSON_VALUE, parse that text with OPENJSON, and project citations as nvarchar(max) AS JSON."
+        },
+        {
+          "id": "b",
+          "text": "Extract content with JSON_QUERY, parse that fragment with OPENJSON, and project citations as nvarchar(max) AS JSON."
+        },
+        {
+          "id": "c",
+          "text": "Read content.answer and content.citations directly as nested paths in the outer response without parsing content again."
+        },
+        {
+          "id": "d",
+          "text": "Extract content with JSON_VALUE, parse that text with OPENJSON, and project citations as an ordinary scalar column without AS JSON."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "First decode the scalar content string, then parse its JSON document and preserve the citations array with AS JSON.",
+      "deepExplanation": "The outer response's content member is not itself an object even though its characters form JSON. JSON_VALUE retrieves that bounded scalar string; a second OPENJSON call interprets it as a document. In the typed WITH projection, Answer can map to $.answer and Citations needs nvarchar(max) '$.citations' AS JSON to retain the array rather than scalar-extract it.",
+      "whyOtherAnswersAreWrong": {
+        "b": "JSON_QUERY at the outer content path expects an object or array, but the supplied outer value is a string.",
+        "c": "JSON path traversal does not automatically parse JSON text stored inside a scalar string.",
+        "d": "A typed scalar projection does not retain the nested array; the documented fragment projection requires AS JSON."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-retrieval-augmented-generation-rag",
+      "subskill": "Extract language model responses",
+      "difficulty": "advanced",
+      "complexity": "technical-implementation",
+      "sourceIds": [
+        "dp800-d3-rag-responses",
+        "dp800-d3x-json-value",
+        "dp800-d3x-json-query",
+        "dp800-d3x-openjson"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-value-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-query-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql"
+      ],
+      "documentationTitles": [
+        "Generate and process RAG responses",
+        "JSON_VALUE (Transact-SQL)",
+        "JSON_QUERY (Transact-SQL)",
+        "OPENJSON (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.877Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.877Z",
+      "featureStatus": "GA",
+      "tags": [
+        "rag-response",
+        "nested-encoding",
+        "openjson",
+        "scalar-versus-fragment",
+        "citations"
+      ],
+      "codeLanguage": "json",
+      "codeSnippet": "{\"response\":{\"status\":{\"http\":{\"code\":200}}},\"result\":{\"choices\":[{\"message\":{\"content\":\"{\\\"answer\\\":\\\"Use catalog entry 17.\\\",\\\"citations\\\":[17,23]}\"}}]}}",
+      "conceptId": "sql-rag-response-decodes-json-in-content-string-before-projecting-citation-array",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-direct-021",
+      "question": "A SQL-backed semantic search stores a DisplayName containing the brand, a Description containing product features, an opaque StorageKey, and an operational ModifiedAt timestamp. Users ask brand-and-feature questions; the key and timestamp are not relevant to that retrieval task. Which embedding input includes both required semantic fields without those operational fields?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "DisplayName and StorageKey"
+        },
+        {
+          "id": "b",
+          "text": "Description and ModifiedAt"
+        },
+        {
+          "id": "c",
+          "text": "DisplayName and Description"
+        },
+        {
+          "id": "d",
+          "text": "StorageKey and ModifiedAt"
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Build the input from DisplayName and Description.",
+      "deepExplanation": "Embedding input should reflect the stated semantic task. This is not a universal ban on identifiers or dates: the scenario explicitly identifies where the required meaning resides and which metadata is irrelevant.",
+      "whyOtherAnswersAreWrong": {
+        "a": "This includes the brand but omits the feature description and adds an explicitly irrelevant opaque key.",
+        "b": "This omits the brand-bearing name and includes the operational timestamp excluded by the stated retrieval task.",
+        "d": "Neither field carries the brand-and-feature meaning required by the question; both are explicitly operational in this scenario."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Identify which columns to include in embeddings",
+      "difficulty": "beginner",
+      "complexity": "concept-recall",
+      "sourceIds": ["dp800-d3-input-design"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/04-design-embeddings-sql-database-workloads"
+      ],
+      "documentationTitles": ["Design embeddings for SQL database workloads"],
+      "generatedAt": "2026-09-16T20:50:00.879Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+      "featureStatus": "Not applicable",
+      "tags": ["embeddings", "semantic-input", "sql-data"],
+      "conceptId": "sql-embedding-input-semantic-fields-versus-operational-metadata",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-direct-022",
+      "question": "A SQL Server embedding-refresh worker will run in the background and read current source text. Its chosen database mechanism should identify rows changed since a version watermark without capturing before/after row images or requiring a custom change-log trigger. Which documented maintenance option matches that mechanism?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Change Tracking"
+        },
+        {
+          "id": "b",
+          "text": "Change Data Capture"
+        },
+        {
+          "id": "c",
+          "text": "A custom table trigger that logs each change"
+        },
+        {
+          "id": "d",
+          "text": "Microsoft Foundry model management alone"
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "Use Change Tracking as the changed-row signal for the background refresh worker.",
+      "deepExplanation": "This selects the change-detection mechanism, not a complete refresh implementation. Enabling and consuming that mechanism, reading current text and updating stored embeddings remain separate implementation tasks.",
+      "whyOtherAnswersAreWrong": {
+        "b": "CDC captures detailed data-change information including before/after values, contrary to the specified mechanism distinction.",
+        "c": "A trigger can react to writes, but the requirement explicitly avoids implementing a custom trigger-based change log.",
+        "d": "Model management supports selecting or hosting models; another mechanism must detect the database changes and coordinate refresh."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Choose an embedding maintenance method, including table triggers, Change Tracking, Azure Functions with SQL trigger binding, Azure Logic Apps, CDC, CES, and Microsoft Foundry",
+      "difficulty": "intermediate",
+      "complexity": "scenario-based",
+      "sourceIds": ["dp800-d3-maintenance"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/05-generate-maintain-embeddings-sql-database-workloads"
+      ],
+      "documentationTitles": [
+        "Generate and maintain embeddings for SQL database workloads"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.879Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+      "featureStatus": "GA",
+      "tags": ["embeddings", "change-tracking", "maintenance"],
+      "conceptId": "sql-embedding-refresh-change-tracking-versus-row-image-capture",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-direct-023",
+      "question": "On SQL Server 2025, VECTOR_DISTANCE computes exact distance without using a vector index, even when a vector index exists. Is this statement true or false?",
+      "questionType": "true-false",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "True"
+        },
+        {
+          "id": "b",
+          "text": "False"
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "The statement is true: VECTOR_DISTANCE performs exact calculation without a vector index.",
+      "deepExplanation": "This is a basic function-contract check, not an implementation or performance-design problem. An approximate-search operation has separate API, platform and index prerequisites; it is not selected automatically by VECTOR_DISTANCE.",
+      "whyOtherAnswersAreWrong": {
+        "b": "Index existence does not change VECTOR_DISTANCE into approximate index-assisted search. The source identifies VECTOR_SEARCH as a separate operation for that purpose."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Identify when to use vector-related types and functions for semantic searching, including VECTOR\\_NORMALIZE, VECTOR\\_DISTANCE, VECTORPROPERTY, and VECTOR\\_SEARCH",
+      "difficulty": "beginner",
+      "complexity": "concept-recall",
+      "sourceIds": ["dp800-d3-vector-distance"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+      ],
+      "documentationTitles": ["VECTOR_DISTANCE (Transact-SQL)"],
+      "generatedAt": "2026-09-16T20:50:00.879Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+      "featureStatus": "GA",
+      "tags": ["sql-server-2025", "vector-distance", "exact-search"],
+      "conceptId": "sql-vector-distance-is-exact-and-does-not-use-vector-index",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-direct-024",
+      "question": "A SQL hybrid-search implementation uses RRF with k = 20 and contribution 1/(k + rank) from each list, with zero for an absent document. Document A is rank 1 only in the keyword list; B is rank 2 in both lists; C is rank 1 only in the vector list. Which document has the highest combined score?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "A, because rank 1 in the keyword list outweighs any rank-2 result"
+        },
+        {
+          "id": "b",
+          "text": "C, because a vector rank always has priority over a keyword rank"
+        },
+        {
+          "id": "c",
+          "text": "A and C tie for the highest score"
+        },
+        {
+          "id": "d",
+          "text": "B, because its two contributions sum to 2/22"
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "B has the highest combined score: 2/22 is greater than 1/21.",
+      "deepExplanation": "RRF combines rank-based contributions rather than comparing incompatible raw relevance scores. The value of k is supplied by this problem, not asserted as a universal SQL default or optimal setting.",
+      "whyOtherAnswersAreWrong": {
+        "a": "A contributes 1/21, whereas B contributes 1/22 twice. The specified sum gives B the higher combined score.",
+        "b": "The stated formula gives equal treatment to each list; it supplies no automatic vector priority.",
+        "c": "A and C do tie at 1/21, but both scores are below B's 2/22."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Implement reciprocal rank fusion (RRF)",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3-hybrid"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking"
+      ],
+      "documentationTitles": ["Implement hybrid search and ranking"],
+      "generatedAt": "2026-09-16T20:50:00.879Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+      "featureStatus": "Not applicable",
+      "tags": ["hybrid-search", "rrf", "ranking"],
+      "conceptId": "sql-hybrid-rrf-sums-reciprocal-rank-contributions",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-direct-025",
+      "question": "Two SQL ranked-result CTEs contain at most one row per DocumentId. Hybrid fusion must retain keyword-only, vector-only and shared documents, combine a shared document once by its ID, and assign zero to a missing list's contribution. Which join pattern provides the required candidate coverage?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "FULL OUTER JOIN on DocumentId, using COALESCE for the output ID and missing contributions"
+        },
+        {
+          "id": "b",
+          "text": "INNER JOIN on DocumentId, using zero for any missing contribution"
+        },
+        {
+          "id": "c",
+          "text": "LEFT JOIN from the keyword list to the vector list on DocumentId"
+        },
+        {
+          "id": "d",
+          "text": "CROSS JOIN the lists and keep one output row for every pair"
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "Use a full outer join by the unique document key and fill absent contributions with zero.",
+      "deepExplanation": "Candidate inclusion is separate from the scoring formula. The unique-per-list key premise matters: a many-to-many join could otherwise duplicate shared documents. This does not adopt the training sample's unordered TOP clauses.",
+      "whyOtherAnswersAreWrong": {
+        "b": "An inner join removes documents absent from either list before a missing contribution could be filled with zero.",
+        "c": "This preserves keyword-only rows but loses documents that appear exclusively in the vector list.",
+        "d": "Pairing every keyword result with every vector result does not combine matching document IDs once and can multiply unrelated candidate rows."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Implement hybrid search",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3-hybrid"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking"
+      ],
+      "documentationTitles": ["Implement hybrid search and ranking"],
+      "generatedAt": "2026-09-16T20:50:00.879Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+      "featureStatus": "GA",
+      "tags": ["hybrid-search", "candidate-union", "sql-joins"],
+      "conceptId": "sql-hybrid-fusion-preserves-either-list-with-full-outer-join",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-direct-026",
+      "question": "An Azure SQL Database query formats a single retrieved row as RAG context using the statement shown. Ignoring whitespace, which JSON shape is produced?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "[{\"item.label\":\"Field kit\",\"item.units\":12}]"
+        },
+        {
+          "id": "b",
+          "text": "{\"item\":{\"label\":\"Field kit\",\"units\":12}}"
+        },
+        {
+          "id": "c",
+          "text": "[{\"item\":{\"label\":\"Field kit\",\"units\":12}}]"
+        },
+        {
+          "id": "d",
+          "text": "{\"items\":[{\"item\":{\"label\":\"Field kit\",\"units\":12}}]}"
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "The result is an array containing one nested item object.",
+      "deepExplanation": "PATH alias nesting, the default array and a named ROOT are distinct formatting controls. Correct formatting preserves structure but does not by itself guarantee a language model will stay grounded.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Under PATH mode, the dotted aliases define nested properties rather than the flat dotted-name structure shown here.",
+        "b": "The statement has not requested WITHOUT_ARRAY_WRAPPER, so the default array wrapper is retained even for one row.",
+        "d": "A named outer root is not requested by the shown statement."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-retrieval-augmented-generation-rag",
+      "subskill": "Convert structured data to JSON for language model processing",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3-rag-context", "dp800-d3-for-json"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/3-prepare-retrieval-context-augmentation",
+        "https://learn.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server"
+      ],
+      "documentationTitles": [
+        "Prepare retrieval context for augmentation",
+        "Format query results as JSON with FOR JSON"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.879Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+      "featureStatus": "GA",
+      "tags": ["rag", "for-json-path", "structured-context"],
+      "codeLanguage": "sql",
+      "codeSnippet": "SELECT N'Field kit' AS [item.label],\n       12 AS [item.units]\nFOR JSON PATH;",
+      "conceptId": "sql-for-json-path-dot-alias-nesting-default-array",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-direct-027",
+      "question": "An Azure SQL Database workflow has the valid JSON response shown in @response. The answer is a scalar string shorter than 200 characters. Which expression extracts that answer text rather than HTTP metadata or an object/array?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "JSON_VALUE(@response, '$.choices[0].message.content')"
+        },
+        {
+          "id": "b",
+          "text": "JSON_VALUE(@response, '$.result.choices[0].message.content')"
+        },
+        {
+          "id": "c",
+          "text": "JSON_QUERY(@response, '$.result.choices[0].message.content')"
+        },
+        {
+          "id": "d",
+          "text": "JSON_VALUE(@response, '$.response.status.http.code')"
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Use JSON_VALUE at $.result.choices[0].message.content.",
+      "deepExplanation": "Both the JSON path and the extracted value's type matter. The response shape and bounded string length are given explicitly; the answer does not assume every model API uses this envelope or that JSON_VALUE returns arbitrarily long strings.",
+      "whyOtherAnswersAreWrong": {
+        "a": "This path omits the result wrapper present in the supplied JSON, so it does not address the answer location.",
+        "c": "JSON_QUERY is for an object or array, whereas the supplied content value is a scalar string.",
+        "d": "This path addresses the HTTP status value 200, not the model answer text."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-retrieval-augmented-generation-rag",
+      "subskill": "Extract language model responses",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3-rag-responses"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-rag-with-sql/5-generate-process-rag-responses"
+      ],
+      "documentationTitles": ["Generate and process RAG responses"],
+      "generatedAt": "2026-09-16T20:50:00.879Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+      "featureStatus": "GA",
+      "tags": ["rag", "json-value", "response-parsing"],
+      "codeLanguage": "json",
+      "codeSnippet": "{\"response\":{\"status\":{\"http\":{\"code\":200}}},\"result\":{\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"The requested part is available.\"}}]}}",
+      "conceptId": "sql-rag-response-envelope-scalar-json-value-path",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-direct-046",
+      "question": "On SQL Server 2025, what vector does this expression produce, ignoring insignificant floating-point rounding?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Approximately [-0.428571, 0.571429]"
+        },
+        {
+          "id": "b",
+          "text": "Approximately [-0.75, 1.0]"
+        },
+        {
+          "id": "c",
+          "text": "Approximately [-0.6, 0.8]"
+        },
+        {
+          "id": "d",
+          "text": "Approximately [-3.0, 4.0]"
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "The norm2 length is 5, so the result is approximately [-0.6, 0.8].",
+      "deepExplanation": "The three supported norms use different denominators. Normalization changes scale, not direction; the norm2 calculation preserves the ratio and signs of these two components.",
+      "whyOtherAnswersAreWrong": {
+        "a": "These components divide the input by the sum of absolute values, 7, which is norm1 rather than the requested norm2.",
+        "b": "These components divide by the maximum absolute component, 4, which is norminf.",
+        "d": "That is the unnormalized input, whose Euclidean length is 5 rather than 1."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Identify when to use vector-related types and functions for semantic searching, including VECTOR\\_NORMALIZE, VECTOR\\_DISTANCE, VECTORPROPERTY, and VECTOR\\_SEARCH",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3-vector-normalize"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-normalize-transact-sql"
+      ],
+      "documentationTitles": ["VECTOR_NORMALIZE (Transact-SQL)"],
+      "generatedAt": "2026-09-16T20:50:00.882Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+      "featureStatus": "GA",
+      "tags": ["sql-server-2025", "vector-normalize", "euclidean-norm"],
+      "codeLanguage": "sql",
+      "codeSnippet": "DECLARE @v VECTOR(2) = '[-3,4]';\nSELECT VECTOR_NORMALIZE(@v, 'norm2');",
+      "conceptId": "sql-vector-normalize-euclidean-norm-calculation",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-direct-047",
+      "question": "An Azure SQL Database environment has the Preview vector-search feature and an earlier-version vector index. A valid VECTOR_SEARCH query uses that matching index with TOP_N = 5 and WHERE Approved = 1. Diagnostics show that its five nearest candidate rows all have Approved = 0, although other rows in the base table are approved. The query completes without an error but returns no rows. Which documented version-specific behavior explains this?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "The WHERE predicate is applied after the earlier-version top-candidate pool is selected."
+        },
+        {
+          "id": "b",
+          "text": "A metric mismatch causes a warning and kNN fallback."
+        },
+        {
+          "id": "c",
+          "text": "An ambiguous distance column reference prevents the query from executing."
+        },
+        {
+          "id": "d",
+          "text": "A view was supplied where VECTOR_SEARCH requires a base table."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "With an earlier index version, filtering happens after the TOP_N candidate selection.",
+      "deepExplanation": "This is not a universal statement about current vector indexes. The latest version supports iterative filtering and a different query syntax, with regional rollout and Preview qualifications.",
+      "whyOtherAnswersAreWrong": {
+        "b": "The scenario fixes a compatible matching index; the documented fallback is a different condition and does not explain this version's post-filter loss.",
+        "c": "The query successfully returns an empty set rather than the documented alias-ambiguity error.",
+        "d": "The stated input is a base table and the query completes; the unsupported-view restriction is not the explanation."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Implement vector search",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": ["dp800-d3-vector-search"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql"
+      ],
+      "documentationTitles": ["VECTOR_SEARCH (Transact-SQL) (Preview)"],
+      "generatedAt": "2026-09-16T20:50:00.882Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "azure-sql-database",
+        "preview",
+        "earlier-vector-index",
+        "post-filter"
+      ],
+      "conceptId": "sql-earlier-vector-index-top-n-pool-post-filter-empty-result",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-direct-048",
+      "question": "A Preview vector-search workload in an enabled Azure SQL Database environment must continue measuring Euclidean distance on its Embedding column. The only existing ANN index for that column uses cosine, so the query reports a compatibility warning and runs with kNN fallback. Which change supplies the missing ANN compatibility prerequisite without changing the required metric?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Change the query's metric to cosine and retain the existing index."
+        },
+        {
+          "id": "b",
+          "text": "Keep the Euclidean query and deliberately use kNN without a compatible ANN index."
+        },
+        {
+          "id": "c",
+          "text": "Create a Euclidean ANN index on a different vector column."
+        },
+        {
+          "id": "d",
+          "text": "Create the applicable vector index for Embedding using Euclidean distance."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "Match the vector index to both Embedding and the Euclidean metric.",
+      "deepExplanation": "A compatible index is a prerequisite, not a promise that every latest-version query plan will choose ANN. The current optimizer may choose an exact strategy based on query characteristics.",
+      "whyOtherAnswersAreWrong": {
+        "a": "That can match the existing index but changes the explicitly required Euclidean metric.",
+        "b": "The documented fallback can execute the query, but it does not supply ANN compatibility.",
+        "c": "The reference requires the same column as well as the same metric; an index on another column does not meet that condition."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Evaluate vector index types and metrics",
+      "difficulty": "intermediate",
+      "complexity": "architecture-design",
+      "sourceIds": ["dp800-d3-vector-search"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql"
+      ],
+      "documentationTitles": ["VECTOR_SEARCH (Transact-SQL) (Preview)"],
+      "generatedAt": "2026-09-16T20:50:00.882Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "azure-sql-database",
+        "preview",
+        "ann-index",
+        "metric-compatibility"
+      ],
+      "conceptId": "sql-ann-index-compatibility-requires-query-metric-and-column-match",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-direct-049",
+      "question": "An enabled Azure SQL Database table has a latest-version Preview vector index matching Embedding and cosine distance. @q is a valid nonnull VECTOR(1536) matching the column. The legacy query shown fails with Msg 42274. The application still needs to request up to five approximate results. Which paired edit repairs the version-specific syntax without changing that request?",
+      "questionType": "code",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Add WITH APPROXIMATE after TOP (5), but retain TOP_N = 5."
+        },
+        {
+          "id": "b",
+          "text": "Add WITH APPROXIMATE after TOP (5) and remove the TOP_N argument."
+        },
+        {
+          "id": "c",
+          "text": "Remove TOP_N but keep SELECT TOP (5) without WITH APPROXIMATE."
+        },
+        {
+          "id": "d",
+          "text": "Remove both TOP (5) and TOP_N, retaining the distance ordering."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Use SELECT TOP (5) WITH APPROXIMATE and omit the legacy TOP_N argument for the latest index version.",
+      "deepExplanation": "The current reference explicitly documents Msg 42274 when a latest index is queried with TOP_N. Removing only that argument changes the remaining TOP-plus-distance query to exact kNN semantics; removing both limits loses the requested cap. The repaired form requests approximate results without guaranteeing a particular physical plan or exactly five returned rows.",
+      "whyOtherAnswersAreWrong": {
+        "a": "The latest-index prohibition on TOP_N remains, so adding the outer clause alone does not remove the documented incompatibility.",
+        "c": "The reference identifies TOP with distance ordering but without APPROXIMATE as exact kNN, not the requested approximate form.",
+        "d": "The resulting full-scan form no longer requests a five-row approximate cap."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Implement vector search",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": [
+        "dp800-d3-vector-search",
+        "dp800-d3-vector-distance",
+        "dp800-d3-vector-type"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/data-types/vector-data-type"
+      ],
+      "documentationTitles": [
+        "VECTOR_SEARCH (Transact-SQL) (Preview)",
+        "VECTOR_DISTANCE (Transact-SQL)",
+        "Vector data type"
+      ],
+      "generatedAt": "2026-09-16T20:50:00.882Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "azure-sql-database",
+        "preview",
+        "latest-vector-index",
+        "query-migration"
+      ],
+      "codeLanguage": "sql",
+      "codeSnippet": "SELECT TOP (5) d.Id, r.distance\nFROM VECTOR_SEARCH(\n    TABLE = dbo.Documents AS d,\n    COLUMN = Embedding,\n    SIMILAR_TO = @q,\n    METRIC = 'cosine',\n    TOP_N = 5\n) AS r\nORDER BY r.distance;",
+      "conceptId": "azure-sql-latest-vector-index-approximate-top-syntax-migration",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 only: freshly grounded authoring candidate. Independent technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    }
+  ]
+}

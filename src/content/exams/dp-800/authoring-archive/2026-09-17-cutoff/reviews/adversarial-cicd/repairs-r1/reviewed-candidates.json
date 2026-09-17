@@ -1,0 +1,502 @@
+[
+  {
+    "id": "dp800-20260916-d2-019",
+    "question": "A SQL Server 2022 project builds successfully. Its existing procedure test checks that one result row is returned, but a defect returns an incorrect invoice total. A separate risk is that an order procedure and its trigger leave inconsistent inventory after a multi-step workflow. An isolated test database is available. Select two complementary additions that test these two risks.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Repeat the same successful build as the only additional gate."
+      },
+      {
+        "id": "b",
+        "text": "Add a unit test with a known fixture and an expected Scalar Value for the invoice total."
+      },
+      {
+        "id": "c",
+        "text": "Replace the amount assertion with another Row Count check on the same one-row result."
+      },
+      {
+        "id": "d",
+        "text": "Add a deployed integration test that runs the related workflow and asserts the resulting order and inventory state."
+      }
+    ],
+    "correctAnswer": ["b", "d"],
+    "explanation": "Add a value-focused unit assertion and a workflow-focused integration test.",
+    "deepExplanation": "Compilation, row shape, scalar correctness and cross-object state are separate test dimensions. These additions target the stated defects without replacing the useful build and cardinality checks already present.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A model build validates syntax and references. It is useful for structural changes but does not establish the invoice amount or end-to-end inventory effects.",
+      "c": "Row Count is appropriate when cardinality is the requirement. The supplied defect preserves row count while changing the amount, so this does not address it."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Design and implement a testing strategy, including unit tests and integration tests",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["dp800-d2x-testing-unit", "dp800-d2-project-build"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects"
+    ],
+    "documentationTitles": [
+      "Design and implement a testing strategy",
+      "Create, build, and validate SQL database projects"
+    ],
+    "generatedAt": "2026-09-16T22:44:52.544Z",
+    "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+    "featureStatus": "GA",
+    "tags": ["sql-database-projects", "testing", "integration-tests"],
+    "conceptId": "sql-project-testing-value-assertions-and-cross-object-workflow-integration",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-testing-unit",
+      "dp800-d2-project-build"
+    ],
+    "verificationNotes": "Fresh independent PASS 3 on technical-r1. Tried row-count-as-value-proxy, integration-only coverage and repeated-build alternatives; the stipulated same one-row result rules out the first, and B,D is the only complementary behavioral pair. Actual source definitions were reread. The current Intermediate framing is supportable, with item-specific clarity and construction deductions rather than full marks. No test SQL or live runner was executed; codeReviewed is static semantics. Exact objective and fresh generation/technical bindings are required.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in B,D from the actual condition definitions and workflow-testing examples; no claim is made about an unseen test implementation. Editorial warnings are nonblocking at 44/48.",
+    "verifiedAt": "2026-09-17T00:25:10.601Z"
+  },
+  {
+    "id": "dp800-20260916-d2-023",
+    "question": "A team converts an original SQL project containing required SQLCLR objects to Microsoft.Build.Sql SDK style. SQL Server 2022 remains the deployment target. They want to use a Linux .NET SqlPackage deployment agent but cannot remove the CLR objects. Which build/deploy split respects the documented SQLCLR exception?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Build the CLR-containing project with a plain cross-platform .NET toolchain because SDK conversion removes the exception."
+      },
+      {
+        "id": "b",
+        "text": "Delete the CLR objects from the project so the Linux build succeeds, then treat the artifact as equivalent."
+      },
+      {
+        "id": "c",
+        "text": "Keep the project in its original format because SDK-style projects cannot represent SQLCLR at all."
+      },
+      {
+        "id": "d",
+        "text": "Build with the required .NET Framework toolchain, then deploy the resulting .dacpac using SqlPackage on .NET."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Retain the .NET Framework build requirement for SQLCLR, but use cross-platform SqlPackage for the built artifact.",
+    "deepExplanation": "Project representation, compilation prerequisites and artifact deployment are different stages. SDK conversion does not make every dependency cross-platform, nor does a build-stage requirement necessarily bind the deploy stage to the same runtime.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Ordinary SDK-style SQL projects support cross-platform .NET builds. The product article explicitly retains the .NET Framework build requirement for projects containing SQLCLR objects.",
+      "b": "Removing SQLCLR would remove the particular build requirement, but it also removes required application functionality. That could fit a redesigned non-CLR application, not this preservation requirement.",
+      "c": "The documentation says both original and SDK-style projects support SQLCLR with .NET Framework builds. Keeping the original format is an option for other toolchain reasons, not a representation necessity."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Create, build, and validate database models by using SQL Database Projects, including SDK-style models",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["dp800-d2x-sql-projects", "dp800-d2x-project-automation"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-database-projects",
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-projects-automation"
+    ],
+    "documentationTitles": [
+      "What are SQL database projects?",
+      "SQL projects automation"
+    ],
+    "generatedAt": "2026-09-16T22:44:52.544Z",
+    "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+    "featureStatus": "GA",
+    "tags": ["sdk-style-sql-project", "sqlclr", "deployment-toolchain"],
+    "conceptId": "sdk-sqlclr-project-build-requires-net-framework-while-dacpac-deploy-can-use-net",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-sql-projects",
+      "dp800-d2x-project-automation"
+    ],
+    "verificationNotes": "Fresh independent PASS 3: challenged general SDK portability, removal of CLR objects, retained original-format UI constraints and confusion between Linux deployment agent and SQL host. D survives all stated constraints. Reread the actual product exception and automation prerequisites. The new Intermediate label is appropriate but earns reduced depth credit. No code, CLR build, assembly activation or database deployment was executed. This approval binds only the new technical-r1 fingerprint and independently scored rubric.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in D because the product explicitly separates the mandatory Framework build from supported .NET deployment of the completed artifact; implementation prerequisites remain outside this static strategy review.",
+    "verifiedAt": "2026-09-17T00:25:10.601Z"
+  },
+  {
+    "id": "dp800-20260916-d2-026",
+    "question": "Two SQL Server 2022 project branches merge cleanly as text. One removes LegacyCode in favor of RouteCode; the other adds a view that still references LegacyCode. The accepted change requires the old column to be removed and the new view retained. The merged model fails reference validation. Which resolution preserves both accepted intentions?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep LegacyCode permanently so the view compiles without modification."
+      },
+      {
+        "id": "b",
+        "text": "Rename the view's SQL file without changing the view definition."
+      },
+      {
+        "id": "c",
+        "text": "Update the view to the intended RouteCode contract, then rebuild and test the merged behavior."
+      },
+      {
+        "id": "d",
+        "text": "Discard the view branch because Git did not flag the dependency automatically."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Resolve the schema dependency, then validate the merged model and behavior.",
+    "deepExplanation": "Git reconciles text, not SQL object semantics. The required removal and retained view together determine the repair; keeping a deprecated column or dropping the view would satisfy compilation by abandoning an accepted requirement.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Retaining an old column can be part of an explicitly approved compatibility transition. It contradicts the stated accepted removal requirement and leaves the intended migration incomplete.",
+      "b": "File naming can improve project organization, but the broken reference is inside the view's T-SQL. A filesystem rename does not reconcile it with RouteCode.",
+      "d": "Choosing one branch can be appropriate when the other change is intentionally rejected. Here both intentions are accepted, and Git's lack of a text conflict is not a reason to discard required functionality."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Manage branching, pull requests, and conflict resolution",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "dp800-d2x-branching-unit",
+      "dp800-d2-project-build",
+      "dp800-d2x-testing-unit"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/04-manage-branching-pull-requests-conflict-resolution",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy"
+    ],
+    "documentationTitles": [
+      "Manage branching, pull requests, and conflict resolution",
+      "Create, build, and validate SQL database projects",
+      "Design and implement a testing strategy"
+    ],
+    "generatedAt": "2026-09-16T22:44:52.544Z",
+    "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-database-projects",
+      "merge-conflicts",
+      "reference-validation"
+    ],
+    "conceptId": "sql-project-clean-text-merge-can-break-cross-object-references",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-branching-unit",
+      "dp800-d2-project-build",
+      "dp800-d2x-testing-unit"
+    ],
+    "verificationNotes": "Fresh independent PASS 3: challenged a retained-column compatibility bridge, source-file renaming, abandonment of the view and blind textual replacement. The accepted requirements and testing clause make C uniquely supportable. Actual source bodies were reread; no concrete view SQL, build or tests were executed. The Intermediate label reflects a routine disclosed diagnosis, with item-specific depth and distractor deductions. Fresh generation, technical stage and objective bindings are preserved exactly.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in C as a strategy preserving both accepted intentions. Correct implementation of the RouteCode semantics remains to be established by actual source changes and tests outside this review.",
+    "verifiedAt": "2026-09-17T00:25:10.601Z"
+  },
+  {
+    "id": "dp800-20260916-d2-027",
+    "question": "Two feature branches propose incompatible definitions of an SQL Server 2022 import column. One keeps it nullable because an approved input flow omits the value; the other makes it NOT NULL because a new procedure assumes it exists. Either definition can compile alone. No replacement business rule has been agreed. What is the appropriate pull-request resolution before merging?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Accept the newer branch's definition because a successful build proves both workflows are preserved."
+      },
+      {
+        "id": "b",
+        "text": "Keep both declarations under different filenames so the deployment can decide."
+      },
+      {
+        "id": "c",
+        "text": "Require only a clean Git merge and defer all null-input tests until production."
+      },
+      {
+        "id": "d",
+        "text": "Reconcile the two workflow requirements with their owners, implement one coherent schema/procedure contract, and test the affected inputs before approval."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Resolve the business contract, then implement and test a coherent merged design.",
+    "deepExplanation": "This is not a request to invent a missing business rule. The evidence supports a review workflow that exposes incompatible assumptions. Compilation is necessary but insufficient to decide whether nullable input is valid.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A build checks structural validity, not compatibility with both business flows. Choosing the newer definition is reasonable only after intentionally retiring or adapting the conflicting contract.",
+      "b": "Separate source files help organize distinct objects. They do not resolve incompatible definitions of the same object or establish which nullability contract dependent procedures should use.",
+      "c": "Clean text merging is useful but cannot validate nullable-input behavior. Deferring these known contract checks discards the purpose of PR review and isolated database tests."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Manage branching, pull requests, and conflict resolution",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "dp800-d2x-branching-unit",
+      "dp800-d2x-testing-unit",
+      "dp800-d2x-sql-projects"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/04-manage-branching-pull-requests-conflict-resolution",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-database-projects"
+    ],
+    "documentationTitles": [
+      "Manage branching, pull requests, and conflict resolution",
+      "Design and implement a testing strategy",
+      "What are SQL database projects?"
+    ],
+    "generatedAt": "2026-09-16T22:44:52.544Z",
+    "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "pull-requests", "contract-compatibility"],
+    "conceptId": "sql-merge-nullability-conflict-requires-business-contract-resolution-beyond-build",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-branching-unit",
+      "dp800-d2x-testing-unit",
+      "dp800-d2x-sql-projects"
+    ],
+    "verificationNotes": "Fresh independent PASS 3: challenged defaults, caller adaptation, newer-branch selection, duplicate declarations and delayed production observations. Those possibilities need an agreed policy; they do not justify the alternative answers' unsupported reasoning. D remains unique without inventing a SQL repair. Actual evidence was reread. The current Intermediate snapshot meets 44/48 with explicit distractor and answer-cue deductions. No DDL, procedure or tests were executed. This approval does not renew any old authored fingerprint.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in D as a bounded review-and-validation process. The exact replacement business rule is intentionally unapproved, and the weak-distractor construction remains transparently scored.",
+    "verifiedAt": "2026-09-17T00:25:10.601Z"
+  },
+  {
+    "id": "dp800-20260916-d2-030",
+    "question": "A production SQL Server 2022 hotfix added an approved index outside the normal project workflow. A monitoring tool also created an unrelated object that must remain outside the application's SQL model. The maintainer needs to incorporate only the approved hotfix into the project before a later deployment. Which comparison workflow has the right direction and selection?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use the project as source and production as target, then apply all differences to production."
+      },
+      {
+        "id": "b",
+        "text": "Use production as source and the project as target, select the approved index difference, and review the resulting source change."
+      },
+      {
+        "id": "c",
+        "text": "Use production as source and import every difference without reviewing object ownership."
+      },
+      {
+        "id": "d",
+        "text": "Compare the previous two build .dacpac files without connecting to production."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Compare production to the project and import only the approved hotfix difference.",
+    "deepExplanation": "Direction determines which side would change, and selection determines what is adopted. Importing a hotfix is a reviewed source update, not permission to deploy immediately or to assume all target-only objects will be dropped.",
+    "whyOtherAnswersAreWrong": {
+      "a": "That direction brings a live target toward the project's state and can be appropriate when the project is authoritative and drift should be undone. It is not the direction for retaining the approved production hotfix in source.",
+      "c": "A complete import is useful when intentionally baselining the entire live schema. Here it would also add an object explicitly excluded from the application model.",
+      "d": "Artifact comparisons help identify differences between releases. They cannot reveal a hotfix that exists only in the live database and in neither artifact."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Detect schema drift by using SQL Database Projects",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d2x-compare-project",
+      "dp800-d2x-schema-compare",
+      "dp800-d2-drift"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/howto/compare-database-project",
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/schema-comparison",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/05-detect-resolve-schema-drift"
+    ],
+    "documentationTitles": [
+      "Compare a database and a project",
+      "Schema comparison overview",
+      "Detect and resolve schema drift"
+    ],
+    "generatedAt": "2026-09-16T22:44:52.544Z",
+    "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+    "featureStatus": "GA",
+    "tags": ["sql-database-projects", "schema-drift", "hotfix-reconciliation"],
+    "conceptId": "sql-schema-drift-selective-live-database-to-project-hotfix-import",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-compare-project",
+      "dp800-d2x-schema-compare",
+      "dp800-d2-drift"
+    ],
+    "verificationNotes": "Fresh independent PASS 3: challenged reversed synchronization, full baselining, older artifact comparisons and dependency-limited selection. The stated approved hotfix and unrelated excluded object leave B uniquely defensible. Reread both product bodies and the training, rejecting universal Publish-drop behavior and avoiding registered-DAC DriftReport assumptions. The Intermediate label fits the actual task with depth/originality deductions. No database comparison or deployment was run; only the new authored fingerprint is approved.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in B from exact source-to-target semantics and selective-import evidence. No guarantee is made about an uninspected dependency graph or a future deployment plan.",
+    "verifiedAt": "2026-09-17T00:25:10.601Z"
+  },
+  {
+    "id": "dp800-20260916-d2-031",
+    "question": "Two maintainers compare the same live database and SQL project. One reports an index difference; the other reports none. Their saved .scmp files use different excluded object types, and the second excludes indexes. Index drift is in scope for the release. What should the team do before accepting a repeatable drift check?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Accept the zero-difference result because a saved .scmp contains a verified snapshot of every object."
+      },
+      {
+        "id": "b",
+        "text": "Exclude indexes in both files so the results agree without further review."
+      },
+      {
+        "id": "c",
+        "text": "Agree and version the intended comparison options and included types, then rerun the current comparison."
+      },
+      {
+        "id": "d",
+        "text": "Reverse source and target but retain the index exclusion, expecting the missing index difference to appear."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Align the saved comparison scope to the required objects and rerun it.",
+    "deepExplanation": "A deterministic tool can produce a misleadingly clean result when configured to ignore the relevant object type. The team's repeatable artifact should be a reviewed comparison configuration, not an unqualified zero-difference conclusion.",
+    "whyOtherAnswersAreWrong": {
+      "a": "An .scmp saves comparison configuration, including endpoints/options/exclusions. It is useful for repeating a recipe, not proof of complete current schema equality when relevant objects are excluded.",
+      "b": "Excluding an object type can be valid when it is intentionally outside the comparison scope. Here indexes are explicitly in scope, so matching the blind spot would not detect required drift.",
+      "d": "Reversing comparison direction changes the proposed target actions. It does not remove an explicit object-type exclusion; direction alone cannot expose excluded index differences."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Detect schema drift by using SQL Database Projects",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/schema-comparison",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/05-detect-resolve-schema-drift"
+    ],
+    "documentationTitles": [
+      "Schema comparison overview",
+      "Detect and resolve schema drift"
+    ],
+    "generatedAt": "2026-09-16T22:44:52.544Z",
+    "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+    "featureStatus": "GA",
+    "tags": ["sql-database-projects", "schema-comparison", "drift-diagnostics"],
+    "conceptId": "sql-schema-compare-exclusions-can-hide-drift-scmp-is-comparison-recipe",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+    "verificationNotes": "Fresh independent PASS 3: challenged a saved-snapshot interpretation, deliberately out-of-scope indexes, direction reversal and stale evidence after saving settings. C uniquely restores the release's declared scope and requests a current run. The actual product and teaching bodies were reread, including UI availability qualifications. No .scmp operation, database access or comparison was executed. This Intermediate fingerprint earns 45/48 independently, not through renewing the earlier Advanced record.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in C from the explicit .scmp and scope contracts. Actual comparison output and completeness beyond the stated index scope are not attested.",
+    "verifiedAt": "2026-09-17T00:25:10.601Z"
+  },
+  {
+    "id": "dp800-20260916-d2-033",
+    "question": "An Azure Repos SQL project currently builds only after changes reach main, then deploys its .dacpac automatically. The team now requires a successful model build before a PR can merge and a separate human approval before the tested artifact reaches production. Existing identity and network permissions are adequate. Select two controls that protect the two different boundaries.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Configure required build validation on the target branch for the SQL project PR."
+      },
+      {
+        "id": "b",
+        "text": "Require only a linked work item on the PR."
+      },
+      {
+        "id": "c",
+        "text": "Apply only a timed deployment delay without requiring an approver."
+      },
+      {
+        "id": "d",
+        "text": "Configure an approval on the production deployment environment before the artifact is published."
+      }
+    ],
+    "correctAnswer": ["a", "d"],
+    "explanation": "Use required PR build validation and a separate production deployment approval.",
+    "deepExplanation": "Merge admission and deployment authorization occur at different times. Keep the tested .dacpac as the artifact moving through the pipeline; neither a work-item link nor a wait timer substitutes for the requested technical and human gates.",
+    "whyOtherAnswersAreWrong": {
+      "b": "A linked work item improves traceability and can be a useful policy. It does not itself compile the SQL model or provide the requested production approval.",
+      "c": "Timing controls can enforce a pause or business window. A delay without approval does not supply the explicitly required human decision."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Design and implement controls for deployment pipelines, including branching policies, triggers in approvals, authentication tables, and code owners",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": [
+      "dp800-d2x-branch-policies",
+      "dp800-d2x-pipeline-unit",
+      "dp800-d2x-project-automation"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/devops/repos/git/branch-policies-overview",
+      "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/06-implement-cicd-pipelines",
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-projects-automation"
+    ],
+    "documentationTitles": [
+      "About branches and branch policies",
+      "Implement CI/CD pipelines",
+      "SQL projects automation"
+    ],
+    "generatedAt": "2026-09-16T22:44:52.544Z",
+    "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+    "featureStatus": "GA",
+    "tags": ["azure-repos", "sql-cicd", "deployment-controls"],
+    "conceptId": "sql-pipeline-pr-build-validation-and-production-environment-approval-separate-gates",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-branch-policies",
+      "dp800-d2x-pipeline-unit",
+      "dp800-d2x-project-automation"
+    ],
+    "verificationNotes": "Fresh independent PASS 3: challenged optional/default-off policies, unused environments, work-item traceability, time-only gates and administrative bypass. A,D remains the correct configured pattern for normal PR and production workflow boundaries. Actual Azure Repos and automation evidence was reread without borrowing GitHub source approvals or plan features. No policy object, YAML, build or deployment was executed. The Intermediate snapshot earns 45/48 with honest answer-cue deductions and exact new-stage bindings.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in A,D from provider-specific policy and deployment evidence. This is a reviewed control-design choice, not proof of live enforcement or invulnerability to authorized administrators.",
+    "verifiedAt": "2026-09-17T00:25:10.601Z"
+  },
+  {
+    "id": "dp800-20260916-d2-034",
+    "question": "A reviewed .dacpac must deploy to an Azure SQL Database reachable only through the organization's private network. The current public hosted agent can authenticate but has no route to the database. Production approval and SQL permissions are already correct; opening public database access is prohibited. Which pipeline design addresses the missing control without rebuilding the tested artifact?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Repeat Azure sign-in on the same network-isolated hosted agent."
+      },
+      {
+        "id": "b",
+        "text": "Regenerate the .dacpac on the public agent using a newer SqlPackage version."
+      },
+      {
+        "id": "c",
+        "text": "Use an authorized self-hosted deployment agent with private reachability to download and publish the approved artifact."
+      },
+      {
+        "id": "d",
+        "text": "Enable a temporary public database endpoint for the duration of deployment."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Run the approved deployment from an authorized agent with private network reachability.",
+    "deepExplanation": "A valid identity does not create a network path. Preserve artifact provenance and approvals while changing the deploy execution location; do not solve connectivity by violating the stated exposure policy.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Authentication is required for authorized deployment, but the scenario already establishes it. Repeating sign-in does not give the agent a route into the private network.",
+      "b": "Tool updates can address compatibility problems. They do not establish private network reachability, and rebuilding would unnecessarily replace the tested artifact.",
+      "d": "Temporary public access can be a deliberately authorized connectivity approach in another environment. The explicit no-public-access policy rules it out here."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "implement-ci-cd-by-using-sql-database-projects",
+    "subskill": "Design and implement controls for deployment pipelines, including branching policies, triggers in approvals, authentication tables, and code owners",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["dp800-d2x-project-automation"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-projects-automation"
+    ],
+    "documentationTitles": ["SQL projects automation"],
+    "generatedAt": "2026-09-16T22:44:52.544Z",
+    "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+    "featureStatus": "GA",
+    "tags": ["sql-cicd", "private-network", "deployment-agent"],
+    "conceptId": "sql-private-deployment-runner-network-boundary-independent-of-authentication",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d2x-project-automation"],
+    "verificationNotes": "Fresh independent PASS 3: challenged authentication retries, changed artifacts/tooling, publicly accessible alternatives and the false assumption that all self-hosted agents are privately connected. C explicitly includes the needed reachability and preserves the reviewed artifact. Actual product sections were reread. Intermediate accurately reflects the disclosed boundary; plausibility and depth deductions remain. No network probe, SQL connection, build or deployment was executed. Only this new technical-r1 snapshot receives the attestation.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in C as the bounded placement pattern supported by the product source. The real agent's routing, DNS, tools, credentials and deployment result are not independently exercised here.",
+    "verifiedAt": "2026-09-17T00:25:10.601Z"
+  }
+]

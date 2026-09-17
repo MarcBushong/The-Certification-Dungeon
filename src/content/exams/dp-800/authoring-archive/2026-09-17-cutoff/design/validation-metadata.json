@@ -1,0 +1,1829 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-direct-001": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:07:35.998Z",
+        "questionFingerprint": "f9e1137cf5bc778d0746c395b1fea4eede2289489c0ca9d348462012c52d13c9",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-constraints", "dp800-d1-unique-check"],
+            "summary": "DEFAULT (1) supplies a value when Amount is omitted, useful for an optional input with a standard charge. It does not reject an explicitly supplied NULL, and Amount > 0 then evaluates UNKNOWN, so this policy still admits a prohibited invoice."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-unique-check"],
+            "summary": "A single-column UNIQUE constraint could enforce distinct amounts if that were the business rule, while allowing one NULL. Here equal positive invoice amounts are allowed and all NULL amounts are forbidden, so it both overrestricts duplicates and fails the required nullability rule."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-constraints", "dp800-d1-unique-check"],
+            "summary": "NOT NULL independently excludes the UNKNOWN-producing NULL case, while CHECK (Amount > 0) rejects zero and negative nonnull values. This combination fits positive repeatable invoice amounts; it would be inappropriate only if missing or zero charges were intentionally valid."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-unique-check"],
+            "summary": "CHECK (Amount >= 0) is useful for a nonnegative domain that includes zero, but the request requires strictly positive amounts. The nullable column additionally still admits NULL through UNKNOWN, so changing the comparison does not address either excluded case."
+          }
+        ]
+      }
+    },
+    "dp800-direct-002": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:07:35.998Z",
+        "questionFingerprint": "98acb16e1f76859c697817b20462b7c6b2ba5c758e8086d7fcb68528828b6d97",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-unique-check"],
+            "summary": "UNIQUE (TenantId, ExternalCode) evaluates the two values together, so the same code can appear under a different tenant while a repeated pair is rejected. It fits the stated business key independently of the existing RecordId primary key."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-unique-check"],
+            "summary": "UNIQUE (ExternalCode) would be correct for a globally unique external code namespace. It incorrectly rejects two different tenants reusing a code, which the stated application explicitly permits."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-unique-check"],
+            "summary": "UNIQUE (TenantId) would fit a table containing at most one row per tenant. The import service requires several distinct external codes for each tenant, so this constraint is too restrictive."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-unique-check"],
+            "summary": "Adding Revision makes uniqueness apply to a three-value tuple. That would fit one row per revision of a tenant/code pair, but here it permits duplicate tenant/code pairs with different revisions and therefore weakens the intended key."
+          }
+        ]
+      }
+    },
+    "dp800-direct-003": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:07:35.998Z",
+        "questionFingerprint": "e44fbe591f42d94878effaf05ecbf94899bcbfdd9ca0ad6c5d6ae404aa4f7d44",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-sequences"],
+            "summary": "700 is the first allocation and is already consumed by the assignment inside the transaction. It could be the next value after an explicit RESTART WITH 700, but no restart is present; ROLLBACK does not recycle allocations."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-sequences"],
+            "summary": "702 would require two preceding consumed increments in this no-cache-loss trace. Only one NEXT VALUE FOR call precedes the final SELECT, and the stem rules out a concurrent caller that could consume 701."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-sequences"],
+            "summary": "The sequence object is created before the transaction begins, so rolling back that later transaction does not remove it. An explicit DROP SEQUENCE would make a later reference invalid, but the script contains no such operation."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-sequences"],
+            "summary": "The first call allocates 700, transaction rollback leaves that allocation consumed, and the next call advances by one to 701. This result depends on the supplied absence of other allocations, restarts or cache-loss events."
+          }
+        ]
+      }
+    },
+    "dp800-direct-004": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:07:35.998Z",
+        "questionFingerprint": "ea343ffe8898796754ff84dc3ce1b8258d5c39737d377733f0f076b1947390db",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-create-view"],
+            "summary": "WITH CHECK OPTION keeps rows modified through the view within its selection predicate. It fits writable filtered-view requirements, not preventing an administrator's incompatible base-column DDL."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-create-view"],
+            "summary": "SCHEMABINDING blocks underlying changes that invalidate referenced columns, given the supplied two-part same-database references and retained dependency. The administrator could first remove the dependency, but the stem explicitly excludes that path."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-create-view"],
+            "summary": "ENCRYPTION obscures stored definition text in the documented metadata mechanism. It is useful when that text exposure is the concern, but does not bind the base schema or make DROP COLUMN fail for dependency reasons."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-create-view"],
+            "summary": "VIEW_METADATA changes supported clients' browse-mode metadata to describe the view. It can support client cursor scenarios but does not impose the schema dependency restriction needed here."
+          }
+        ]
+      }
+    },
+    "dp800-direct-005": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:07:35.998Z",
+        "questionFingerprint": "a0431e4679de8e5c0e87f6fa32310f452510a54f9ce3c6fa7944faf5680eac08",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-triggers", "dp800-d1-create-trigger"],
+            "summary": "TOP (1) applies a one-row cap after a valid key join and comparison. It would fit a single representative-change sample, but it discards additional changed rows from the multirow UPDATE and cannot implement complete auditing."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-triggers", "dp800-d1-create-trigger"],
+            "summary": "Joining on equal Price relates rows by a value, not their unchanged ItemId. It can serve a price-equality comparison across rowsets, but can pair unrelated items and specifically misses a changed item's old/new unequal prices."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-triggers", "dp800-d1-create-trigger"],
+            "summary": "The cross product compares every new row with every old row and can be useful for pairwise analysis. It is not a per-item audit: unrelated items with different prices produce spurious pairs, and the stable primary-key association is lost."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-triggers", "dp800-d1-create-trigger"],
+            "summary": "Joining inserted and deleted on the unchanged primary key reconstructs each row's before/after values; the nonnull decimal comparison keeps only actual changes. It handles all affected rows instead of assuming the trigger fires separately per row."
+          }
+        ]
+      }
+    },
+    "dp800-direct-006": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:07:35.998Z",
+        "questionFingerprint": "a54b253dc9f92326282ad9efbcbb920adc278b955d4966bb5d3e2cb8f76c14a7",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-cte", "dp800-d1-views"],
+            "summary": "Populating a local temporary table explicitly stores the expensive query's rows for reuse by both statements in the same connection. It fits the required execute-once snapshot; a live recalculation requirement would favor a different design."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-cte"],
+            "summary": "A single CTE can organize the immediately following statement, but its name is out of scope for the second SELECT. It would work for several references inside one statement, not this cross-statement stored result."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-cte"],
+            "summary": "Repeating a CTE gives each SELECT a valid local query definition. That is useful when fresh recomputation is desired, but neither definition creates the one shared materialized result required here."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-views"],
+            "summary": "An ordinary non-indexed view provides a durable reusable query interface, not stored intermediate rows. It can centralize the producer's logic, but querying it twice is not the explicit single materialization requested; indexed views are excluded by the choice."
+          }
+        ]
+      }
+    },
+    "dp800-direct-007": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:07:35.998Z",
+        "questionFingerprint": "5b4f5737550cccaee2a1804139bb4c1ffb5e2beefbc82222969e8c71cc980d3b",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-over"],
+            "summary": "The unbounded ROWS frame and event ordering compute a global running total, which is useful for a cross-tenant chronology. Without PARTITION BY TenantId, amounts from different tenants enter the same window and violate the independent lifetime totals."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-over"],
+            "summary": "PARTITION BY resets each tenant's calculation, EventTime plus unique EventId resolves ties, and UNBOUNDED PRECEDING through CURRENT ROW includes every earlier tenant event. All three independent requirements are encoded."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-over"],
+            "summary": "RANGE on EventTime includes every timestamp peer together. It can deliberately report a time-bucket cumulative total, but cannot advance separately through tied events in EventId order, which the requested report requires."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-over"],
+            "summary": "The tenant partition and ordering are correct, but one preceding row plus current row forms a two-event moving sum. It fits a rolling comparison, not a lifetime total once a tenant has more than two events."
+          }
+        ]
+      }
+    },
+    "dp800-direct-008": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:07:35.998Z",
+        "questionFingerprint": "a4a93c7ea0a384b21fab04a3927268db24c43333faf3db5d87495422ee2f4c75",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-window-unit"],
+            "summary": "ROW_NUMBER assigns a different number to each row even when Priority ties. It is appropriate for selecting an exact row count with a deterministic tie-breaker, not assigning tied priorities one shared rank."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-window-unit"],
+            "summary": "RANK shares ranks across ties but leaves gaps afterward. It fits competition-style placements where ties occupy positions, whereas the report requires consecutive ranks for distinct priority values."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-window-unit"],
+            "summary": "DENSE_RANK assigns tied ordering values the same rank and advances by one for the next distinct value. That is exactly the requested consecutive-priority grouping."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-window-unit"],
+            "summary": "NTILE(4) distributes ordered rows into four approximately equal groups. It fits quartile allocation, not a distinct-value rank contract, and can divide equal priorities between groups."
+          }
+        ]
+      }
+    },
+    "dp800-direct-009": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:07:35.998Z",
+        "questionFingerprint": "d0e1ff6d79f6b9a33e517e07f861df5eace1db6204e96c893bf562a65575e553",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-ai-instructions"],
+            "summary": "A .prompt.md file under .github/prompts is a reusable task prompt, appropriate for invoking a SQL-review workflow. It is not the automatically included repository-wide instruction file requested here."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-ai-instructions", "dp800-d1-ai-security"],
+            "summary": "A comment in an open SQL file can contribute local code context. It would help explain that script, but is neither a documented repository-wide instruction location nor shared automatic policy context for other files."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-ai-instructions"],
+            "summary": "A one-off chat prompt can guide the current conversation and is suitable for temporary task constraints. It does not persist as the team's automatically included repository instructions."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-ai-instructions"],
+            "summary": ".github/copilot-instructions.md is the documented repository-wide guidance file under the stipulated enabled support. It supplies context for consistent suggestions, not an enforceable permission boundary."
+          }
+        ]
+      }
+    },
+    "dp800-direct-010": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:07:35.998Z",
+        "questionFingerprint": "89b6832b9e73455d8591ef5b1ae791b1f6bee75503f234255050143a5808d0d9",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-ai-security"],
+            "summary": "The established connection's database principal is limited by its database permissions. Dedicated least-privilege read authorization is the enforcement layer for allowed SQL operations, independently of what text the assistant proposes."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-ai-instructions", "dp800-d1-ai-security"],
+            "summary": "Repository guidance can steer the assistant toward safe SQL patterns and is useful for development consistency. It does not grant or remove database permissions, so it cannot determine the principal's actual authority."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-ai-security"],
+            "summary": "Private-network controls restrict endpoint reachability and exposure. Those are useful before or around connection establishment, but an already connected principal still receives SQL authorization from its database permissions."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-ai-security"],
+            "summary": "Human review can reject a proposed query before execution and is an important workflow safeguard. Reviewing text does not change the SQL operations the connection principal is authorized to execute."
+          }
+        ]
+      }
+    },
+    "dp800-direct-028": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:16:16.290Z",
+        "questionFingerprint": "0ba829a67c1562e105a62afb742a2ac050bb838df5f4c3cbd06e5bc7288db6ba",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-json-value"],
+            "summary": "Strict JSON_VALUE is useful when an absent or invalid scalar must raise an error, but it does not enlarge the non-RETURNING result. A 5,100-character value exceeds nvarchar(4000), so strict mode fails instead of returning the complete message."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-openjson", "dp800-d1-json-value"],
+            "summary": "The explicit OPENJSON projection targets the existing message scalar into nvarchar(max), so it is not limited to JSON_VALUE's 4,000-character result. Compatibility 160 satisfies this SQL Server 2022 parser requirement."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-json-query"],
+            "summary": "JSON_QUERY at $.message would fit a nested object or array. The supplied value is a scalar string, so lax fragment extraction yields NULL rather than the required long scalar text."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-json-query"],
+            "summary": "Omitting JSON_QUERY's path uses the root and returns the whole valid object. This works for forwarding a JSON document but does not extract the requested message scalar."
+          }
+        ]
+      }
+    },
+    "dp800-direct-029": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:16:16.290Z",
+        "questionFingerprint": "8a55b4f9a03deab6844515265c7d3714083051c03b41c0f4339e50cc13cdfe3d",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "Implicit WITH mapping uses the lowercase output name sku as the exact JSON key. It would work for a lowercase sku property, but BIN2 property matching does not find the uppercase SKU key just because the SQL database collation is case-insensitive."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "$.SKU[0] addresses an element of an array-valued uppercase property. That is useful for a JSON array of identifiers, but the provided SKU value is one scalar string and therefore does not have the requested element path."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "The explicit $.SKU path selects the case-correct scalar independently of the SQL column alias sku. It satisfies both the unchanged output-name requirement and the actual payload structure."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "$.category is a valid path to the value spare in this document. It would be the correct projection for a category output, not for the R-84 product identifier the caller needs."
+          }
+        ]
+      }
+    },
+    "dp800-direct-030": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:16:16.290Z",
+        "questionFingerprint": "a5473f4710d3510976baf64f1fe47cc5d8fddea5d8f78c535658f37b5e224bdd",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "nvarchar(max) together with AS JSON requests the entire detail object as one JSON fragment. Both the type and modifier are required for this preservation contract; no fields are flattened."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "A max-length text column without AS JSON still follows scalar extraction semantics. It could return a long scalar detail string, but the supplied detail is an object, so the default lax projection is NULL."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "The int projection at $.detail.items correctly extracts the numeric child value 2. It is useful for arithmetic on the count, but loses memo and the enclosing object required for later processing."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "The scalar path $.detail.memo correctly extracts ship as text. That would fit a memo-only output contract, not returning the entire detail object intact."
+          }
+        ]
+      }
+    },
+    "dp800-direct-031": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:16:16.290Z",
+        "questionFingerprint": "aa4583d7235fc0a61042618c2eb14bb1fb85e1948256d4546cabea48c7cd36e6",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "B2 is the nested billing object's code and would be selected by an explicit $.billing.code path. The displayed WITH column has no path, so its dot remains part of the literal property name."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "SQL NULL would be the lax scalar result if the exact billing.code property were absent or non-scalar. That property exists here with A7, so the default name mapping succeeds."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "The nested object could be returned using an nvarchar(max) projection at $.billing with AS JSON. The shown nvarchar(10) scalar column named billing.code requests neither that object nor fragment semantics."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "OPENJSON matches the bracket-delimited SQL column name literally to the top-level key billing.code, whose scalar is A7. Brackets delimit the SQL identifier and do not reinterpret its dot as a JSON navigation step."
+          }
+        ]
+      }
+    },
+    "dp800-direct-032": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:16:16.290Z",
+        "questionFingerprint": "db0afd05c1e19a825b1dc0863cb953bf88bf63126cea5a366ef29ee28b6340f9",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "Type 1 identifies a JSON string, including the quoted numeric-looking label. It is correct for selecting original string tokens, not JSON numeric tokens."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "Default-schema type 2 identifies the original JSON number token. This discriminates the count value from a string with the same visible digits, even though both arrive in an nvarchar value column."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "Type 3 identifies a JSON Boolean such as enabled:true. It is useful for Boolean-token validation, but is not the numeric-token discriminator."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-openjson"],
+            "summary": "Type 0 identifies JSON null, which is useful for explicit-null detection. It does not select the numeric count value and must not be confused with an absent property."
+          }
+        ]
+      }
+    },
+    "dp800-direct-034": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:16:16.290Z",
+        "questionFingerprint": "6b1971b7d1bfbf694024616b550bc60a60626be87f521b0eadb23089382511ec",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-json-modify"],
+            "summary": "For the stipulated existing contact key, strict mode and SQL NULL replace the value with JSON null while retaining the key and revision. This is the correct clearing-with-presence contract; a missing key would instead raise an error."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-json-modify"],
+            "summary": "Lax SQL NULL deletes an existing contact property. It is the appropriate operation for removing an optional member altogether, but violates this request to preserve the key with a null value."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-json-modify"],
+            "summary": "The nvarchar text N'null' is encoded as the JSON string \"null\". It would fit storing that literal word, not the JSON null token used by this patch protocol."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-json-modify"],
+            "summary": "N'' is a nonnull text value and becomes an empty JSON string. That can represent an intentionally blank contact, but is not the explicit JSON null required here."
+          }
+        ]
+      }
+    },
+    "dp800-direct-035": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:16:16.290Z",
+        "questionFingerprint": "dd1ccd4c5dfa34878c794023402615373eb8d899c5d240e94d05353fb6cc905a",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-json-modify"],
+            "summary": "A JSON number 3 would result from passing a numeric SQL value, such as an explicitly validated integer conversion. Here @next is nvarchar, so JSON_MODIFY does not infer numeric intent from its characters."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-json-modify"],
+            "summary": "The old number 2 would remain only if the update were not applied to the existing attempt path. The expression provides a nonnull new value for that valid path, so replacement occurs."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-json-modify"],
+            "summary": "Lax mutation with a SQL NULL new value would remove attempt and leave an empty object. The supplied N'3' is nonnull, so this is not the deletion branch."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-json-modify"],
+            "summary": "JSON_MODIFY serializes the nvarchar argument as a JSON string, yielding \"3\" in the existing attempt property. Numeric-looking text is not automatically converted to a JSON number."
+          }
+        ]
+      }
+    },
+    "dp800-direct-036": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:16:50.204Z",
+        "questionFingerprint": "a11a7ac8d996d058f5c921b4c610b33c41efd81dd93d961e1d037ae3a717ce9b",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "summary": "The two-element queue/validate document follows an indexed change to the original input, but omits the first call's assigned verify element. It could be correct if the append result were discarded; SET explicitly preserves that result here."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "summary": "Append first returns and assigns a three-element stages array, then zero-based $.stages[0] changes receive to queue. The array retains validate and verify because the final path addresses one existing element, not the entire property."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "summary": "Four elements with queue last would be the result of another append to the array after adding verify. The final expression has no append modifier and instead identifies element zero, so it replaces rather than extends at that step."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "summary": "A scalar stages value would result from ordinary replacement at $.stages. The shown final call targets $.stages[0], retaining the surrounding array and its other two values."
+          }
+        ]
+      }
+    },
+    "dp800-direct-037": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:16:16.290Z",
+        "questionFingerprint": "3cc87710522a856ebb0e734239382021c5bd3dfa29170b4f4f2858429551e367",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-json-object"],
+            "summary": "NULL ON NULL preserves comment as an explicit JSON null. That suits a protocol requiring present-but-empty members, but this API requires the optional key to be absent."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-json-object"],
+            "summary": "Omitting the null clause selects JSON_OBJECT's default NULL ON NULL behavior. It works for explicit null inclusion, not omission of the SQL-NULL-valued comment."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-json-object"],
+            "summary": "ABSENT ON NULL omits the comment because its SQL value is NULL, while retaining the nonnull code and numeric zero. The policy does not treat zero as missing."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-json-object"],
+            "summary": "Substituting N'' produces a nonnull empty string, which ABSENT ON NULL retains. That is a valid representation of a blank comment but not an omitted optional member."
+          }
+        ]
+      }
+    },
+    "dp800-direct-038": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:16:16.290Z",
+        "questionFingerprint": "0aaa2acbe87cecac4b0beecd8c4bcc20f3fc2278c23df9974c36b2ada94e9351",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "summary": "Internal ORDER BY Position processes the labels as z, NULL, a, and NULL ON NULL retains the middle slot. Both clauses are necessary to satisfy the positional export contract."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "summary": "Ascending order is correct, but ABSENT ON NULL drops the middle element and yields [\"z\",\"a\"]. That is suitable for compacting missing labels, not preserving their positions."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "summary": "NULL ON NULL retains the slot, but descending Position yields [\"a\",null,\"z\"]. It fits a reverse-order export rather than the stated ascending positional sequence."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "summary": "Descending Position and ABSENT ON NULL produce [\"a\",\"z\"], reversing values and removing the gap. That could be a reverse compacted list, but violates both requirements here."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-001": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:29:17.791Z",
+        "questionFingerprint": "068149e3b02eb845a1dc7f9296fa2e62848738dc5a74f066565a0a60eb01b70f",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-decimal"],
+            "summary": "decimal(8,4) has p-s = 4 integral digits. It is suitable for values below 10,000 with four decimal places, but cannot represent 99,999.9999 or its negative counterpart."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-decimal"],
+            "summary": "decimal(9,3) has ample integral capacity but only three fractional digits. It fits a three-decimal measurement contract; rounding a fourth digit violates the required exactness here."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-decimal"],
+            "summary": "decimal(9,4) allocates five integral and four fractional digits, and precision 9 is in the five-byte tier. It is the smallest precision meeting both exact range and scale requirements."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-decimal"],
+            "summary": "decimal(10,4) would support a larger integral range, but precision 10 belongs to the nine-byte tier. That extra capacity is useful for a wider domain, not the specified minimum-precision/five-byte design."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-002": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:29:17.791Z",
+        "questionFingerprint": "7364d56b55de4f17b242e4cea4a2b27445e4b48c331cc685866ad282b1c384f5",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-columnstore"],
+            "summary": "SQL Server 2022 supports filtered nonclustered columnstore indexes and the proposed date/decimal columns. The secondary copy preserves the base rowstore and admits only Settled = 1 rows, jointly satisfying all three constraints."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-columnstore", "dp800-d1x-indexes-unit"],
+            "summary": "Clustered columnstore can suit an analytics-first table whose base storage may change. It stores the full table rather than a filtered secondary subset, so it violates the required retained rowstore and hot-row exclusion."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-columnstore"],
+            "summary": "An unfiltered nonclustered columnstore is a valid hybrid design when all rows should participate in operational analytics. Here it also maintains unsettled rows in the columnar copy, which the requirements prohibit."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-columnstore"],
+            "summary": "The selected filter is valid, but nvarchar(max) is not a supported nonclustered-columnstore column type. A bounded supported payload type, or a suitable clustered-columnstore design on a platform supporting its LOB branch, is a different context; neither is this unchanged schema."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-003": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:29:17.791Z",
+        "questionFingerprint": "18e0903db1b8e602b456055a59f3d2d4eafeb9b0f0285e54e5e00e5acc481bfb",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-create-temporal"],
+            "summary": "History tables cannot have primary keys. Removing this key is required even though the current table correctly retains its own primary key; current-row identity and historical-version storage have different constraints."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-create-temporal"],
+            "summary": "A UNIQUE index is also prohibited on a temporal history table. It could enforce a business invariant on an ordinary archive table, but it is not a workaround for the system-versioned history restriction."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-create-temporal"],
+            "summary": "The extra ArchiveBatchId breaks history/current column-count and ordering alignment. Moving that metadata out, as the stem permits, restores the identical schema needed for this existing history-table attachment."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-create-temporal"],
+            "summary": "DATA_CONSISTENCY_CHECK = OFF can skip a temporal-data consistency check when attaching existing history, not the mandatory schema rules. The periods are already valid, so it addresses neither defect."
+          },
+          {
+            "choiceId": "e",
+            "sourceIds": ["dp800-d1x-create-temporal"],
+            "summary": "A date column does not align with the current datetime2(7) endpoint. It could be an ordinary reporting date elsewhere, but history period data types must match the temporal current schema."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-004": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:29:17.791Z",
+        "questionFingerprint": "0b4b6297b1fe48e2791a8f33a59d3e2df5aedb36e267fc8ed3f8c914678d92db",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-external-table"],
+            "summary": "A text cast can format a successfully read integer, but cannot prevent the external reader from first rejecting R-91 against an int declaration. It also cannot reconstruct original leading zeros after numeric interpretation."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-external-table", "dp800-d1x-tables-unit"],
+            "summary": "The external column definitions must match the file data. The bounded text definition accepts the validated text domain and preserves lexical identifiers; recreating metadata does not rewrite the external files."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-external-table"],
+            "summary": "Restricting a source to numeric records could support a deliberately numeric subset export. It drops required alphanumeric shipments here and does not meet unchanged text preservation for the complete dataset."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-external-table", "dp800-d1x-tables-unit"],
+            "summary": "A bigint declaration is a possible fix for genuine integer overflow in a numeric file column. This is a text-shape problem instead: a wider integer still cannot represent R-91 and does not preserve 00027's lexical form."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-005": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:29:17.791Z",
+        "questionFingerprint": "98d27fcb663a17057ff2835085eea6b1afcf6087036ebdfd199e46823164c8c0",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-graph-architecture"],
+            "summary": "The intuitive endpoint UPDATE is explicitly unsupported for graph $to_id/$from_id. Updating an ordinary foreign-key column in a relational link table is a different model; SQL graph requires replacing the edge."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d1x-graph-architecture",
+              "dp800-d1x-graph-unit"
+            ],
+            "summary": "A user-defined relationship attribute can be updated for a label correction or cost change. It does not replace the endpoint reference, so MATCH would still traverse to the previous destination."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-graph-architecture"],
+            "summary": "Inserting an additional edge is correct when both connections should coexist. The old connection remains here, leaving two routes and violating the stipulated one-active-route invariant."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-graph-architecture"],
+            "summary": "The product explicitly prescribes inserting a new edge and deleting the previous edge to change referenced nodes. A transaction makes the replacement one committed change, and copying the user-defined attributes retains business identity while allowing a new generated graph ID."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-006": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:29:17.791Z",
+        "questionFingerprint": "d9b4118fcd4fb6b8478cd41070feb3cd8096bf082c36c152203bb4589c87bb3f",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-index-json", "dp800-d1-json-value"],
+            "summary": "Persisting a computed value can change whether it occupies base-table storage, but the unchanged JSON_VALUE expression still has nvarchar(4000) type. It is not a remedy for an excessively wide index-key definition."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-index-json", "dp800-d1-json-value"],
+            "summary": "The documented smallest-applicable-type approach becomes safe because the stem independently validates a 30-code-unit maximum. nvarchar(30) preserves every accepted SKU and narrows the key well below the nonclustered limit."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-index-json"],
+            "summary": "nvarchar(10) would be appropriate only for a genuinely ten-code-unit domain. The input permits longer SKUs, so this cast sacrifices identity information instead of safely bounding the index."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-index-json"],
+            "summary": "Included columns are useful when a query needs additional values without base-row lookups. They do not change the key column's JSON_VALUE return type, so the original width warning remains."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-007": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:16:50.204Z",
+        "questionFingerprint": "bcd510e9b17b9fd1930ece9beba7ae88731efa5a44f4dd2394a3c66ab843086c",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d1x-json-overview",
+              "dp800-d1x-primary-foreign"
+            ],
+            "summary": "An all-JSON document with ISJSON alone is useful for syntax-valid flexible payload storage. It does not supply the separately required typed numeric column or foreign-key column relationship, so it does not meet this relational contract."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-json-columns-unit"],
+            "summary": "Dedicated typed attribute columns can suit a stable predictable schema. Here every newly introduced attribute would require ALTER TABLE, contradicting the requirement to add categories without table DDL."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d1-json-columns-unit",
+              "dp800-d1x-json-overview",
+              "dp800-d1x-primary-foreign"
+            ],
+            "summary": "The training explicitly recommends typed predictable columns plus JSON for variable metadata. This retains ProductId/CategoryId/Price integrity while letting category-specific document shapes evolve without new columns or tables."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-json-columns-unit"],
+            "summary": "Category-specific normalized detail tables are viable when categories and schemas are governed through migrations. The proposed create-a-table-per-category policy violates this application's explicit no-category-driven-DDL requirement."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-008": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:36:26.857Z",
+        "questionFingerprint": "2aed8be9372e3c1fe32ad88a36eb50842cf41318cf5d6515ee0f20d3c9c6180d",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-primary-foreign", "dp800-d1-constraints"],
+            "summary": "SET DEFAULT writes the declared 0 value, and the foreign key still checks that value against Owner. Creating the valid reserved parent row supplies the missing referent while retaining the intended nonnull fallback behavior."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-primary-foreign"],
+            "summary": "SET NULL is a documented policy for nullable child keys when absence of an owner should be represented by NULL. This contract specifically requires an existing nonnull unassigned owner, so that otherwise viable policy is wrong here."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-primary-foreign"],
+            "summary": "CASCADE is appropriate when deleting a parent must delete its dependent rows. It removes tickets in this case, whereas they must remain and refer to owner 0."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-primary-foreign"],
+            "summary": "NO ACTION is appropriate when dependent rows should prevent parent deletion. It does not reassign tickets to the reserved fallback and therefore preserves the failure instead of meeting the deletion workflow."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-009": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:36:26.857Z",
+        "questionFingerprint": "188e86368ef3b4381a3d07080b883ed7150c86ddbf55a2c31ac4a80e94726f86",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-sequences"],
+            "summary": "Allocating 40 then 45 within the first output row assumes one increment per occurrence. The sequence contract instead shares the value for references to the same sequence in one row; separate preceding statements could produce that allocation progression."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-sequences"],
+            "summary": "Two distinct first-row values are already inconsistent with the same-sequence row rule. Reusing the second value in the next SELECT would also require an unstated restart or different sequence design."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-sequences"],
+            "summary": "The first row correctly shares 40, but 50 requires another intervening allocation of 45. Such a caller could change the result in a concurrent system, but concurrency and extra statements are explicitly excluded."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-sequences"],
+            "summary": "The documented same-generator/per-row rule yields (40,40), then the new statement advances the sequence once by five to 45. The no-concurrency and no-restart assumptions make this trace determinate."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-010": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:36:26.857Z",
+        "questionFingerprint": "1653ed6b0b819251d40c9c790f660a63a01df10355d7d6d05309dfc98a75834c",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-alter-partition"],
+            "summary": "Reassigning PS_A can be needed after one of its previous splits consumes NEXT USED, but PS_A is already prepared. The actual missing prerequisite is on PS_B, and all consumers of PF_EventMonth are affected."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-alter-partition"],
+            "summary": "The product requires every scheme sharing a function to have NEXT USED and states that all dependent tables/indexes are repartitioned in one atomic operation. Preparing PS_B and coordinating every consumer satisfies both facts."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-alter-partition"],
+            "summary": "Creating an online filegroup can supply storage capacity, but the scheme must explicitly mark its destination NEXT USED. Without that assignment, the documented split prerequisite remains unsatisfied."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-alter-partition"],
+            "summary": "Pausing dependent workloads can reduce operational contention, but does not remove their partition-scheme metadata or configure NEXT USED. It is an operational precaution rather than the missing structural prerequisite."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-011": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:36:26.857Z",
+        "questionFingerprint": "f5b1ea0bb24cf82d1a22048cadc2ff3707109d8d97f79e74261f8023f581402c",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d1x-alter-partition",
+              "dp800-d1x-partitioning-unit"
+            ],
+            "summary": "Switching out is the separately validated archival operation, not a claimed automatic effect of MERGE. It leaves the old side empty, avoiding the product's restriction on merging two populated columnstore partitions before removing the boundary."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-alter-partition"],
+            "summary": "MERGE removes a boundary and combines existing values into a remaining live partition. It could consolidate eligible partitions, but it neither chooses an archive target nor supports the stipulated two-nonempty-columnstore case."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-alter-partition"],
+            "summary": "SPLIT can create new boundary ranges when columnstore's target partition is empty. The target here is populated, and boundary subdivision by itself does not archive rows."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-alter-partition"],
+            "summary": "Dropping or disabling columnstore can permit a populated repartition operation otherwise blocked by its restriction. However, a successful MERGE still preserves rows in the live table, so this plan fails the actual archival requirement."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-012": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:36:26.857Z",
+        "questionFingerprint": "36402306f60d81959fea8725284b482b6d8aa492b2088c2e54df86d6f64b8407",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-create-view"],
+            "summary": "Both could succeed without CHECK OPTION or with updates that retained Ready = 1. The stated change exits the view's predicate, so initial visibility does not allow the view update."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-create-view"],
+            "summary": "Both could be rejected by an appropriate independent base-table constraint or permission denial. Those are explicitly absent; CHECK OPTION alone has no applicability to direct base-table updates."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-create-view"],
+            "summary": "A separate direct-table permission restriction could block that entry point, but the login is authorized. CHECK OPTION actually constrains the modification through the view, so the proposed outcome reverses the documented behavior."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-create-view"],
+            "summary": "The view-scoped check rejects a resulting Ready = 0 row because it is no longer visible. The direct update is not subject to that view clause and can succeed given the stated authorization and lack of other restrictions."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-013": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:51:19.433Z",
+        "questionFingerprint": "b1e030277f5d9254975fe39273823b45ec52b9ae98a5d45ad1ebc20d250b25b3",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-create-function", "dp800-d1x-scalar-unit"],
+            "summary": "An explicit date can remove a GETDATE dependency and is useful for repeatable date selection. The retained lookup still makes UserDataAccess true, so it does not satisfy the documented no-user-data-access condition for the indexed computed expression."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d1x-create-function",
+              "dp800-d1x-udf-overview"
+            ],
+            "summary": "A schema-bound wrapper can provide a stable interface around another function. It does not purify that dependency: the inner function still reads today's clock and a user table, so the two stated blockers remain."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d1x-create-function",
+              "dp800-d1x-udf-overview"
+            ],
+            "summary": "Using the stored amount and agreed rate as explicit inputs permits a deterministic, precise, schema-bound calculation without user or system data access. It also preserves the required booked-rate meaning, while leaving unrelated index prerequisites for normal validation."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-create-function"],
+            "summary": "PERSISTED can affect storage and the system-verification condition in the documented index rules. It does not exempt a function from determinism or the requirement that UserDataAccess and SystemDataAccess be false."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-014": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:51:19.433Z",
+        "questionFingerprint": "c74755a5ae38d4a6d5065d4094cb86d41538dbb08a01a309ff11dd96cdc0745b",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-create-function"],
+            "summary": "The claimed fallback would be reliable under CALLED ON NULL INPUT given the method behavior stipulated in the stem. The actual RETURNS NULL declaration permits the engine to skip invoking that method, so its internal fallback is not guaranteed."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-create-function"],
+            "summary": "The product explicitly permits a CLR scalar function declared RETURNS NULL ON NULL INPUT to return NULL without invoking its body. False correctly rejects reliance on the method fallback under that declaration; changing the wrapper to CALLED ON NULL INPUT addresses that specific contract."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-015": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:51:19.433Z",
+        "questionFingerprint": "34f5ca147efaa7025708c1e27224a954c4fa78b027e774ac5fb9a9171dd9daa3",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d1x-count",
+              "dp800-d1x-from",
+              "dp800-d1x-select"
+            ],
+            "summary": "Each TVF invocation returns a count row, including zero. The outer WHERE r.ReadyCount > 0 removes exactly zero-count warehouses while retaining their positive aggregate results, so it meets the report contract."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d1x-count",
+              "dp800-d1x-select",
+              "dp800-d1x-from"
+            ],
+            "summary": "HAVING filters the ungrouped aggregate row itself. A count of zero produces no surviving TVF row, and CROSS APPLY then excludes that warehouse; positive counts remain available to the outer report."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-from", "dp800-d1x-count"],
+            "summary": "OUTER APPLY is useful when an empty right rowset should still preserve the left row. Here the TVF already returns a zero-valued row, so changing APPLY flavor does not exclude any zero-count warehouse."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-count"],
+            "summary": "COUNT(expression) ignores NULL expressions, but the literal 1 is nonnull for every matching lot. COUNT(1) therefore counts the same matching rows as COUNT(*) and still returns zero in one aggregate row for empty input."
+          },
+          {
+            "choiceId": "e",
+            "sourceIds": ["dp800-d1x-count"],
+            "summary": "IS NOT NULL can filter a genuinely nullable returned value, but successful COUNT with the stated settings and no overflow returns zero rather than NULL for no matches. It cannot implement positive-count eligibility."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-016": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:51:19.433Z",
+        "questionFingerprint": "eaffe9dbe08a04a266b7ce458b1d5c05f360cb5470d805abbaaeac60b8f8f417",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-alter-function"],
+            "summary": "ALTER is useful for modifying a definition within its current function kind. The Remarks section explicitly excludes inline-to-multistatement conversion, so this does not deploy the required replacement."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d1x-alter-function",
+              "dp800-d1x-create-function"
+            ],
+            "summary": "CREATE OR ALTER conveniently creates a missing function or alters an existing one. Because this function exists, its alteration still faces the same kind restriction; the syntax is not a conversion exception."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d1x-create-function",
+              "dp800-d1x-alter-function"
+            ],
+            "summary": "INLINE controls scalar-UDF inlining behavior where applicable. It does not rewrite a TVF's RETURNS TABLE/single-SELECT definition into the declared return-table/body form required for a multistatement TVF."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d1x-create-function",
+              "dp800-d1x-alter-function"
+            ],
+            "summary": "CREATE FUNCTION supports a new multistatement TVF with a declared return-table variable. A distinct name preserves the old callable function during migration, avoiding the prohibited in-place kind change."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-017": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:51:19.433Z",
+        "questionFingerprint": "0ad26e5c6e9b373bab3ba25de57fb5e06fb5566bf2266ab735115d39e6f9f72c",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-executesql", "dp800-d1x-count"],
+            "summary": "The parameter declaration matches both free names in the dynamic statement. @Tag is passed as typed data, and @n is marked OUTPUT in both the definition and the caller binding, so the count is returned into @Matches without changing SQL text."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-executesql"],
+            "summary": "A declaration named @Tag would work if the dynamic text used @Tag. The unchanged statement uses @p, and the separate batch cannot infer that @Tag is meant to substitute for an undeclared name."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-executesql"],
+            "summary": "Calling an output-capable parameter without caller-side OUTPUT is valid when the caller does not need its updated value. Here it leaves @Matches without the computed count and violates the required output channel."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-executesql"],
+            "summary": "Those outer variables could be read by SQL executing directly in the calling batch. The sp_executesql body has a separate compilation/name scope, so it still needs explicit parameter definitions and value bindings."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-018": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:51:19.433Z",
+        "questionFingerprint": "91adb8fb3e52998cb84adf034b19a68c57aa7e429896f8a0af7826e947fb61db",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-nocount"],
+            "summary": "The value 3 is correct, but affected-row messages would be present with NOCOUNT OFF. The displayed ON setting suppresses those messages while retaining query data."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-nocount"],
+            "summary": "A procedure with no SELECT could intentionally return no result set. NOCOUNT itself only suppresses the count message; the product's examples still return SELECT rows with ON."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-nocount"],
+            "summary": "The product explicitly preserves @@ROWCOUNT updates under NOCOUNT ON and suppresses DONEINPROC/affected-row messages. The immediate SELECT therefore exposes the three-row UPDATE count as ordinary result data."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-nocount"],
+            "summary": "A value of zero could reflect an UPDATE matching no rows, but the stem says three rows match. NOCOUNT does not stop @@ROWCOUNT from recording that result."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-019": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:51:19.433Z",
+        "questionFingerprint": "42136b91378a7ae5c74b031de843d0bc5afebaf1dccdfda9aef7754f67563872",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-create-trigger"],
+            "summary": "An AFTER INSERT trigger can implement post-insert work on an eligible base table, but SQL Server does not allow AFTER triggers on views. This plan cannot install the required view translation path."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-create-trigger"],
+            "summary": "An INSTEAD OF trigger is the appropriate view mechanism, but the product explicitly prohibits adding it to an updatable view with CHECK OPTION. Keeping that clause makes the proposed deployment invalid."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-create-trigger", "dp800-d1-create-view"],
+            "summary": "An unchecked filtered view can present only branch 7 rows while still allowing a modification path that admits other values. The trigger overrides ordinary insertion, so relying only on presentation filtering does not preserve the required all-row admission check."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-create-trigger", "dp800-d1-create-view"],
+            "summary": "Removing CHECK OPTION resolves the documented incompatibility. Explicitly validating the translated inserted rowset for branch 7 before base writes preserves the original rule, including multirow input, while the base table's constraints still apply."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-020": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:51:19.433Z",
+        "questionFingerprint": "6463f3299fe96ce22c29d62f515724c0997bb3c852197f4980d1e12b06bf211e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-create-trigger", "dp800-d1x-select"],
+            "summary": "Adding inserted sums is appropriate for an insert-only rollup when no prior contributions exist. An UPDATE also has deleted prior amounts, so this method would leave old contributions counted and produce 115 rather than 65 for invoice 1."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-create-trigger", "dp800-d1x-select"],
+            "summary": "The UPDATE transition rowsets contain all old and new detail values. Treating new amounts as positive and old amounts as negative yields -35 for invoice 1 and +40 for invoice 2, including parents present on only one side before grouping."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-create-trigger", "dp800-d1x-select"],
+            "summary": "An inner join of per-parent sums can work only when every affected parent occurs on both sides. Invoice 2 has no deleted group, so it is omitted despite needing the inserted 40-unit contribution."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-create-trigger", "dp800-d1-triggers"],
+            "summary": "A single scalar before/after pair might be enough under a genuinely guaranteed single-row update, but this statement changes multiple details and parents. DML triggers receive rowsets, so selecting one pair discards necessary contributions."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-021": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "questionFingerprint": "4ad49f5e4e7a7e9ee4268db7a4f4790d5d49e9c38c35c4a21288473762faf65e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-cte"],
+            "summary": "Matching the path types resolves the creation-time column mismatch. An outer WHERE limits displayed rows, not what the recursive member keeps producing; with a cycle, this design can still hit MAXRECURSION instead of finishing the bounded walk."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+            "summary": "The member predicate is the correct depth stop, but a common nvarchar(20) type is too narrow for explicitly permitted paths. It would work only if every retained path genuinely fit that smaller bound."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-cte"],
+            "summary": "MAXRECURSION can cap a runaway statement while it is being diagnosed. It neither reconciles anchor/recursive types nor replaces a predicate that stops generating rows at the requested walk depth."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+            "summary": "Both path expressions become nvarchar(200), satisfying type equality without truncation under the stated bound. WHERE r.Depth < 3 allows depth-two rows to generate depth three and stops those rows from traversing a fourth edge, even when links cycle."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-022": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "questionFingerprint": "21a5fe445135d6c5a590edebb85ee434a2691757d6ec669798c3a99d1053892f",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-lag"],
+            "summary": "LAG's default supplies a value when its requested offset is outside the current partition. Zero is useful only when zero is the intended baseline; it does not retrieve the actual pre-cutoff reading required here."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-lag", "dp800-d1x-select"],
+            "summary": "The logical SELECT binding order excludes WHERE-filtered rows before computing the window expression. Moving the display filter outside an inner LAG calculation keeps the true prior reading available while showing only the requested dates."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-window-unit"],
+            "summary": "LEAD is appropriate for comparing with a following row. It changes the direction of the metric and still cannot recover the preceding historical row removed by the WHERE clause."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-lag"],
+            "summary": "Offset two requests the second earlier row in the surviving partition. That could implement a two-reading comparison, but the requirement is the immediately preceding reading and the filtered history remains unavailable."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-023": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "questionFingerprint": "7fd0a29f5972005865420df019325883021d6878aac07a45d230fd1a22c8a139",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d1x-regexp-replace",
+              "dp800-d1x-regex-overview"
+            ],
+            "summary": "The documented backslash-2/backslash-1 replacement reorders digits before letters, and occurrence zero applies it to both matched tokens. Text outside the matches, including the pipe, remains untouched."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-regexp-replace"],
+            "summary": "Backslash-1 then backslash-2 preserves capture order and changes only the separator, which would fit a letters-first normalization. The requested output instead puts digits first."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-regexp-replace"],
+            "summary": "The replacement is correct but occurrence one intentionally targets only the first match. That is useful for a first-token edit, not the required transformation of both tokens."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-regexp-replace"],
+            "summary": "Occurrence two changes the second token only. It would be correct for repairing just cd:34, while the actual request requires the first token to change as well."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-024": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "questionFingerprint": "f8cde51ac264729c40f9407e9640ae68abcfb993ce42dcd0b7afd3b3a88331a5",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d1x-regexp-substr",
+              "dp800-d1x-regex-overview"
+            ],
+            "summary": "17 belongs to the lowercase first token. It could be extracted with case-insensitive matching and occurrence one; the displayed call resolves its final flag to case-sensitive and asks for occurrence two."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-regexp-substr"],
+            "summary": "28 is the digits of the first uppercase match. It would also be the second match if the effective flag were i, but the last conflicting flag is c, so this call advances to the next uppercase token."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d1x-regexp-substr",
+              "dp800-d1x-regex-overview"
+            ],
+            "summary": "The final c flag excludes a=17 despite the SQL collation. Among the remaining A=28 and A=39 matches, occurrence two selects A=39 and the second capture group returns just 39."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-regexp-substr"],
+            "summary": "A=39 is the whole second case-sensitive match and would be returned with capture group zero. The explicit group two returns only its digit subexpression."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-025": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "questionFingerprint": "e3e6962ae9957b5ebb801cce4f4461ab925c237fedf18e269f3b2e48a3bb506e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-edit-distance"],
+            "summary": "A stable ID can provide deterministic order among genuine equal distances. Here capped values collapse different actual distances into maximum+1, so an ID tie-breaker cannot satisfy exact edit-count ordering."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-edit-similarity"],
+            "summary": "Normalized similarity is useful when proportional closeness across different string lengths is the desired metric. Its documented length denominator makes it different from raw edit-count ordering, which this workflow explicitly requires."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-edit-distance"],
+            "summary": "With cap zero, exact matches remain zero and positive distances become one under the current maximum+1 contract. That can distinguish equality from nonequality, but loses rather than restores the requested distance information."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-edit-distance"],
+            "summary": "Omitting the maximum returns the actual distance under the documented Preview contract. Sorting that value ascending implements the requested exact edit-count ordering; any tie-breaker then applies only to equal actual values."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-026": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "questionFingerprint": "56de572711ac8c60213af01ab4c178ece98842fad45853fe4254b2e5f0badc4a",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-match", "dp800-d1x-graph-unit"],
+            "summary": "Both arrows point toward the start side, so this pattern finds d-to-m-to-s reachability. It is useful for discovering depots that can reach depot 10, not destinations reachable from it."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-match"],
+            "summary": "The pattern follows s to m through r1 and m to d through r2. Distinct aliases meet MATCH's no-repeated-edge-name rule while representing two occurrences of the same directed relationship type."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-match"],
+            "summary": "Reusing r1 in the same MATCH pattern is prohibited by the operator contract. The same edge table can be traversed repeatedly only with distinct aliases, such as the supplied r1 and r2."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-match", "dp800-d1x-graph-unit"],
+            "summary": "This valid pattern finds s and d as two origins pointing at a shared destination m. That is a common-neighbor question, not an outgoing two-hop route from s through m to d."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-027": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "questionFingerprint": "530d8cbc0cbee7b551cffeedb0d157390bf8dea47f4e864f4a2a4c1e1491f317",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-correlated-unit", "dp800-d1x-subqueries"],
+            "summary": "The predicate requires nonempty tests and excludes explicit non-pass values, but a comparison with NULL is not TRUE. It would meet the rule if Result were guaranteed NOT NULL; this schema explicitly permits NULL."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-exists", "dp800-d1x-correlated-unit"],
+            "summary": "One pass row satisfies the first EXISTS even if a different row says fail. The second subquery excludes only NULL. This fits an at-least-one-pass/no-unknown rule, not the requirement that every result pass."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d1x-exists",
+              "dp800-d1x-correlated-unit",
+              "dp800-d1x-subqueries"
+            ],
+            "summary": "The first correlated EXISTS enforces nonempty membership; the second excludes all non-pass or NULL counterexamples for that same batch. It is therefore true exactly for nonempty all-pass batches."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-exists"],
+            "summary": "A no-counterexample condition is vacuously true for empty input. It is correct for a policy allowing empty batches, but this policy explicitly requires at least one test."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-028": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:16:50.204Z",
+        "questionFingerprint": "91d2b5822baba1eb7b051e88a8948f038d32b7588a3470da3c65524d77b031c6",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-throw"],
+            "summary": "At XACT_STATE -1, full rollback is the allowed cleanup. With no caller-owned transaction remaining, the stipulated logging routine can commit its write, and bare THROW in the same CATCH re-raises the caught exception."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-try-catch"],
+            "summary": "Writing before rollback may be meaningful only in a committable transaction with a suitable persistence strategy. This transaction cannot write, and a same-transaction log would not survive rolling back the business work."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-try-catch"],
+            "summary": "Committing partial work can be a deliberate policy for some CATCH cases when XACT_STATE is 1. The actual -1 state forbids COMMIT, and the requested business policy also requires undoing partial changes."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-throw", "dp800-d1x-procedures-unit"],
+            "summary": "A procedure status code can communicate a separately agreed error protocol. This caller requires the original SQL exception, so replacing that exception with RETURN -1 fails the specified propagation channel even if cleanup and logging succeed."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-029": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "questionFingerprint": "c307ec4d8c54f8000e1db4ebdb6fb39288a8077a3f6b55224165138402689dd3",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-try-catch"],
+            "summary": "Both could be caught if both errors arose in called lower-level routines. Variant A instead resolves the missing object at the same level as its TRY, which the documented CATCH exclusions cover."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+            "summary": "Same-level name resolution can bypass CATCH, but that rule is not universal across execution levels. Variant B compiles its statement in sp_executesql at a lower level and is catchable by the outer handler."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+            "summary": "Dynamic compilation does not by itself disable outer error handling. In this case the separate dynamic batch is precisely what places the error below the outer TRY/CATCH boundary, so this answer reverses both results."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+            "summary": "The product explicitly contrasts direct same-level missing-object access with the same operation in a called routine or sp_executesql. The first bypasses its local CATCH; the second reaches the surrounding higher-level CATCH."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-030": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.772Z",
+        "questionFingerprint": "7a5f0093d3fb797e0b706242cf2900cdc8b544b4efb6391cf5ca017f74dc5f4a",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-fabric-mcp", "dp800-d1-ai-security"],
+            "summary": "The MCP article explicitly warns that returned responses can be handled outside Fabric according to the client terms. Reviewing that receiving environment is necessary rather than inferring compliance from source-side access or location."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-fabric-mcp"],
+            "summary": "Capacity location is relevant to processing inside that service boundary. It is not proof of the external MCP client's processing or storage location, which the source explicitly treats as a separate data-handling boundary."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d1x-fabric-agent-overview",
+              "dp800-d1-ai-security"
+            ],
+            "summary": "The data-agent configuration selects sources/tables, and the security unit recommends least-privilege workflow access. Restricting both to approved catalog data closes the unnecessary customer-data exposure for this specifically limited workflow."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d1x-fabric-agent-overview",
+              "dp800-d1x-fabric-mcp"
+            ],
+            "summary": "Read-only access is appropriate for protecting data from modification, but returned query results can still contain restricted customer information. It therefore does not justify retaining unnecessary access in this catalog-only external workflow."
+          },
+          {
+            "choiceId": "e",
+            "sourceIds": ["dp800-d1-ai-security", "dp800-d1x-fabric-mcp"],
+            "summary": "A private route can reduce network exposure and may be independently required. It does not replace review of what the client does with an authorized response after receiving it."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-031": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.772Z",
+        "questionFingerprint": "a025cb44781d2d4f0a69f28eac9e4ba80044f11373b31045feeaa29994144244",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-enable-unit"],
+            "summary": "An engine upgrade can serve a database-feature requirement, but Copilot enablement in the linked training requires the supported host and a GitHub account with Copilot access. The unchanged account still lacks that access."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-ai-security", "dp800-d1x-enable-unit"],
+            "summary": "Database permission changes can authorize SQL operations. They do not provide the GitHub-side Copilot entitlement, and broadening rights is unnecessary for the missing prerequisite described here."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-enable-unit"],
+            "summary": "The current training explicitly requires signing in with the account that has Copilot access and warns about selecting the correct account when several exist. That directly addresses the only supplied missing prerequisite."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d1x-model-tools-unit",
+              "dp800-d1x-enable-unit"
+            ],
+            "summary": "Selecting a model is useful after Copilot is available to tailor a chat task. It is not a licensing or sign-in operation and does not activate an unentitled account."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-032": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.772Z",
+        "questionFingerprint": "2d34466cf2e01777253ada371d818bfdefe4c3b5a8d11513e4fa2bd144ba1f49",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-enable-unit", "dp800-d1x-fabric-enable"],
+            "summary": "GitHub Copilot access is required for the separate GitHub-assisted host workflow. It does not configure Fabric's paid capacity, delegated tenant setting or workspace assignment."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-fabric-enable"],
+            "summary": "When the tenant settings are delegated, the product requires the capacity administrator to enable Copilot on the intended capacity. This closes the explicitly stated F4-level setting gap."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-fabric-enable"],
+            "summary": "The chosen setup places items in a workspace assigned to a supported Copilot-enabled paid capacity. Moving the workspace from the trial to the approved F4 satisfies this independent placement prerequisite."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-fabric-enable"],
+            "summary": "A tenant toggle can authorize a rollout but does not convert trial capacity into the documented paid prerequisite or enable the delegated target setting. Leaving both conditions unresolved does not complete the setup."
+          },
+          {
+            "choiceId": "e",
+            "sourceIds": ["dp800-d1x-enable-unit", "dp800-d1x-fabric-enable"],
+            "summary": "SQL privileges can matter for permitted database tasks, but the stem already satisfies user permissions. They do not operate the Fabric capacity's Copilot control or assign a workspace to that capacity."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-033": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.772Z",
+        "questionFingerprint": "c73a286ef03667762b0b8064e94ced9bb125926a93cb4d927475688aa9719746",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-model-tools-unit", "dp800-d1x-mcp-vscode"],
+            "summary": "The training explicitly separates model choice from enabling individual MCP tools in Agent mode. With connectivity and rights supplied, activating the approved schema tool and observing its fresh result supplies the required live context."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-model-tools-unit"],
+            "summary": "Changing models can improve task reasoning when context and tools are already available. It does not change the stated disabled-tool configuration, so it cannot by itself perform the requested schema retrieval."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-model-tools-unit"],
+            "summary": "Permission repair is appropriate for a genuine authorization failure. The principal already has sufficient metadata access, and extra database-owner privileges do not enable a chat-disabled tool."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d1-ai-instructions",
+              "dp800-d1x-model-tools-unit"
+            ],
+            "summary": "Repository instructions can provide stable project descriptions or naming conventions. A static schema description is not a fresh database query, so it does not satisfy this task's explicit live-context requirement."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-034": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.772Z",
+        "questionFingerprint": "3fecbb604ac0ed4fecade1a3eeea7de1a644599e1d1ec6c51c8536ea80d78086",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-mcp-vscode"],
+            "summary": "An HTTP definition is appropriate when DAB runs separately at the configured endpoint. It does not create the stipulated VS Code-managed stdio child and requires the HTTP listener the team explicitly excludes."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-mcp-vscode"],
+            "summary": "The documented stdio definition launches dab as a VS Code child, uses --mcp-stdio and the workspace config, and permits substituting a role defined in entity permissions. catalog-reader is the stated permitted role."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-mcp-vscode"],
+            "summary": "The documented stdio path requires --mcp-stdio. Ordinary dab start is used for a separately hosted service; labeling the client transport stdio does not itself make the server speak that mode."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-mcp-vscode"],
+            "summary": "The anonymous role is valid in the quickstart only because its sample entity grants anonymous:read. This workspace grants the required access only to catalog-reader, so copying the sample role does not meet its access requirement."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-035": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:16:50.204Z",
+        "questionFingerprint": "9592d4a3443681c49feb05562bfd9565003731fc472b665444a22df1bf9cae09",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-ai-instructions"],
+            "summary": "A model change can affect response quality, but it leaves the wrong repository guidance intact. The training recommends keeping instructions current and testing them; changing the model alone is not that maintenance action."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-ai-instructions"],
+            "summary": "A reusable prompt is useful for an explicitly invoked migration task. It does not correct the repository instructions automatically supplied to future unrelated chats, so the conflicting target advice remains."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d1-ai-instructions",
+              "dp800-d1-json-columns-unit",
+              "dp800-d1x-json-overview"
+            ],
+            "summary": "Specific current target constraints and compatible examples are the documented instruction-maintenance approach. The SQL sources distinguish SQL Server 2022 JSON text storage from the newer native type, so this change removes the actual contradiction and can be tested with representative requests."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d1-ai-instructions",
+              "dp800-d1x-json-overview"
+            ],
+            "summary": "Newest-feature guidance could suit an explicitly latest-target exploration, but this project must deploy to SQL Server 2022. Omitting that fixed target makes the instruction less specific rather than resolving the mismatch."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d1-036": {
+      "generation": {
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.772Z",
+        "questionFingerprint": "187f83bcdf2e9e2b66f573a32ef6f8f509c95205c1e09487364a8b32fe2e2339",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-fabric-mcp"],
+            "summary": "A manually constructed endpoint URL can work after publication, but the product explicitly states that it fails for an unpublished agent. URL shape alone neither publishes the artifact nor activates its MCP service."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-fabric-mcp"],
+            "summary": "The product requires a published data agent before its MCP endpoint works. Publishing the configured artifact is therefore an independent prerequisite even when capacity, tenant settings and source rights are already satisfied."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-fabric-mcp"],
+            "summary": "An ARM token is appropriate for its own target resource, not automatically every Microsoft API. The Fabric MCP documentation specifies a Fabric token and scope, so the client's ARM audience does not satisfy this endpoint's authentication requirement."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-fabric-mcp"],
+            "summary": "The documented scope is https://api.fabric.microsoft.com/.default, and the bearer token must authorize the target workspace and data agent. This repairs authentication without conflating Azure management access with Fabric artifact access."
+          },
+          {
+            "choiceId": "e",
+            "sourceIds": ["dp800-d1x-fabric-mcp"],
+            "summary": "A custom REST endpoint could accept a simple application-defined question body. This endpoint is explicitly not such an API; it requires the MCP initialization, tool discovery and tool-call message flow."
+          },
+          {
+            "choiceId": "f",
+            "sourceIds": ["dp800-d1x-fabric-mcp"],
+            "summary": "The product specifies initialize, tools/list and tools/call, and recommends reading the advertised tool name and input schema. That protocol-aware flow is the supported way to ask the published agent a question."
+          }
+        ]
+      }
+    }
+  }
+}

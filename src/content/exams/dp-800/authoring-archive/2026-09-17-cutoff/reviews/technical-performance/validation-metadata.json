@@ -1,0 +1,852 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-direct-014": {
+      "generation": {
+        "questionFingerprint": "8cfb4a6aaa474c38537230642c65ee4d14363193bea8248283945ee5e9b329b0",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-transaction-guide"],
+            "summary": "RCSI selects a committed view per statement. It suits statements that may observe fresh commits between reads; it does not give this multi-statement report one transaction-level view."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-transaction-guide"],
+            "summary": "SERIALIZABLE uses locking to protect reads and ranges, which conflicts with freely committing overlapping ordinary updates. It is appropriate when that blocking is acceptable to enforce serializable access."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-transaction-guide"],
+            "summary": "SNAPSHOT uses a transaction-level committed versioned view once data access establishes the transaction snapshot. The read-only, no-DDL/no-hint conditions exclude writer conflicts and schema-lock cases that would need separate analysis."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2-isolation-unit",
+              "dp800-d2-transaction-guide"
+            ],
+            "summary": "READ UNCOMMITTED permits dirty reads and supplies no stable committed transaction snapshot. It can suit explicitly approximate reads that tolerate those anomalies, not this consistent report."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-014",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "8cfb4a6aaa474c38537230642c65ee4d14363193bea8248283945ee5e9b329b0",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-isolation-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/03-preserve-data-integrity-isolation-levels",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-03-preserve-data-integrity-isolation-levels.json",
+              "retrievedAt": "2026-09-16T19:33:03.439Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The row-versioning section distinguishes a READ COMMITTED statement snapshot from a SNAPSHOT transaction view and requires ALLOW_SNAPSHOT_ISOLATION plus session selection. Its lock-based section supplies SERIALIZABLE's retained locks and READ UNCOMMITTED's dirty reads; its blanket no-blocking wording is not adopted."
+            },
+            {
+              "sourceId": "dp800-d2-transaction-guide",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-transaction-guide.json",
+              "retrievedAt": "2026-09-16T19:43:04.550Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Database Engine isolation levels and Behavior when reading data establish transaction versus statement version selection. XSN begins with first data access, not merely BEGIN TRANSACTION. All queries retain Sch-S/Sch-M interactions; ordinary versioned reads avoid shared data locks. These qualifications fit the read-only, no-DDL/no-hint stem."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "An explicit transaction does not widen RCSI to transaction scope. READ COMMITTED chooses versions again for each statement, so a commit between the report's SELECTs can become visible. This option would fit independent statements allowed to see fresh committed data, not the stipulated single versioned view.",
+              "sourceIds": [
+                "dp800-d2-transaction-guide",
+                "dp800-d2-isolation-unit"
+              ]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "SERIALIZABLE retains shared and applicable key-range locks through transaction completion. It can preserve read consistency, but is not the requested versioned view and prevents conflicting updates to the protected read set from freely committing. Updates to unrelated rows do not rescue the requested general isolation behavior.",
+              "sourceIds": ["dp800-d2-transaction-guide"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "supported",
+              "rationale": "SNAPSHOT uses the same transaction snapshot for successive reads, established at first data access, without taking shared data locks that block ordinary row writers. ALLOW_SNAPSHOT_ISOLATION is explicitly enabled. This is not a promise of freedom from schema locks or snapshot write conflicts; both are outside this read-only, no-DDL/no-hint scenario.",
+              "sourceIds": [
+                "dp800-d2-transaction-guide",
+                "dp800-d2-isolation-unit"
+              ]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "READ UNCOMMITTED admits dirty and nonrepeatable reads and does not select a stable committed transaction snapshot. Tolerating approximate or inconsistent observations would change the requirement; avoiding ordinary shared-read locking alone is insufficient.",
+              "sourceIds": [
+                "dp800-d2-transaction-guide",
+                "dp800-d2-isolation-unit"
+              ]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": false
+          },
+          "verificationNotes": "Independent answer: c. The actual product guide supports the SQL Server 2022 behavior and dates row-versioned isolation to SQL Server 2005, so GA is justified without borrowing overbroad training claims. Both database switches and read-only/schema/hint bounds are supplied; no code is present and no SQL execution was performed. Actual credential/course/path/module/unit receipts and the summary-to-product link were inspected. This is the same canonical question and concept as baseline/live dp800-direct-014, not an additional item. Within these eight it differs from write-conflict recalculation and deadlock recovery. HOLD: Advanced is inflated. 'Consistent transaction-level versioned view' directly states SNAPSHOT's defining property; exceptions and prerequisites are resolved and no schedule, conflicting measurements or implementation must be analyzed. Intermediate fits this wording. Changing difficulty or rewriting the stem is an authored repair requiring fresh generation and both later contexts; do not renew this snapshot by relabeling its review.",
+          "confidenceReason": "High confidence in the unique SNAPSHOT key after checking statement/transaction and Sch-S exceptions. The hold concerns demonstrable reasoning-depth inflation, not uncertain isolation semantics; retaining a historical Advanced label does not independently establish its authenticity."
+        }
+      }
+    },
+    "dp800-direct-015": {
+      "generation": {
+        "questionFingerprint": "e9a2f7ce4f27d31975203452cb31f86610856c40f2a5368b574ed6bfae836e87",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "summary": "AVG gives each statistics row equal weight and yields 505 here. It measures the mean of interval means, which could be intended with equal interval weighting, but not the mean per execution."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "summary": "The teaching query weights each duration average by count_executions and divides by the summed counts. Here total duration is 2,000 over 101 positive-count executions, so this expression uses the required denominator."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "summary": "The weighted sum reconstructs total duration, 2,000, and would answer a total-resource-use question. Without division by 101 it does not compute the requested per-execution mean."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "summary": "MAX returns 1,000, the largest supplied interval average. It is useful for identifying the largest aggregate interval mean, not the mean across all executions or a maximum individual execution."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-015",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "e9a2f7ce4f27d31975203452cb31f86610856c40f2a5368b574ed6bfae836e87",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-store-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/05-monitor-tune-queries-query-store",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-05-monitor-tune-queries-query-store.json",
+              "retrievedAt": "2026-09-16T19:33:08.032Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Query the Query Store with T-SQL explicitly sums avg_duration multiplied by count_executions and divides by total executions, with NULLIF and rounding in its broader example. Runtime statistics are aggregates per interval. This supports weighting the supplied complete, positive-count rows, not a claim that a last_execution_time filter perfectly trims a real time window."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "The ordinary average of 10 and 1000 is 505: the row with one execution receives the same weight as the row with 100. AVG(avg_duration) would suit an intentionally equal-weight average of row means, or coincidentally equal execution counts, neither of which is the requested per-execution mean.",
+              "sourceIds": ["dp800-d2-store-unit"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "The observed training query uses execution-count weighting. Independently, total duration is 10*100 + 1000*1 = 2000 and the count is 101, giving approximately 19.801980198. The float duration in the supplied derived table prevents integer division, and the positive complete inputs make the denominator nonzero.",
+              "sourceIds": ["dp800-d2-store-unit"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "The numerator reconstructs represented total duration, 2000, but has not normalized by 101 executions. It would answer a total-duration question, not the requested mean. The unit's weighted-mean expression includes the missing denominator explicitly.",
+              "sourceIds": ["dp800-d2-store-unit"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "MAX(avg_duration) returns 1000, the larger aggregate row mean. It can rank the worst interval mean, not the combined per-execution mean; it also must not be described as the maximum individual execution duration.",
+              "sourceIds": ["dp800-d2-store-unit"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independent answer: b. Static T-SQL review checked the derived VALUES table, alias/column list, CAST types, aggregate result type and positive denominator; independent arithmetic gives 2000/101. This was not live SQL execution. Inputs are explicitly complete and nonoverlapping, from the same plan and execution type and with consistent units; no active-interval merging, catalog join or permission-sensitive DMV query is prescribed. Query Store is an established SQL Server feature, not vendor-independent methodology, so GA rather than Not applicable is appropriate. The module's SQL Server scope and actual Query Store product evidence read in this pass corroborate availability; the exact cited snapshot remains only the store unit. Actual module ancestry was checked. The expression is longer because shorter aggregates omit required weighting/normalization, not because of a prose clue. Intermediate implementation reasoning is credible. This preserves baseline/live dp800-direct-015 under its existing ID and differs from the historical/actual-plan evidence-selection candidate. PASS 2 only: no adversarial review, rubric or gameplay authorization.",
+          "confidenceReason": "High confidence because the exact retrieved training formula and independent numerical/type analysis converge. The conclusion is bounded to the two stipulated rows and does not claim a production Query Store extraction or database execution test."
+        }
+      }
+    },
+    "dp800-direct-016": {
+      "generation": {
+        "questionFingerprint": "ca899bb7c5a3546a8c2a876c8d569fd45a8709a7e584f33f93be07c169bad5ba",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "summary": "Retrying only the failed statement would omit the first UPDATE because the entire victim transaction was rolled back. A statement-only retry can be meaningful for a different operation whose unit of work is that single statement."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "summary": "COMMIT finalizes a surviving transaction; error 1205 has already rolled back this victim transaction. It cannot preserve the original transaction's first update."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "summary": "Waiting for a lock can resume an ordinarily blocked transaction before victim selection. Once 1205 is returned, the old transaction does not survive to resume."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "summary": "A fresh transaction must repeat both updates after the safe bounded delay. The explicit absence of external effects and safe whole-operation retry premise are essential; arbitrary business operations are not automatically retryable."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-016",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "ca899bb7c5a3546a8c2a876c8d569fd45a8709a7e584f33f93be07c169bad5ba",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-deadlocks",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-deadlocks-guide",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-deadlocks.json",
+              "retrievedAt": "2026-09-16T19:43:09.576Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Deadlock detection and Handle deadlocks state that error 1205 follows rollback of the victim transaction; all its work is undone. Handle with TRY...CATCH permits catching the error, and retry guidance recommends a brief randomized pause. Ordinary blocking instead waits on a surviving transaction."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "The victim is the entire explicit transaction, not just its second UPDATE. Retrying only that statement loses the rolled-back first UPDATE and no longer repeats the stated atomic operation. A one-statement unit of work would be a different case.",
+              "sourceIds": ["dp800-d2-deadlocks"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Error 1205 reports rollback of the original victim transaction, so its changes cannot be committed afterward. A CATCH block can still run, but that control-flow continuation does not mean the original transaction survived.",
+              "sourceIds": ["dp800-d2-deadlocks"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Waiting may allow an ordinarily blocked, still-live transaction to resume after its blocker completes. Here victim selection and error 1205 have already ended the original transaction. A delay is useful before a new attempt, not to resume the rolled-back attempt.",
+              "sourceIds": ["dp800-d2-deadlocks"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "Starting a new transaction and repeating both UPDATEs reconstructs the complete atomic operation after rollback. The bounded retry, randomized pause and absence of external effects satisfy the recovery assumptions; this does not license unbounded retries or repeating a non-idempotent external action.",
+              "sourceIds": ["dp800-d2-deadlocks"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independent answer: d. The actual product guide supports SQL Server 2022's mature 1205/transaction rollback behavior and catching the error; no Preview or edition-specific mechanism is invoked. Victim-selection priorities are irrelevant because selection already occurred; I did not adopt the training unit's oversimplified cheapest-victim rule. No executable retry snippet is authored here, and no SQL was executed. Approval does not endorse an unconditional second ROLLBACK of an already rolled-back transaction. The module summary directly links the exact Deadlocks guide, with complete course/path ancestry inspected. Intermediate troubleshooting is appropriate for interpreting a two-statement atomic boundary. Its longer correct option expresses that boundary without persuasive qualifiers. The baseline/live record has this same canonical ID and fact; the separate SNAPSHOT candidate adds stale read-derived calculation semantics, and the sleeping-blocker candidate has no victim/error-1205 event. PASS 2 only.",
+          "confidenceReason": "High confidence from the product guide's explicit transaction-wide rollback and randomized retry guidance. Safe whole-operation retry and absence of external effects are supplied, so neither statement-only recovery nor survival of the old transaction remains defensible."
+        }
+      }
+    },
+    "dp800-20260916-d2-014": {
+      "generation": {
+        "questionFingerprint": "220ced71df9b5e91aa055c518dbf90b8e4e5bebc61bff7eafec447ac1e62ad3c",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-service-tiers"],
+            "summary": "General Purpose provisioned compute fits steady workloads within its supported storage size. Its documented 4-TB data limit cannot hold the projected 12-TB single database."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-service-tiers"],
+            "summary": "Business Critical supplies local SSD storage and a readable replica for demanding OLTP. It also has a documented 4-TB data limit, so those advantages do not meet the 12-TB requirement."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+            "summary": "Serverless can fit intermittent demand, but changing compute tier does not remove General Purpose's storage boundary. This workload is also steady rather than the stated intermittent serverless use case."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+            "summary": "Hyperscale supports storage well beyond 12 TB and named replicas for read scale-out. Provisioned compute matches the stipulated steady resource use without relying on Preview high-vCore sizes."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-014",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "220ced71df9b5e91aa055c518dbf90b8e4e5bebc61bff7eafec447ac1e62ad3c",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-service-tiers",
+              "url": "https://learn.microsoft.com/en-us/azure/azure-sql/database/service-tiers-sql-database-vcore",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-service-tiers.json",
+              "retrievedAt": "2026-09-16T19:43:11.879Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The Azure SQL Database comparison gives General Purpose and Business Critical 4-TB ceilings versus Hyperscale's 128 TB. Compute distinguishes continuous provisioned resources from serverless autoscaling. The Hyperscale section supports named-replica read scale-out. The 160/192-vCore Preview footnote is outside the stem's ordinary-GA-size assumptions."
+            },
+            {
+              "sourceId": "dp800-d2x-config-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/02-recommend-database-configurations",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-02-recommend-database-configurations.json",
+              "retrievedAt": "2026-09-16T19:33:00.061Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Choose a compute tier associates provisioned compute with consistent usage and serverless with intermittent traffic. Match the configuration to your workload pairs large single databases and named-replica read scale with Hyperscale. Product limits, not sweeping unlimited-capacity, price or latency language, control this recommendation."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "Provisioned compute is compatible with steady usage, but the actual Azure SQL Database vCore table caps General Purpose data size at 4 TB. A smaller database could fit; adding CPU does not make this tier support the stipulated unsharded 12-TB database.",
+              "sourceIds": ["dp800-d2x-service-tiers"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Business Critical's local SSD and readable secondary can suit demanding OLTP and reporting, but its documented 4-TB maximum fails the mandatory 12-TB single-database requirement. Performance and read-scale benefits do not override a capacity limit.",
+              "sourceIds": ["dp800-d2x-service-tiers"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Serverless changes compute scaling and billing, not General Purpose's 4-TB data boundary. It can suit intermittent smaller workloads, but cannot accommodate this 12-TB database. Steady usage favors provisioned compute; serverless is not being asserted technically incapable of every steady workload.",
+              "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "The captured Hyperscale limit accommodates 12 TB, and the product section explicitly provides named replicas for read scale-out. Provisioned compute matches steady demand. The answer requires neither Preview 160/192-vCore sizes nor a promise about price, latency or replica freshness.",
+              "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independent answer: d. The product applies to Azure SQL Database, not Managed Instance; the comparison concerns service tiers rather than every compute size. Region availability and ordinary GA sizes are supplied; no administrative permission or deployment command is tested. No SQL was executed. GA is justified for ordinary Hyperscale/provisioned capability; the Preview high-vCore footnote does not apply. Contradictory generic default-tier marketing was not used. The absolute-wording warning comes from denying a guarantee, not promising unlimited capacity: the candidate uses finite 12-TB storage and disclaims latency/cost/freshness guarantees. Options have parallel construction. Intermediate is appropriate because capacity eliminates three alternatives without advanced design analysis. This concept differs from plan-cache configuration and the three preserved performance facts. I inspected the module's configuration-unit link, the summary's direct vCore link and root ancestry. PASS 2 only; a cloned exact-URL policy was used solely for structural validation.",
+          "confidenceReason": "High confidence from the product's explicit 4-TB/128-TB comparison and named-replica discussion, cross-checked against compute-pattern guidance. No conclusion depends on Preview sizes, pricing estimates or a claim that Hyperscale has unlimited storage."
+        }
+      }
+    },
+    "dp800-20260916-d2-015": {
+      "generation": {
+        "questionFingerprint": "87217dc0228def37600a5d694a8382e1e0159f198c4226a9f403e4e6dca2e48c",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "summary": "MAXDOP constrains query parallelism and can be relevant to CPU/thread contention. It does not select compiled stubs instead of full first-use ad hoc plans."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "summary": "The configuration unit documents a small compiled plan stub on first execution and a full cached plan on reuse. That specifically addresses the supplied single-use plan-cache footprint."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "summary": "Compatibility level enables version-specific optimizer behavior. It is relevant to testing newer optimizer features, not the named control for retaining stubs for first-use ad hoc statements."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "summary": "Automatic plan correction addresses regressions between alternative plans for a query. It is useful for that scenario, not the accumulation of many distinct statements executed once."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-015",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "87217dc0228def37600a5d694a8382e1e0159f198c4226a9f403e4e6dca2e48c",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-config-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/02-recommend-database-configurations",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-02-recommend-database-configurations.json",
+              "retrievedAt": "2026-09-16T19:33:00.061Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Reduce plan cache bloat explicitly documents ALTER DATABASE SCOPED CONFIGURATION SET OPTIMIZE_FOR_AD_HOC_WORKLOADS = ON and first-use compiled plan stubs. Separate sections assign MAXDOP to parallelism, compatibility level to optimizer behavior, and FORCE_LAST_GOOD_PLAN to regression correction; none is the documented stub-retention control."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "MAXDOP controls parallel execution and can help a demonstrated parallelism/thread-contention problem. Setting it to one does not instruct the cache to retain only first-use ad hoc stubs. The supplied diagnosis is storage consumed by many distinct single-use plans, not parallel execution.",
+              "sourceIds": ["dp800-d2x-config-unit"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "The retrieved Azure SQL Database unit explicitly provides this database-scoped switch and says first execution retains a compiled plan stub instead of a full cached plan. That targets first-use cache footprint; it does not eliminate first-execution compilation or promise indefinite residency of every important plan.",
+              "sourceIds": ["dp800-d2x-config-unit"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Compatibility level selects version-dependent optimizer behavior and should be evaluated against a baseline when changed. Level 170 is not the named setting for first-use ad hoc stub retention. It may be relevant when adopting an optimizer feature, not as a substitute for the cache-policy control asked here.",
+              "sourceIds": ["dp800-d2x-config-unit"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "FORCE_LAST_GOOD_PLAN addresses a query's regression to a worse plan by restoring a prior good plan. Thousands of distinct statements executed only once are a cache-footprint problem, not a prior-plan regression case. Automatic plan correction is real but does not select first-use stubs.",
+              "sourceIds": ["dp800-d2x-config-unit"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independent answer: b. Actual cited text demonstrates database-scoped Azure SQL Database syntax, not a server-level sp_configure prescription. This targets future first-use storage; it does not promise to remove existing full plans immediately or avoid compilation. The candidate asks which setting addresses the diagnosis, not who can execute ALTER; a fabricated permission rule is unnecessary. The named configuration and alternative optimizer/tuning features are presented as available, with no relevant Preview qualification in the retrieved section; GA is appropriate. SQL identifiers and scope were statically checked, with no live execution. The negative-wording warning is a useful exclusion of parallelism/plan forcing, not a negative-selection task; 'Their' and 'that goal' unambiguously refer to the plans and cache footprint. All four settings are real alternatives for other diagnoses. Intermediate is credible for targeted configuration selection. Distinct from capacity sizing and retained Query Store history. Actual module/unit/root ancestry was inspected. PASS 2 only.",
+          "confidenceReason": "High confidence because the retrieved unit directly differentiates all four settings and includes the exact database-scoped stub setting. Approval is limited to first-use ad hoc storage, not immediate cache remediation, parameterization or guaranteed plan retention."
+        }
+      }
+    },
+    "dp800-20260916-d2-016": {
+      "generation": {
+        "questionFingerprint": "e96656623a548a71c7351dc10358282a0dad6f53f610b9128617259455a76939",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2-transaction-guide",
+              "dp800-d2-isolation-unit"
+            ],
+            "summary": "A SNAPSHOT update detects a row changed by a transaction that committed after its snapshot and terminates on conflict. Application-managed retry must use a new snapshot and reevaluate the decision rather than retaining a stale computed balance."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d2-transaction-guide",
+              "dp800-d2-isolation-unit"
+            ],
+            "summary": "Waiting can resolve ordinary lock blocking while a transaction is still valid. Here the other writer has committed and the snapshot transaction has encountered a terminating update conflict."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d2-transaction-guide",
+              "dp800-d2-isolation-unit"
+            ],
+            "summary": "A new transaction could accept an update based on a fresh valid context, but reusing the old calculation skips the business decision against the now-current balance. It does not preserve the stated read-calculate-write consistency."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2-transaction-guide",
+              "dp800-d2-isolation-unit"
+            ],
+            "summary": "A successful uncontested SNAPSHOT write can commit normally. An update conflict instead terminates the transaction; it is not evidence that the intended debit was accepted."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-016",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "e96656623a548a71c7351dc10358282a0dad6f53f610b9128617259455a76939",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-transaction-guide",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-transaction-guide.json",
+              "retrievedAt": "2026-09-16T19:43:04.550Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Behavior when modifying data says a SNAPSHOT write detects a row changed by a concurrent transaction committed after the snapshot and terminates on conflict. The application must handle and retry; SNAPSHOT retains this behavior even with optimized locking, unlike automatic handling described for optimized-locking RCSI."
+            },
+            {
+              "sourceId": "dp800-d2-isolation-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/03-preserve-data-integrity-isolation-levels",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-03-preserve-data-integrity-isolation-levels.json",
+              "retrievedAt": "2026-09-16T19:33:03.439Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The SNAPSHOT section provides transaction-level read consistency and identifies write conflicts instead of silently overwriting another transaction's change. The read-decide-write discussion establishes that a decision depends on its read value. Its overselling example and unqualified no-blocking claims are not evidence for recovery."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "The original transaction was terminated by its snapshot update conflict. A new attempt must establish a new snapshot and reread the balance before making the debit decision again; otherwise the derived value remains based on the defeated snapshot. No external effects and bounded retries make whole-operation recovery appropriate, without promising eventual success.",
+              "sourceIds": [
+                "dp800-d2-transaction-guide",
+                "dp800-d2-isolation-unit"
+              ]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Waiting helps when a valid transaction is ordinarily blocked by an active writer. The concurrent writer has already committed and the first SNAPSHOT transaction has encountered a terminating conflict. Neither waiting for that released lock nor reusing the previous calculation restores a valid current decision.",
+              "sourceIds": ["dp800-d2-transaction-guide"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "A new transaction repairs the transaction boundary but not the stale balance-derived value. Applying only that old absolute result can overwrite the effect of the intervening commit. Retrying a separately proven idempotent or conditional update would need a different contract; this scenario requires re-evaluating a read-dependent debit.",
+              "sourceIds": [
+                "dp800-d2-transaction-guide",
+                "dp800-d2-isolation-unit"
+              ]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "A detected SNAPSHOT update conflict is a failure that terminates the transaction, not confirmation that optimistic concurrency accepted the write. An uncontested valid write can commit, but the original debit cannot be committed as successful after the described abort.",
+              "sourceIds": ["dp800-d2-transaction-guide"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": false
+          },
+          "verificationNotes": "Independent answer: a. The observed SNAPSHOT transaction implies its required database option is enabled; the guide supports SQL Server 2022's mature behavior without relying on Azure defaults. SNAPSHOT retries remain application-managed, not the automatic optimized-locking RCSI case. The first reader and concurrent committed writer are distinguishable, resolving the pronoun warning. No executable SQL or runtime test was supplied or performed. Both pages have inspected immediate training ancestry. This differs from dp800-direct-014's read-view choice and dp800-direct-016's two-UPDATE deadlock retry: the stale derived balance must be re-read and re-evaluated. HOLD: Advanced is not earned. SNAPSHOT, the successful competing commit, diagnosed conflict and safe retry are supplied; the sole option preserving read-calculate-write consistency states the whole response. No interleaving, code, external-effect retry boundary or competing valid strategy must be derived. Classify this reasoning as Intermediate, or author a deeper case and restart all three passes. Do not change this snapshot in place.",
+          "confidenceReason": "High confidence in conflict/abort semantics from exact product text and the need to refresh a read-derived value. The manual hold concerns the Advanced label and low discrimination among recovery alternatives, not unsupported SQL behavior."
+        }
+      }
+    },
+    "dp800-20260916-d2-017": {
+      "generation": {
+        "questionFingerprint": "46af73497af4884d911163a1d93e64f599267f259c7106b37054819bb915a8e8",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-query-store"],
+            "summary": "Query Store persists multiple plans and aggregated runtime history beyond the current plan cache. It supplies the before-and-after evidence explicitly retained in this scenario."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-plans-unit"],
+            "summary": "An estimated plan exposes expected operators and row estimates without running the query. It fits a nonexecuting structural review, but contains no actual operator row counts from today's execution."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-query-store", "dp800-d2-plans-unit"],
+            "summary": "Cached-query DMVs describe plans currently represented in the cache. They help prioritize current cached workloads, but cannot recover the pre-release entries that were already cleared."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-plans-unit"],
+            "summary": "An actual plan adds runtime metrics, including actual row counts, to the planned operators. Paired with persisted Query Store history it lets the engineer test the cardinality hypothesis rather than assuming stale statistics."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-017",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "46af73497af4884d911163a1d93e64f599267f259c7106b37054819bb915a8e8",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-query-store",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-query-store.json",
+              "retrievedAt": "2026-09-16T19:43:06.818Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "SQL Server 2016-and-later applicability and Information in the Query Store establish persisted multiple plans and time-aggregated runtime history, unlike evictable cache data. SQL Server 2022 is covered. The separately scoped SQL Server 2025 secondary-replica feature is not borrowed for this candidate."
+            },
+            {
+              "sourceId": "dp800-d2-plans-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/04-evaluate-query-performance",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-04-evaluate-query-performance.json",
+              "retrievedAt": "2026-09-16T19:33:05.546Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Read execution plans distinguishes nonexecuting estimates from actual plans with observed operator row counts. Find the most expensive queries defines sys.dm_exec_query_stats as aggregates for cached plans. The generalized Azure DMV permission and reversed graphical row-flow claims are not used."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "Retained Query Store plans and runtime intervals are historical evidence surviving the cleared cache. They compare before/after plan choices and aggregated performance, not every historical operator's actual row counts. This satisfies the history half when paired with option d.",
+              "sourceIds": ["dp800-d2-query-store"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "An estimated plan inspects optimizer choices without running the query, but does not measure actual operator row counts from today's execution. It fits a nonexecuting plan-structure task, not the explicitly required observed-cardinality evidence.",
+              "sourceIds": ["dp800-d2-plans-unit"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "sys.dm_exec_query_stats describes cached-plan aggregates. After earlier entries have been cleared, current rows cannot recover pre-release observations; re-caching the query is not restoration of lost history. This DMV can still characterize surviving/current cached workloads in another investigation.",
+              "sourceIds": ["dp800-d2-plans-unit", "dp800-d2-query-store"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "An actual execution plan adds measured runtime behavior, including actual operator row counts. A representative current execution can test the estimate mismatch while option a supplies history. A mismatch alone does not prove stale statistics or dictate an index change.",
+              "sourceIds": ["dp800-d2-plans-unit"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": false
+          },
+          "verificationNotes": "Independent complete selection: a and d, matching the written count of two. Persisted aggregate history and current operator observations are different evidence. SQL Server 2022, retained history, required diagnostic permissions and a representative execution are supplied. I did not transplant generic Azure VIEW DATABASE STATE assertions to SQL Server 2022 or import SQL Server 2025 secondary-replica support. Query Store and actual plans are established GA capabilities. No diagnostic SQL is authored here and no query was executed. Actual summary-to-Query-Store and module-to-plans-unit links and complete roots were inspected. Pronouns have clear referents; this does not duplicate weighted-duration aggregation. HOLD: Advanced is inflated. The stem names Query Store as retaining the required history and asks for actual row counts; option d repeats that actual-execution capability. The wrong choices say 'only' and exclude the requested evidence. Pairing two supplied tool definitions is Intermediate selection, not advanced plan analysis. Relabel through fresh authoring/review or supply diagnostic artifacts and less-cued alternatives; no rubric or final attestation is produced here.",
+          "confidenceReason": "High confidence in a+d from the separately read historical-storage and actual-plan sections. Explicit answer cueing and absent advanced analysis cause the hold, not uncertainty over cache lifetime, aggregation or SQL Server version."
+        }
+      }
+    },
+    "dp800-20260916-d2-018": {
+      "generation": {
+        "questionFingerprint": "c16a8e0e863814a1f18837563e12c941ecc8406af5c77ce10b1a6867519ee9f7",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-plans-unit"],
+            "summary": "More compute can help demonstrated CPU pressure. The supplied low CPU and lock-owner chain instead identify waiting for a transaction, not proof of inadequate compute."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d2-transaction-guide",
+              "dp800-d2-deadlock-unit"
+            ],
+            "summary": "RCSI changes ordinary read consistency and reduces shared-read-lock contention. It does not complete an abandoned writer transaction or remove its conflicting writes."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-plans-unit", "dp800-d2-deadlock-unit"],
+            "summary": "Active-request views describe currently executing requests. A sleeping session can still own an open transaction and its locks, so session and transaction state must also be inspected."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-deadlock-unit"],
+            "summary": "The observed ownership chain makes sleeping session 52 the head blocker. Ending its abandoned unit of work through controlled recovery addresses the held locks; application transaction cleanup should then be repaired."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-018",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "c16a8e0e863814a1f18837563e12c941ecc8406af5c77ce10b1a6867519ee9f7",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "manual-review-required",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-deadlock-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/06-identify-resolve-blocking-deadlocks",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-06-identify-resolve-blocking-deadlocks.json",
+              "retrievedAt": "2026-09-16T19:33:10.301Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Recognize common blocking scenarios includes a sleeping session with an uncommitted transaction retaining locks. The unit distinguishes head blockers from downstream waiters and writer/writer blocking from versioned reads. Its filtered DMV example cannot return the illustrated zero-blocker row; that example is not treated as executed evidence."
+            },
+            {
+              "sourceId": "dp800-d2-plans-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/04-evaluate-query-performance",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-04-evaluate-query-performance.json",
+              "retrievedAt": "2026-09-16T19:33:05.546Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Check currently executing queries defines sys.dm_exec_requests as active requests, while Monitor active sessions and waiting tasks distinguishes authenticated sessions and waiting resources. CPU statistics and lock waits diagnose different constraints. Absence from requests is not proof that a session has no transaction resources."
+            },
+            {
+              "sourceId": "dp800-d2-transaction-guide",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-transaction-guide.json",
+              "retrievedAt": "2026-09-16T19:43:04.550Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Modify data without optimized locking retains write-conflict locking under RCSI. Code efficient transactions and Manage long-running transactions require completion and tracing owners; Terminate a transaction cautions about KILL around critical work. RCSI does not commit or roll back an abandoned writer."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "A long lock wait is not proof of CPU saturation. The observed chain and explicit write-lock ownership identify a transactional dependency, while CPU is low. Compute scaling could address measured CPU pressure elsewhere, but does not complete session 52's open transaction.",
+              "sourceIds": ["dp800-d2-plans-unit", "dp800-d2-deadlock-unit"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "RCSI is already enabled and changes ordinary READ COMMITTED reads to versioned reads. It does not release an uncommitted writer's conflicting locks. Separately described optimized-locking behavior does not justify ignoring the actual observed writer chain; reader/writer contention is a different diagnosis.",
+              "sourceIds": [
+                "dp800-d2-transaction-guide",
+                "dp800-d2-deadlock-unit"
+              ]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "An active-request view answers what executes now, not whether every session ended its transaction. A sleeping session can retain locks, and the stem confirms session 52 does. Establishing no resources requires corroborating session/transaction inspection, not absence from requests alone.",
+              "sourceIds": ["dp800-d2-plans-unit", "dp800-d2-deadlock-unit"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "The chain 61 to 58 to 52 terminates at the confirmed sleeping lock owner. Coordinating its uncommitted work with the application and using authorized completion or rollback addresses the cause. This is not automatic KILL, arbitrary commit, guaranteed instant rollback or deadlock-victim retry.",
+              "sourceIds": [
+                "dp800-d2-deadlock-unit",
+                "dp800-d2-transaction-guide"
+              ]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": false
+          },
+          "verificationNotes": "Independent answer: d. SQL Server 2022 writer/transaction semantics support the observation; RCSI is neither a lock-release operation nor freedom from schema/writer conflicts. Ownership is given independently of active-request output, avoiding the training example's impossible zero-blocker row under a nonzero filter. No exact permission is asserted; the choice requires authorized recovery. No SQL or KILL command was executed, and XACT_ABORT/rollback snippets were not certified as general solutions. These are mature GA mechanisms. Session numbers resolve the pronoun warning. This differs from a 1205 victim already rolled back. Actual root/module/unit and summary-to-product receipts were inspected. HOLD: Advanced is inflated and alternatives are heavily cued. Session 52's uncommitted lock ownership, enabled RCSI and low CPU directly negate a, b and c. No head-blocker discovery or credible recovery trade-off remains. The only answer addressing the confirmed transaction is also the elaborately qualified longest option, although the deterministic length threshold did not fire. Reclassify to Intermediate with fresh passes or redesign the evidence and alternatives for real diagnostic analysis.",
+          "confidenceReason": "High confidence in session 52 as the causal blocker from stipulated ownership and the sleeping-transaction/DMV evidence. Explicit answer cueing and a pre-solved Advanced diagnosis cause this hold, not technical uncertainty."
+        }
+      }
+    }
+  }
+}

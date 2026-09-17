@@ -1,0 +1,290 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-adversarial-performance-repairs-r1-20260916",
+  "reviews": [
+    {
+      "questionId": "dp800-direct-014",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-performance-20260916",
+      "questionFingerprint": "d25b61d57813fa65bb740ecf5004b7aca83a88300cf69024b42b673c8fc06139",
+      "reviewedAt": "2026-09-17T00:23:24.542Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2-isolation-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/03-preserve-data-integrity-isolation-levels",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-03-preserve-data-integrity-isolation-levels.json",
+          "retrievedAt": "2026-09-16T19:33:03.439Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "I reread the lock-based and row-versioning sections. The unit distinguishes RCSI statement views from SNAPSHOT transaction views, requires ALLOW_SNAPSHOT_ISOLATION plus session selection, and describes dirty reads and SERIALIZABLE range protection. Its broad reader/writer no-blocking sentences are not approved; the product guide supplies schema-lock and first-access qualifications. Only the bounded read-only report claims are attested."
+        },
+        {
+          "sourceId": "dp800-d2-transaction-guide",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-transaction-guide.json",
+          "retrievedAt": "2026-09-16T19:43:04.550Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "I inspected Isolation levels, Row versioning-based isolation levels and Behavior when reading data. The product documents statement versus transaction version selection, XSN establishment on first data access, Sch-S/Sch-M interactions, retained SERIALIZABLE locks and READ UNCOMMITTED dirty reads. It dates this row-versioning implementation to SQL Server 2005 and later. These passages support both the selected read view and the useful but different contexts of all alternatives."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "An intervening committed update can be visible to the next RCSI statement: the product says each statement selects versions using its newly sampled sequence boundary. That is useful for fresh committed reads per statement, but it does not provide the report’s common versioned view across all statements.",
+          "sourceIds": ["dp800-d2-transaction-guide", "dp800-d2-isolation-unit"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "SERIALIZABLE can protect a stable read set through retained data/range locks, not the requested versioned read view. Those locks prevent conflicting updates from freely completing against the read set. It is appropriate when that locking is acceptable to enforce serializable access, but it does not meet this combination of requirements.",
+          "sourceIds": ["dp800-d2-transaction-guide"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: SNAPSHOT selects committed row versions from one transaction snapshot for the successive reads. The enabling option is supplied, and read-only ordinary data access avoids the shared data-read locks that would obstruct the relevant writers. First data access establishes the snapshot; neither schema-lock freedom nor write-conflict immunity is claimed.",
+          "sourceIds": ["dp800-d2-transaction-guide", "dp800-d2-isolation-unit"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "READ UNCOMMITTED can read a writer’s uncommitted value that is later rolled back and can observe changing values across reads. Avoiding shared read locks does not construct a stable committed transaction snapshot. A deliberately approximate read that tolerates those anomalies is a different acceptable context.",
+          "sourceIds": ["dp800-d2-isolation-unit", "dp800-d2-transaction-guide"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh PASS 3 of the 22:44:52.544Z repair independently selects c. I used an intervening-commit counterexample for RCSI, contrasted retained SERIALIZABLE locks with a versioned view, and tested dirty reads. Product first-access, schema-lock, enabled-option and SQL Server applicability text bounds the answer. No SQL or configuration was executed. The current guide, actual root/unit/product references and existing exact catalog approvals were checked. Intermediate is acceptable for direct two-property selection but not full-depth troubleshooting; rubric 45/48 deducts for definitional cueing, limited distractor resistance and conventional setup. This is a new full review of a new hash, not a changed date on the prior Advanced hold. No original report or authored content was edited.",
+      "confidenceReason": "High for the stated ordinary read-only workload: the product defines the two distinct version boundaries and supplies the lock/dirty-read counterexamples. Approval does not promise no schema blocking or SNAPSHOT write success."
+    },
+    {
+      "questionId": "dp800-20260916-d2-016",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-performance-20260916",
+      "questionFingerprint": "00a6f32d37fde13bb3b648260421763656ef02cf18f89cf1dfeedb96fa06f063",
+      "reviewedAt": "2026-09-17T00:23:24.542Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2-transaction-guide",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-transaction-guide.json",
+          "retrievedAt": "2026-09-16T19:43:04.550Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "I reread both modifying-data branches. A SNAPSHOT update detects a concurrently committed row change and terminates on conflict; application handling/retry remains required even with optimized locking. Automatic RCSI/READ COMMITTED retry is explicitly a different branch. The read-version selection and transaction completion sections show why a new attempt cannot inherit the old transaction’s accepted context. These facts justify fresh read/calculate/write recovery, not blind replay of every business operation."
+        },
+        {
+          "sourceId": "dp800-d2-isolation-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/03-preserve-data-integrity-isolation-levels",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-03-preserve-data-integrity-isolation-levels.json",
+          "retrievedAt": "2026-09-16T19:33:03.439Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "I inspected the multi-operation consistency discussion and SNAPSHOT subsection. They distinguish nonrepeatable observations, a common transaction view and same-row update conflict rather than silent overwriting. This supports rechecking a read-derived debit on a fresh attempt. The unit’s oversell narrative and universal no-blocking wording are not needed or endorsed; the product’s precise conflict contract governs."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: conflict ends the old SNAPSHOT transaction, so a retry must use a new attempt. Rereading and recalculating rebuild the debit’s input context after the competing commit instead of carrying an unvalidated old result forward. With no external effects and bounded retries permitted, this preserves the read-calculate-write unit without promising that every retry succeeds.",
+          "sourceIds": ["dp800-d2-transaction-guide", "dp800-d2-isolation-unit"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Waiting cannot resume a transaction terminated by a SNAPSHOT conflict, and the competing writer has already committed. Waiting is appropriate for a still-live transaction blocked on an active lock owner; it cannot make this failed transaction or its old computation valid again.",
+          "sourceIds": ["dp800-d2-transaction-guide"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "A new transaction alone does not validate the old read-derived UPDATE value. If an absolute remaining balance was calculated before a competing credit, blindly storing that value could discard the credit. A result independently known to remain valid could be reused under a different contract, but the stem supplies no such validation and this option expressly omits rereading.",
+          "sourceIds": ["dp800-d2-transaction-guide", "dp800-d2-isolation-unit"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "An update conflict is failed validation of this write attempt, not acceptance of the intended debit. The product terminates that transaction. An uncontested SNAPSHOT write whose validation succeeds can commit normally, but this failed attempt has no accepted original debit to finalize.",
+          "sourceIds": ["dp800-d2-transaction-guide"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh PASS 3 independently derives a for the new repair hash. I reread terminating SNAPSHOT conflict and the separate automatic-RCSI branch, then tested continued waiting, success/commit and transport of a stale computed value. The old value can coincidentally remain valid, but the stem does not establish that; fresh re-evaluation is the robust consistency-preserving response. Safe bounded replay and no external effects are supplied. No SQL, retry loop or business transfer was run; the lost-credit counterexample is static reasoning. Actual current-map and finite provenance receipts plus existing exact catalog permissions were checked. Rubric 45/48 records conventional setup, weak success-as-conflict distractor and lower-intermediate depth. Prior holds, prior PASS3 reports and authored text are untouched.",
+      "confidenceReason": "High for the recovery contract, not guaranteed retry success. Transaction termination is explicit in the source and no independent validation of old business inputs is supplied. Scope does not include arbitrary external effects, automatic SNAPSHOT retries or every possible debit implementation."
+    },
+    {
+      "questionId": "dp800-20260916-d2-017",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-performance-20260916",
+      "questionFingerprint": "9ea6547391afb5fa9b6d0af4fe1083d85f032a6a01a5c4f590d3b70e3ce0a95d",
+      "reviewedAt": "2026-09-17T00:23:24.542Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2-query-store",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-query-store.json",
+          "retrievedAt": "2026-09-16T19:43:06.818Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "I inspected the SQL Server 2016-and-later applicability and Information in the Query Store. The product retains multiple plan variants and fixed-window execution statistics, unlike the evictable procedure cache, and expressly lists auditing plan history. It also lists capture exclusions/limits; the candidate supplies active historical capture and surviving records instead of relying on defaults. The separately marked SQL Server 2025 secondary-replica section is not imported into this 2022 question."
+        },
+        {
+          "sourceId": "dp800-d2-plans-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/04-evaluate-query-performance",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-04-evaluate-query-performance.json",
+          "retrievedAt": "2026-09-16T19:33:05.546Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "I reread actual versus estimated plans, cached-statement CPU/read ranking, and missing-index DMV output. Actual plans include observed row counts; sys.dm_exec_query_stats describes cached-plan aggregate costs; index DMVs list equality, inequality and included-column suggestions. These are useful but different observations. I do not endorse reversed graphical plan direction, a universal Azure DMV permission claim, or treating a row-estimate mismatch as proof of stale statistics or a required index."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: retained Query Store plan variants and time-windowed runtime records let the engineer compare the query across the release. The product explicitly documents plan-history auditing and persisted stores. Capture across both periods and record survival are stipulated; this step satisfies the history need, not current per-operator observed rows by itself.",
+          "sourceIds": ["dp800-d2-query-store"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Ranking cached statements by CPU and logical reads is a valid way to prioritize costly workload candidates. That aggregate ranking does not produce the requested retained plan-version comparison or measured rows at each current operator. The new option is not impossible; it answers a different diagnostic question.",
+          "sourceIds": ["dp800-d2-plans-unit", "dp800-d2-query-store"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Missing-index DMV column recommendations help formulate possible access-path improvements. They are recommendations, not a record of plan changes or a measurement of current operator rows. Testing them may be appropriate after an access-path diagnosis, but they do not replace either requested observation.",
+          "sourceIds": ["dp800-d2-plans-unit"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: the representative execution’s actual plan pairs estimates with observed operator row counts, directly testing the current cardinality hypothesis. It complements a’s historical window rather than replacing it. A mismatch is evidence to investigate, not proof of a particular statistics or index remedy.",
+          "sourceIds": ["dp800-d2-plans-unit"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh PASS 3 yields a+d from two different evidence needs. I challenged cached CPU/read ranking and missing-index suggestions as real alternative investigations; neither supplies the requested timeline or current operator measurements. The raw Query Store product section and actual-plan/DMV unit support the distinction, with capture, permission and representative-execution premises supplied. I explicitly excluded SQL Server 2025 replica support, generic Azure permission wording and automatic index/statistics diagnosis. No query, plan capture or DMV was executed. Actual source links, root receipts and existing catalog approvals were checked. Rubric 46/48 deducts for familiar tool-selection framing and limited artifact interpretation, while acknowledging repaired distractor plausibility. This is new analysis of the repaired options and new generation hash, not renewal of the prior held question.",
+      "confidenceReason": "High for the exact two-step selection because the retained-history and observed-operator goals have separately documented outputs. Confidence does not assert the cause of the regression, authorize executing an unknown production query or imply that a tuning suggestion is proven."
+    },
+    {
+      "questionId": "dp800-20260916-d2-018",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-adversarial-performance-20260916",
+      "questionFingerprint": "4ef808b82ff564d99a59bfa918b529a2f63eff9e06d39229da95787f1382c6e6",
+      "reviewedAt": "2026-09-17T00:23:24.542Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2-deadlock-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/06-identify-resolve-blocking-deadlocks",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-06-identify-resolve-blocking-deadlocks.json",
+          "retrievedAt": "2026-09-16T19:33:10.301Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "I read head-blocker tracing, sleeping uncommitted transactions, long-running-query tuning, short-transaction prevention and SQL Server system_health capture. The source distinguishes ordinary live blocking from circular deadlocks and victim recovery. The scenario uses those distinctions, not the flawed filtered-query example that purports to return a zero blocker, generalized XACT_ABORT promises or unconditional extra ROLLBACK code."
+        },
+        {
+          "sourceId": "dp800-d2-plans-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/04-evaluate-query-performance",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-04-evaluate-query-performance.json",
+          "retrievedAt": "2026-09-16T19:33:05.546Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "I inspected currently executing requests versus authenticated sessions and the plan/index diagnostic discussion. A request view reports executing requests while session inspection has wider scope; absence of an active request does not prove a committed transaction. Actual plan and index investigation can help costly access paths, but the supplied dependency chain determines the first transaction to inspect. No automatic index benefit is asserted."
+        },
+        {
+          "sourceId": "dp800-d2-transaction-guide",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-transaction-guide.json",
+          "retrievedAt": "2026-09-16T19:43:04.550Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "I reread transaction completion and Discover long-running transactions. Commit or rollback completes a transaction and releases its resources; an application-controlled transaction can remain open while waiting for its user. The guide recommends identifying the owning user for appropriate completion/rollback and warns that KILL needs care. These support owner-coordinated investigation, not a blanket right for another connection to commit session 52 or automatically terminate production work."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Execution-plan and index testing can help when a long-running statement’s access path holds too many locks. In this snapshot 61 is waiting on 58, so tuning 61 does not first locate the upstream transaction keeping the chain waiting. It may be worthwhile later without answering the immediate dependency question.",
+          "sourceIds": ["dp800-d2-plans-unit", "dp800-d2-deadlock-unit"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Shorter batches or a narrower predicate can reduce long lock retention when the targeted transaction is the relevant cause. Although 58 blocks 61, it is itself waiting on 52. Stopping at 58 therefore misses the next dependency; its batch design can be assessed after locating the upstream open transaction.",
+          "sourceIds": ["dp800-d2-deadlock-unit", "dp800-d2-transaction-guide"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "SQL Server system_health deadlock reports are legitimate evidence for recorded circular dependencies and victim recovery. This supplied snapshot instead points to a sleeping session with a still-open transaction. Historical victim analysis does not first locate that live transaction; the question does not claim no deadlock ever occurred elsewhere.",
+          "sourceIds": ["dp800-d2-deadlock-unit"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: following 61 to 58 to 52 reaches the upstream session in the supplied chain. Its sleeping state and absent active request do not close the stated open transaction. Inspecting it with its application owner supports appropriate authorized completion or rollback, not automatic COMMIT, KILL or a claim every lock has already been proven.",
+          "sourceIds": [
+            "dp800-d2-deadlock-unit",
+            "dp800-d2-plans-unit",
+            "dp800-d2-transaction-guide"
+          ]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh PASS 3 selects d from the actual new chain/choice wording. I challenged downstream index work, intermediate-node batch tuning and historical victim analysis as genuine alternatives with source-backed contexts. Their priority is wrong here, not their existence. Actual request/session, sleeping-transaction, owner-discovery and SQL Server system_health passages were inspected; flawed training queries, broad XACT_ABORT language and automatic KILL are not endorsed. No DMV, plan experiment, transaction control or SQL was executed. Existing exact catalog approvals and finite root/unit/product links were checked. Rubric 46/48 deducts for conventional small-chain setup and limited depth while crediting repaired plausible alternatives. This final record binds the new generation and technical stage only; prior reports and all authored fields remain unchanged.",
+      "confidenceReason": "High for first investigation, not a production termination decision. The supplied dependencies lead to the stated open transaction, and actual sources establish that sleeping/request absence is not transaction completion. Owner-coordinated inspection preserves the authorization boundary."
+    }
+  ]
+}

@@ -1,0 +1,692 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-adversarial-programmability-20260916",
+  "reviews": [
+    {
+      "questionId": "dp800-direct-004",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-programmability-20260916",
+      "questionFingerprint": "ea343ffe8898796754ff84dc3ce1b8258d5c39737d377733f0f076b1947390db",
+      "reviewedAt": "2026-09-16T23:55:49.123Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1-create-view",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-create-view.json",
+          "retrievedAt": "2026-09-16T19:34:37.304Z",
+          "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+          "supportingSummary": "Read the actual MCP CREATE VIEW SQL Server grammar and the CHECK OPTION, ENCRYPTION, SCHEMABINDING and VIEW_METADATA argument paragraphs. Only SCHEMABINDING explicitly rejects ALTER TABLE changes affecting the definition; it requires same-database two-part references and allows removal of the dependency first. ENCRYPTION has explicit SQL Server 2008-and-later applicability, and the SQL Server grammar includes the other ordinary attributes. The Create views unit actually names and links this exact statement, rather than merely mentioning the general topic. Its module/path/course/credential receipts were independently traced."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "CHECK OPTION checks the visibility of data modified through a view. A DROP COLUMN operation changes schema, not a row's membership in the view, so this option supplies no stated dependency protection. Alternative context: Use CHECK OPTION when an otherwise updatable filtered view must reject an INSERT or UPDATE whose resulting row falls outside its predicate. That is a different requirement from protecting the column definition. Evidence: CREATE VIEW, CHECK OPTION, explicitly limits the check to modifications through the view and contrasts with the SCHEMABINDING dependency rule.",
+          "sourceIds": ["dp800-d1-create-view"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: the article says ALTER TABLE fails when it affects a schema-bound view definition. Dropping the referenced column does exactly that, and the stem excludes changing or dropping the view first. Alternative context: This is correct for the supplied valid same-database, two-part-name view. It would cease to protect a dependency removed by ALTER VIEW or DROP VIEW, and it does not forbid unrelated compatible table alterations. Evidence: CREATE VIEW, SCHEMABINDING, names both the incompatible ALTER TABLE failure and the prior view-change/drop escape path; this is dependency enforcement, not a denial of administrator authority.",
+          "sourceIds": ["dp800-d1-create-view"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The ENCRYPTION paragraph concerns the saved CREATE VIEW text and replication publication. It does not bind that definition to the table or make the proposed DROP COLUMN fail. Alternative context: This attribute addresses ordinary inspection of stored definition text, subject to its documented limitations and replication consequence. It is not an administrator-proof security or schema-integrity boundary. Evidence: CREATE VIEW, ENCRYPTION, describes sys.syscomments definition text and publication restrictions, whereas dependency failures are documented under SCHEMABINDING.",
+          "sourceIds": ["dp800-d1-create-view"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "VIEW_METADATA changes what supported client APIs learn about result columns. Changing the metadata's described object does not establish the separately documented schema-binding restriction. Alternative context: It is appropriate when DB-Library, ODBC or OLE DB browse-mode clients need the view's column provenance, including supported cursor scenarios, rather than the underlying table names. Evidence: CREATE VIEW, VIEW_METADATA, explicitly describes browse-mode metadata for those client APIs; no dependent-column DDL protection is assigned to this attribute.",
+          "sourceIds": ["dp800-d1-create-view"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 selected b after trying the administrator-removes-binding and compatible-ALTER counterexamples; neither meets the supplied conditions. Read the actual option paragraphs and immediate training ancestry, with exact current catalog approval. Static clause review only, not SQL execution. The restrained intermediate difficulty and item-specific rubric pass; no source or authored field was renewed.",
+      "confidenceReason": "High confidence in the single dependency rule and rejection of the three alternative attributes. Confidence is limited to the described valid view, not an unseen deployment or an authorization guarantee."
+    },
+    {
+      "questionId": "dp800-20260916-d1-012",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-programmability-20260916",
+      "questionFingerprint": "36402306f60d81959fea8725284b482b6d8aa492b2088c2e54df86d6f64b8407",
+      "reviewedAt": "2026-09-16T23:55:49.125Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1-create-view",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-create-view.json",
+          "retrievedAt": "2026-09-16T19:34:37.304Z",
+          "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+          "supportingSummary": "Read CHECK OPTION's post-modification visibility requirement and the immediately following note that direct underlying-table updates are outside it. The Updatable views section permits updates to directly referenced columns of one base table. The actual SQL Server grammar admits this view clause, independently of the different Synapse/Fabric syntax. Verified the exact Create views training reference and its finite credential-course-path-module ancestry; no broader base-table security rule is inferred."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The initially visible row would be invisible after the view update. CHECK OPTION evaluates that resulting visibility, so the view path fails even though its WHERE matched initially. Alternative context: Both updates could succeed if the view lacked CHECK OPTION or the new value still satisfied its predicate. Neither alteration describes the frozen Ready = 1 view changing Ready to 0. Evidence: The CHECK OPTION paragraph specifically requires data to remain visible after modification; it is not merely a pre-update row-selection test.",
+          "sourceIds": ["dp800-d1-create-view"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The article expressly excludes direct updates to the underlying table. This login is authorized on both objects and no other stated trigger or constraint forbids Ready = 0. Alternative context: A distinct base-table constraint or denied direct-update permission could make both operations fail, but the view clause itself would still not be a global table rule; those competing blockers are excluded here. Evidence: The explicit CHECK OPTION note excludes direct-table updates; Updatable views also requires normal integrity and access checks, explaining why separate blockers would be a different context.",
+          "sourceIds": ["dp800-d1-create-view"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "This reverses the documented entry-point boundary. The offending post-update value is rejected through the view, not by exporting the view predicate onto the base table. Alternative context: A different view that allows the new value combined with a caller lacking direct-table access could produce this pair of outcomes. The current CHECK OPTION predicate and explicit permissions rule that out. Evidence: CREATE VIEW describes views as an access interface distinct from base-table grants and explicitly limits CHECK OPTION to the view modification path.",
+          "sourceIds": ["dp800-d1-create-view"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: Ready = 0 fails the view's post-update predicate, while the direct base write is outside that clause. Separate tests preserve the same starting row, so no result depends on which test ran first. Alternative context: This is the supplied case: a simple updatable filtered view, rights on both interfaces and no additional prohibiting constraint or trigger. With another blocker, the cautious 'can succeed' would not assert unconditional success. Evidence: The CHECK OPTION paragraph and direct-table exception together establish both outcomes; the simple directly referenced columns meet the article's updatable-view conditions.",
+          "sourceIds": ["dp800-d1-create-view"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 obtained d. Tested alternatives involving initial-only visibility, direct-table permission denial and inter-test state changes; the actual article or explicit stem conditions reject each. Static reasoning only. Exact source ancestry and current approval were checked without renewing any snapshot.",
+      "confidenceReason": "High confidence: one precisely targeted article states both the post-update requirement and the direct-write exception. No unseen trigger or transaction behavior is necessary to determine this answer."
+    },
+    {
+      "questionId": "dp800-20260916-d1-013",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-programmability-20260916",
+      "questionFingerprint": "b1e030277f5d9254975fe39273823b45ec52b9ae98a5d45ad1ebc20d250b25b3",
+      "reviewedAt": "2026-09-16T23:55:49.126Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-create-function",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-create-function.json",
+          "retrievedAt": "2026-09-16T19:47:28.549Z",
+          "lastReviewedAt": "2026-09-16T20:36:26.420Z",
+          "supportingSummary": "Read SQL scalar syntax, SCHEMABINDING prerequisites, limitations and Computed column interoperability. The matrix explicitly allows local data access in a deterministic function, but indexing a calling computed column separately requires UserDataAccess and SystemDataAccess false. PERSISTED only qualifies the IsSystemVerified requirement. This is the exact product distinction needed here, not the training unit's blanket table-access wording. Verified its real scalar-unit CREATE FUNCTION reference and ordinary SQL Server scope."
+        },
+        {
+          "sourceId": "dp800-d1x-udf-overview",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/user-defined-functions/user-defined-functions",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-udf-overview.json",
+          "retrievedAt": "2026-09-16T19:53:17.500Z",
+          "lastReviewedAt": "2026-09-16T20:36:26.420Z",
+          "supportingSummary": "Read Guidelines, Built-in system functions and Schema-bound functions from the frozen MCP body. GETDATE is explicitly among nondeterministic built-ins allowed in T-SQL UDFs, and external permanent side effects are prohibited. Thus the initial function can exist without qualifying for the desired index. The scalar unit actually links this overview. I did not adopt its broad serial-plan statement, old parameter limit or looser one-part-name wording as evidence for this SQL Server 2022 redesign."
+        },
+        {
+          "sourceId": "dp800-d1x-scalar-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-programmability-objects/4-create-scalar-functions",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-scalar-unit.json",
+          "retrievedAt": "2026-09-16T19:37:56.127Z",
+          "lastReviewedAt": "2026-09-16T20:16:15.743Z",
+          "supportingSummary": "Read the decimal amount/rate calculation, GETDATE determinism note and modification section. The unit supplies a concrete explicit-input scalar calculation, but its claim that all table access is nondeterministic is broader than the cited CREATE FUNCTION matrix; the candidate correctly treats table access as a separate indexing restriction instead. Its immediate module link and both product references were independently inspected."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "A date argument can remove GETDATE but leaves the lookup's UserDataAccess true. The computed-column index contract requires that property false independently of determinism, and the row's booked rate is not made an explicit immutable input. Alternative context: A date-parameterized lookup can be useful for a nonindexed calculation that intentionally queries the rate table. With a stable database state it may satisfy a repeatability requirement; that still does not satisfy this no-user-data-access indexing condition. Evidence: Computed column interoperability distinguishes IsDeterministic from UserDataAccess; the scalar unit's date-parameter note solves only the clock component.",
+          "sourceIds": ["dp800-d1x-create-function", "dp800-d1x-scalar-unit"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Binding a wrapper preserves dependencies but does not remove the called GETDATE evaluation or the DailyRate read. The existing function is already bound, so repeating that property cannot supply either missing condition. Alternative context: A wrapper can expose a stable reusable interface around a calculation whose underlying properties already meet its consumer's requirements. It is not a means of changing the wrapped calculation's data or clock dependencies. Evidence: The SCHEMABINDING sections concern object dependencies; the separate computed-column properties and permitted nondeterministic built-ins remain relevant through nested calls.",
+          "sourceIds": ["dp800-d1x-create-function", "dp800-d1x-udf-overview"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: the row supplies the booked rate directly, so this function no longer needs today's clock or a user-table lookup. Deterministic decimal operations can satisfy the stated function properties without changing the booked-rate meaning. Alternative context: This solves the two specified blockers when the stored input is the actual agreed rate and the function uses only the promised deterministic operations. A complete index deployment must still satisfy other type, SET, ownership and expression requirements. Evidence: CREATE FUNCTION's indexability matrix requires determinism and no user/system data access; the scalar unit demonstrates an amount/rate decimal calculation with explicit inputs.",
+          "sourceIds": ["dp800-d1x-create-function", "dp800-d1x-scalar-unit"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The matrix's PERSISTED exception applies only to IsSystemVerified. It leaves IsDeterministic and the two no-data-access requirements intact; unchanged GETDATE and the table read therefore remain blockers. Alternative context: Persistence can help an otherwise eligible computed expression for the documented system-verification exception. It does not make this volatile table-dependent body an eligible indexed calculation. Evidence: The four-item indexed-UDF property list attaches 'unless the computed column is persisted' only to IsSystemVerified, not to determinism or UserDataAccess.",
+          "sourceIds": ["dp800-d1x-create-function"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 retained c after testing a deterministic date-parameter lookup, a bound wrapper and the PERSISTED exception. All leave at least one stated blocker. Re-read actual product/training text and its current exact DP-800 approvals; excluded conflicting training simplifications and unrelated Fabric Preview claims. Static reasoning only, with no indexing execution or source refresh.",
+      "confidenceReason": "High confidence in the two-blocker conclusion because the product property list is explicit. Confidence does not extend to the deployment of an unspecified computed-column index or its runtime performance."
+    },
+    {
+      "questionId": "dp800-20260916-d1-014",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-programmability-20260916",
+      "questionFingerprint": "c74755a5ae38d4a6d5065d4094cb86d41538dbb08a01a309ff11dd96cdc0745b",
+      "reviewedAt": "2026-09-16T23:55:49.126Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-create-function",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-create-function.json",
+          "retrievedAt": "2026-09-16T19:47:28.549Z",
+          "lastReviewedAt": "2026-09-16T20:36:26.420Z",
+          "supportingSummary": "Read the CLR scalar grammar, EXTERNAL NAME prerequisites and RETURNS NULL ON NULL INPUT | CALLED ON NULL INPUT paragraph. SQL Server may return NULL without invoking a CLR body; a SQL CALLED ON NULL INPUT declaration takes precedence over a contrary method attribute. CLR must be enabled, and this option is not a CLR-TVF option. SQL Server applicability is explicit, including the older CLR EXTERNAL NAME version scope. The contradictory/Preview Azure SQL CLR passages are not used to generalize this SQL Server 2022 question. The scalar training link and full ancestry were verified."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "RETURNS NULL ON NULL INPUT permits SQL Server to return SQL NULL without entering the CLR method. A fallback inside code that need not be called cannot establish the asserted caller guarantee. Alternative context: With CALLED ON NULL INPUT, an executable registered method with the stipulated fallback can be invoked on NULL and supply that fallback. A change to the wrapper is required; enabling CLR alone does not change this declaration. Evidence: The null-input option paragraph explicitly permits skipping the CLR body and separately documents CALLED ON NULL INPUT and SQL declaration precedence.",
+          "sourceIds": ["dp800-d1x-create-function"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: one permitted result of the SQL NULL call is NULL without method execution, which is enough to disprove reliance on 'unassigned' every time. Alternative context: False remains appropriate whenever the SQL wrapper permits skipping the only code implementing that fallback. This does not require claiming that every invocation always skips the method or that the method itself is defective. Evidence: CREATE FUNCTION says the engine 'can return NULL' without invoking the CLR body; the question concerns a guarantee, so permitted short-circuiting is decisive.",
+          "sourceIds": ["dp800-d1x-create-function"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 selected False. Challenged the method's fallback, enabled CLR and conflicting attributes; none compels execution under RETURNS NULL ON NULL INPUT. Read actual CLR syntax/null-call evidence and exact training ancestry, keeping this strictly SQL Server-scoped. Static contract review only; no method binary or SQL execution was examined.",
+      "confidenceReason": "High confidence in disproving the promised fallback using a documented permitted alternative. The review does not certify the implementation or security configuration of a real CLR assembly."
+    },
+    {
+      "questionId": "dp800-20260916-d1-015",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-programmability-20260916",
+      "questionFingerprint": "34f5ca147efaa7025708c1e27224a954c4fa78b027e774ac5fb9a9171dd9daa3",
+      "reviewedAt": "2026-09-16T23:55:49.127Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-create-function",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-create-function.json",
+          "retrievedAt": "2026-09-16T19:47:28.549Z",
+          "lastReviewedAt": "2026-09-16T20:36:26.420Z",
+          "supportingSummary": "Read the SQL inline-TVF RETURNS TABLE AS RETURN single-SELECT grammar and the TVF invocation remarks. The parenthesized return SELECT is legal; a return-table variable and procedural body are not required. The scalar unit explicitly links this exact statement and the actual TVF unit supplies the correlated APPLY context; all ancestry remains rooted in current DP-800 preparation."
+        },
+        {
+          "sourceId": "dp800-d1x-count",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/count-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-count.json",
+          "retrievedAt": "2026-09-16T20:36:30.128Z",
+          "lastReviewedAt": "2026-09-16T20:43:33.507Z",
+          "supportingSummary": "Read aggregate syntax, COUNT(*) and COUNT(expression) definitions, ungrouped cardinality, return types and the overflow/ANSI_WARNINGS discussion. Successful zero cardinality is an int value, not an absent row or runtime NULL under the stated conditions. Nullable COUNT metadata is not evidence that this zero is NULL. Literal 1 counts the same matching rows. The correlated-query parent actually uses SELECT COUNT(*) for a per-parent summary."
+        },
+        {
+          "sourceId": "dp800-d1x-from",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-from.json",
+          "retrievedAt": "2026-09-16T19:53:20.233Z",
+          "lastReviewedAt": "2026-09-16T20:36:26.420Z",
+          "supportingSummary": "Read the CROSS/OUTER APPLY argument paragraphs and Use APPLY section. CROSS discards a left row only for an empty right result, while OUTER produces a preserved left row even for empty input. A right row containing zero is nonempty. The TVF unit's actual CROSS APPLY link resolves to this exact query reference; the query-bearing observed link was not relabeled as a fabricated query-free direct receipt."
+        },
+        {
+          "sourceId": "dp800-d1x-select",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-select.json",
+          "retrievedAt": "2026-09-16T20:16:21.821Z",
+          "lastReviewedAt": "2026-09-16T20:43:33.655Z",
+          "supportingSummary": "Read SQL Server SELECT grammar with separately optional WHERE, GROUP BY and HAVING, logical binding order, and the HAVING example. These support filtering r.ReadyCount from a FROM source outside the TVF or filtering the aggregate row inside it after WHERE. The actual window unit names SELECT and WHERE in executable examples, providing immediate explicit-reference ancestry. No claim about physical evaluation count is made."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: r is a FROM-source alias, so the outer WHERE can read ReadyCount. It keeps n > 0 unchanged and removes the one-row result with n = 0. Alternative context: This works for the current ungrouped count TVF and CROSS APPLY. If the business wanted zero-count warehouses retained, this filter would intentionally implement the wrong report. Evidence: COUNT supplies the nonnegative count, FROM exposes the TVF column, and SELECT's WHERE binding/filtering rules permit the outer comparison.",
+          "sourceIds": ["dp800-d1x-count", "dp800-d1x-from", "dp800-d1x-select"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: append HAVING COUNT(*) > 0 after the inner WHERE. SQL grammar permits this without GROUP BY; zero fails the aggregate predicate, leaving no right row for CROSS APPLY, while a positive count survives unchanged. Alternative context: This independent repair works with the current CROSS APPLY. Pairing it with OUTER APPLY without an outer filter would instead reintroduce null-extended warehouse rows and would not implement the same exclusion. Evidence: The SELECT grammar makes GROUP BY optional before HAVING, COUNT gives the aggregate value, and CROSS APPLY explicitly drops a left row for an empty right result.",
+          "sourceIds": ["dp800-d1x-count", "dp800-d1x-select", "dp800-d1x-from"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Both APPLY variants already receive a row from this ungrouped aggregate. OUTER APPLY additionally preserves left rows for empty results; it is not a test for a positive aggregate value. Alternative context: Use OUTER APPLY to retain warehouses when a different TVF returns no detail rows. That is the opposite preservation requirement, not exclusion of zero-count warehouses. Evidence: FROM distinguishes empty right rowsets from values within existing rows and explicitly describes OUTER's preservation behavior; COUNT supplies a zero-valued aggregate row.",
+          "sourceIds": ["dp800-d1x-from", "dp800-d1x-count"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "COUNT(expression) counts nonnull values and 1 is nonnull for each matching lot. Thus COUNT(1) equals COUNT(*) for this query, including zero when no rows qualify, and it does not add a filter. Alternative context: COUNT(1) is a valid alternative when the aim is simply to count all matching rows. COUNT of a nullable column could measure something different, but neither that alternative nor COUNT(1) alone removes this zero aggregate row. Evidence: COUNT's ALL-expression rule and COUNT(*) cardinality rule give the same result for a nonnull literal on each row; no change of return-row cardinality follows.",
+          "sourceIds": ["dp800-d1x-count"]
+        },
+        {
+          "choiceId": "e",
+          "assessment": "contradicted",
+          "rationale": "Zero is not NULL. With successful int-sized counts and ANSI_WARNINGS ON, the documented runtime return is nonnull, so this predicate retains the unwanted warehouse. Alternative context: A null test could remove a genuinely null-extended row from OUTER APPLY over a TVF that returns no rows, using an otherwise nonnullable marker. That is not this CROSS APPLY over an always-present aggregate row. Evidence: COUNT explicitly distinguishes its nonnull runtime return under ANSI_WARNINGS ON from nullable metadata; FROM documents how OUTER, unlike this query, can create null-extended rows.",
+          "sourceIds": ["dp800-d1x-count", "dp800-d1x-from"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 reconstructed results for no ready lots and positive lot counts and retained exactly a and b. Tested inner HAVING plus OUTER APPLY, COUNT(1), runtime versus metadata NULL and alias visibility as counterexamples. Actual cited bodies and complete immediate training ancestry were read. Static SQL grammar/result reasoning only; no live SQL execution or optimizer trace.",
+      "confidenceReason": "High confidence in the exact two-answer set: the function, aggregate, APPLY and filtering contracts compose without an unstated platform or numeric condition. Runtime deployment and physical execution remain untested."
+    },
+    {
+      "questionId": "dp800-20260916-d1-016",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-programmability-20260916",
+      "questionFingerprint": "eaffe9dbe08a04a266b7ce458b1d5c05f360cb5470d805abbaaeac60b8f8f417",
+      "reviewedAt": "2026-09-16T23:55:49.128Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-alter-function",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-function-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-alter-function.json",
+          "retrievedAt": "2026-09-16T20:20:24.265Z",
+          "lastReviewedAt": "2026-09-16T20:36:26.420Z",
+          "supportingSummary": "Read the opening modification contract, Remarks and Permissions in the actual MCP article. ALTER FUNCTION explicitly cannot switch inline and multistatement function forms, even though ordinary same-kind modification preserves the object. The scalar training unit explicitly names ALTER FUNCTION in its modification section, establishing immediate reference ancestry rather than a doc-to-doc grant."
+        },
+        {
+          "sourceId": "dp800-d1x-create-function",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-create-function.json",
+          "retrievedAt": "2026-09-16T19:47:28.549Z",
+          "lastReviewedAt": "2026-09-16T20:36:26.420Z",
+          "supportingSummary": "Read the separate inline and RETURNS @return_variable TABLE grammars, OR ALTER, INLINE and Permissions. OR ALTER follows alteration when the object already exists; INLINE is explicitly a scalar-UDF optimization option, available in SQL Server 2019 and later, not a TVF-kind conversion. CREATE OR ALTER has SQL Server 2016 SP1-and-later applicability. A separately named function is permitted by the creation grammar but requires its own deliberate deployment and caller access."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "ALTER FUNCTION's Remarks explicitly prohibits exactly that inline-to-multistatement change. The requested declared return variable and multiple statements are not just a different inline SELECT. Alternative context: ALTER is appropriate for changing the body of a function while retaining a permitted kind, such as replacing one inline SELECT with another. It cannot satisfy this required kind change. Evidence: The explicit ALTER FUNCTION transformation prohibition separates same-kind maintenance from switching inline and multistatement forms.",
+          "sourceIds": ["dp800-d1x-alter-function"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The named old function already exists, so the documented OR ALTER behavior chooses alteration. It does not recreate a different kind or override ALTER FUNCTION's restriction. Alternative context: CREATE OR ALTER can create a multistatement function when that name does not already exist, or update an existing compatible multistatement function. Neither case retains and converts this existing inline object simultaneously. Evidence: CREATE FUNCTION says OR ALTER conditionally alters an existing function; ALTER FUNCTION still forbids the inline/multistatement switch.",
+          "sourceIds": ["dp800-d1x-create-function", "dp800-d1x-alter-function"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "INLINE applies only to scalar UDF inlining. OFF does not generate a multistatement TVF body, a table variable, or a new object kind, and is not this TVF conversion mechanism. Alternative context: INLINE = OFF is meaningful when deliberately disabling the documented inlining optimization on an applicable SQL Server scalar UDF. That is a different object and purpose. Evidence: The INLINE paragraph explicitly limits the option to scalar functions; the TVF grammars separately define inline SELECT and multistatement return-table forms.",
+          "sourceIds": ["dp800-d1x-create-function"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: CREATE FUNCTION can create the new multistatement kind under a different name while the old inline name remains callable. Retiring the old object only after caller migration avoids relying on an illegal ALTER. Alternative context: Use this strategy when both interfaces may coexist, with required permissions and dependent callers migrated deliberately. It does not automatically copy grants, prove return-schema compatibility or eliminate all DDL locking. Evidence: The separate creation grammars support the new form, whereas ALTER's explicit kind restriction rules out in-place conversion; the coexistence outcome follows from retaining the old named object.",
+          "sourceIds": ["dp800-d1x-create-function", "dp800-d1x-alter-function"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 retained d. Tried same-kind ALTER, an absent-name CREATE OR ALTER and scalar INLINE OFF as legitimate alternate contexts; none satisfies the unchanged existing-inline plus coexistence case. Actual product/training references and exact approvals were read. Static deployment reasoning only; no object or grant was changed.",
+      "confidenceReason": "High confidence in the documented kind boundary and the stated coexistence strategy. A real rollout's grants, dependencies, result compatibility and locking remain outside this unexecuted approach review."
+    },
+    {
+      "questionId": "dp800-20260916-d1-017",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-programmability-20260916",
+      "questionFingerprint": "0ad26e5c6e9b373bab3ba25de57fb5e06fb5566bf2266ab735115d39e6f9f72c",
+      "reviewedAt": "2026-09-16T23:55:49.129Z",
+      "verdict": "manual-review-required",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-executesql",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-executesql-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-executesql.json",
+          "retrievedAt": "2026-09-16T19:53:20.064Z",
+          "lastReviewedAt": "2026-09-16T20:36:26.420Z",
+          "supportingSummary": "Read Unicode statement/parameter grammar, every embedded parameter's required definition/value, separate-batch scope, the parameterization warning and both OUTPUT examples. The examples visibly use OUTPUT in the definition and at the caller binding, and one already combines a typed input, local aggregate assignment and returned output. This supports key a but also shows that the candidate largely reproduces a routine invocation pattern rather than an advanced implementation problem. The actual AI-security unit explicitly names sp_executesql with parameters; current exact catalog approval and ancestry were checked."
+        },
+        {
+          "sourceId": "dp800-d1x-count",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/count-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-count.json",
+          "retrievedAt": "2026-09-16T20:36:30.128Z",
+          "lastReviewedAt": "2026-09-16T20:43:33.507Z",
+          "supportingSummary": "Read COUNT's ungrouped cardinality and int return, including the overflow limit. The stem's counts-fit-int condition makes the @n/@Matches type choice sufficient for this result channel. COUNT provides the number, not the output binding mechanism. The actual correlated-query parent contains SELECT COUNT(*), with its complete design-path/module ancestry inspected."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: @params defines @p and @n with the required types, @p receives the procedure's @Tag, and OUTPUT on both the definition and @Matches binding returns the assigned int. Apostrophes stay in a value rather than changing SQL text. Alternative context: This is the correct invocation for the fixed text, accessible table and compatible input/output types. It does not prove permissions on arbitrary dynamic objects or make a different interpolated statement safe. Evidence: The sp_executesql argument contract and input-plus-output example match the two binding directions; COUNT returns the required int cardinality when it fits.",
+          "sourceIds": ["dp800-d1x-executesql", "dp800-d1x-count"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The unchanged string references @p, not @Tag. Its @params list therefore omits a required embedded variable; caller variable names do not implicitly rename variables inside the separately compiled batch. Alternative context: This name choice could work if the dynamic string itself referenced @Tag instead of @p. The instruction that the statement text stay unchanged excludes that repair. Evidence: Every parameter in @stmt must have a corresponding definition and value; the separate-batch remarks prevent caller-name coincidence from supplying an undeclared dynamic parameter.",
+          "sourceIds": ["dp800-d1x-executesql"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The batch can compute its local @n, but the caller has not requested output propagation into @Matches. The outer initially unassigned variable is not made the computed count just by supplying it as an input-capable argument. Alternative context: Omitting caller OUTPUT is legitimate when the caller does not need the parameter's final value, for example when only a result set or side effect is required. This question expressly requires the count in @Matches. Evidence: The actual output examples use OUTPUT both in @params and on the outer receiving variable, illustrating the distinct output declaration and return binding.",
+          "sourceIds": ["dp800-d1x-executesql"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "sp_executesql compiles the supplied text in a separate scope and cannot reference caller-local @p or @n merely because they exist. This call still supplies no dynamic parameter definitions and also provides no return path into @Matches. Alternative context: Those local declarations could be useful for a direct SELECT executed in the same calling batch, or as values passed through a proper @params binding. Neither operation is the shown bare dynamic invocation. Evidence: The separate-plan/batch scope paragraph explicitly states that the dynamic batch cannot reference variables declared in its caller; output examples additionally show the required return channel.",
+          "sourceIds": ["dp800-d1x-executesql"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": false
+      },
+      "verificationNotes": "HOLD after independent PASS 3. Key a and every technical option distinction remain supported by actual evidence, but the advanced label is inflated for a standard sp_executesql input/output binding exercise closely matching the product example. The independent rubric is 43/48 and qualityReviewed is false. Preserve this immutable record and technical pass; repair difficulty or reasoning in authoring, then restart all three passes. Static review only, not SQL execution.",
+      "confidenceReason": "High confidence in key a, the source/provenance checks and the routine nature of the implementation task. Insufficient confidence in the authored advanced classification; technical correctness does not override the realism hold."
+    },
+    {
+      "questionId": "dp800-20260916-d1-018",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-programmability-20260916",
+      "questionFingerprint": "91adb8fb3e52998cb84adf034b19a68c57aa7e429896f8a0af7826e947fb61db",
+      "reviewedAt": "2026-09-16T23:55:49.129Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-nocount",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/set-nocount-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-nocount.json",
+          "retrievedAt": "2026-09-16T19:47:30.913Z",
+          "lastReviewedAt": "2026-09-16T20:36:26.420Z",
+          "supportingSummary": "Read the full frozen SET NOCOUNT MCP body. It distinguishes the extra affected-row message from data results, states that @@ROWCOUNT is updated even with NOCOUNT ON, and identifies suppressed DONEINPROC messages. The AdventureWorks2022 example still runs a SELECT under ON. The stored-procedure training unit actually names this statement and demonstrates SELECT after it; the complete actual ancestry and exact catalog approval were checked. The wording does not license suppressing all explicit result sets."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The returned ChangedRows value is correctly 3, but the ordinary count messages are precisely what NOCOUNT ON suppresses. The option gets the two observation channels only partly right. Alternative context: With NOCOUNT OFF for these statements, the explicit count value and ordinary count messages could both be observed. An unrelated manually printed message would be a different channel, not the ordinary affected-row notification. Evidence: NOCOUNT Remarks explicitly contrasts ON suppression with OFF returning counts, while retaining @@ROWCOUNT updates.",
+          "sourceIds": ["dp800-d1x-nocount"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The article describes a count message after the result set and shows a SELECT executed under NOCOUNT ON. The explicit selected ChangedRows column is data, not the suppressed per-statement count message. Alternative context: A procedure that contains no SELECT returning data can return no data result; NOCOUNT ON can remove its otherwise visible count messages. The current procedure explicitly SELECTs a value, so that alternative contract does not apply. Evidence: The opening defines the extra count message separately, and the ON/OFF SELECT example isolates message suppression without eliminating selected rows.",
+          "sourceIds": ["dp800-d1x-nocount"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: the successful UPDATE affects the stipulated three rows, @@ROWCOUNT is still maintained under ON, and the next SELECT reads that value. Only the ordinary notification channel is suppressed. Alternative context: This is correct when the shown UPDATE is immediately followed by that SELECT with no intervening statements or trigger effects. Another intervening statement could replace the value before it was read. Evidence: NOCOUNT expressly preserves @@ROWCOUNT and suppresses DONEINPROC messages; its example retains SELECT data under ON.",
+          "sourceIds": ["dp800-d1x-nocount"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The actual article explicitly says @@ROWCOUNT is updated even when NOCOUNT is ON. With exactly three affected rows and no intervening operation, zero is not the stated result. Alternative context: A successful UPDATE affecting no rows, or another statement resetting the value before inspection, could produce zero. That would arise from the statement sequence or data, not NOCOUNT disabling the variable. Evidence: The direct @@ROWCOUNT sentence is independent of the ON/OFF message setting and excludes the causal rule claimed in this option.",
+          "sourceIds": ["dp800-d1x-nocount"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 retained c after tracing UPDATE then SELECT and testing OFF, a missing data SELECT and an intervening count-reset statement as alternate contexts. Those changes are outside the supplied sequence. Read actual dedicated evidence and current exact approval/ancestry. Static result reasoning only; no SQL execution or client packet observation.",
+      "confidenceReason": "High confidence because the dedicated NOCOUNT text expressly preserves @@ROWCOUNT and shows SELECT under ON. The observed value depends only on the explicitly stipulated successful three-row UPDATE."
+    },
+    {
+      "questionId": "dp800-20260916-d1-019",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-programmability-20260916",
+      "questionFingerprint": "42136b91378a7ae5c74b031de843d0bc5afebaf1dccdfda9aef7754f67563872",
+      "reviewedAt": "2026-09-16T23:55:49.130Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1-create-trigger",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-create-trigger.json",
+          "retrievedAt": "2026-09-16T19:34:39.643Z",
+          "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+          "supportingSummary": "Read table/view targets, FOR/AFTER, INSTEAD OF, logical rowsets and DML trigger remarks. AFTER is prohibited on views; adding INSTEAD OF to an updatable CHECK OPTION view errors, with ALTER VIEW removal expressly prescribed. INSTEAD OF replaces the original action, while constraints on resulting writes still apply. The actual training AFTER link names this exact statement and its current full ancestry is preserved."
+        },
+        {
+          "sourceId": "dp800-d1-create-view",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-create-view.json",
+          "retrievedAt": "2026-09-16T19:34:37.304Z",
+          "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+          "supportingSummary": "Read CHECK OPTION, its direct-base-table exception and the Updatable views/INSTEAD OF discussion. A view predicate describes visibility; the explicit clause supplies admission enforcement. Replacing insertion with trigger-defined base writes therefore requires an explicit equivalent condition rather than reliance on visibility alone. The actual Create views unit reference was independently checked, with ordinary SQL Server syntax separated from Synapse/Fabric restrictions."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The product explicitly prohibits AFTER triggers on views. Moreover, an AFTER action is not the requested replacement of the insertion path before writes. Alternative context: An AFTER trigger on an eligible base table can validate completed DML or maintain related data, after constraints succeed. That different target/timing does not implement the required view input translation. Evidence: CREATE TRIGGER's table/view and FOR/AFTER paragraphs restrict view triggers to INSTEAD OF and describe AFTER as following successful operations and constraints.",
+          "sourceIds": ["dp800-d1-create-trigger"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "CREATE TRIGGER explicitly says this combination produces an error. Keeping the admission clause does not create an exception for INSERT or for otherwise updatable views. Alternative context: An INSTEAD OF trigger can be created on an appropriate view without CHECK OPTION, provided its replacement logic enforces the needed rule. That is a different deployment from retaining the incompatible clause. Evidence: The INSTEAD OF paragraph names the CHECK OPTION incompatibility and directs removal using ALTER VIEW before creating the trigger.",
+          "sourceIds": ["dp800-d1-create-trigger"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The trigger replaces the original insertion action and writes base rows. The view predicate determines visible rows, not an automatically inherited constraint on those base writes after the explicit check is removed. Alternative context: A separate enforced base rule or a proven translation that always yields branch 7 could make a particular insertion safe, but neither would validate the stated reliance on the WHERE predicate alone. No such replacement guarantee is supplied here. Evidence: CREATE VIEW separates CHECK OPTION enforcement from its direct-base-write exception, and CREATE TRIGGER gives INSTEAD OF responsibility for the replacement actions.",
+          "sourceIds": ["dp800-d1-create-trigger", "dp800-d1-create-view"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: this resolves the installation restriction and replaces the lost admission rule at the point where translated values are known. Checking all resulting BranchId values covers multirow input rather than sampling a row. Alternative context: The implementation must reject any translated value that does not satisfy branch 7, including a disallowed NULL, and preserve applicable base constraints. No claim is made that an unseen trigger body or non-atomic rollout already implements that policy. Evidence: The documented removal requirement, replacement-action semantics and view admission rule jointly support an explicit post-translation all-row validation strategy.",
+          "sourceIds": ["dp800-d1-create-trigger", "dp800-d1-create-view"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 retained d after challenging AFTER view support, retained CHECK OPTION, base-table-only constraints and NULL/multirow translation cases. The option describes complete validation, not a faulty sample predicate; an actual implementation must meet that description. Read both actual product contracts and direct training references. Static strategy review only, with no deployment or transaction execution.",
+      "confidenceReason": "High confidence in the unique legal enforcement strategy. Confidence is conditional on implementing the stated complete translated-row validation and ordinary deployment/permission controls, not on nonexistent trigger code."
+    },
+    {
+      "questionId": "dp800-20260916-d1-020",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-programmability-20260916",
+      "questionFingerprint": "6463f3299fe96ce22c29d62f515724c0997bb3c852197f4980d1e12b06bf211e",
+      "reviewedAt": "2026-09-16T23:55:49.130Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1-create-trigger",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-create-trigger.json",
+          "retrievedAt": "2026-09-16T19:34:39.643Z",
+          "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+          "supportingSummary": "Read DML event activation, inserted/deleted logical rowsets, AFTER timing and the transaction discussion. The trigger sees the statement's old and new rows after successful constraint processing and operates within the transaction. These facts support reasoning over both changed details; no particular lock order, trigger execution plan or concurrency safety is inferred. The Create triggers unit actually references this exact article."
+        },
+        {
+          "sourceId": "dp800-d1-triggers",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-programmability-objects/6-create-triggers",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-triggers.json",
+          "retrievedAt": "2026-09-16T19:34:37.405Z",
+          "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+          "supportingSummary": "Read the entire actual unit, especially UPDATE populating both transition tables with old/new values and its rowset-based audit examples. The introductory ungrouped inventory join is not generalized to repeated parent keys, and loose UPDATE(column) wording is not used as an actual-value-change test. The candidate adds parent transfer and grouped signed deltas rather than repeating that audit expression. The module's direct unit link was verified."
+        },
+        {
+          "sourceId": "dp800-d1x-select",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-select.json",
+          "retrievedAt": "2026-09-16T20:16:21.821Z",
+          "lastReviewedAt": "2026-09-16T20:43:33.655Z",
+          "supportingSummary": "Read SQL Server query-expression grammar admitting UNION ALL, the description of combining query results, and the SUM/GROUP BY example explicitly producing one summed row per group. Combined with the actual transition-table contract and stipulated numbers, these support the signed-per-parent arithmetic. This is a sourced relational derivation rather than a claim that SELECT documentation contains this exact invoice example. The window unit's real SELECT/WHERE reference and ancestry were inspected."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The new rows add 15 to invoice 1 and 40 to invoice 2. Adding only those gives 115 and 90, leaving invoice 1's old 30 and 20 embedded in its total instead of removing them. Alternative context: Positive inserted-only deltas can maintain totals for a pure insertion event with no old contribution, or another stipulated case where all old contributions are zero. The current UPDATE has two nonzero deleted amounts. Evidence: UPDATE supplies old rows in deleted and new rows in inserted; SELECT's grouped sum aggregates new amounts but cannot by itself subtract omitted old amounts.",
+          "sourceIds": [
+            "dp800-d1-create-trigger",
+            "dp800-d1-triggers",
+            "dp800-d1x-select"
+          ]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: invoice 1 has +15-30-20=-35 and invoice 2 has +40. Adding those deltas to 100 and 50 gives 65 and 90. A parent need not occur in both transition rowsets to contribute to the combined set. Alternative context: This works for the stipulated complete update rowsets and initially correct totals with no other writes. A real implementation must retain every contribution, aggregate once per header and obey applicable constraints; it is not a general concurrency or overflow proof. Evidence: The transition-table contract supplies old and new values; SELECT permits UNION ALL and demonstrates one summed result per GROUP BY key. The numeric result is an independent derivation from the supplied data.",
+          "sourceIds": [
+            "dp800-d1-create-trigger",
+            "dp800-d1-triggers",
+            "dp800-d1x-select"
+          ]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The deleted-parent set is {1}, while inserted has {1,2}. An inner matched-parent join omits invoice 2, so its required +40 is lost and its total remains 50. Alternative context: An inner join of per-parent old/new sums can support delta updates when every affected parent is guaranteed present on both sides, such as updates with unchanged parent assignments. The stated transfer intentionally breaks that condition. Evidence: The documented transition states and grouped-per-key result produce these two explicit parent sets; the training's paired-row joins do not manufacture a missing old row for invoice 2. This is a relational counterexample, not a claim that no join-based solution can ever work.",
+          "sourceIds": [
+            "dp800-d1-create-trigger",
+            "dp800-d1-triggers",
+            "dp800-d1x-select"
+          ]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The statement changes two details and affects two parents. Even the moved detail alone needs removal from invoice 1 and addition to invoice 2; one pair applied to a single header cannot account for both it and the other -5 change. Alternative context: A deliberately constrained single-detail update with an unchanged parent can use that detail's scalar difference for its one header. Such a row/parent guarantee is absent and contradicted by this scenario. Evidence: DML triggers receive statement-wide inserted/deleted rowsets; the actual unit demonstrates rowset processing, not one trigger invocation per changed detail.",
+          "sourceIds": ["dp800-d1-create-trigger", "dp800-d1-triggers"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 retained b after reconstructing both transition tables and calculating all alternatives. Signed union produces 65/90, new-only produces 115/90, and matching-parent restriction omits invoice 2. Actual cited text and immediate source ancestry were read. The grouped arithmetic is a static derivation, not a SQL engine run or proof of a complete concurrent trigger implementation.",
+      "confidenceReason": "High confidence in the closed-data arithmetic and necessity of retaining parents from either transition side. The review intentionally does not certify unseen trigger DDL, error handling, locking or concurrency behavior."
+    }
+  ]
+}

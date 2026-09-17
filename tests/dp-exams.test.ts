@@ -3,6 +3,8 @@ import { readRawPackage } from '../scripts/content-files';
 import prospective from '../docs/dp-420-prospective-objectives.json';
 import groundingStatus from '../docs/dp-420-grounding-status.json';
 import authoringArchive from '../src/content/exams/dp-800/authoring-archive/index.json';
+import releaseCutoff from '../src/content/exams/dp-800/authoring-archive/2026-09-17-cutoff/index.json';
+import previousQuestions from '../src/content/exams/dp-800/review-history/2026-09-16-before-refresh/questions.json';
 import {
   credentials,
   filterCredentials,
@@ -200,28 +202,56 @@ describe('DP-800 reviewed production content and shared runtime', () => {
   it('keeps frozen unfinished authoring outside the gameplay package', () => {
     const dungeon = dp800();
     expect(authoringArchive.uniqueAuthoredQuestionIds).toBe(102);
-    expect(dungeon.allQuestions).toHaveLength(
-      authoringArchive.installedRecords,
-    );
-    expect(dungeon.questions).toHaveLength(authoringArchive.verified);
+    expect(previousQuestions).toHaveLength(authoringArchive.installedRecords);
     expect(
-      dungeon.allQuestions.filter(
+      previousQuestions.filter(
+        (question) => question.verificationStatus === 'verified',
+      ),
+    ).toHaveLength(authoringArchive.verified);
+    expect(
+      previousQuestions.filter(
         (question) => question.verificationStatus === 'manual-review-required',
       ),
     ).toHaveLength(authoringArchive.manualReviewRequired);
-    const installedIds = new Set(
-      dungeon.allQuestions.map((question) => question.id),
+    const previousIds = new Set(
+      previousQuestions.map((question) => question.id),
     );
     const deferredIds = new Set(
       authoringArchive.records
-        .filter((record) => !installedIds.has(record.questionId))
+        .filter((record) => !previousIds.has(record.questionId))
         .map((record) => record.questionId),
     );
     expect(deferredIds.size).toBe(authoringArchive.outsideGameplayPackage);
     expect(
       dungeon.questions.some((question) => deferredIds.has(question.id)),
     ).toBe(false);
-    expect(dungeon.readiness.gauntlet).toBe(false);
+    const installedIds = new Set(
+      dungeon.allQuestions.map((question) => question.id),
+    );
+    for (const id of previousIds)
+      expect(
+        installedIds.has(id) ||
+          releaseCutoff.uninstalledCandidateIds.includes(id),
+      ).toBe(true);
+  });
+
+  it('honors the limited delivery cutoff without lowering the remaining readiness gates', () => {
+    const dungeon = dp800();
+    expect(dungeon.questions).toHaveLength(109);
+    expect(dungeon.allQuestions).toHaveLength(130);
+    expect(dungeon.credential.verifiedQuestionCount).toBe(109);
+    expect(dungeon.packageManifest.reviewPolicy?.targetVerified).toBe(150);
+    expect(releaseCutoff.verifiedShortfall).toBe(41);
+    expect(releaseCutoff.uninstalledCandidateIds).toHaveLength(25);
+    expect(dungeon.readiness).toMatchObject({ study: true, gauntlet: false });
+    expect(dungeon.readiness.reasons).toContain(
+      'Boss Gauntlet needs verified breadth across every skill.',
+    );
+    expect(
+      dungeon.questions.some((question) =>
+        releaseCutoff.uninstalledCandidateIds.includes(question.id),
+      ),
+    ).toBe(false);
   });
 
   it('opens Study only with genuine three-pass content and complete major-floor coverage', () => {
@@ -235,12 +265,16 @@ describe('DP-800 reviewed production content and shared runtime', () => {
     const stages = validationMetadataSchema.parse(dungeon.validationMetadata);
     for (const question of dungeon.questions) {
       expect(isPlayableQuestion(question)).toBe(true);
-      expect(stages.encounters[question.id].technical?.review.verdict).toBe(
-        'verified',
-      );
-      expect(stages.encounters[question.id].adversarial?.verdict).toBe(
-        'verified',
-      );
+      const passes = stages.encounters[question.id];
+      expect(passes.technical?.review.verdict).toBe('verified');
+      expect(passes.adversarial?.verdict).toBe('verified');
+      expect(
+        new Set([
+          passes.generation.authorId,
+          passes.technical?.review.reviewerId,
+          passes.adversarial?.reviewerId,
+        ]).size,
+      ).toBe(3);
       expect(question.requiresManualReview).toBe(false);
       expect(
         question.sourceUrls.every((url) =>

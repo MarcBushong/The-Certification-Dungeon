@@ -186,7 +186,7 @@ test('DP-800 Advanced Study uses reviewed facts, exact tomes, objective scores a
   );
 });
 
-test('DP-800 Boss mode enforces real readiness and defers answers', async ({
+test('DP-800 Boss remains sealed until independently verified skill breadth is complete', async ({
   page,
 }) => {
   const dungeon = loadDp800();
@@ -194,28 +194,12 @@ test('DP-800 Boss mode enforces real readiness and defers answers', async ({
   const boss = page
     .locator('#dungeon-dp-800')
     .getByRole('button', { name: 'Boss Gauntlet', exact: true });
-  if (!dungeon.readiness.gauntlet) {
-    await expect(boss).toBeDisabled();
-    expect(dungeon.readiness.reasons.length).toBeGreaterThan(0);
-    return;
-  }
-  expect(dungeon.questions.length).toBeGreaterThanOrEqual(75);
-  await boss.click();
-  await page.waitForURL(/#\/setup$/);
-  await page.getByRole('radio', { name: '5', exact: true }).check();
-  await page.getByRole('button', { name: 'Descend', exact: true }).click();
-  await expect(page.locator('.question-panel .dungeon-origin')).toHaveAttribute(
-    'data-dungeon-id',
-    'dp-800',
+  expect(dungeon.questions).toHaveLength(109);
+  expect(dungeon.readiness.gauntlet).toBe(false);
+  expect(dungeon.readiness.reasons).toContain(
+    'Boss Gauntlet needs verified breadth across every skill.',
   );
-  await expect(page.locator('.question-feedback')).toHaveCount(0);
-  await expect(
-    page.getByRole('button', { name: 'Open tome · view sources', exact: true }),
-  ).toHaveCount(0);
-  await page
-    .getByRole('button', { name: 'Skip question', exact: true })
-    .click();
-  await expect(page.locator('.question-feedback')).toHaveCount(0);
+  await expect(boss).toBeDisabled();
 });
 
 test('DP-420 shows an accessible future-outline disclaimer without opening gameplay', async ({

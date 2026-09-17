@@ -40,12 +40,53 @@ const sc500RecordedViews = new Map([
   ['/en-us/microsoft-365/admin/manage/agent-actions', '?view=o365-worldwide'],
 ]);
 
-function isRecordedSecurityView(url: URL, credential?: SourcePolicyContext) {
+const dp800RecordedViews = new Map([
+  [
+    '/en-us/azure/azure-sql/database/authentication-aad-overview',
+    '?view=azuresql',
+  ],
+  ['/en-us/azure/azure-sql/database/auditing-overview', '?view=azuresql'],
+  [
+    '/en-us/azure/azure-sql/database/service-tiers-sql-database-vcore',
+    '?view=azuresql',
+  ],
+  [
+    '/en-us/sql/tools/sql-database-projects/sql-database-projects',
+    '?view=sql-server-ver17',
+  ],
+  [
+    '/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts',
+    '?view=sql-server-ver17',
+  ],
+  [
+    '/en-us/sql/tools/sql-database-projects/howto/compare-database-project',
+    '?view=sql-server-ver17',
+  ],
+  [
+    '/en-us/sql/tools/sql-database-projects/concepts/schema-comparison',
+    '?view=sql-server-ver17',
+  ],
+  [
+    '/en-us/sql/tools/sql-database-projects/sql-projects-automation',
+    '?view=sql-server-ver17',
+  ],
+  [
+    '/en-us/azure/devops/repos/git/branch-policies-overview',
+    '?view=azure-devops',
+  ],
+]);
+
+function isRecordedCredentialView(url: URL, credential?: SourcePolicyContext) {
+  const views =
+    credential?.credentialId === 'sc-500'
+      ? sc500RecordedViews
+      : credential?.credentialId === 'dp-800' && credential.strictGuideLinked
+        ? dp800RecordedViews
+        : undefined;
   return (
-    credential?.credentialId === 'sc-500' &&
-    credential.provider === 'Microsoft' &&
+    credential?.provider === 'Microsoft' &&
     url.hostname === 'learn.microsoft.com' &&
-    sc500RecordedViews.get(url.pathname) === url.search
+    views?.get(url.pathname) === url.search
   );
 }
 
@@ -67,7 +108,7 @@ function documentIdentityUrl(
       url.search === '?view=microsoft-fabric') ||
       (approvedSqlFamily && url.search === '?view=sql-server-ver17') ||
       isRecordedLayoutView(url, credential) ||
-      isRecordedSecurityView(url, credential))
+      isRecordedCredentialView(url, credential))
   )
     identity.search = '';
   return identity;
@@ -86,7 +127,7 @@ export function sameCanonicalDocument(
   if (
     !expectedUrl.search &&
     (isRecordedLayoutView(actualUrl, credential) ||
-      isRecordedSecurityView(actualUrl, credential))
+      isRecordedCredentialView(actualUrl, credential))
   )
     actualUrl.search = '';
   return expectedUrl.href === actualUrl.href;

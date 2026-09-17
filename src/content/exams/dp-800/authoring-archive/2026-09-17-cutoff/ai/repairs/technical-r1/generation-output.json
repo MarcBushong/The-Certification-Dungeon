@@ -1,0 +1,395 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-expansion-ai-technical-r1-20260916",
+  "authorId": "dp800-expansion-author-ai-20260916",
+  "generatedAt": "2026-09-16T23:56:31.599Z",
+  "candidates": [
+    {
+      "id": "dp800-20260916-d3-002",
+      "question": "Choose an embedding-stage/generator pair for the hypothetical sequential pipeline below. All four components pass the required language and quality tests. Context cannot be dropped, and the planning contract counts input plus reserved output against the generator window. Which pair meets both the window and latency budgets?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Embedding E2 followed by generator G2."
+        },
+        {
+          "id": "b",
+          "text": "Embedding E1 followed by generator G2."
+        },
+        {
+          "id": "c",
+          "text": "Embedding E2 followed by generator G1."
+        },
+        {
+          "id": "d",
+          "text": "Embedding E1 followed by generator G1."
+        }
+      ],
+      "correctAnswer": ["a"],
+      "explanation": "The generator needs 5,900 tokens of capacity. E2 plus G2 uses an 8,192-token window and 690 ms of the 750 ms sequential budget.",
+      "deepExplanation": "The token requirement is 800 + 4 × 1,100 + 700. G1 fails that requirement regardless of embedding-stage speed. G2 fits, but E1 plus G2 requires 800 ms, while E2 plus G2 requires 690 ms. Latencies are stipulated additive planning bounds, not independently sampled percentiles whose sum is being presented as a measured p95.",
+      "whyOtherAnswersAreWrong": {
+        "b": "The 8,192-token generator fits the context, but 200 + 600 = 800 ms exceeds the latency budget.",
+        "c": "The 490 ms pipeline fits the latency budget, but G1's 4,096-token window cannot hold the required 5,900 tokens.",
+        "d": "Its 600 ms latency fits, but the generator still lacks the required context capacity."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Evaluate external models, including multimodal, multilanguage, sizes, and structured output",
+      "difficulty": "intermediate",
+      "complexity": "scenario-based",
+      "sourceIds": ["dp800-d3x-models-evaluate"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/02-understand-evaluate-models-sql-database-workloads"
+      ],
+      "documentationTitles": [
+        "Understand and evaluate models for SQL database workloads"
+      ],
+      "generatedAt": "2026-09-16T23:56:31.589Z",
+      "lastValidatedAt": "2026-09-16T23:56:31.589Z",
+      "featureStatus": "Not applicable",
+      "tags": [
+        "model-selection",
+        "context-budget",
+        "sequential-pipeline",
+        "hypothetical-data"
+      ],
+      "codeLanguage": "json",
+      "codeSnippet": "{\n  \"sequential_budget_ms\": 750,\n  \"instruction_and_question_tokens\": 800,\n  \"required_context_chunks\": 4,\n  \"tokens_per_chunk\": 1100,\n  \"reserved_output_tokens\": 700,\n  \"embedding_stage_bounds_ms\": {\"E1\": 200, \"E2\": 90},\n  \"generator_profiles\": {\n    \"G1\": {\"window_tokens\": 4096, \"generation_bound_ms\": 400},\n    \"G2\": {\"window_tokens\": 8192, \"generation_bound_ms\": 600}\n  }\n}",
+      "conceptId": "model-pipeline-selection-composes-context-reserve-and-sequential-latency",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 repair only: fresh authored snapshot and option claims; separate technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-004",
+      "question": "A SQL Server 2025 Windows lab has Machine Learning Services installed, ONNX Runtime 1.19 or later, and trusted model/runtime artifacts validated for compatibility, including the built tokenizer library. PREVIEW_FEATURES is ON; permissions and the listed files are ready. Local AI runtimes remain disabled. In this documented Preview setup, which plan completes the runtime setting and directory assignments?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Keep the server runtime setting unchanged; set LOCATION to the model directory and LOCAL_RUNTIME_PATH to the runtime directory."
+        },
+        {
+          "id": "b",
+          "text": "Enable external AI runtimes; set LOCATION to the model directory and LOCAL_RUNTIME_PATH to the runtime directory."
+        },
+        {
+          "id": "c",
+          "text": "Enable external AI runtimes; set LOCATION to the runtime directory and LOCAL_RUNTIME_PATH to the model directory."
+        },
+        {
+          "id": "d",
+          "text": "Enable external AI runtimes; set LOCATION to model.onnx itself and LOCAL_RUNTIME_PATH to the runtime directory."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Enable 'external AI runtimes enabled'; assign the model directory to LOCATION and the runtime-library directory to LOCAL_RUNTIME_PATH.",
+      "deepExplanation": "The local example requires Windows, installed SQL Server Machine Learning Services and a supported runtime; the stem now establishes those prerequisites instead of equating file existence with installation. With trusted compatible artifacts, permissions and the database Preview gate already established, the remaining work is the disabled server runtime setting and the two documented directory roles. This is a configuration-selection task, not evidence of an executed deployment.",
+      "whyOtherAnswersAreWrong": {
+        "a": "The server runtime remains disabled; correct paths and the database Preview gate do not enable that separate setting.",
+        "c": "The model and runtime-library directories are assigned to the opposite documented roles.",
+        "d": "The local example requires LOCATION to identify the directory containing model artifacts, not the model.onnx file alone."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-models-and-embeddings",
+      "subskill": "Create and manage external models",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3-create-external-model"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-model-transact-sql"
+      ],
+      "documentationTitles": ["CREATE EXTERNAL MODEL (Transact-SQL)"],
+      "generatedAt": "2026-09-16T23:56:31.594Z",
+      "lastValidatedAt": "2026-09-16T23:56:31.594Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "sql-server-2025",
+        "local-onnx",
+        "preview",
+        "external-model",
+        "runtime-prerequisites"
+      ],
+      "codeLanguage": "json",
+      "codeSnippet": "{\n  \"model_directory\": \"C:\\\\SqlAI\\\\models\\\\Support\",\n  \"model_files\": [\"model.onnx\", \"tokenizer.json\"],\n  \"runtime_directory\": \"C:\\\\SqlAI\\\\runtime\",\n  \"runtime_files\": [\"onnxruntime.dll\", \"tokenizers_cpp.dll\"]\n}",
+      "conceptId": "sql-local-onnx-preview-separates-runtime-enablement-model-and-library-paths",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 repair only: fresh authored snapshot and option claims; separate technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-012",
+      "question": "A SQL Server 2025 hybrid catalog search combines full-text results with exact vector results. Every returned row must be in stock and approved for a requested market, and ineligible rows must not consume either branch's candidate budget. Which design enforces that contract while retaining both ranking signals?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Embed stock and market labels and let similarity determine whether a row is eligible."
+        },
+        {
+          "id": "b",
+          "text": "Apply the eligibility predicates only after selecting and fusing both branches' limited candidate pools."
+        },
+        {
+          "id": "c",
+          "text": "Apply relational eligibility predicates in each branch before its ordered candidate limit, then fuse eligible results."
+        },
+        {
+          "id": "d",
+          "text": "Apply eligibility only to the full-text branch and leave the vector branch unrestricted."
+        }
+      ],
+      "correctAnswer": ["c"],
+      "explanation": "Keep mandatory eligibility as relational predicates before each branch's candidate limit, then combine the eligible ranked lists.",
+      "deepExplanation": "Ranking represents relevance, not a hard stock or market rule. A final eligibility filter can prevent displaying invalid rows, but it cannot recover eligible documents that an earlier limited pool displaced. This scenario uses exact vector search, not the version-specific filtering semantics of Preview VECTOR_SEARCH.",
+      "whyOtherAnswersAreWrong": {
+        "a": "A similarity score is not an equality or Boolean eligibility check on the current relational values.",
+        "b": "It filters too late to prevent ineligible rows consuming the already limited candidate pools.",
+        "d": "The unrestricted vector branch can still introduce ineligible rows into the fused set."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Choose from full-text, semantic vector, and hybrid search",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": [
+        "dp800-d3-hybrid",
+        "dp800-d3x-top",
+        "dp800-d3-vector-distance"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking",
+        "https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+      ],
+      "documentationTitles": [
+        "Implement hybrid search and ranking",
+        "TOP (Transact-SQL)",
+        "VECTOR_DISTANCE (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T23:56:31.594Z",
+      "lastValidatedAt": "2026-09-16T23:56:31.594Z",
+      "featureStatus": "GA",
+      "tags": [
+        "hybrid-search",
+        "eligibility",
+        "candidate-budgets",
+        "relational-filtering"
+      ],
+      "conceptId": "sql-hybrid-search-applies-hard-eligibility-before-each-candidate-budget",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 repair only: fresh authored snapshot and option claims; separate technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-016",
+      "question": "A document store in Azure SQL Database uses a latest-version Preview vector index with automatic DML maintenance enabled. An application changes a document's Body but leaves its Embedding value unchanged. Index maintenance is healthy, yet searches still reflect the old wording. What addresses the missing maintenance layer?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Recreate the vector index over the same unchanged Embedding values."
+        },
+        {
+          "id": "b",
+          "text": "Enable ALLOW_STALE_VECTOR_INDEX so the new text can affect similarity."
+        },
+        {
+          "id": "c",
+          "text": "Change the distance metric while retaining the old Embedding values."
+        },
+        {
+          "id": "d",
+          "text": "Generate and persist embeddings from the changed text through the refresh workflow."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "Index maintenance is not embedding generation; the stored vector must be refreshed from the new text.",
+      "deepExplanation": "There are separate source-text, embedding and index states. A healthy current index can accurately index a semantically obsolete vector. The latest format maintains vector DML, but it does not infer a model invocation whenever some other text column changes. Refreshing the actual vector supplies the changed indexed value.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Rebuilding over the same vectors does not make those vectors represent the new Body.",
+        "b": "The older-index stale-write setting is not the missing generation process in this latest-index scenario.",
+        "c": "A different distance formula does not regenerate the representation of the modified text."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Design for vector data, including vector data type, vector indexes, and size",
+      "difficulty": "intermediate",
+      "complexity": "troubleshooting",
+      "sourceIds": [
+        "dp800-d3x-create-vector-index",
+        "dp800-d3-maintenance",
+        "dp800-d3-generate-embeddings",
+        "dp800-d3-vector-distance"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-vector-index-transact-sql",
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/05-generate-maintain-embeddings-sql-database-workloads",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+      ],
+      "documentationTitles": [
+        "CREATE VECTOR INDEX (Transact-SQL) (Preview)",
+        "Generate and maintain embeddings for SQL database workloads",
+        "AI_GENERATE_EMBEDDINGS (Transact-SQL)",
+        "VECTOR_DISTANCE (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T23:56:31.595Z",
+      "lastValidatedAt": "2026-09-16T23:56:31.595Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "vector-index",
+        "latest-index",
+        "preview",
+        "embedding-freshness",
+        "maintenance-layers"
+      ],
+      "conceptId": "sql-latest-vector-index-dml-maintenance-does-not-regenerate-text-embeddings",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 repair only: fresh authored snapshot and option claims; separate technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-017",
+      "question": "A team imports an Azure SQL Database into a region with latest Preview vector-index support. The table's clustered primary key is valid. The initial load has 130 rows but only 95 nonnull vectors. The deployment artifact creates schema before data. Which plan respects both vector-index deployment ordering and its creation data requirement?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "Keep the vector index in the import artifact and generate the missing vectors after the import finishes."
+        },
+        {
+          "id": "b",
+          "text": "Exclude the vector index from import, load at least 100 nonnull vectors, then create the index."
+        },
+        {
+          "id": "c",
+          "text": "Exclude the vector index from import, load the stated 130 rows, then create it before generating more vectors."
+        },
+        {
+          "id": "d",
+          "text": "Exclude the vector index from import, create it on the empty target table, then load the vectors."
+        }
+      ],
+      "correctAnswer": ["b"],
+      "explanation": "Create the vector index after importing data and reaching at least 100 nonnull vector values.",
+      "deepExplanation": "The current reference excludes vector indexes from DacPac/BACPAC deployment because schema creation precedes loading the required data. The creation minimum counts nonnull vectors, not total rows. The supplied clustered key clears a different prerequisite; it does not waive either ordering or data requirements.",
+      "whyOtherAnswersAreWrong": {
+        "a": "The schema-first import attempts index creation before the required vectors have been loaded.",
+        "c": "The load contains only 95 nonnull vectors, so 130 total rows do not meet the minimum.",
+        "d": "An empty target has none of the required vector data at the moment of index creation."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Design for vector data, including vector data type, vector indexes, and size",
+      "difficulty": "intermediate",
+      "complexity": "technical-implementation",
+      "sourceIds": ["dp800-d3x-create-vector-index"],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-vector-index-transact-sql"
+      ],
+      "documentationTitles": ["CREATE VECTOR INDEX (Transact-SQL) (Preview)"],
+      "generatedAt": "2026-09-16T23:56:31.595Z",
+      "lastValidatedAt": "2026-09-16T23:56:31.595Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "vector-index",
+        "deployment-order",
+        "nonnull-vectors",
+        "preview",
+        "azure-sql-database"
+      ],
+      "conceptId": "sql-vector-index-deployment-defers-creation-until-nonnull-vector-minimum",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 repair only: fresh authored snapshot and option claims; separate technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    },
+    {
+      "id": "dp800-20260916-d3-019",
+      "question": "For a Preview vector-search evaluation in Azure SQL Database, feature availability is confirmed and every configuration uses the same snapshot, filters, metric and k = 5. Mean recall@5 across the two cases must be at least 0.8 and measured p95 at most 90 ms. The labels identify test configurations, not SQL options. Which configuration meets both gates?",
+      "questionType": "scenario",
+      "answerChoices": [
+        {
+          "id": "a",
+          "text": "ANN configuration K2."
+        },
+        {
+          "id": "b",
+          "text": "Exact nearest-neighbor search."
+        },
+        {
+          "id": "c",
+          "text": "ANN configuration M7."
+        },
+        {
+          "id": "d",
+          "text": "ANN configuration R4."
+        }
+      ],
+      "correctAnswer": ["d"],
+      "explanation": "R4 finds four of the exact five neighbors for each query, giving mean recall@5 = 0.8, and its p95 is 75 ms.",
+      "deepExplanation": "K2 has recall 2/5 and 3/5, averaging 0.5. M7 and exact search preserve all five neighbors in these fixtures but exceed the latency gate. R4 alone passes both supplied gates. This is a measured fixture comparison, not a universal row-count threshold, semantic relevance guarantee or production performance claim.",
+      "whyOtherAnswersAreWrong": {
+        "a": "Its mean recall is 0.5, below 0.8, despite the lower latency.",
+        "b": "It supplies the exact baseline but its measured 110 ms p95 exceeds the allowed 90 ms.",
+        "c": "It meets recall but its 95 ms p95 exceeds the latency gate."
+      },
+      "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+      "skill": "design-and-implement-intelligent-search",
+      "subskill": "Choose between using ANN and ENN for vector search",
+      "difficulty": "intermediate",
+      "complexity": "scenario-based",
+      "sourceIds": [
+        "dp800-d3-prepare-vectors-unit",
+        "dp800-d3-vector-search",
+        "dp800-d3-vector-distance"
+      ],
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/04-prepare-sql-vector-search",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+      ],
+      "documentationTitles": [
+        "Prepare SQL for vector search",
+        "VECTOR_SEARCH (Transact-SQL) (Preview)",
+        "VECTOR_DISTANCE (Transact-SQL)"
+      ],
+      "generatedAt": "2026-09-16T23:56:31.596Z",
+      "lastValidatedAt": "2026-09-16T23:56:31.596Z",
+      "featureStatus": "Preview",
+      "tags": [
+        "ann-versus-enn",
+        "recall-at-k",
+        "benchmark",
+        "preview",
+        "fixed-snapshot"
+      ],
+      "codeLanguage": "json",
+      "codeSnippet": "{\n  \"query_1\": {\n    \"exact\": [1,2,3,4,5],\n    \"K2\": [1,2,6,7,8],\n    \"R4\": [1,2,3,4,9],\n    \"M7\": [1,2,3,4,5]\n  },\n  \"query_2\": {\n    \"exact\": [11,12,13,14,15],\n    \"K2\": [11,12,13,16,17],\n    \"R4\": [11,12,13,14,18],\n    \"M7\": [11,12,13,14,15]\n  },\n  \"measured_p95_ms\": {\"K2\":35,\"R4\":75,\"M7\":95,\"Exact\":110}\n}",
+      "conceptId": "sql-ann-enn-selection-measures-exact-neighbor-overlap-and-latency-on-matched-fixtures",
+      "verificationStatus": "candidate",
+      "verifiedAgainstSourceIds": [],
+      "verificationNotes": "Pass 1 repair only: fresh authored snapshot and option claims; separate technical and adversarial review are pending.",
+      "requiresManualReview": true,
+      "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+      "confidenceReason": ""
+    }
+  ]
+}

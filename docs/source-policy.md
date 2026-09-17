@@ -225,6 +225,15 @@ false approvals from question wording.
 
 ## Retrieval versus availability versus review
 
+DP-800's September 16 expansion also records nine exact observed view redirects
+for its approved Azure SQL, SQL Database Projects and Azure DevOps articles in
+`scripts/validate-sources.ts`. Online checks recognize only those article/view
+pairs under the strict DP-800 profile, while still requiring the query-free
+article's exact credential approval. Stored citations remain query-free.
+Other versions, extra parameters, unapproved articles and other credentials
+do not inherit this exception; existing SC-500 and legacy behavior is unchanged.
+This is document-identity handling, not technical review or a new source grant.
+
 Actual retrieval timestamps and source titles/URLs are preserved in the
 manifest. `retrievalMethod` distinguishes `Microsoft Learn MCP` from
 `Official GitHub documentation`; strict mixed banks can explicitly record

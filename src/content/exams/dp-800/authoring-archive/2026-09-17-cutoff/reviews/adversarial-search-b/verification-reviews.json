@@ -1,0 +1,558 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-adversarial-search-b-20260916",
+  "reviews": [
+    {
+      "questionId": "dp800-20260916-d3-024",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-search-b-20260916",
+      "questionFingerprint": "81f037d7e6a544f4a2b6558dad6e4170570b94b31d377035607c97bc02685568",
+      "reviewedAt": "2026-09-16T23:44:56.639Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-hybrid",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\hybrid.json",
+          "retrievedAt": "2026-09-16T19:33:27.185Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual hybrid SQL protects each 1.0/(@rrfK + rank) contribution with its own COALESCE. Its missing-list explanation retains the present side and awards zero to absence. I use that expression, not the unordered TOP clauses or BM25 wording."
+        },
+        {
+          "sourceId": "dp800-d3x-divide",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/divide-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\divide.json",
+          "retrievedAt": "2026-09-16T19:57:04.116Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "Result Types explicitly truncates integer/integer fractions; the example also displays NULL division yielding NULL. This distinguishes a decimal operand before evaluation from a cast afterward. Bounded ranks exclude zero denominators and integer-addition overflow."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: with the supplied int ranks, every denominator is at least 61 and each integer quotient is zero before COALESCE or CAST. For ranks (1,NULL), this returns zero instead of the earned 1/61.",
+          "sourceIds": ["dp800-d3x-divide", "dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: 1.0 participates before division, and each COALESCE protects a contribution rather than a rank or total. (1,NULL) retains 1/61, (NULL,NULL) yields zero, and two present ranks retain both fractions.",
+          "sourceIds": ["dp800-d3x-divide", "dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Contradicted by kr=1, vr=NULL: the second quotient and then the sum are NULL, so the outer COALESCE discards the valid 1/61 contribution. Correct operand types alone do not repair where NULL handling occurs.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: absence receives 1/60, not zero. Both absent ranks yield 1/30; (1,NULL) adds an unearned 1/60 to 1/61. This changes scoring policy rather than merely fixing evaluation.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent third-context review recomputed expression outcomes rather than adopting pass 2. b alone preserves fractional and one-sided contributions. Reviewed every option, code, lifecycle, actual sources/provenance, explanation bounds, construction and related RRF candidates. Static T-SQL reasoning only; no SQL execution or precision/performance benchmark. Independent v2 rubric: 47/48.",
+      "confidenceReason": "High confidence from the actual operator contract and explicit per-contribution SQL, with a concrete counterexample for each alternative."
+    },
+    {
+      "questionId": "dp800-20260916-d3-025",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-search-b-20260916",
+      "questionFingerprint": "ed05fad7fc5994dfd2fb5593157f2aac374c6f7ca65bb369b4369337f8a142b0",
+      "reviewedAt": "2026-09-16T23:44:56.639Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-hybrid",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\hybrid.json",
+          "retrievedAt": "2026-09-16T19:33:27.185Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "Evaluate search quality distinguishes relevant-returned precision, relevant-found recall and first-relevant-result MRR, requiring labeled queries. Parameter tuning calls for measured budget evaluation. This supports applying the supplied rules, not the fixture latencies or a universal ten-candidate recommendation."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: Keyword returns one of four relevant documents per query, giving mean recall 0.25, not 1/3 or 0.5. Its 40 ms p95 and MRR 0.75 cannot override the hard recall floor.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Contradicted as winner although eligible: each query has recall 2/4, first relevant ranks 2 and 1 give MRR 0.75, and p95 is 90 ms. Hybrid10 ties in recall and MRR but wins the explicit lower-p95 tie-break at 75 ms.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: both lists contain two of four relevant documents, so mean recall is 0.5. First relevant ranks 1 and 2 yield MRR (1+1/2)/2=0.75. Its 75 ms passes the ceiling and beats the other eligible MRR-0.75 pipeline.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: recall is 3/4 and MRR is 1, but p95=140 ms exceeds the 100 ms gate. Maximizing MRR occurs only after eligibility and cannot rehabilitate a failed latency ceiling.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent third-context calculation evaluates every pipeline, enforces gates first and selects c after the MRR tie. Every option has an alternate requirement context. Reviewed actual training/provenance, objective scope, GA exact-search setting, fixture clarity and d3-019's distinct neighbor-overlap task. These are stipulated observations, not a live benchmark. Rubric: 46/48.",
+      "confidenceReason": "High confidence in the unique fixture decision from independently calculated recall, first-hit MRR and ordered gates; no empirical performance generalization is endorsed."
+    },
+    {
+      "questionId": "dp800-direct-023",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-search-b-20260916",
+      "questionFingerprint": "34185d2173ccc00fbb0d4e372b66273212fcd50c61f416528c964f2168873040",
+      "reviewedAt": "2026-09-16T23:44:56.639Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-vector-distance",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\vector-distance.json",
+          "retrievedAt": "2026-09-16T19:38:27.527Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The retrieved introduction explicitly says vector distance is exact and uses no vector index even if available. Return value is scalar float, and VECTOR_SEARCH is named separately for approximate index use. SQL Server 2025 is in the Applies to line."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: the current introduction explicitly preserves exact distance and no vector-index use regardless of index availability. This is the scalar function contract, not arbitrary-precision arithmetic or a complete physical-plan guarantee.",
+          "sourceIds": ["dp800-d3-vector-distance"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: the proposed index exception is expressly ruled out in the current contract. A compatible approximate VECTOR_SEARCH request is another operation and cannot falsify this statement about VECTOR_DISTANCE.",
+          "sourceIds": ["dp800-d3-vector-distance"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 derives a from the actual current VECTOR_DISTANCE body, not the technical key or installed review. Challenged index existence, approximate alternatives, float precision and scope. No SQL code was executed. Inspected actual canonical records and related candidates for scoped duplicate distinctions. Rubric: 46/48.",
+      "confidenceReason": "High confidence because the direct current function contract explicitly addresses the purported index exception on the specified platform."
+    },
+    {
+      "questionId": "dp800-direct-024",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-search-b-20260916",
+      "questionFingerprint": "287f5ea4fa61d4f49a8db6414b63989dffdd1c4a6ff2e52bcdc94fa5b25a796d",
+      "reviewedAt": "2026-09-16T23:44:56.639Z",
+      "verdict": "manual-review-required",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-hybrid",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\hybrid.json",
+          "retrievedAt": "2026-09-16T19:33:27.185Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual RRF section sums reciprocal rank-position contributions rather than raw scores. Its weighting example requires explicitly adding weights; equal treatment gives neither source unconditional priority. The question supplies k=20 and absence semantics, not a claimed product default."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: A scores 1/21 while B scores 2/22=1/11, which is greater. The absolute priority assertion ignores B's second earned contribution and is not the stipulated unweighted formula.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: C has the same single 1/21 as A, and neither outranks B's 2/22. There is no vector-first rule. The word 'always' also makes this alternative easy to reject without calculating the winning score.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Contradicted in the word highest: A and C tie at 1/21, but B has 1/11. A true pairwise tie does not establish the maximum without checking the shared document's two contributions.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported as the technical key, not incorrect: 1/22+1/22 exceeds each competitor's 1/21. This is real-valued RRF rather than executable int/int T-SQL. Printing the completed calculation only in this option is nevertheless a construction clue.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": false
+      },
+      "verificationNotes": "Independent third-context review confirms d technically and separately withholds promotion for quality. Every option has actual-context and countercontext evidence. Not applicable is justified by stipulated mathematics, not unknown maturity. Comparison with d3-024 and direct-025 found distinct reasoning targets, not a blocking duplicate. Independent score: 43/48; qualityReviewed is false.",
+      "confidenceReason": "High confidence in arithmetic and grounding, but insufficient confidence in strict assessment quality because the key exposes its calculation and alternatives are not equally plausible."
+    },
+    {
+      "questionId": "dp800-direct-025",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-search-b-20260916",
+      "questionFingerprint": "db35f4e868495d4e2cf88974337b9c6805330932c080cf4156ebee87bc258e23",
+      "reviewedAt": "2026-09-16T23:44:56.639Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-hybrid",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\hybrid.json",
+          "retrievedAt": "2026-09-16T19:33:27.185Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual combined CTE uses FULL OUTER JOIN on the identifier, COALESCE for the surviving ID and separately zeroed contributions. Its immediate explanation says either-list products are included. This supports inclusion, not the sample's unordered TOP selection."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: keyword IDs {11,12} and vector IDs {12,13} produce 11,12,13 with 12 once under the one-row-per-ID premise. COALESCE preserves one-sided IDs and zeroes missing contributions; an empty input still leaves the other side.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: an inner join of {11,12} and {12,13} retains only 12. IDs 11 and 13 disappear before missing values can be replaced, so COALESCE cannot restore their rows.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: keyword-left matching keeps 11 and 12 but loses vector-only 13. It enriches lexical candidates with vector ranks, not symmetric either-list coverage.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: two two-ID lists produce four unrelated pairs rather than the three required identities. Cross matching does not merge 12 once by ID and yields nothing if either list is empty.",
+          "sourceIds": ["dp800-d3-hybrid"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 confirms a by overlapping, disjoint and empty-input reasoning. Challenged fanout, intersection, lexical-first and all-pairs policies, plus dirty/nullable-identity implementation limits without treating a pattern question as a full schema. Reviewed actual source/provenance and nearby concepts. Static relational reasoning only. Rubric: 45/48.",
+      "confidenceReason": "High confidence in the join-family distinction under the supplied unique document-identity contract, not a claim that arbitrary dirty-key schemas repair themselves."
+    },
+    {
+      "questionId": "dp800-direct-046",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-search-b-20260916",
+      "questionFingerprint": "5de6664e86481e9e5298c2ff89357ddd31ea726f979f9ba5b187aff54709091d",
+      "reviewedAt": "2026-09-16T23:44:56.639Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-vector-normalize",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-normalize-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\vector-normalize.json",
+          "retrievedAt": "2026-09-16T19:44:48.883Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual Arguments define norm1 as absolute-value sum, norm2 as square-root-of-squared-sum and norminf as maximum absolute component. Return value preserves direction and scales to unit length; examples show native vector variables and literal JSON-array input. SQL Server 2025 is supported."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: seven is abs(-3)+abs(4), the norm1 denominator. [-3/7,4/7] has Euclidean length 5/7 rather than one.",
+          "sourceIds": ["dp800-d3-vector-normalize"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: [-0.75,1.0] equals [-3,4]/4 and has Euclidean length 1.25. Four belongs to norminf, not the specified norm2.",
+          "sourceIds": ["dp800-d3-vector-normalize"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: sqrt(9+16)=5 gives [-0.6,0.8]. Squared components sum to one and their ratio/signs match the input, subject to the expressly excluded insignificant floating-point rounding.",
+          "sourceIds": ["dp800-d3-vector-normalize"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: the original vector's length is five, not one. Preserving direction preserves ratios and signs, not all original component magnitudes.",
+          "sourceIds": ["dp800-d3-vector-normalize"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 re-derived c by checking norm1, norm2, norminf, unchanged input, signs and rounding. Read the actual function contract and immediate parent. Resolved pronoun/short-scenario warnings from the batch. Actual function claims stay GA; no live SQL ran. Rubric: 46/48.",
+      "confidenceReason": "High confidence from explicit norm definitions and a nonzero vector whose denominators and direction can be checked without executing SQL."
+    },
+    {
+      "questionId": "dp800-direct-047",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-search-b-20260916",
+      "questionFingerprint": "c0721ed0484971d4a8f5356f26d030fdd3849c8f453fca0ee26095551bc0b3b3",
+      "reviewedAt": "2026-09-16T23:44:56.639Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-vector-search",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\vector-search.json",
+          "retrievedAt": "2026-09-16T19:38:25.140Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual Earlier vector index versions section selects a TOP_N pool before WHERE and explicitly demonstrates empty output despite qualifying base rows. The same current article separately documents latest iterative filtering, metric/column fallback, base-table restrictions and distance-alias errors."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: all five stipulated candidates fail Approved=1, and earlier post-filtering does not refill from other base rows. Successful zero-row output follows without metric mismatch or execution failure.",
+          "sourceIds": ["dp800-d3-vector-search"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Contradicted by the premise, not because fallback is imaginary: the query has a valid matching index. Metric-mismatch fallback is another condition and does not explain removing all five earlier-version candidates with Approved.",
+          "sourceIds": ["dp800-d3-vector-search"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: ambiguous distance references cause an error according to the current article. This query completes, so an execution-stopping ambiguity is not its empty-success result.",
+          "sourceIds": ["dp800-d3-vector-search"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: the TABLE contract excludes views and requires a base table. An invalid object is a different failure from this completed query whose selected candidates all fail the filter.",
+          "sourceIds": ["dp800-d3-vector-search"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 selects a from the actual earlier-index contract. Each alternative was tested against successful compatible execution and its own legitimate documented condition. Reviewed Preview, training/product conflicts, explanation bounds and nearby concepts. Static reasoning only; no SQL, recall experiment or new source-review date. Rubric: 45/48.",
+      "confidenceReason": "High confidence because the current product expressly preserves the earlier empty-pool behavior and separately documents the alternative errors and fallback."
+    },
+    {
+      "questionId": "dp800-direct-048",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-search-b-20260916",
+      "questionFingerprint": "08297c3486aba984ad8b16284274191cfa46c685b4e25bb3f34d2c7bed06664b",
+      "reviewedAt": "2026-09-16T23:44:56.639Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-vector-search",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\vector-search.json",
+          "retrievedAt": "2026-09-16T19:38:25.140Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "METRIC requires an ANN index with the same metric on the same column, and documents warning/kNN without compatibility. Latest optimizer behavior can still choose exact execution with a compatible index. This establishes an eligibility prerequisite, not guaranteed creation or ANN use."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Contradicted as the requested solution: cosine can match the existing index but changes the metric the application must retain. It repairs a different contract.",
+          "sourceIds": ["dp800-d3-vector-search"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Contradicted for this repair: exact kNN validly executes the Euclidean query but leaves ANN compatibility absent. Working fallback is not the missing prerequisite.",
+          "sourceIds": ["dp800-d3-vector-search"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Contradicted because the metric match alone is insufficient. The documented index must also target the same column; another vector field does not supply an ANN path for Embedding.",
+          "sourceIds": ["dp800-d3-vector-search"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: that index matches both required dimensions while preserving Euclidean distance. It permits ANN compatibility, not compulsory ANN selection or omission of other DDL prerequisites.",
+          "sourceIds": ["dp800-d3-vector-search"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 selects d from exact same-column/same-metric evidence, while preserving legitimate fallback contexts. Challenged current Preview, optimizer behavior and separately admitted creation prerequisites. No permission completion, compulsory ANN performance, live SQL or deployment is asserted. Compared canonical and related concepts. Rubric: 46/48.",
+      "confidenceReason": "High confidence in the narrow compatibility condition from direct current evidence; authorization and physical-plan choice remain separate, unpromised concerns."
+    },
+    {
+      "questionId": "dp800-direct-049",
+      "authorId": "dp800-expansion-author-ai-20260916",
+      "reviewerId": "dp800-adversarial-search-b-20260916",
+      "questionFingerprint": "7f8a996cd077422e0610665dce7273fde7e1018b983944ddd6ebb365353fba9f",
+      "reviewedAt": "2026-09-16T23:44:56.639Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d3-vector-search",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\vector-search.json",
+          "retrievedAt": "2026-09-16T19:38:25.140Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The fresh item was independently checked against Syntax, Msg 42274, no-APPROXIMATE behavior, alias rules and ordering. Latest indexes reject TOP_N; the repair removes it and adds TOP (N) WITH APPROXIMATE. Plain TOP/distance is exact kNN, and no TOP loses the cap."
+        },
+        {
+          "sourceId": "dp800-d3-vector-distance",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\vector-distance.json",
+          "retrievedAt": "2026-09-16T19:38:27.527Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual scalar exact-function contract distinguishes exact distance from separate approximate search. This supports the fresh explanation's exact/approximate distinction, not the grammar repair itself, which VECTOR_SEARCH establishes."
+        },
+        {
+          "sourceId": "dp800-d3-vector-type",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/data-types/vector-data-type",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\ai\\raw\\vector-type.json",
+          "retrievedAt": "2026-09-16T19:38:29.832Z",
+          "lastReviewedAt": "2026-09-16T20:12:23.450Z",
+          "supportingSummary": "The actual type reference permits fixed-width vector variables, default float32 and 1..1998 dimensions. The stated valid nonnull VECTOR(1536) fits; no float16 or driver behavior is inferred."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: TOP_N stays explicitly unsupported, so its Msg 42274 condition survives the added outer clause. Approximate intent without removing the prohibited argument is only half the repair.",
+          "sourceIds": ["dp800-d3-vector-search"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Supported, not incorrect: both edits remove the latest-version incompatibility while retaining the requested cap and approximation. d.Id uses the base alias, r.distance uses the result alias, and ORDER BY r.distance is distance-only ascending. The matching nonnull VECTOR(1536) remains valid.",
+          "sourceIds": ["dp800-d3-vector-search", "dp800-d3-vector-type"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Contradicted as the required repair: it removes the legacy error but the current reference calls plain TOP with distance order and no APPROXIMATE exact kNN. A valid exact query is not the requested approximate form.",
+          "sourceIds": ["dp800-d3-vector-search", "dp800-d3-vector-distance"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Contradicted: no five-row cap remains and no WITH APPROXIMATE requests approximation. Sorting an unbounded distance scan restores neither omitted instruction.",
+          "sourceIds": ["dp800-d3-vector-search"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independent PASS 3 re-derived b from the frozen fresh candidate and actual current evidence. Challenged both edits and all alternatives, input type, aliases, distance-only order, platform/version/region, Preview and optimizer limits. No old key, rubric or approval was inherited. Static SQL only; no execution or gameplay installation. Rubric: 46/48.",
+      "confidenceReason": "High confidence in the fresh paired repair because the current source explicitly documents both edits and alternate exact/full-scan forms; this review binds only the new fingerprint."
+    }
+  ]
+}

@@ -1,0 +1,659 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-adversarial-objects-20260916",
+  "reviews": [
+    {
+      "questionId": "dp800-direct-001",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-objects-20260916",
+      "questionFingerprint": "f9e1137cf5bc778d0746c395b1fea4eede2289489c0ca9d348462012c52d13c9",
+      "reviewedAt": "2026-09-17T00:38:37.838Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1-constraints",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/6-design-implement-constraints",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-constraints.json",
+          "retrievedAt": "2026-09-16T19:34:35.209Z",
+          "lastReviewedAt": "2026-09-16T19:53:11.576Z",
+          "supportingSummary": "The NOT NULL row identifies missing data as a separate integrity problem, and Use default constraints limits defaults to unspecified insert values. Its CHECK discussion expressly allows NULL through UNKNOWN. I use these bounded rules, not the unit's broader claim that every ingestion route invariably enforces all constraints."
+        },
+        {
+          "sourceId": "dp800-d1-unique-check",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-unique-check.json",
+          "retrievedAt": "2026-09-16T19:34:35.199Z",
+          "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+          "supportingSummary": "Limitations of CHECK constraints shows a NULL insert succeeding because a comparison is UNKNOWN rather than FALSE. UNIQUE constraints describes single-column NULL allowance and duplicate rejection. Together these sections distinguish the requested nonnull positive domain from accidental uniqueness and from nonnegative predicates."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "An insert explicitly supplying NULL does not request DEFAULT (1); Amount > 0 is then UNKNOWN and the enabled CHECK does not reject it. This remains a forbidden invoice. Alternate context: For an optional charge where explicit unknown amounts are permitted but an omitted input should become 1, this nullable DEFAULT design is useful. That changes the explicit-NULL rule, not CHECK's semantics. Evidence: Use default constraints addresses unspecified values; Limitations of CHECK constraints supplies the successful NULL counterexample. Neither says a default substitutes for NOT NULL.",
+          "sourceIds": ["dp800-d1-constraints", "dp800-d1-unique-check"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "UNIQUE would reject a second invoice for the same positive amount and still admit one NULL. It both forbids an allowed case and fails to exclude a prohibited case. Alternate context: A registry of distinct positive denomination values that intentionally permits one unspecified entry could use a nullable UNIQUE column with the positive CHECK. Invoice amounts are not such a unique identifier. Evidence: The UNIQUE section describes duplicate rejection and single-column NULL allowance; the CHECK limitations distinguish UNKNOWN from FALSE.",
+          "sourceIds": ["dp800-d1-unique-check"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Not incorrect: NOT NULL rejects explicit NULL, and CHECK (Amount > 0) rejects zero and negative nonnull values. Two equal positive amounts satisfy both constraints, so c meets every stated rule. Alternate context: The same combination is appropriate for any required strictly positive measurement with legitimate repeats. It would cease to match a refund or optional-amount domain that deliberately permits negatives, zero or NULL. Evidence: The training NOT NULL contract excludes missing critical data; the product CHECK contract enforces the positive comparison independently of value uniqueness.",
+          "sourceIds": ["dp800-d1-constraints", "dp800-d1-unique-check"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Zero makes Amount >= 0 TRUE, while NULL still produces UNKNOWN. Both are accepted by this nullable design although both are forbidden in the stem. Alternate context: For an optional nonnegative balance where zero and an unknown balance are permitted, nullable CHECK (Amount >= 0) is a coherent domain rule. It is not a strictly positive required charge. Evidence: CHECK enforces its actual Boolean predicate and rejects FALSE only; changing > to >= adds zero and does not alter nullability.",
+          "sourceIds": ["dp800-d1-unique-check"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independently challenged explicit NULL, omitted input, zero, negative values and repeated positive amounts. Only c excludes both prohibited value classes while permitting repeated positives. The training unit's blanket enforcement language is not endorsed: the question explicitly concerns an enabled CHECK and ordinary future inserts, not disabled constraints, replication exceptions or bulk-load bypasses.",
+      "confidenceReason": "The product article explicitly admits UNKNOWN to CHECK and one NULL to single-column UNIQUE; the training unit independently describes NOT NULL and omission-based DEFAULT. These rules give concrete counterexamples to all three alternatives without executing SQL."
+    },
+    {
+      "questionId": "dp800-direct-002",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-objects-20260916",
+      "questionFingerprint": "98acb16e1f76859c697817b20462b7c6b2ba5c758e8086d7fcb68528828b6d97",
+      "reviewedAt": "2026-09-17T00:38:37.838Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1-unique-check",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-unique-check.json",
+          "retrievedAt": "2026-09-16T19:34:35.199Z",
+          "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+          "supportingSummary": "The UNIQUE section permits a nonprimary column combination to have its own uniqueness constraint, implemented by a unique index. It also warns that preexisting duplicates prevent adding it. I use exact tuple membership to test tenant/code reuse and revision variation, without assuming binary string equality or unlimited key widths."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Not incorrect: after (10, 'REF-A', 1), (10, 'REF-A', 2) collides on the constrained pair, whereas (10, 'REF-B', 1) and (11, 'REF-A', 1) do not. This is exactly the required scope. Alternate context: Use this key for per-tenant deduplication where revisions update an existing import rather than create new rows. If separate revision rows must coexist, a broader versioned key would instead be needed. Evidence: UNIQUE can constrain a combination of nonprimary columns; equality is evaluated for that combination, not for every constituent individually.",
+          "sourceIds": ["dp800-d1-unique-check"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Rows for tenants 10 and 11 using 'REF-A' would collide. The stem explicitly permits that cross-tenant reuse, so the rule is too restrictive. Alternate context: A globally allocated import code with no tenant-local namespace could correctly have UNIQUE (ExternalCode), even if each tenant owns many different globally unique codes. Evidence: Single-column UNIQUE rejects duplicates in that column. It does not condition enforcement on an unconstrained TenantId.",
+          "sourceIds": ["dp800-d1-unique-check"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Two different codes for tenant 10 would collide on TenantId. That prevents the many-code-per-tenant state required by the question. Alternate context: A tenant settings table with exactly one row per tenant could use UNIQUE (TenantId) while retaining a separate RecordId primary key. Evidence: The article's column-level uniqueness contract disallows a second occurrence of the constrained TenantId regardless of code.",
+          "sourceIds": ["dp800-d1-unique-check"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The triples (10, 'REF-A', 1) and (10, 'REF-A', 2) differ and therefore satisfy this UNIQUE constraint. Their pair is identical, violating the requested deduplication rule. Alternate context: A version-history import table that intentionally preserves several revisions of one tenant/code pair should distinguish those revisions with this three-column key. Evidence: Combination uniqueness covers exactly the columns named. Adding Revision distinguishes previously equal keys rather than strengthening pair-level deduplication.",
+          "sourceIds": ["dp800-d1-unique-check"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independently used tenant/code/revision tuples to disprove the one-column and three-column alternatives. Only a rejects a second revision of an existing pair while allowing other codes for that tenant and the same code for another tenant. This is a logical key-design question, not a promise that arbitrary column types, key lengths, collations or dirty existing data can accept immediate index creation.",
+      "confidenceReason": "The exact product article defines UNIQUE over a column or combination of columns outside the primary key. Explicit NOT NULL components remove nullable-tuple ambiguity; distinct tuple examples resolve all options."
+    },
+    {
+      "questionId": "dp800-direct-003",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-objects-20260916",
+      "questionFingerprint": "e44fbe591f42d94878effaf05ecbf94899bcbfdd9ca0ad6c5d6ae404aa4f7d44",
+      "reviewedAt": "2026-09-17T00:38:37.838Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1-sequences",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/sequence-numbers/sequence-numbers",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-sequences.json",
+          "retrievedAt": "2026-09-16T19:34:35.359Z",
+          "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+          "supportingSummary": "Overview allocates a number on NEXT VALUE FOR even when it is never stored. Limitations explicitly places allocation outside the current transaction and warns about rollback gaps, shared consumers and cache loss. Examples show schema-qualified creation and variable reservation. These facts support the 700-then-701 trace, not transactional numbering guarantees."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The variable assignment already consumes 700. Rollback does not refund a sequence allocation, so the following call cannot be the initial allocation under the stated unchanged definition. Alternate context: A first call with no earlier reservation would return 700; alternatively an explicit ALTER SEQUENCE RESTART WITH 700 before the final call would do so. Neither occurs in this script. Evidence: Limitations states that committed and rolled-back callers both consume values; the reset example demonstrates that restarting is an explicit different operation.",
+          "sourceIds": ["dp800-d1-sequences"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "There is one preceding NEXT VALUE FOR, not two. ROLLBACK consumes no additional sequence value by itself, so a final 702 would require an unstated allocation or change. Alternate context: With two earlier reservations, including one by a concurrent consumer, the next value would be 702 for START WITH 700 INCREMENT BY 1. The explicit no-other-call premise rules that out. Evidence: Overview ties allocation to requests and the defined increment; Limitations identifies other consumers and unused reservations as sources of gaps.",
+          "sourceIds": ["dp800-d1-sequences"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "CREATE SEQUENCE and its GO batch precede BEGIN TRANSACTION. The later ROLLBACK is not a statement to remove that existing schema-bound object; the documented allocation contract leaves the next value available. Alternate context: No sequence value can be obtained if creation never succeeded or SELECT addresses a database without that object. This is a missing-object context, not evidence that this rollback removes an earlier-created sequence. Evidence: The source describes a separately created schema-bound sequence subsequently referenced by callers. The candidate's ordering supplies the object-lifetime distinction; no unsupported claim about rolling back CREATE SEQUENCE inside another transaction is needed.",
+          "sourceIds": ["dp800-d1-sequences"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Not incorrect: starting at 700, the first call allocates 700, rollback does not undo that allocation, and increment 1 makes the next value 701. The assumptions eliminate competing requests and cache-loss interruptions. Alternate context: The same trace applies when an application reserves a number and abandons the associated work without storing a row. It must not be generalized to predict adjacent numbers in an uncontrolled concurrent service. Evidence: The overview explicitly allows allocation without insertion, and the transaction paragraph says consumed numbers survive both commit and rollback.",
+          "sourceIds": ["dp800-d1-sequences"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Statically traced creation before BEGIN TRANSACTION, one reservation of 700, ROLLBACK and the final allocation of 701. Challenged unused reservations, cache loss, extra consumers and missing objects; the stem excludes the relevant alternate causes. No SQL Server execution, gapless-number promise or automatically unique stored-data claim is made.",
+      "confidenceReason": "Sequence numbers explicitly says allocation occurs when NEXT VALUE FOR is called, even without insertion, and consumption survives rollback. The script fixes increment and call count; the existing object is created before the rolled-back transaction."
+    },
+    {
+      "questionId": "dp800-20260916-d1-001",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-objects-20260916",
+      "questionFingerprint": "068149e3b02eb845a1dc7f9296fa2e62848738dc5a74f066565a0a60eb01b70f",
+      "reviewedAt": "2026-09-17T00:38:37.838Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-decimal",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/data-types/decimal-and-numeric-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-decimal.json",
+          "retrievedAt": "2026-09-16T19:47:22.678Z",
+          "lastReviewedAt": "2026-09-16T20:24:01.803Z",
+          "supportingSummary": "Arguments defines precision as total decimal digits and scale as fractional digits, leaving p-s integral digits. The storage table assigns 5 bytes to precision 1-9 and 9 bytes to 10-19. Conversion notes warn about rounding at lower scale and overflow rather than increasing a type's capacity. This overrides the parent unit's erroneous five-byte example for precision 10."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "decimal(8,4) has only 8-4=4 integral digits. Its positive endpoint is 9,999.9999, short of 99,999.9999; preserving fractional precision does not cure that range deficit. Alternate context: For signed measurements bounded by 9,999.9999 with four fractional digits, precision 8 would suffice in the same five-byte tier. The larger required range is the distinguishing condition. Evidence: The scale definition subtracts s from p to determine integral capacity, and the precision-1-through-9 storage row includes decimal(8,4).",
+          "sourceIds": ["dp800-d1x-decimal"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "decimal(9,3) cannot represent 1.2345 exactly at scale 3. Its ample integral capacity and five-byte tier do not satisfy four fractional digits. Alternate context: A measurement contract requiring only three fractional digits and up to six integral digits could correctly choose decimal(9,3). Rounding a four-place source is not that contract. Evidence: Scale is the number of stored fractional digits; the conversion section documents rounding when precision or scale is reduced.",
+          "sourceIds": ["dp800-d1x-decimal"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Not incorrect: 9-4=5 integral digits and four fractional digits cover both signed endpoints. Precision counts digits, not the minus sign, and 9 lies in the five-byte tier. Alternate context: This is suitable for a signed, four-place bounded measurement domain of the stated size. A sixth integral digit or fifth fractional digit would require revisiting the precision/tier budget. Evidence: The Arguments definitions and storage table jointly establish the minimum total of 5+4=9 decimal digits and its five-byte declared storage tier.",
+          "sourceIds": ["dp800-d1x-decimal"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "decimal(10,4) can store the values, but precision 10 is larger than necessary and belongs to the nine-byte tier. Representability alone is not the complete question. Alternate context: If measurements could reach 999,999.9999 and the nine-byte tier were acceptable, decimal(10,4) would supply useful extra integral capacity. Evidence: The explicit storage table places precisions 10-19 at nine bytes; p-s also shows the sixth integral digit that the stem does not need.",
+          "sourceIds": ["dp800-d1x-decimal"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independently computed five integral digits plus four fractional digits, with the sign excluded from precision, and checked the documented 9-to-10 precision storage boundary. c alone meets capacity, scale and declared-tier requirements. The tables ancestor's decimal(10,2) five-byte comment is wrong; this approval uses the exact decimal product reference and makes no compressed-row or total-table-size prediction.",
+      "confidenceReason": "The type reference defines p, s, p-s and the 1-9 versus 10-19 storage tiers explicitly. Endpoint and fractional counterexamples distinguish a and b; d is representable but violates the requested smallest precision and tier."
+    },
+    {
+      "questionId": "dp800-20260916-d1-002",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-objects-20260916",
+      "questionFingerprint": "7364d56b55de4f17b242e4cea4a2b27445e4b48c331cc685866ad282b1c384f5",
+      "reviewedAt": "2026-09-17T00:38:37.838Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-columnstore",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-columnstore-index-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-columnstore.json",
+          "retrievedAt": "2026-09-16T19:47:19.703Z",
+          "lastReviewedAt": "2026-09-16T20:24:01.803Z",
+          "supportingSummary": "CREATE NONCLUSTERED COLUMNSTORE permits a filtered secondary copy on a heap or clustered rowstore. WHERE chooses indexed rows, and example C explicitly permits predicate columns outside the index list. Version availability dates WHERE to SQL Server 2016. Limitations accepts date/decimal but excludes nvarchar(max) from NCCI even where CCI accepts LOBs; SET and ALTER requirements are explicit."
+        },
+        {
+          "sourceId": "dp800-d1x-indexes-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/4-design-implement-indexes",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-indexes-unit.json",
+          "retrievedAt": "2026-09-16T19:37:55.939Z",
+          "lastReviewedAt": "2026-09-16T20:16:15.743Z",
+          "supportingSummary": "The unit names and demonstrates CREATE NONCLUSTERED COLUMNSTORE INDEX and distinguishes its secondary copy from a clustered columnstore replacing base rowstore organization. I do not adopt its blanket performance recommendations, all-columnar wording or simplified tuple-mover threshold as candidate facts."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Not incorrect: a preserves the clustered rowstore, includes supported date and decimal columns and limits the new structure to Settled = 1. Settled need not itself be in the column list. Alternate context: This design fits mixed operational/analytic tables when only the stable subset belongs in the columnar copy. Its eligibility does not guarantee the optimizer selects it; a query over all rows may require another access path. Evidence: The NCCI section documents coexistence and filtering; example C explicitly filters using a column absent from the stored index list. The type list permits date and decimal.",
+          "sourceIds": ["dp800-d1x-columnstore", "dp800-d1x-indexes-unit"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "This removes the requested clustered rowstore organization and includes unsettled rows in the whole-table columnstore. Even an otherwise legal conversion cannot satisfy those explicit constraints. Alternate context: A fact table whose intended base organization is columnstore and whose entire row set belongs in analytics can appropriately use CCI, with a separately supported integrity/index design. Evidence: The training CCI/NCCI distinction and the product creation forms separate base storage replacement from a secondary filtered index. WHERE is not a CCI option.",
+          "sourceIds": ["dp800-d1x-columnstore", "dp800-d1x-indexes-unit"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The rowstore is preserved, but omission of WHERE makes unsettled rows eligible for the same secondary structure. Later filtering in an analytic query would not change which rows the index maintains. Alternate context: An NCCI without a predicate is appropriate when all rows are intended for the columnar copy and the additional write/storage maintenance is acceptable. Evidence: The WHERE contract defines which rows are included. The unfiltered secondary-index example instead copies its selected columns across the table.",
+          "sourceIds": ["dp800-d1x-columnstore"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "nvarchar(max) is explicitly prohibited in a nonclustered columnstore. The valid filter and unused status of Payload do not waive the type restriction, even if today's payload values are short. Alternate context: If Payload instead had a supported bounded nvarchar(n) definition proven sufficient for its actual data, such an NCCI column list could be eligible. CCI's newer LOB support is another feature, but would not preserve this rowstore. Evidence: NCCI limitations explicitly forbid nvarchar(max), varchar(max) and varbinary(max); the type table's LOB allowance is footnoted for clustered columnstore, not NCCI.",
+          "sourceIds": ["dp800-d1x-columnstore"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independently checked the filtered NCCI's rowstore coexistence, predicate-column omission, supported date/decimal columns and the nvarchar(max) exclusion. a is eligible under the stated SET and ALTER prerequisites; the other designs violate base organization, row scope or data-type rules. This is not a guaranteed optimizer choice, performance improvement or an endorsement of the training unit's simplified rowgroup and performance claims.",
+      "confidenceReason": "The exact CREATE COLUMNSTORE INDEX reference provides SQL Server WHERE support from 2016, a filter on a non-indexed column example, required SET options, ALTER permission and explicit NCCI LOB exclusions. The training unit supplies the current direct statement reference and rowstore/NCCI distinction."
+    },
+    {
+      "questionId": "dp800-20260916-d1-003",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-objects-20260916",
+      "questionFingerprint": "e662ec1a579cd9e81a05d9050c44656421f4e8a2fc8cb6eaa6d86e69e88d9f03",
+      "reviewedAt": "2026-09-17T00:38:37.838Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-create-temporal",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/tables/temporal/create",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\repairs\\temporal-r1\\raw\\create-temporal-canonical.json",
+          "retrievedAt": "2026-09-16T22:14:32.752Z",
+          "lastReviewedAt": "2026-09-16T22:30:15.466Z",
+          "supportingSummary": "Create a temporal table with an anonymous history table requires current-table PK and exactly one nonnullable datetime2 period, then requires history alignment by count, names, order and types. User-defined history Remarks prohibits PK, unique indexes and other constraints. Existing-table sections distinguish data consistency checking and datetime2 precision alignment. The source is the fresh canonical temporal/create receipt, not the superseded creation URL."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Not incorrect: the source requires a primary key on the current temporal table but explicitly forbids one on history. The existing current key stays; removing the history constraint fixes one independent blocker. Alternate context: This removal is appropriate when converting a separately keyed archive into built-in temporal history. For an ordinary archive not attached as system history, retaining its own primary key can instead be a valid integrity policy. Evidence: The anonymous-table Remarks supplies the current PK requirement; the user-defined-history Remarks explicitly forbids a history primary key.",
+          "sourceIds": ["dp800-d1x-create-temporal"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The same history-specific Remarks explicitly forbids unique indexes. Changing the mechanism's name does not remove its prohibited uniqueness enforcement. Alternate context: A non-temporal archive with a genuine unique RecordId/ValidFrom business rule can use such an index. Built-in history may instead have an appropriate nonunique index; that is not the UNIQUE index offered here. Evidence: The restriction lists both primary keys and unique indexes, while the user-defined history example creates a nonunique rowstore index alongside columnstore.",
+          "sourceIds": ["dp800-d1x-create-temporal"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Not incorrect: the extra column violates the required equal column count and aligned schema. Its information may be stored separately as the stem allows; removing it corrects the second independent blocker. Alternate context: External archive-processing metadata belongs in a separate structure when it is not part of the current temporal row. Adding a corresponding properly designed current-table field would be a different schema change, not one of the offered repairs. Evidence: The canonical article states that history must align with current by number of columns, column names, ordering and data types.",
+          "sourceIds": ["dp800-d1x-create-temporal"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "DATA_CONSISTENCY_CHECK = OFF skips the specified period-data check, not the independent schema alignment or history-key rules. Periods are already valid, so it fixes neither listed defect. Alternate context: A separately validated, already schema-compatible history/current pair may use the documented optional OFF setting when enabling versioning. The source still recommends ON; OFF is not a recommendation to admit incompatible schema. Evidence: Add versioning to non-temporal tables says the across-table data check can be skipped, while the creation and history Remarks retain separate schema and constraint requirements.",
+          "sourceIds": ["dp800-d1x-create-temporal"]
+        },
+        {
+          "choiceId": "e",
+          "assessment": "contradicted",
+          "rationale": "date is not the current table's datetime2(7) type and does not preserve its time precision. This introduces a mismatch rather than correcting the extra column or forbidden key. Alternate context: A separate date-granularity reporting or archive column can legitimately use date if its information contract permits day-only values. It cannot replace the required aligned temporal period endpoints in this pair. Evidence: The article requires matching data types and explicitly warns that datetime2 precision must align with the underlying table.",
+          "sourceIds": ["dp800-d1x-create-temporal"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Reviewed only temporal-r1's regenerated candidate and freshly approved technical stage. Independently challenged current-versus-history key roles, extra history-only metadata, unique-index substitution, DATA_CONSISTENCY_CHECK and period type/precision. a and c are the two required repairs; changing the data-check switch cannot remove schema restrictions. The actual canonical /tables/temporal/create MCP body and both observed legacy-link redirect chains replace, rather than supplement, the old node for this review.",
+      "confidenceReason": "The fresh canonical article explicitly requires matching column count, names, order and types, forbids primary keys and unique indexes on history, and identifies DATA_CONSISTENCY_CHECK as a data-check control. These independent restrictions select a+c with no inferred old-URL content."
+    },
+    {
+      "questionId": "dp800-20260916-d1-007",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-objects-20260916",
+      "questionFingerprint": "bcd510e9b17b9fd1930ece9beba7ae88731efa5a44f4dd2394a3c66ab843086c",
+      "reviewedAt": "2026-09-17T00:38:37.838Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1-json-columns-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/7-design-implement-json",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-columns-unit.json",
+          "retrievedAt": "2026-09-16T19:34:45.557Z",
+          "lastReviewedAt": "2026-09-16T21:16:50.204Z",
+          "supportingSummary": "The opening and Combine relational and JSON structure sections keep predictable fields in typed columns and use JSON for variable attributes, explicitly allowing new product types without table changes. Earlier SQL Server versions use NVARCHAR(MAX). The separate native-json and modify-method examples concern SQL Server 2025 and are not approved as 2022 behavior."
+        },
+        {
+          "sourceId": "dp800-d1x-json-overview",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-json-overview.json",
+          "retrievedAt": "2026-09-16T19:47:28.696Z",
+          "lastReviewedAt": "2026-09-16T21:16:50.204Z",
+          "supportingSummary": "The overview dates textual JSON functions to SQL Server 2016 and describes a hybrid relational/document model. ISJSON tests whether a string contains valid JSON; it does not establish the requested Price type or CategoryId relationship. The current 2025 GA-enhancement list does not backport native json features to this 2022 design."
+        },
+        {
+          "sourceId": "dp800-d1x-primary-foreign",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-primary-foreign.json",
+          "retrievedAt": "2026-09-16T19:47:30.932Z",
+          "lastReviewedAt": "2026-09-16T20:24:01.803Z",
+          "supportingSummary": "Foreign key constraints links actual columns in related tables and rejects an inserted referencing value absent from the parent. This is the separate relational invariant retained in the core. The article does not equate JSON syntax checks with FKs or require an automatically created foreign-key index."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Valid JSON can contain Price as null or a string and an arbitrary CategoryId, and this design declares neither the required exact numeric column nor a column-based FK. ISJSON alone does not supply those invariants. Alternate context: An intake or staging store whose only engine rule is accepting valid JSON documents, with relational validation deliberately deferred, can use this shape. That is not the required validated product catalog. Evidence: The overview defines ISJSON as JSON validity testing; the FK article requires an actual referencing-column relationship. Neither turns arbitrary JSON properties into the requested constrained core columns.",
+          "sourceIds": ["dp800-d1x-json-overview", "dp800-d1x-primary-foreign"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Although typed core columns can retain Price and FK requirements, the offered procedure adds a column whenever new attributes arrive. That is exactly the schema-change dependency the stem excludes. Alternate context: With a stable, known attribute set or an accepted migration process for new attributes, a fully typed wide schema can be appropriate and offers direct type validation. Evidence: The training unit contrasts many empty columns and split tables with flexible JSON, and says typed columns fit consistent fields. Its hybrid example avoids changing table structure for new product types.",
+          "sourceIds": ["dp800-d1-json-columns-unit", "dp800-d1x-json-overview"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Not incorrect: typed constrained core columns can express the nonnull exact Price and CategoryId FK, while a new category's JSON keys do not require new columns or tables. Each half meets a different stated requirement. Alternate context: This hybrid fits other catalogs with stable relational identifiers and heterogeneous optional metadata. It is not automatically preferable when all fields are stable or every variable attribute needs a separate engine-enforced relational rule. Evidence: Both JSON sources explicitly recommend combining strongly typed fields and flexible key/value documents; the FK article defines the reference constraint retained in the relational core.",
+          "sourceIds": [
+            "dp800-d1-json-columns-unit",
+            "dp800-d1x-json-overview",
+            "dp800-d1x-primary-foreign"
+          ]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Creating a new detail table for each introduced category is table DDL, so the proposed operational rule fails even though the core can remain correctly typed and constrained. Alternate context: A closed or slowly changing set of categories that needs strongly typed specialized relationships can use separate detail tables if category migrations are acceptable. Evidence: The training text expressly contrasts splitting variable attributes among tables with flexible JSON; the overview describes JSON as an optional simplification of multiple-child-table models, not a universal replacement.",
+          "sourceIds": ["dp800-d1-json-columns-unit", "dp800-d1x-json-overview"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independently challenged whole-document validation, nullable-column expansion and category-specific tables against both required relational invariants and the no-category-DDL rule. c alone preserves the typed constrained core while allowing varying attributes. SQL Server 2022 textual JSON is reviewed, not the training unit's SQL Server 2025 native json/modify examples or an inferred lifecycle label from its Not applicable source classification.",
+      "confidenceReason": "The actual training text and product overview explicitly combine stable typed columns with variable JSON attributes; the product overview defines ISJSON only as JSON validity testing. The separately approved key article supplies engine-enforced referential integrity, which syntax validation alone does not create."
+    },
+    {
+      "questionId": "dp800-20260916-d1-009",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-objects-20260916",
+      "questionFingerprint": "188e86368ef3b4381a3d07080b883ed7150c86ddbf55a2c31ac4a80e94726f86",
+      "reviewedAt": "2026-09-17T00:38:37.838Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1-sequences",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/sequence-numbers/sequence-numbers",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-sequences.json",
+          "retrievedAt": "2026-09-16T19:34:35.359Z",
+          "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+          "supportingSummary": "The decisive paragraph states that multiple NEXT VALUE FOR instances naming the same sequence within a statement return the same value for a given processed row. The overview makes increment and start definition-controlled, while the limitations warn that caching choices do not enforce stored uniqueness or eliminate unused allocations. This review focuses on statement/row scope rather than rollback."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "Both first-row expressions name dbo.PairNumber in the same SELECT, so they share 40 rather than returning 40 and 45. With only one earlier allocation, the later SELECT also cannot return 50. Alternate context: Two separate statements could reserve 40 and 45 into variables, then display them together; a later NEXT VALUE FOR would return 50. That is a different allocation statement structure. Evidence: The source expressly binds reuse to the same sequence and the same row within a statement; separate requests then follow the defined increment.",
+          "sourceIds": ["dp800-d1-sequences"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The first pair contradicts the same-row sharing rule. It also treats 45 as both already consumed and the next value without any restart or alternate generator in the script. Alternate context: With two different sequences, one starting at 40 with increment 5 and another starting at 45, a first SELECT could return (40,45) and a second call to the first generator could return 45. Both references here name the same sequence. Evidence: Reuse is expressly limited to instances specifying the same sequence generator; independently defined sequences can have distinct start values and allocation state.",
+          "sourceIds": ["dp800-d1-sequences"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Sharing 40 for the row does not silently consume 45. The next allocation after the single 40 at increment 5 is 45, not 50. Alternate context: Changing the sequence to INCREMENT BY 10 would yield (40,40) then 50; an intervening consumer under increment 5 could also consume 45. Both are excluded by the actual code and assumptions. Evidence: The same-row rule fixes one allocation and the sequence definition fixes its increment; the source separately notes shared consumers as a cause of intervening values.",
+          "sourceIds": ["dp800-d1-sequences"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "rationale": "Not incorrect: the first SELECT returns one row and both instances use dbo.PairNumber, satisfying the documented sharing condition. The subsequent statement makes the next allocation under increment 5. Alternate context: This also applies to another one-row SELECT naming the same sequence multiple times. A multirow query allocates according to processed rows, not one value for the whole result set; distinct generators do not share state. Evidence: Limitations explicitly says same generator plus same statement plus given row returns the same value; normal start/increment behavior supplies the subsequent 45.",
+          "sourceIds": ["dp800-d1-sequences"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independently traced one output row containing two references to the same sequence, then a separate SELECT. The first statement allocates only 40 for that row and the second allocates 45. Challenged separate generators, separate allocation statements, different increments and unstated consumers. NO CACHE is not being credited with uniqueness or gapless guarantees, and the code was not executed.",
+      "confidenceReason": "The Sequence numbers Limitations paragraph explicitly returns the same value for every reference to the same generator in a given row of a statement. START WITH 40, INCREMENT BY 5 and the absence of other consumers then determine the next statement independently."
+    },
+    {
+      "questionId": "dp800-20260916-d1-010",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-objects-20260916",
+      "questionFingerprint": "1653ed6b0b819251d40c9c790f660a63a01df10355d7d6d05309dfc98a75834c",
+      "reviewedAt": "2026-09-17T00:38:37.838Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-alter-partition",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-partition-function-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-alter-partition.json",
+          "retrievedAt": "2026-09-16T19:47:19.905Z",
+          "lastReviewedAt": "2026-09-16T20:24:01.803Z",
+          "supportingSummary": "SPLIT RANGE requires an online NEXT USED filegroup in every scheme sharing the function and explicitly fails if any scheme lacks one. Existing storage can be designated; an extra filegroup alone is not the designation. The article states the all-consumer atomic/offline scope and warns about disabled clustered indexes and resource costs."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "PS_B remains without NEXT USED, so the split prerequisite still fails. Independently, intent to maintain only one table does not limit the shared function's affected consumers. Alternate context: For a function used solely by PS_A and one table, assigning PS_A's missing destination could be a complete scheme-preparation step with single-table scope. That is not this two-scheme function. Evidence: The SPLIT paragraph requires NEXT USED for all associated schemes; the caution and Limitations extend the operation to every table and index using the function.",
+          "sourceIds": ["dp800-d1x-alter-partition"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "rationale": "Not incorrect: PS_A is already prepared, so PS_B is the missing scheme-level prerequisite. Coordinating all tables and indexes acknowledges the single atomic function-level operation rather than pretending it is table-scoped. Alternate context: This applies whenever independently named schemes reuse one partition function and one lacks its destination. If the functions were separate, their operations could be scheduled independently after checking each one's dependencies. Evidence: The article explicitly combines the all-schemes NEXT USED requirement with atomic repartitioning of every function consumer.",
+          "sourceIds": ["dp800-d1x-alter-partition"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "Available storage and scheme destination metadata are different. The option explicitly leaves PS_B unassigned, so the function split still encounters a scheme without NEXT USED. Alternate context: Adding storage can be a useful capacity step when all scheme destinations are already correctly assigned, or before separately assigning the new filegroup with ALTER PARTITION SCHEME. It is not a substitute for that assignment here. Evidence: The arguments require a filegroup to exist online and be marked NEXT USED; ALTER PARTITION SCHEME can select a new or existing filegroup.",
+          "sourceIds": ["dp800-d1x-alter-partition"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Pausing queries does not change the partition scheme or detach it from PF_EventMonth. PS_B still lacks NEXT USED, irrespective of whether its table is actively queried. Alternate context: Workload coordination can be appropriate before an offline repartitioning operation after destination metadata and other prerequisites are already valid. It addresses operational interruption, not missing scheme metadata. Evidence: Limitations calls the operation offline and potentially costly, while SPLIT separately mandates each associated scheme's destination. Neither condition replaces the other.",
+          "sourceIds": ["dp800-d1x-alter-partition"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independently challenged each scheme's destination requirement and the shared function's atomic dependency scope. b both supplies PS_B's missing NEXT USED and coordinates every consumer; adding spare storage or pausing a workload does not assign the missing destination. No claim of online, lock-free, cheap or single-table partition-function maintenance is approved.",
+      "confidenceReason": "The exact SPLIT RANGE arguments require every scheme using the function to have NEXT USED, and Limitations says ALTER PARTITION FUNCTION repartitions all consuming tables and indexes atomically and offline. The empty-partition and enabled-index premises remove independent blockers."
+    },
+    {
+      "questionId": "dp800-20260916-d1-011",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-adversarial-objects-20260916",
+      "questionFingerprint": "f5b1ea0bb24cf82d1a22048cadc2ff3707109d8d97f79e74261f8023f581402c",
+      "reviewedAt": "2026-09-17T00:38:37.838Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-alter-partition",
+          "url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-partition-function-transact-sql",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-alter-partition.json",
+          "retrievedAt": "2026-09-16T19:47:19.905Z",
+          "lastReviewedAt": "2026-09-16T20:24:01.803Z",
+          "supportingSummary": "MERGE RANGE removes a boundary and combines existing values into a remaining live partition, rather than moving them to a separate archive. The columnstore notes forbid two-nonempty merges and populated splits; dropping/disabling columnstore changes those restrictions but not MERGE's row-retention meaning. Offline/resource and filegroup conditions remain deployment considerations."
+        },
+        {
+          "sourceId": "dp800-d1x-partitioning-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/8-design-implement-partitioning",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-partitioning-unit.json",
+          "retrievedAt": "2026-09-16T19:38:03.946Z",
+          "lastReviewedAt": "2026-09-16T20:16:15.743Z",
+          "supportingSummary": "The aligned-index discussion identifies partition switching as the archival mechanism, with source/target design implications. Its later bare MERGE example is misleadingly called archival; I explicitly do not accept that statement. The exact product article controls MERGE semantics, and the candidate stipulates an independently validated switch-out routine instead of copying the misleading example."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Not incorrect: the supplied switch-out achieves the separate archive destination and empties the old side. The subsequent merge is no longer a merge of two nonempty columnstore partitions, and it only cleans up the boundary. Alternate context: This fits a sliding-window archive with compatible, validated source/target/index definitions. If the target or indexes were incompatible, SWITCH validation would need repair first; a boundary merge cannot substitute for it. Evidence: The training aligned-index section describes switching for archival. The product article distinguishes MERGE's row retention and the specific two-nonempty-columnstore prohibition.",
+          "sourceIds": [
+            "dp800-d1x-alter-partition",
+            "dp800-d1x-partitioning-unit"
+          ]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "Two nonempty columnstore partitions cannot be merged by the offered direct operation. Independently, MERGE retains rows in a remaining partition of the live table; it has no archive destination in this statement. Alternate context: MERGE is appropriate boundary consolidation when rows should remain in the same table and the occupancy/index restrictions are satisfied. The claimed automatic transfer to a separate archive is not supported even in that valid merge context. Evidence: The MERGE argument describes combining values into a remaining partition; the immediately following columnstore note forbids merging two nonempty partitions.",
+          "sourceIds": ["dp800-d1x-alter-partition"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The product restricts columnstore splits to empty partitions unless the index is dropped or disabled. A split also divides ranges in the live table rather than transferring the old rows to an archive. Alternate context: Splitting an empty end partition to prepare future data is valid with the required NEXT USED setup. A populated rowstore can also be repartitioned under applicable requirements, but splitting is still not itself archival. Evidence: SPLIT RANGE adds a boundary and the columnstore note limits eligible partitions to empty ones. Neither the syntax nor semantics includes an archive target.",
+          "sourceIds": ["dp800-d1x-alter-partition"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "Dropping the index can remove the identified columnstore merge restriction, but MERGE still leaves the data in the live remaining partition. The required separate archive is never populated by this plan. Alternate context: For a goal of consolidating live rowstore partition boundaries while retaining all rows, removing the blocking columnstore index and merging may be an eligible, potentially expensive plan. It solves a different data-lifecycle goal. Evidence: The source explicitly offers dropping/disabling columnstore for a prohibited merge, while retaining the unchanged MERGE definition that combines values within the table.",
+          "sourceIds": ["dp800-d1x-alter-partition"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Independently separated archival data relocation from partition-boundary cleanup and checked both populated-columnstore restrictions. a first uses the stipulated validated switch-out and then merges with one side empty. b and d retain old rows in the live table; c neither archives nor satisfies the populated-columnstore split restriction. The training unit's 'merge to archive' wording is expressly rejected, and no full SWITCH implementation or SQL execution is claimed.",
+      "confidenceReason": "The exact ALTER PARTITION FUNCTION article states MERGE retains values in a remaining partition, forbids merging two nonempty columnstore partitions and permits splitting only empty columnstore partitions. The training unit separately supports switching for archival; the stem explicitly supplies validated switch prerequisites."
+    }
+  ]
+}

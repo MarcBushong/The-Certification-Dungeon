@@ -1,0 +1,485 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-20260916-d3-024": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "81f037d7e6a544f4a2b6558dad6e4170570b94b31d377035607c97bc02685568",
+      "sourceIds": ["dp800-d3-hybrid", "dp800-d3x-divide"],
+      "retrievedAt": "2026-09-16T19:57:04.116Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+      "answerEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3x-divide", "dp800-d3-hybrid"],
+          "summary": "Supported, not incorrect: 1.0 participates before division, and each COALESCE protects a contribution rather than a rank or total. (1,NULL) retains 1/61, (NULL,NULL) yields zero, and two present ranks retain both fractions."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3x-divide", "dp800-d3-hybrid"],
+          "summary": "Contradicted: with the supplied int ranks, every denominator is at least 61 and each integer quotient is zero before COALESCE or CAST. For ranks (1,NULL), this returns zero instead of the earned 1/61."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Contradicted by kr=1, vr=NULL: the second quotient and then the sum are NULL, so the outer COALESCE discards the valid 1/61 contribution. Correct operand types alone do not repair where NULL handling occurs."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Contradicted: absence receives 1/60, not zero. Both absent ranks yield 1/30; (1,NULL) adds an unearned 1/60 to 1/61. This changes scoring policy rather than merely fixing evaluation."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-search-b-20260916",
+        "reviewedAt": "2026-09-16T23:44:56.639Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 4,
+          "clarityAccessibility": 4
+        },
+        "notes": "alignment 4/4: Repairs SQL implementation of the current RRF subskill rather than identifying the acronym. | accuracy 4/4: Concrete integer and one-sided-NULL counterexamples separate all three incorrect repairs. | scenarioCompleteness 4/4: Rank type, range, absence meaning and failed SQL are supplied. | answerUniqueness 4/4: Only b works for all allowed present/absent combinations without rewarding absence. | distractorPlausibility 4/4: Late casting, whole-sum NULL handling and rank imputation are distinct realistic mistakes. | distractorEvidence 4/4: The exact division rule and per-term source pattern support every option and its restricted alternate context. | documentationStrength 4/4: A direct operator reference and the actual training expression jointly cover the diagnosis. | citationSpecificity 4/4: Division Result Types and the combined CTE expression are exact support, not a general search overview. | difficultyAuthenticity 3/4: Three interacting concerns justify applied depth, but the bounded scalar repair is low-end Advanced. | explanationQuality 4/4: Each defect is isolated without precision or retrieval-performance promises. | originality 4/4: Compared with direct-024 and d3-023, evaluation/absence is distinct from real-valued addition and TOP scope. | clarityAccessibility 4/4: Short SQL and explicit nullable semantics avoid hidden artifacts or visual-only cues."
+      }
+    },
+    "dp800-20260916-d3-025": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "ed05fad7fc5994dfd2fb5593157f2aac374c6f7ca65bb369b4369337f8a142b0",
+      "sourceIds": ["dp800-d3-hybrid"],
+      "retrievedAt": "2026-09-16T19:33:27.185Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Supported, not incorrect: both lists contain two of four relevant documents, so mean recall is 0.5. First relevant ranks 1 and 2 yield MRR (1+1/2)/2=0.75. Its 75 ms passes the ceiling and beats the other eligible MRR-0.75 pipeline."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Contradicted: Keyword returns one of four relevant documents per query, giving mean recall 0.25, not 1/3 or 0.5. Its 40 ms p95 and MRR 0.75 cannot override the hard recall floor."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Contradicted as winner although eligible: each query has recall 2/4, first relevant ranks 2 and 1 give MRR 0.75, and p95 is 90 ms. Hybrid10 ties in recall and MRR but wins the explicit lower-p95 tie-break at 75 ms."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Contradicted: recall is 3/4 and MRR is 1, but p95=140 ms exceeds the 100 ms gate. Maximizing MRR occurs only after eligibility and cannot rehabilitate a failed latency ceiling."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-search-b-20260916",
+        "reviewedAt": "2026-09-16T23:44:56.639Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 4,
+          "clarityAccessibility": 3
+        },
+        "notes": "alignment 4/4: Direct application of the current evaluate-vector-and-hybrid-performance subskill. | accuracy 4/4: Recall is 0.25/0.5/0.5/0.75 and MRR is 0.75/0.75/0.75/1; ordered gates select c. | scenarioCompleteness 4/4: Relevant totals, result order, latency observations and priorities are explicit. | answerUniqueness 4/4: The eligible b/c tie is uniquely broken by the stated p95 rule. | distractorPlausibility 4/4: Alternatives minimize latency, stop after eligibility, or optimize relevance before gates. | distractorEvidence 4/4: Every alternative has a concrete calculation and a valid changed-requirement context. | documentationStrength 4/4: The approved teaching unit defines the evaluation concepts and empirical budget selection. | citationSpecificity 4/4: Evaluation and parameter-tuning sections are directly relevant to the decision. | difficultyAuthenticity 3/4: Multi-stage analysis is real, but the two tiny queries and supplied measurements limit Advanced depth. | explanationQuality 4/4: Eligibility and tie-breaking are distinguished, without universal performance claims. | originality 4/4: Unlike d3-019 this combines labeled relevance, first-hit ranks and a genuine tie-break. | clarityAccessibility 3/4: The JSON is complete, but the dense stem packs several metrics and ordered requirements into one sentence."
+      }
+    },
+    "dp800-direct-023": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "34185d2173ccc00fbb0d4e372b66273212fcd50c61f416528c964f2168873040",
+      "sourceIds": ["dp800-d3-vector-distance"],
+      "retrievedAt": "2026-09-16T19:38:27.527Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+      "answerEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3-vector-distance"],
+          "summary": "Supported, not incorrect: the current introduction explicitly preserves exact distance and no vector-index use regardless of index availability. This is the scalar function contract, not arbitrary-precision arithmetic or a complete physical-plan guarantee."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3-vector-distance"],
+          "summary": "Contradicted: the proposed index exception is expressly ruled out in the current contract. A compatible approximate VECTOR_SEARCH request is another operation and cannot falsify this statement about VECTOR_DISTANCE."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-search-b-20260916",
+        "reviewedAt": "2026-09-16T23:44:56.639Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 4,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        },
+        "notes": "alignment 4/4: Tests VECTOR_DISTANCE's exactness within the current vector-functions objective. | accuracy 4/4: The direct product paragraph explicitly covers even-if-index-exists. | scenarioCompleteness 4/4: The limited assertion needs only the supplied function and platform. | answerUniqueness 4/4: No False counterexample exists within this stated function contract. | distractorPlausibility 3/4: Index-existence confusion is plausible, but binary recall gives limited diagnostic richness. | distractorEvidence 4/4: The current article expressly contrasts exact distance with separate approximate search. | documentationStrength 4/4: A direct current product contract supports the assertion. | citationSpecificity 4/4: The introduction and scalar-float return statement directly support and bound exactness. | difficultyAuthenticity 4/4: Beginner recall accurately matches the task without inflated implementation depth. | explanationQuality 4/4: No relevance, performance or arbitrary-precision guarantee is inferred. | originality 3/4: An original short reformulation of a basic contract, not a distinctive applied scenario; canonical replacement is not new coverage. | clarityAccessibility 4/4: The assertion and two text-only choices are concise and unambiguous."
+      }
+    },
+    "dp800-direct-024": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "287f5ea4fa61d4f49a8db6414b63989dffdd1c4a6ff2e52bcdc94fa5b25a796d",
+      "sourceIds": ["dp800-d3-hybrid"],
+      "retrievedAt": "2026-09-16T19:33:27.185Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Supported as the technical key, not incorrect: 1/22+1/22 exceeds each competitor's 1/21. This is real-valued RRF rather than executable int/int T-SQL. Printing the completed calculation only in this option is nevertheless a construction clue."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Contradicted: A scores 1/21 while B scores 2/22=1/11, which is greater. The absolute priority assertion ignores B's second earned contribution and is not the stipulated unweighted formula."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Contradicted: C has the same single 1/21 as A, and neither outranks B's 2/22. There is no vector-first rule. The word 'always' also makes this alternative easy to reject without calculating the winning score."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Contradicted in the word highest: A and C tie at 1/21, but B has 1/11. A true pairwise tie does not establish the maximum without checking the shared document's two contributions."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-search-b-20260916",
+        "reviewedAt": "2026-09-16T23:44:56.639Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 2,
+          "distractorEvidence": 3,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        },
+        "notes": "alignment 4/4: The fact-level contribution calculation belongs to the current RRF subskill. | accuracy 4/4: B=1/11 exceeds A=C=1/21; there is no technical key defect. | scenarioCompleteness 4/4: The constant, formula, absence policy and all ranks are explicit. | answerUniqueness 4/4: Only B has the maximum under the unweighted inputs. | distractorPlausibility 2/4: Two conspicuous absolute-priority claims and a uniquely worked key create an unbalanced calculation test. | distractorEvidence 3/4: The formula and optional weighting refute the alternatives, but sweeping priorities are less precise misconceptions than competing numerical results. | documentationStrength 4/4: The admitted unit directly explains additive RRF and optional weighting. | citationSpecificity 4/4: The formula and weighting sections directly support the whole distinction. | difficultyAuthenticity 3/4: Intermediate calculation is intended, but the answer prints its own sum and weak alternatives permit recognition. | explanationQuality 4/4: The explanation correctly bounds the constant and makes no software or performance promise. | originality 3/4: A simple rank-one versus shared-rank-two teaching pattern, distinct from other concepts but not a rich implementation scenario. | clarityAccessibility 4/4: The formula and ranks are clear; clarity is not the reason for the hold."
+      }
+    },
+    "dp800-direct-025": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "db35f4e868495d4e2cf88974337b9c6805330932c080cf4156ebee87bc258e23",
+      "sourceIds": ["dp800-d3-hybrid"],
+      "retrievedAt": "2026-09-16T19:33:27.185Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.879Z",
+      "answerEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Supported, not incorrect: keyword IDs {11,12} and vector IDs {12,13} produce 11,12,13 with 12 once under the one-row-per-ID premise. COALESCE preserves one-sided IDs and zeroes missing contributions; an empty input still leaves the other side."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Contradicted: an inner join of {11,12} and {12,13} retains only 12. IDs 11 and 13 disappear before missing values can be replaced, so COALESCE cannot restore their rows."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Contradicted: keyword-left matching keeps 11 and 12 but loses vector-only 13. It enriches lexical candidates with vector ranks, not symmetric either-list coverage."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3-hybrid"],
+          "summary": "Contradicted: two two-ID lists produce four unrelated pairs rather than the three required identities. Cross matching does not merge 12 once by ID and yields nothing if either list is empty."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-search-b-20260916",
+        "reviewedAt": "2026-09-16T23:44:56.639Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        },
+        "notes": "alignment 4/4: Targets candidate fusion, distinct from the RRF arithmetic objective. | accuracy 4/4: Independent overlap and empty-side traces confirm full outer coverage and each alternative's losses. | scenarioCompleteness 4/4: Uniqueness, identifier matching, one-sided coverage and missing contributions are stated for the join-pattern scope. | answerUniqueness 4/4: Only full outer preserves both unmatched sides among the offered families. | distractorPlausibility 3/4: INNER and LEFT are meaningful alternatives; CROSS is easier and the correct choice is more detailed. | distractorEvidence 4/4: Each has a concrete set counterexample and a legitimate different policy or all-pairs use. | documentationStrength 4/4: The actual admitted training implements and explains this exact inclusion pattern. | citationSpecificity 4/4: The combined CTE and immediate explanation support the exact join/COALESCE distinction. | difficultyAuthenticity 3/4: A small Intermediate join application with no deeper performance or deployment tradeoff. | explanationQuality 4/4: Fanout is bounded and the faulty unordered TOP is not taught as correct. | originality 3/4: Useful unique-key framing remains a conventional pattern; canonical reuse is not additional coverage. | clarityAccessibility 4/4: Required candidate categories are direct and need no long query or hidden diagram."
+      }
+    },
+    "dp800-direct-046": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "5de6664e86481e9e5298c2ff89357ddd31ea726f979f9ba5b187aff54709091d",
+      "sourceIds": ["dp800-d3-vector-normalize"],
+      "retrievedAt": "2026-09-16T19:44:48.883Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3-vector-normalize"],
+          "summary": "Supported, not incorrect: sqrt(9+16)=5 gives [-0.6,0.8]. Squared components sum to one and their ratio/signs match the input, subject to the expressly excluded insignificant floating-point rounding."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3-vector-normalize"],
+          "summary": "Contradicted: seven is abs(-3)+abs(4), the norm1 denominator. [-3/7,4/7] has Euclidean length 5/7 rather than one."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3-vector-normalize"],
+          "summary": "Contradicted: [-0.75,1.0] equals [-3,4]/4 and has Euclidean length 1.25. Four belongs to norminf, not the specified norm2."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3-vector-normalize"],
+          "summary": "Contradicted: the original vector's length is five, not one. Preserving direction preserves ratios and signs, not all original component magnitudes."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-search-b-20260916",
+        "reviewedAt": "2026-09-16T23:44:56.639Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        },
+        "notes": "alignment 4/4: Applies VECTOR_NORMALIZE within the current function objective. | accuracy 4/4: Independent denominators 7, 5 and 4 reproduce norm1, norm2 and norminf outputs. | scenarioCompleteness 4/4: The SQL and stem provide literal type, values, norm, platform and rounding tolerance. | answerUniqueness 4/4: Only c is unit Euclidean length in this input's direction. | distractorPlausibility 4/4: Every wrong vector is a real alternate operation, not a fabricated random result. | distractorEvidence 4/4: The direct source explicitly defines every supported norm and alternate context. | documentationStrength 4/4: Actual function contract and examples support inputs, operation and direction. | citationSpecificity 4/4: Arguments and Return value directly establish the exact distinction. | difficultyAuthenticity 3/4: Suitable Intermediate application, with familiar elementary arithmetic limiting depth. | explanationQuality 4/4: Denominators and scale/direction are accurate without model assumptions. | originality 3/4: Independently written sign-preserving comparison still uses a conventional elementary vector and canonical identity. | clarityAccessibility 4/4: The two-line batch completes the short prose and all options are consistently presented."
+      }
+    },
+    "dp800-direct-047": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "c0721ed0484971d4a8f5356f26d030fdd3849c8f453fca0ee26095551bc0b3b3",
+      "sourceIds": ["dp800-d3-vector-search"],
+      "retrievedAt": "2026-09-16T19:38:25.140Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+      "answerEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3-vector-search"],
+          "summary": "Supported, not incorrect: all five stipulated candidates fail Approved=1, and earlier post-filtering does not refill from other base rows. Successful zero-row output follows without metric mismatch or execution failure."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3-vector-search"],
+          "summary": "Contradicted by the premise, not because fallback is imaginary: the query has a valid matching index. Metric-mismatch fallback is another condition and does not explain removing all five earlier-version candidates with Approved."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3-vector-search"],
+          "summary": "Contradicted: ambiguous distance references cause an error according to the current article. This query completes, so an execution-stopping ambiguity is not its empty-success result."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3-vector-search"],
+          "summary": "Contradicted: the TABLE contract excludes views and requires a base table. An invalid object is a different failure from this completed query whose selected candidates all fail the filter."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-search-b-20260916",
+        "reviewedAt": "2026-09-16T23:44:56.639Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        },
+        "notes": "alignment 4/4: Tests Implement vector search through a version-specific observed result. | accuracy 4/4: The current product explicitly documents earlier TOP_N empty-pool post-filtering. | scenarioCompleteness 4/4: Availability, version, compatibility, completion and candidate flags are provided. | answerUniqueness 4/4: Only post-filtering is consistent with the supplied successful matching-index query. | distractorPlausibility 3/4: Fallback is a credible competing diagnostic, but two error choices are easier to eliminate. | distractorEvidence 4/4: The same current article documents all alternate conditions separately. | documentationStrength 4/4: Current product, not outdated universal tutorial prose, establishes this boundary. | citationSpecificity 4/4: Earlier versions, METRIC, TABLE and Return result set map directly to the options. | difficultyAuthenticity 3/4: Appropriate Intermediate reasoning, with supplied diagnostics limiting depth. | explanationQuality 4/4: The earlier/latest boundary is explicit and no universal post-filter claim is made. | originality 3/4: Original bounded diagnosis resembles a standard documented empty-pool example; the canonical refresh is not additional coverage. | clarityAccessibility 4/4: Candidate flags and completed empty output are plainly stated, with explicit pronoun antecedents."
+      }
+    },
+    "dp800-direct-048": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "08297c3486aba984ad8b16284274191cfa46c685b4e25bb3f34d2c7bed06664b",
+      "sourceIds": ["dp800-d3-vector-search"],
+      "retrievedAt": "2026-09-16T19:38:25.140Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3-vector-search"],
+          "summary": "Supported, not incorrect: that index matches both required dimensions while preserving Euclidean distance. It permits ANN compatibility, not compulsory ANN selection or omission of other DDL prerequisites."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3-vector-search"],
+          "summary": "Contradicted as the requested solution: cosine can match the existing index but changes the metric the application must retain. It repairs a different contract."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3-vector-search"],
+          "summary": "Contradicted for this repair: exact kNN validly executes the Euclidean query but leaves ANN compatibility absent. Working fallback is not the missing prerequisite."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3-vector-search"],
+          "summary": "Contradicted because the metric match alone is insufficient. The documented index must also target the same column; another vector field does not supply an ANN path for Embedding."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-search-b-20260916",
+        "reviewedAt": "2026-09-16T23:44:56.639Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        },
+        "notes": "alignment 4/4: Applies metric/column compatibility under Evaluate vector index types and metrics. | accuracy 4/4: Both matches and legitimate kNN fallback are explicit in current product evidence. | scenarioCompleteness 4/4: The application metric, column and limited prerequisite target are specified. | answerUniqueness 4/4: Only d preserves Euclidean and supplies an index for Embedding. | distractorPlausibility 4/4: Metric change, exact fallback and another vector field are realistic actions that miss different requirements. | distractorEvidence 4/4: Every action has a sourced legitimate context; kNN is not falsely declared invalid. | documentationStrength 4/4: The direct function reference precisely states compatibility and fallback. | citationSpecificity 4/4: METRIC and optimizer sections directly support the distinction and plan limit. | difficultyAuthenticity 3/4: A small Intermediate configuration decision rather than broad architectural analysis. | explanationQuality 4/4: The explanation explicitly avoids promising ANN execution. | originality 3/4: Useful but conventional mismatch diagnosis; canonical replacement is not extra content. | clarityAccessibility 4/4: Metric, column and requested condition are explicit with short parallel choices."
+      }
+    },
+    "dp800-direct-049": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "7f8a996cd077422e0610665dce7273fde7e1018b983944ddd6ebb365353fba9f",
+      "sourceIds": [
+        "dp800-d3-vector-search",
+        "dp800-d3-vector-distance",
+        "dp800-d3-vector-type"
+      ],
+      "retrievedAt": "2026-09-16T19:38:29.832Z",
+      "lastValidatedAt": "2026-09-16T20:50:00.882Z",
+      "answerEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d3-vector-search", "dp800-d3-vector-type"],
+          "summary": "Supported, not incorrect: both edits remove the latest-version incompatibility while retaining the requested cap and approximation. d.Id uses the base alias, r.distance uses the result alias, and ORDER BY r.distance is distance-only ascending. The matching nonnull VECTOR(1536) remains valid."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d3-vector-search"],
+          "summary": "Contradicted: TOP_N stays explicitly unsupported, so its Msg 42274 condition survives the added outer clause. Approximate intent without removing the prohibited argument is only half the repair."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d3-vector-search", "dp800-d3-vector-distance"],
+          "summary": "Contradicted as the required repair: it removes the legacy error but the current reference calls plain TOP with distance order and no APPROXIMATE exact kNN. A valid exact query is not the requested approximate form."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d3-vector-search"],
+          "summary": "Contradicted: no five-row cap remains and no WITH APPROXIMATE requests approximation. Sorting an unbounded distance scan restores neither omitted instruction."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-search-b-20260916",
+        "reviewedAt": "2026-09-16T23:44:56.639Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 4,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        },
+        "notes": "alignment 4/4: Repairs a current version-bound vector-search implementation. | accuracy 4/4: Fresh analysis matches Msg 42274 repair, exact/no-TOP behavior, aliases and distance order. | scenarioCompleteness 4/4: Enabled platform, format, matching metric/column, valid vector and failed SQL are explicit. | answerUniqueness 4/4: Only b removes prohibited TOP_N and preserves both the cap and approximate request. | distractorPlausibility 3/4: a/c are realistic half-repairs; d's unbounded change is easier to reject. | distractorEvidence 4/4: Each option maps to an explicit current legacy-error, approximate, exact or full-scan behavior. | documentationStrength 4/4: The direct current search reference establishes repair, with exact/type references supporting their bounded distinctions. | citationSpecificity 4/4: Syntax, Error using legacy syntax, no-APPROXIMATE behavior and fixed-vector type sections support the actual claims. | difficultyAuthenticity 4/4: Fresh Intermediate correctly matches a paired repair rather than inheriting old Advanced difficulty. | explanationQuality 4/4: Request semantics, cap and plan limits are distinguished without invalidating legitimate exact queries. | originality 3/4: The new paired construction improves the old canonical item but still tests a standard documented migration error. | clarityAccessibility 4/4: The displayed query and short edits disclose all necessary type/alias/order conditions."
+      }
+    }
+  }
+}

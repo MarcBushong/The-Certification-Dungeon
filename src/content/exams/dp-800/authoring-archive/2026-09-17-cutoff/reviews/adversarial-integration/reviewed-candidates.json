@@ -1,0 +1,571 @@
+[
+  {
+    "id": "dp800-direct-019",
+    "question": "A Data API builder configuration is valid for its installed version. An operator needs to change the database connection while preserving the REST route prefix and the configured database-object mappings. Which top-level section owns the database type and connection string?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "data-source"
+      },
+      {
+        "id": "b",
+        "text": "runtime"
+      },
+      {
+        "id": "c",
+        "text": "entities"
+      },
+      {
+        "id": "d",
+        "text": "$schema"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Change the data-source section for database connectivity.",
+    "deepExplanation": "Connection settings, runtime API behavior, entity mappings and the validation-schema reference have separate responsibilities. This question does not rely on the teaching unit's version-specific sample flags or configuration-merging examples.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Runtime settings control service behavior such as API paths and host settings; they are not the database-type/connection-string section.",
+      "c": "Entities define the database objects exposed and their mappings; changing them is not the requested connection change.",
+      "d": "The schema reference supports configuration validation and editor assistance; it does not contain the database connection string."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Create configuration files for Data API builder (DAB)",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d2-dab-config"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/2-create-configuration-files-data-api-builder"
+    ],
+    "documentationTitles": ["Create configuration files for data API builder"],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["data-api-builder", "configuration", "connection"],
+    "conceptId": "dab-configuration-database-source-versus-api-runtime-entities",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d2-dab-config"],
+    "verificationNotes": "Independent PASS 3 re-derived data-source from the actual section definitions and challenged multi-file ownership, runtime authentication and schema validation alternatives. All four options have separate contextual evidence. This is beginner recall; no DAB process, connection or deployment was executed.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in the narrow ownership fact because the cited text explicitly distinguishes all four choices. This does not certify the unit's unrelated code examples or a replacement database's compatibility.",
+    "verifiedAt": "2026-09-16T23:03:43.705Z"
+  },
+  {
+    "id": "dp800-direct-020",
+    "question": "A Data API builder stored-procedure entity has REST enabled and a valid configuration for its installed version. The rest.methods setting is omitted, and no configuration overlay changes it. Which HTTP method is enabled by default for this stored-procedure endpoint?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "GET only"
+      },
+      {
+        "id": "b",
+        "text": "POST only"
+      },
+      {
+        "id": "c",
+        "text": "Both GET and POST"
+      },
+      {
+        "id": "d",
+        "text": "No REST method"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "POST is the documented default when rest.methods is omitted.",
+    "deepExplanation": "Default behavior differs from the available explicit configurations. GET-only, both methods and disabled REST are documented alternatives, not invented API capabilities.",
+    "whyOtherAnswersAreWrong": {
+      "a": "GET is supported when configured, but the documented omitted-method default for a stored procedure is POST.",
+      "c": "Both methods are supported configuration choices, but support for both does not mean both are enabled by the omitted-method default.",
+      "d": "REST is enabled in the scenario. Omitting methods selects the POST default rather than disabling the endpoint."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Configure REST or GraphQL endpoints",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d2-dab-procedures"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/concept/rest/stored-procedures"
+    ],
+    "documentationTitles": ["Stored procedures in the REST API"],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["data-api-builder", "stored-procedures", "rest-method"],
+    "conceptId": "dab-rest-stored-procedure-default-post-method",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d2-dab-procedures"],
+    "verificationNotes": "Independent PASS 3 read the product REST behavior and re-evaluated GET-only, POST-only, both and disabled configurations separately. Explicit no-overlay wording makes the key defensible. Execute permission, result-set limitations and deprecated parameter syntax were considered without importing them as unstated successes.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence because one direct current product section explicitly resolves both the omitted default and all configuration alternatives. The conclusion is configuration metadata, not an executed HTTP request.",
+    "verifiedAt": "2026-09-16T23:03:43.705Z"
+  },
+  {
+    "id": "dp800-20260916-d2-035",
+    "question": "A DAB configuration references the latest schema URL, while deployment pins an earlier approved DAB release. An editor accepts a newer configuration property, but the pinned runtime rejects it. The runtime version cannot change in this release. Which correction makes configuration authoring consistent with that constraint?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use the schema for the pinned release and revise the configuration to that release's supported settings."
+      },
+      {
+        "id": "b",
+        "text": "Keep the latest schema because changing $schema automatically upgrades the DAB executable."
+      },
+      {
+        "id": "c",
+        "text": "Remove $schema and assume the rejected property becomes supported."
+      },
+      {
+        "id": "d",
+        "text": "Change only data-source.connection-string to select a different database."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Match the configuration schema and supported settings to the pinned DAB release.",
+    "deepExplanation": "Editor validation and runtime execution are distinct. This question does not invent a particular version's feature or assume that an unreviewed latest release is suitable for deployment.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The $schema value selects JSON validation/editor metadata. It is useful for the chosen version's configuration rules, not an installer or runtime upgrade mechanism.",
+      "c": "Removing a validation reference cannot add a feature to the pinned executable. It also loses the authoring check that could reveal this mismatch.",
+      "d": "The connection string selects the database, not the DAB configuration grammar. It is appropriate for connectivity changes, not a runtime/schema-version mismatch."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Create configuration files for Data API builder (DAB)",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d2-dab-config", "dp800-d2x-dab-reference"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/2-create-configuration-files-data-api-builder",
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/configuration/"
+    ],
+    "documentationTitles": [
+      "Create configuration files for data API builder",
+      "Data API builder configuration schema reference"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["data-api-builder", "configuration-schema", "version-pinning"],
+    "conceptId": "dab-versioned-schema-validation-must-match-pinned-runtime-not-upgrade-it",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent PASS 3 supports A technically but withholds approval. The actual sources distinguish schema validation from executable support; two alternatives require a nonexistent native upgrade mechanism and the remaining one changes an unrelated connection. The independently scored 42/48 rubric fails the unchanged minimum.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in the technical key and in the observed assessment-quality defect. This is an honest quality hold, not an unsupported claim that DAB's versioning contract is ambiguous."
+  },
+  {
+    "id": "dp800-20260916-d2-038",
+    "question": "The following fragment belongs to a valid DAB 2.0 configuration. Shipment has a suitable key, read permissions and GraphQL enabled. There is no gateway path rewriting. Which pair gives the REST collection path and the single GraphQL endpoint path?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "REST: /data/shipments; GraphQL: /query."
+      },
+      {
+        "id": "b",
+        "text": "REST: /shipments; GraphQL: /query/Shipment."
+      },
+      {
+        "id": "c",
+        "text": "REST: /data/Shipment; GraphQL: /graphql."
+      },
+      {
+        "id": "d",
+        "text": "REST: /query/shipments; GraphQL: /data."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "The REST collection is /data/shipments, while GraphQL uses /query.",
+    "deepExplanation": "An entity's REST path customizes its resource name under the global REST prefix. GraphQL operations identify entities in the request body at the common endpoint; they do not append that REST route to the GraphQL path.",
+    "whyOtherAnswersAreWrong": {
+      "b": "An unprefixed REST route or entity-specific GraphQL path would require a different routing contract. These values omit the configured REST prefix and append an entity to a single GraphQL endpoint.",
+      "c": "Those names resemble default entity and GraphQL paths. Defaults are relevant when overrides are absent, but both the entity REST path and runtime GraphQL path are explicitly overridden here.",
+      "d": "REST and GraphQL can each use custom paths, but this pair reverses the two configured runtime settings. It would require different configuration, not the supplied fragment."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Configure REST or GraphQL endpoints",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d2-dab-config",
+      "dp800-d2x-dab-entities-unit",
+      "dp800-d2x-dab-reference"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/2-create-configuration-files-data-api-builder",
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql",
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/configuration/"
+    ],
+    "documentationTitles": [
+      "Create configuration files for data API builder",
+      "Define entities for REST and GraphQL",
+      "Data API builder configuration schema reference"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["data-api-builder-2", "rest", "graphql", "routing"],
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"runtime\": {\n    \"rest\": { \"enabled\": true, \"path\": \"/data\" },\n    \"graphql\": { \"enabled\": true, \"path\": \"/query\" }\n  },\n  \"entities\": {\n    \"Shipment\": {\n      \"source\": \"dbo.Shipment\",\n      \"rest\": { \"enabled\": true, \"path\": \"/shipments\" },\n      \"graphql\": { \"enabled\": true }\n    }\n  }\n}",
+    "conceptId": "dab-rest-global-prefix-plus-entity-route-separate-from-single-graphql-endpoint",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent PASS 3 found a technical counterexample missed by approval: the cited DAB 2.0 reference permits child runtime settings that are ignored. If this valid fragment is a child loaded under top-level REST /query and GraphQL /data, D is correct without gateway rewriting. A is therefore conditional, and the final verdict is manual review.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in the hold because the counterexample uses an explicit current cited rule and preserves the displayed fragment, permissions and no-rewriting premise. This is static source reasoning, not a deployed reproduction."
+  },
+  {
+    "id": "dp800-20260916-d2-039",
+    "question": "A SQL Server 2022 view returns one summary row per RegionCode. RegionCode is a stable unique non-null value in that result; RegionName is not unique. A standalone DAB entity must expose this summary for reads without changing the base tables. DAB cannot infer a primary key for the view. Which design supplies the required identity?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use RegionName as the entity key because it is friendlier for display."
+      },
+      {
+        "id": "b",
+        "text": "Expose the underlying detail table instead of the summary view."
+      },
+      {
+        "id": "c",
+        "text": "Omit key information and assume that granting read permission makes a view key discoverable."
+      },
+      {
+        "id": "d",
+        "text": "Declare RegionCode as the view entity's key and retain read-only API permissions."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Explicitly identify RegionCode as the view entity's key.",
+    "deepExplanation": "The key describes API row identity, not a newly enforced database primary-key constraint on the view. Its uniqueness is an explicit data-contract premise, and read-only access comes from permissions rather than an assertion that all SQL views are inherently nonupdatable.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A display name could serve as an entity key only if it uniquely identified result rows. The stated duplicate RegionName values make it unsuitable here.",
+      "b": "A table entity is appropriate when clients need detail rows and the table's own key. It changes the required aggregate API contract rather than identifying the view's result rows.",
+      "c": "Read permission governs allowed operations, not key inference. The objects unit explicitly requires key fields for a view because DAB cannot detect its primary key automatically."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Expose database objects, stored procedures, and views, including GraphQL relationships",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d2-dab-objects"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/4-expose-database-objects-stored-procedures-views"
+    ],
+    "documentationTitles": [
+      "Expose database objects, stored procedures, and views"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["data-api-builder", "views", "entity-keys"],
+    "conceptId": "dab-view-entity-explicit-key-must-uniquely-identify-view-result-rows",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d2-dab-objects"],
+    "verificationNotes": "Independent PASS 3 tested nonunique labels, changing result granularity, permission-only inference and updatable-view contexts. The explicitly unique RegionCode is the defensible identity while permissions keep this API read-only. Review is conceptual and static, not validation of an unshown version-specific DAB key declaration.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in the exact identity decision because the source and stipulated view contract agree. Evidence is intentionally limited to unique result-row identity and read access, not every example in the unit.",
+    "verifiedAt": "2026-09-16T23:03:43.705Z"
+  },
+  {
+    "id": "dp800-20260916-d2-041",
+    "question": "A team deploys standalone DAB to Azure Container Apps using an immutable reviewed image. External configuration mounts are not part of this deployment design. The image currently lacks dab-config.json, and the app has no DATABASE_CONNECTION_STRING environment value. The approved configuration uses @env('DATABASE_CONNECTION_STRING'); credentials must not be embedded in the image. Select two changes needed for this design.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Build the approved configuration into the custom image at DAB's expected configuration location."
+      },
+      {
+        "id": "b",
+        "text": "Copy the local credential-bearing environment file into the image so it can be reused everywhere."
+      },
+      {
+        "id": "c",
+        "text": "Supply DATABASE_CONNECTION_STRING through the app's controlled runtime environment/secret configuration."
+      },
+      {
+        "id": "d",
+        "text": "Push the unchanged base image again and assume the repository configuration is visible inside it."
+      }
+    ],
+    "correctAnswer": ["a", "c"],
+    "explanation": "Package the reviewed configuration and inject its connection value at runtime.",
+    "deepExplanation": "A source repository, a built image and an app's runtime environment are distinct locations. Configuration packaging does not supply credentials automatically, and credential injection does not copy configuration files into an image.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Bundling nonsecret static settings can be appropriate, but this file contains credentials. The deployment guidance requires runtime secret handling rather than embedding those credentials in the image.",
+      "d": "An unchanged image can work when configuration is separately mounted or already packaged. This design has neither, so repushing it does not include a file that exists only in the repository."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Configure and implement DAB deployment",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d2x-dab-containerapps", "dp800-d2x-dab-deploy-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/deployment/azure-container-apps",
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/5-deploy-data-api-builder-azure-services"
+    ],
+    "documentationTitles": [
+      "Deploy Data API builder to Azure Container Apps",
+      "Explore deployment options for data API builder"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": [
+      "data-api-builder",
+      "azure-container-apps",
+      "configuration-deployment"
+    ],
+    "conceptId": "dab-container-image-packages-reviewed-config-runtime-injects-connection-value",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-dab-containerapps",
+      "dp800-d2x-dab-deploy-unit"
+    ],
+    "verificationNotes": "Independent PASS 3 challenged mounts, existing packaged files, passwordless values and credential-bearing image reuse. A and C remain necessary for the stipulated design. Both actual deployment sources support them, with tutorial shortcuts excluded. No image was built, secret set or cloud resource modified.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in the two-input distinction, supported by exact file-copy and runtime-environment instructions. Approval is for this bounded study decision, not a completed deployment or exhaustive security review.",
+    "verifiedAt": "2026-09-16T23:03:43.705Z"
+  },
+  {
+    "id": "dp800-20260916-d2-042",
+    "question": "After a standalone DAB deployment, the container responds successfully at its root health URL, but the team has not checked access to Azure SQL Database. Before admitting traffic, it needs a readiness check that exercises the actual data dependency. A small probe entity has approved read permissions, valid authentication and caching disabled. Which check supplies the missing evidence?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Repeat the successful root health request without accessing an entity."
+      },
+      {
+        "id": "b",
+        "text": "Confirm only that the container image downloaded from the registry."
+      },
+      {
+        "id": "c",
+        "text": "Validate only that the configuration file is well-formed JSON."
+      },
+      {
+        "id": "d",
+        "text": "Issue an authenticated, bounded read of the uncached probe entity and validate its expected response."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Run a real, bounded, authorized read against an uncached entity.",
+    "deepExplanation": "Liveness, artifact availability, configuration syntax and dependency readiness are different checks. The explicit authentication and no-cache premises avoid confusing permission failures or cached responses with a successful fresh database read.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The root response is useful process-liveness evidence. Repeating it does not exercise the database read that the deployment unit treats as a distinct readiness check.",
+      "b": "Image retrieval is a deployment prerequisite and useful for diagnosing image-pull failures. It does not establish database connectivity or permissions at runtime.",
+      "c": "JSON validation can catch malformed configuration before startup. It cannot prove that an actual runtime data request succeeds with the current database connection."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Configure and implement DAB deployment",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d2x-dab-deploy-unit", "dp800-d2x-dab-containerapps"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/5-deploy-data-api-builder-azure-services",
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/deployment/azure-container-apps"
+    ],
+    "documentationTitles": [
+      "Explore deployment options for data API builder",
+      "Deploy Data API builder to Azure Container Apps"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["data-api-builder", "deployment-readiness", "health-checks"],
+    "conceptId": "dab-deployment-readiness-must-exercise-uncached-authorized-database-read",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-dab-deploy-unit",
+      "dp800-d2x-dab-containerapps"
+    ],
+    "verificationNotes": "Independent PASS 3 challenged richer health endpoints, artifact availability, syntax validation, permissions and caching. The only offered check traversing the stated uncached authorized data path is D. The reviewed assertion is point-in-time evidence, not full production readiness, and no request or deployment was executed.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in the distinction because the actual deployment text explicitly separates a root response from an entity data request. Confidence does not extend to unshown probe syntax or universal root-health implementations.",
+    "verifiedAt": "2026-09-16T23:03:43.705Z"
+  },
+  {
+    "id": "dp800-20260916-d2-044",
+    "question": "API telemetry and DAB container logs are confirmed to exist in the same Log Analytics workspace for the same time window. An engineer with access to both opens Logs from the API's Application Insights resource and sees only that resource's records. The goal is one investigation across both sets without changing ingestion. What should change?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Increase retention on the already populated workspace."
+      },
+      {
+        "id": "b",
+        "text": "Create a second workspace and move the container logs there."
+      },
+      {
+        "id": "c",
+        "text": "Open Logs at workspace scope, then query the relevant API and container records."
+      },
+      {
+        "id": "d",
+        "text": "Keep the API resource scope and change only the table's displayed column order."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Use workspace-scoped Logs for the cross-resource investigation.",
+    "deepExplanation": "Missing records in a scoped view do not prove failed ingestion. The premise separately establishes data existence, time range and permissions, isolating the query entry-point scope as the cause.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Retention is relevant when required older data has expired. The stated records already exist in the same current window, so retention does not change this resource-scoped query boundary.",
+      "b": "Separate workspaces can support deliberate isolation requirements. They are unnecessary for this same-workspace investigation and do not repair the current resource scope.",
+      "d": "Column layout can improve result readability, but it does not change the set of resources included by the query scope. It would fit a presentation requirement, not this missing-records boundary."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Recommend Azure Monitor configurations, including Application Insights and Log Analytics",
+    "difficulty": "intermediate",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d2x-log-analytics", "dp800-d2x-monitor-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-overview",
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/6-recommend-azure-monitor-configurations"
+    ],
+    "documentationTitles": [
+      "Overview of Log Analytics in Azure Monitor",
+      "Recommend Azure monitor configurations"
+    ],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["azure-monitor", "log-analytics", "query-scope"],
+    "conceptId": "log-analytics-resource-versus-workspace-query-scope-controls-visible-records",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d2x-log-analytics",
+      "dp800-d2x-monitor-unit"
+    ],
+    "verificationNotes": "Independent PASS 3 verified the actual resource-versus-workspace passage and separately challenged retention, ingestion changes, column presentation, query permissions and time range. C remains the offered remedy under the existing-data/access premises. No KQL query or telemetry deployment was executed, and no expired-data recovery behavior is claimed.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in the narrow scope diagnosis from explicit product text. Broader retention recovery and workspace redesign procedures are not established by these citations and are not included in this approval.",
+    "verifiedAt": "2026-09-16T23:03:43.705Z"
+  },
+  {
+    "id": "dp800-20260916-d2-045",
+    "question": "A SQL Server 2022 database feeds an Azure-hosted integration consumer through CDC and also has a transactional replication publication. SQL Server Agent is running. CDC progressed normally without a separate capture job, but stops progressing when the replication Log Reader Agent is stopped. Capture and replication must both be preserved. Which recovery addresses their documented shared dependency?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Resolve the Log Reader Agent stoppage and resume it so its shared log-reading path can feed both consumers."
+      },
+      {
+        "id": "b",
+        "text": "Treat the absent dedicated CDC capture job as proof that CDC was never enabled."
+      },
+      {
+        "id": "c",
+        "text": "Disable and recreate CDC solely to force a second independent capture path while retaining the publication."
+      },
+      {
+        "id": "d",
+        "text": "Run CHECKPOINT and assume unprocessed captured changes no longer require log reading."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Restore the replication Log Reader Agent, which also serves CDC in this coexistence configuration.",
+    "deepExplanation": "The absence of a separate capture job is not itself a fault when transactional replication supplies the shared reader. This diagnostic differs from ordinary CDC latency, retention gaps and captured-column schema transitions in the archived bank.",
+    "whyOtherAnswersAreWrong": {
+      "b": "A dedicated capture job is typical when CDC runs without transactional publications. The source explicitly describes its absence when the replication log reader performs capture instead.",
+      "c": "Reinitialization can be appropriate for an intentionally replaced capture configuration, but it is not the documented coexistence repair. The replication log reader is intentionally shared, and recreating capture can disrupt the retained consumer contract.",
+      "d": "Checkpoint can participate in normal log management, but the article says CDC-marked changes must be captured before their log truncation boundary advances. It cannot replace the stopped shared capture process."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Handle changes by using change event streaming (CES), change data capture (CDC), Change Tracking, Azure Functions with SQL trigger binding, or Azure Logic Apps",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d2x-cdc"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/track-changes/about-change-data-capture-sql-server"
+    ],
+    "documentationTitles": ["What is change data capture (CDC)?"],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "cdc", "transactional-replication"],
+    "conceptId": "sql-cdc-with-transactional-replication-shares-log-reader-capture-dependency",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent PASS 3 confirms the shared Log Reader Agent rule and rejects the three alternatives from the actual CDC article. Approval is nevertheless withheld: the stem explicitly gives the failed component and shared dependency, so its Advanced troubleshooting label is not earned. The independent rubric is 41/48; no agent or SQL command was executed.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in both the technical key and the challenge-depth hold. Reader reuse is a meaningful topic, but specialized terminology alone cannot supply Advanced reasoning when the answer is disclosed by the setup."
+  },
+  {
+    "id": "dp800-20260916-d2-046",
+    "question": "A team plans a change event streaming (CES) proof of concept on Azure SQL Managed Instance, currently configured with the SQL Server 2022 update policy. It is evaluating the official CES overview retrieved September 16, 2026 and accepts a Preview feature only in a nonproduction pilot. Which platform recommendation and maturity label match that evidence?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Retain the 2022 update policy and mark CES generally available because the calendar has advanced."
+      },
+      {
+        "id": "b",
+        "text": "Apply the SQL Server 2025 CU3 Azure Arc identity instructions as the only Managed Instance prerequisite."
+      },
+      {
+        "id": "c",
+        "text": "Label CES GA on Managed Instance but Preview on every other SQL platform."
+      },
+      {
+        "id": "d",
+        "text": "Plan an approved move to the SQL Server 2025 or Always-up-to-date update policy and retain the Preview label."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Managed Instance CES requires the stated newer update policy and remains Preview in this evidence.",
+    "deepExplanation": "Availability, platform prerequisites and maturity are independent facts. This item does not provide protocol-specific setup commands: the same overview notes AMQP deprecation and defers platform-specific migration details to other articles.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The retrieved overview explicitly calls CES Preview and requires a newer Managed Instance update policy. A later calendar date does not independently change either documented requirement.",
+      "b": "The CU3/Arc or Azure VM note belongs to SQL Server 2025 Entra authentication support. It is relevant to that platform, not a substitute for the separate Managed Instance update-policy requirement.",
+      "c": "The overview lists Managed Instance among the Preview products. Product-specific support details do not supply an exception that makes Managed Instance CES generally available."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Handle changes by using change event streaming (CES), change data capture (CDC), Change Tracking, Azure Functions with SQL trigger binding, or Azure Logic Apps",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d2x-ces"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/track-changes/change-event-streaming/overview"
+    ],
+    "documentationTitles": ["What is change event streaming (preview)?"],
+    "generatedAt": "2026-09-16T20:48:04.030Z",
+    "lastValidatedAt": "2026-09-16T20:48:04.030Z",
+    "featureStatus": "Preview",
+    "tags": ["azure-sql-managed-instance", "change-event-streaming", "preview"],
+    "conceptId": "ces-managed-instance-requires-2025-or-always-current-update-policy-and-remains-preview",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d2x-ces"],
+    "verificationNotes": "Independent PASS 3 checked the Preview list, Managed Instance update-policy tab, SQL Server CU3/Arc-or-VM authentication tab and AMQP deprecation note. D uniquely satisfies the bounded platform/maturity task. Weak calendar/lifecycle alternatives reduce the rubric to 44/48; no policy update or CES configuration was executed.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:48:01.996Z",
+    "confidenceReason": "High confidence in the exact current platform-and-maturity distinction from explicit product text. Broader migration, protocol, authentication and production-readiness details remain outside this attestation.",
+    "verifiedAt": "2026-09-16T23:03:43.705Z"
+  }
+]

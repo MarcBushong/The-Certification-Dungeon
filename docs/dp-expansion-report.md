@@ -1,5 +1,58 @@
 # DP-800 / DP-420 expansion progress
 
+## September 17 DP-800 user-approved limited delivery
+
+The existing DP-800 package was extended, not rebuilt or duplicated. The user
+confirmed the current **Developing AI-Enabled Database Solutions / SQL AI
+Developer Associate** identity and then chose to finish with the verified
+content available at the delivery cutoff.
+
+The release has **109 playable verified questions**, up from 39: 73 new
+verified IDs and 36 refreshed existing IDs. All selected snapshots have
+independently completed generation, technical review, adversarial challenge
+and the unchanged version-2 rubric/source/objective bindings. The current
+package also retains **20 manual-review records and one rejected duplicate**,
+none playable. Twenty-five other expansion IDs and the previously deferred
+61 IDs remain outside gameplay.
+
+**The 150-question target is still 41 short.** Verified coverage is 39/48/22
+across the three published domains, with 59 of 73 subskills represented. All
+11 skills have at least one verified question, but AI-assisted SQL development
+has only one: **Study opens; Boss stays locked** under the unchanged
+two-per-skill breadth requirement. The bank has 12 Beginner, 72 Intermediate
+and 25 Advanced encounters; no Expert labels were manufactured.
+
+The current guide was fetched through Microsoft Learn MCP at
+`2026-09-16T19:04:50.543Z` and still explicitly measures the March 12, 2026
+outline. The latest selected source retrieval is
+`2026-09-17T00:14:36.938Z`; the latest selected independent final review is
+`2026-09-17T01:10:38.213Z`. Report creation, source availability and later
+technical-only work are not verification timestamps or permission to add
+questions after the cutoff.
+
+The original 41-record package and its evidence remain in
+`review-history/2026-09-16-before-refresh`. The separate
+`authoring-archive/2026-09-17-cutoff` retains original candidates, repaired
+snapshots, honest failed reviews and completed attestations outside the runtime
+registry. Both the package and consolidated ledgers contain the same existing
+independently authored current attestations. Raw documentation bodies were not
+committed.
+
+The application/runtime, local-storage format, DP-700 package and other
+credential records/attestations are unchanged. The only supporting code change
+recognizes nine actually observed, exact DP-800 documentation view redirects
+within the existing source validator; query-free stored citations, exact source
+approval and every strict review gate remain mandatory.
+
+The release passed its stock all-package content/build gate, exact default
+attestation check, 159-URL online source check, cross-bank duplicate diagnostics,
+66 targeted unit/integration tests and four desktop/mobile DP-800 browser
+journeys. These are scoped release checks, not a claim that every repository
+test was rerun or that a deterministic check proves semantic correctness.
+Browser journeys cover answer handling, official source navigation, objective
+scores, isolated local history, DP-700 switching and the still-sealed Boss mode.
+The coverage report retains 126 editorial warnings and the explicit gaps.
+
 ## September 16 read-only DP-420 preview
 
 DP-420 is now accessible through **Preview upcoming outline** on its card and

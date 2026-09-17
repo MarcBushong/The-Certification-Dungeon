@@ -1,0 +1,626 @@
+[
+  {
+    "id": "dp800-direct-036",
+    "question": "Run the following SQL Server 2022 code with the valid JSON shown. Ignore insignificant whitespace. Which complete document is returned by the final SELECT?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "{\"stages\":[\"queue\",\"validate\"]}"
+      },
+      {
+        "id": "b",
+        "text": "{\"stages\":[\"queue\",\"validate\",\"verify\"]}"
+      },
+      {
+        "id": "c",
+        "text": "{\"stages\":[\"receive\",\"validate\",\"verify\",\"queue\"]}"
+      },
+      {
+        "id": "d",
+        "text": "{\"stages\":\"queue\"}"
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "The assigned first call extends stages to three elements; the final call replaces only element zero with queue.",
+    "deepExplanation": "After SET, @payload contains receive, validate and verify in that order. The next path is $.stages[0], not the array path with an append modifier, so it changes receive to queue while leaving validate and verify intact. JSON_MODIFY returns the changed document; the first result was explicitly assigned, and the final returned value is what SELECT exposes.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This loses verify and would fit applying the indexed replacement to the original two-element input without preserving the first call's result. The script assigns the append result before the SELECT.",
+      "c": "This would fit a second append of queue to $.stages. The displayed second path addresses existing element zero instead.",
+      "d": "This would fit updating $.stages to the scalar queue. The actual path is $.stages[0], so it updates one member rather than replacing the array."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-modify-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server"
+    ],
+    "documentationTitles": [
+      "JSON_MODIFY (Transact-SQL)",
+      "JSON data in SQL Server"
+    ],
+    "generatedAt": "2026-09-16T21:16:50.204Z",
+    "lastValidatedAt": "2026-09-16T21:16:50.204Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "json-array", "append", "mutation-trace"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @payload nvarchar(max) = N'{\"stages\":[\"receive\",\"validate\"]}';\nSET @payload = JSON_MODIFY(@payload, 'append $.stages', N'verify');\nSELECT JSON_MODIFY(@payload, '$.stages[0]', N'queue') AS Result;",
+    "conceptId": "sql-json-modify-append-preserves-existing-array-elements",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-17T00:07:47.814Z",
+    "verifiedAgainstSourceIds": [
+      "dp800-d1-json-modify",
+      "dp800-d1x-json-overview"
+    ],
+    "verificationNotes": "PASS 3 independently derived b and actively tested discarded assignment, append-versus-index and array-versus-scalar alternatives. The two referenced bodies provide the necessary distinct operations; no live SQL was run. Kept separate from direct-034 and direct-035 after comparing their actual options. The short-scenario warning is not a missing-input defect because the code fixes the entire state. No authored field or source date changed.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T21:16:50.204Z",
+    "confidenceReason": "High for this exact static JSON trace: the input is complete and both operations have directly rooted current product evidence."
+  },
+  {
+    "id": "dp800-direct-037",
+    "question": "An Azure SQL Database API distinguishes an omitted optional key from a key whose value is JSON null or an empty string. It must include the code and numeric zero but omit the SQL NULL comment value. Which constructor satisfies that contract?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "JSON_OBJECT('code':@code, 'retry':@retry, 'comment':@comment NULL ON NULL)"
+      },
+      {
+        "id": "b",
+        "text": "JSON_OBJECT('code':@code, 'retry':@retry, 'comment':@comment)"
+      },
+      {
+        "id": "c",
+        "text": "JSON_OBJECT('code':@code, 'retry':@retry, 'comment':@comment ABSENT ON NULL)"
+      },
+      {
+        "id": "d",
+        "text": "JSON_OBJECT('code':@code, 'retry':@retry, 'comment':N'' ABSENT ON NULL)"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Specify ABSENT ON NULL.",
+    "deepExplanation": "The null policy concerns SQL NULL values, not numeric zero or empty strings. JSON_OBJECT's default is explicit null inclusion; ABSENT ON NULL must be specified when omission is the intended contract.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This retains comment with a JSON null value, which differs from the required omission.",
+      "b": "JSON_OBJECT defaults to NULL ON NULL, so omitting the clause still retains comment as JSON null.",
+      "d": "The supplied empty string is nonnull, so this retains comment as an empty JSON string instead of omitting the key."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-json-object"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-object-transact-sql"
+    ],
+    "documentationTitles": ["JSON_OBJECT (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:16:16.290Z",
+    "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+    "featureStatus": "GA",
+    "tags": ["azure-sql-database", "json-object", "optional-properties"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @code nvarchar(10) = N'R9', @retry int = 0, @comment nvarchar(100) = NULL;\nSELECT /* constructor */;",
+    "conceptId": "sql-json-object-absent-on-null-omits-only-null-valued-keys",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-17T00:07:47.814Z",
+    "verifiedAgainstSourceIds": ["dp800-d1-json-object"],
+    "verificationNotes": "PASS 3 traced all four constructors from SQL types instead of treating zero or blank text as null. c alone yields an omitted comment. Inspected the actual constructor body and its immediate training reference. Explicit versus default NULL ON NULL alternatives are semantically redundant distractors, reflected in the score. The pronoun warning has a clear API antecedent. Compared direct-034 and d3-029 rather than relying on the absence of a duplicate flag.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:07:33.618Z",
+    "confidenceReason": "High for the null-policy result because the function's exact default and omission clauses directly cover the declared values."
+  },
+  {
+    "id": "dp800-direct-038",
+    "question": "In Azure SQL Database, an export must produce [\"z\",null,\"a\"] from the shown rows: array positions follow Position and a missing Label occupies a JSON null slot. Which aggregate expression satisfies both requirements?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "JSON_ARRAYAGG(Label ORDER BY Position NULL ON NULL)"
+      },
+      {
+        "id": "b",
+        "text": "JSON_ARRAYAGG(Label ORDER BY Position ABSENT ON NULL)"
+      },
+      {
+        "id": "c",
+        "text": "JSON_ARRAYAGG(Label ORDER BY Position DESC NULL ON NULL)"
+      },
+      {
+        "id": "d",
+        "text": "JSON_ARRAYAGG(Label ORDER BY Position DESC ABSENT ON NULL)"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Order inside JSON_ARRAYAGG by Position and specify NULL ON NULL.",
+    "deepExplanation": "The two clauses control different parts of the contract. ABSENT ON NULL is the aggregate's default, so preserving positional gaps must be explicit. This question uses the documented Azure SQL Database aggregate; it does not assume that JSON_ARRAYAGG is available on SQL Server 2022.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Ordering is correct but ABSENT ON NULL removes the middle element, producing only the two strings.",
+      "c": "The null slot remains, but descending Position reverses the two labels and does not produce the requested array.",
+      "d": "This both reverses the positional order and removes the null element."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include JSON functions, such as JSON\\_OBJECT, JSON\\_ARRAY, JSON\\_ARRAYAGG, JSON\\_CONTAINS, OPENJSON, and JSON\\_VALUE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1-json-arrayagg"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-arrayagg-transact-sql"
+    ],
+    "documentationTitles": ["JSON_ARRAYAGG (Transact-SQL)"],
+    "generatedAt": "2026-09-16T20:16:16.290Z",
+    "lastValidatedAt": "2026-09-16T20:16:16.290Z",
+    "featureStatus": "GA",
+    "tags": ["azure-sql-database", "json-arrayagg", "ordered-export"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT /* aggregate expression */\nFROM (VALUES (10, N'z'), (20, NULL), (30, N'a')) AS Input(Position, Label);",
+    "conceptId": "azure-sql-json-arrayagg-aggregate-order-and-null-position-preservation",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-17T00:07:47.814Z",
+    "verifiedAgainstSourceIds": ["dp800-d1-json-arrayagg"],
+    "verificationNotes": "PASS 3 derived a=[z,null,a], b=[z,a], c=[a,null,z], d=[a,z] from the actual aggregate grammar, without relying on row arrival order. The sole cited article is genuinely referenced by training and actually approved in DP-800's current catalog. I retained the Azure-only scope and noted the ancestor's overbroad SQL Server 2022 statement rather than promoting it into technical evidence. Distinct from constructor key omission and RAG FOR JSON row wrapping.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:07:33.618Z",
+    "confidenceReason": "High for the exact three-row Azure SQL aggregate: unique positions and explicit null policy make the result fully constrained."
+  },
+  {
+    "id": "dp800-20260916-d1-021",
+    "question": "On SQL Server 2022, dbo.Link has int columns FromId and ToId and can contain cycles. The query must enumerate walks from node 1 using at most three edges. Some retained path strings exceed 20 characters, but all fit nvarchar(200). The shown CTE has a type mismatch and relies on an outer depth filter. Which repair makes the types agree and bounds recursion without truncating valid paths?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Cast the anchor path to nvarchar(200), but leave depth filtering only in the outer SELECT."
+      },
+      {
+        "id": "b",
+        "text": "Cast the recursive path to nvarchar(20) and add WHERE r.Depth < 3 to the recursive member."
+      },
+      {
+        "id": "c",
+        "text": "Leave the path casts unchanged and add OPTION (MAXRECURSION 3) to the outer SELECT."
+      },
+      {
+        "id": "d",
+        "text": "Cast the anchor path to nvarchar(200) and add WHERE r.Depth < 3 to the recursive member."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Match the anchor's path type to the recursive nvarchar(200) type and stop producing rows after depth three.",
+    "deepExplanation": "Recursive CTE columns must have the same types in anchor and recursive members, including string width. A predicate on the recursive input depth prevents a depth-three row from generating a depth-four row. Filtering final output does not terminate a cyclic recursion, and MAXRECURSION is an error safeguard rather than a request to return a truncated walk.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This fixes the type mismatch but leaves cycles able to keep generating deeper rows; the output filter is not a recursive termination predicate.",
+      "b": "The types agree but valid paths longer than 20 characters can be truncated.",
+      "c": "A recursion limit does not fix incompatible column types or implement the requested terminating walk logic."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write common table expressions (CTEs)",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/with-common-table-expression-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/2-common-table-expressions"
+    ],
+    "documentationTitles": [
+      "WITH common_table_expression (Transact-SQL)",
+      "Organize queries with common table expressions"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "recursive-cte",
+      "type-equality",
+      "termination"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "WITH Walk AS\n(\n    SELECT CAST(1 AS int) AS NodeId, 0 AS Depth,\n           CAST(N'1' AS nvarchar(20)) AS NodePath\n    UNION ALL\n    SELECT l.ToId, r.Depth + 1,\n           CAST(r.NodePath + N'/' + CONVERT(nvarchar(11), l.ToId)\n                AS nvarchar(200))\n    FROM Walk AS r\n    JOIN dbo.Link AS l ON l.FromId = r.NodeId\n)\nSELECT NodeId, Depth, NodePath\nFROM Walk\nWHERE Depth <= 3;",
+    "conceptId": "sql-recursive-cte-path-type-and-member-depth-bound",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-17T00:07:47.814Z",
+    "verifiedAgainstSourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+    "verificationNotes": "PASS 3 independently tested natural termination, narrow common types and MAXRECURSION as alternate repairs. d alone both compiles with adequate width and ceases generation after three edges. A repeated-node walk is allowed; no unasked simple-path or deduplication rule was imported. The familiar MAXRECURSION guard is not a request for a successful partial query. Compared actual direct-006 alternatives and source hierarchy examples. Static code review only.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T19:59:14.110Z",
+    "confidenceReason": "High for the bounded recursive repair: documented type equality and empty-member termination produce a direct induction over depths zero through three."
+  },
+  {
+    "id": "dp800-20260916-d1-022",
+    "question": "A SQL Server 2022 report shows meter readings from @Cutoff onward, but each delta must compare with that meter's immediately preceding reading even when it is before @Cutoff. Values are nonnull, can rise or fall, and (ReadingTime, ReadingId) uniquely orders each meter. The first displayed delta is unexpectedly NULL although an older reading exists. Which change fixes the rowset used by LAG?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the WHERE clause in place and give LAG a default of zero."
+      },
+      {
+        "id": "b",
+        "text": "Compute LAG in an inner query over the complete relevant meter history, then apply the cutoff in an outer query."
+      },
+      {
+        "id": "c",
+        "text": "Keep the WHERE clause in place and replace LAG with LEAD."
+      },
+      {
+        "id": "d",
+        "text": "Keep the WHERE clause in place and increase LAG's offset from one to two."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "Calculate the preceding-reading value before applying the display-only time filter.",
+    "deepExplanation": "At this query level, WHERE removes older rows before the SELECT-list window expression is evaluated. LAG cannot see a row that is no longer in its partition. An inner calculation over the required history followed by an outer report filter preserves the previous-reading comparison without displaying the older rows. No particular physical plan or IGNORE NULLS behavior is assumed.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Zero is not the missing historical reading and fabricates a different delta rather than restoring that row to the window.",
+      "c": "LEAD looks forward, not to the immediately preceding reading.",
+      "d": "A larger offset does not restore filtered-out history and requests the wrong predecessor distance."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include window functions",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d1x-lag", "dp800-d1x-select", "dp800-d1-window-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/lag-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/3-window-functions"
+    ],
+    "documentationTitles": [
+      "LAG (Transact-SQL)",
+      "SELECT (Transact-SQL)",
+      "Apply window functions for analytics"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2022", "lag", "window-input", "report-boundary"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT MeterId, ReadingTime, ReadingId,\n       Reading - LAG(Reading) OVER\n           (PARTITION BY MeterId ORDER BY ReadingTime, ReadingId) AS Delta\nFROM dbo.MeterReading\nWHERE ReadingTime >= @Cutoff;",
+    "conceptId": "sql-lag-history-window-before-display-cutoff-filter",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-17T00:07:47.814Z",
+    "verifiedAgainstSourceIds": [
+      "dp800-d1x-lag",
+      "dp800-d1x-select",
+      "dp800-d1-window-unit"
+    ],
+    "verificationNotes": "PASS 3 constructed a falling-value counterexample to the zero default and traced direction and offset alternatives. b fixes the logical rowset; this is not an instruction to force materialization or override optimizer execution order. The word preceding is bound to the supplied unique ascending order. Actual SELECT and LAG bodies were combined with the genuine teaching references; older approval was not used as proof. Distinct from nearby running-total and ranking items.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:43:33.655Z",
+    "confidenceReason": "High for the query-boundary repair: logical SELECT ordering plus LAG's own offset/default contract make the alternatives falsifiable with a three-row example."
+  },
+  {
+    "id": "dp800-20260916-d1-023",
+    "question": "On SQL Server 2025, a text transformation must turn ab:12|cd:34 into 12-ab|34-cd. The pattern captures the letters as group 1 and digits as group 2. Which replacement and occurrence values complete the REGEXP_REPLACE call?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Replacement N'\\2-\\1'; occurrence 0."
+      },
+      {
+        "id": "b",
+        "text": "Replacement N'\\1-\\2'; occurrence 0."
+      },
+      {
+        "id": "c",
+        "text": "Replacement N'\\2-\\1'; occurrence 1."
+      },
+      {
+        "id": "d",
+        "text": "Replacement N'\\2-\\1'; occurrence 2."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use group 2 followed by group 1, and occurrence zero to replace every match.",
+    "deepExplanation": "SQL's documented replacement syntax uses backslash-number references to captured groups. The surrounding pipe is outside each matched token and remains unchanged. Occurrence zero means all matches; one or two changes only that numbered token. The proposed call uses the current SQL Server 2025 function contract rather than a different engine's replacement convention.",
+    "whyOtherAnswersAreWrong": {
+      "b": "This produces ab-12|cd-34, retaining letters before digits instead of swapping the captured groups.",
+      "c": "This changes only ab:12, leaving cd:34 unchanged.",
+      "d": "This changes only cd:34, leaving ab:12 unchanged."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include regular expressions, such as REGEXP\\_LIKE, REGEXP\\_REPLACE, REGEXP\\_SUBSTR, REGEXP\\_INSTR, REGEXP\\_COUNT, REGEXP\\_MATCHES, and REGEXP\\_SPLIT\\_TO\\_TABLE",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-regexp-replace", "dp800-d1x-regex-overview"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-replace-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/regular-expressions/overview"
+    ],
+    "documentationTitles": [
+      "REGEXP_REPLACE (Transact-SQL)",
+      "Regular expressions"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2025", "regex", "capture-replacement", "occurrence"],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @raw nvarchar(40) = N'ab:12|cd:34';\nSELECT REGEXP_REPLACE(\n    @raw, N'([a-z]{2}):([0-9]{2})',\n    /* replacement */, 1, /* occurrence */, 'c'\n);",
+    "conceptId": "sql-regexp-replace-capture-order-and-all-occurrences",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-17T00:07:47.814Z",
+    "verifiedAgainstSourceIds": [
+      "dp800-d1x-regexp-replace",
+      "dp800-d1x-regex-overview"
+    ],
+    "verificationNotes": "PASS 3 did not execute a different regex engine as a proxy. Static SQL-contract substitution gives 12-ab|34-cd only for a; other outputs were derived explicitly. The current product's backslash-number convention prevails over incompatible examples in the ancestry-only training unit, and that discrepancy is recorded rather than hidden. Compared d1-024: replacement ordering/count is different from case-flag/extraction ordering.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:43:33.507Z",
+    "confidenceReason": "High for the short literal transformation: current SQL product arguments directly define both the replacement references and match selection."
+  },
+  {
+    "id": "dp800-20260916-d1-024",
+    "question": "A SQL Server 2025 database uses a case-insensitive collation. Evaluate the following REGEXP_SUBSTR call using its explicit flags, occurrence and capture-group arguments. Which text is returned?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "17"
+      },
+      {
+        "id": "b",
+        "text": "28"
+      },
+      {
+        "id": "c",
+        "text": "39"
+      },
+      {
+        "id": "d",
+        "text": "A=39"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "The last flag is c, so the lowercase token is excluded; the second uppercase match is A=39, and group 2 returns 39.",
+    "deepExplanation": "Regex matching does not inherit the database's linguistic case-insensitivity. For contradictory i and c flags, the last one wins. Case-sensitive [A-Z] matches A=28 and A=39, not a=17. Occurrence 2 selects the latter match and capture group 2 selects only its digits; group zero would return the entire match.",
+    "whyOtherAnswersAreWrong": {
+      "a": "This would require selecting the first case-insensitive match, not the second match under the final c flag.",
+      "b": "This is the first case-sensitive match, or the second case-insensitive match; neither is the specified combination.",
+      "d": "This is the whole selected match. The explicit group argument is 2, not 0."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include regular expressions, such as REGEXP\\_LIKE, REGEXP\\_REPLACE, REGEXP\\_SUBSTR, REGEXP\\_INSTR, REGEXP\\_COUNT, REGEXP\\_MATCHES, and REGEXP\\_SPLIT\\_TO\\_TABLE",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-regexp-substr", "dp800-d1x-regex-overview"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-substr-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/regular-expressions/overview"
+    ],
+    "documentationTitles": [
+      "REGEXP_SUBSTR (Transact-SQL)",
+      "Regular expressions"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": ["sql-server-2025", "regexp-substr", "flags", "capture-group"],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT REGEXP_SUBSTR(\n    N'a=17; A=28; A=39',\n    N'([A-Z])=([0-9]+)',\n    1, 2, 'ic', 2\n);",
+    "conceptId": "sql-regexp-substr-conflicting-flags-occurrence-and-group-trace",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-17T00:07:47.814Z",
+    "verifiedAgainstSourceIds": [
+      "dp800-d1x-regexp-substr",
+      "dp800-d1x-regex-overview"
+    ],
+    "verificationNotes": "PASS 3 tried collation-based matching, first-flag precedence, raw-token ordinal and whole-match extraction. All are refuted by current function/overview passages; c is supported. The product paragraph that loosely says position was checked against the function's text-return contract and capture example, not copied into an incorrect claim. The ancestry unit is a real reference, not a grant to import its incompatible ECMAScript examples. Independent static review, no SQL execution.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:43:33.507Z",
+    "confidenceReason": "High for the exact ASCII call because explicit ic behavior and numbered-capture semantics leave no alternate defensible output."
+  },
+  {
+    "id": "dp800-20260916-d1-025",
+    "question": "A SQL Server 2025 workflow explicitly uses the Preview fuzzy-string functions. It retains all bounded, nonnull candidate name pairs, but computes EDIT_DISTANCE(LeftName, RightName, 2) for final ranking. Several distinct pairs receive 3. The requirement is ordering by exact edit count, even when it exceeds two; names vary in length. Which change meets that requirement?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the capped distance and use the pair ID to resolve every tie at 3."
+      },
+      {
+        "id": "b",
+        "text": "Replace the capped distance with EDIT_DISTANCE_SIMILARITY and order that score descending."
+      },
+      {
+        "id": "c",
+        "text": "Set maximum_distance to 0 so every nonidentical pair is assigned a common small value."
+      },
+      {
+        "id": "d",
+        "text": "Compute EDIT_DISTANCE without maximum_distance for the ranking and order the exact value ascending."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Use an uncapped distance for exact edit-count ranking; the capped 3 value means greater than two, not exactly three.",
+    "deepExplanation": "The current Preview contract returns maximum_distance + 1 when the actual value exceeds a nonnegative cap. Distances four and seven can therefore both appear as three under a cap of two. A tie-breaker cannot recover the lost distance. Similarity is normalized by maximum string length, so its ordering is a different metric rather than an exact edit-count substitute.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Pair ID produces an arbitrary order within the collapsed over-cap group, not exact distance order.",
+      "b": "Length-normalized similarity can rank pairs differently from raw edit count.",
+      "c": "A zero cap collapses all positive distances rather than recovering their exact values."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write queries that include fuzzy string matching functions, such as EDIT\\_DISTANCE, EDIT\\_DISTANCE\\_SIMILARITY, and JARO\\_WINKLER\\_DISTANCE",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-edit-distance", "dp800-d1x-edit-similarity"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/edit-distance-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/edit-distance-similarity-transact-sql"
+    ],
+    "documentationTitles": [
+      "EDIT_DISTANCE (Transact-SQL) preview",
+      "EDIT_DISTANCE_SIMILARITY (Transact-SQL) preview"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "Preview",
+    "tags": [
+      "sql-server-2025",
+      "preview",
+      "fuzzy-matching",
+      "distance-ranking"
+    ],
+    "conceptId": "sql-preview-edit-distance-cap-sentinel-is-not-exact-ranking",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "PASS 3 HOLD despite agreeing that d is the defensible key. I read the entire frozen EDIT_DISTANCE body: maximum+1 in Arguments/Remarks/example B conflicts with maximum_distance if smaller in Return value. I do not dismiss that contradiction because three passages outnumber one. The key's omitted-cap exact value and similarity counterexample remain supported, but all authored explanation claims cannot receive strict accuracy/documentation-strength 4. No upstream repairs, new grants, date refresh or simulated SQL approval were made.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:43:33.507Z",
+    "confidenceReason": "High confidence in the hold and in d's uncapped-ranking rationale; insufficient confidence in the authored universal capped sentinel contract until independent clarification and a fresh authored revision."
+  },
+  {
+    "id": "dp800-20260916-d1-027",
+    "question": "On SQL Server 2022, dbo.Test has a nullable Result column. A batch is eligible only if it has at least one test and every test has Result = 'pass'. NULL must count as not passed. Which predicate returns exactly the eligible batches, including correct treatment of empty batches and mixed results?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId) AND NOT EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId AND t.Result <> 'pass')"
+      },
+      {
+        "id": "b",
+        "text": "EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId AND t.Result = 'pass') AND NOT EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId AND t.Result IS NULL)"
+      },
+      {
+        "id": "c",
+        "text": "EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId) AND NOT EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId AND (t.Result <> 'pass' OR t.Result IS NULL))"
+      },
+      {
+        "id": "d",
+        "text": "NOT EXISTS (SELECT 1 FROM dbo.Test t WHERE t.BatchId = b.BatchId AND (t.Result <> 'pass' OR t.Result IS NULL))"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Require at least one related row and exclude any related row that is non-pass or NULL.",
+    "deepExplanation": "NOT EXISTS expresses that no counterexample exists, but it is also true for a batch with no tests. A separate EXISTS closes that empty-batch gap. In the counterexample predicate, Result <> 'pass' does not identify NULL, so IS NULL must be explicit. Both subqueries remain correlated to the current batch.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A NULL result does not satisfy the <> comparison, so this admits batches whose only problematic results are NULL.",
+      "b": "This admits a batch containing both pass and fail results, provided no result is NULL.",
+      "d": "An empty batch has no counterexample and therefore qualifies, contrary to the required at-least-one-test condition."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Write correlated queries",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d1x-exists",
+      "dp800-d1x-correlated-unit",
+      "dp800-d1x-subqueries"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/exists-transact-sql",
+      "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/8-correlated-queries",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/performance/subqueries"
+    ],
+    "documentationTitles": [
+      "EXISTS (Transact-SQL)",
+      "Compare rows with correlated subqueries",
+      "Subqueries (SQL Server)"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "correlated-subquery",
+      "not-exists",
+      "null-semantics"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT b.BatchId\nFROM dbo.Batch AS b\nWHERE /* eligibility predicate */;",
+    "conceptId": "sql-correlated-all-pass-needs-nonempty-and-null-counterexample",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-17T00:07:47.814Z",
+    "verifiedAgainstSourceIds": [
+      "dp800-d1x-exists",
+      "dp800-d1x-correlated-unit",
+      "dp800-d1x-subqueries"
+    ],
+    "verificationNotes": "PASS 3 used concrete empty, NULL-only, pass-only, fail-only, pass/fail and pass/NULL cases. c alone matches all requirements. EXISTS(SELECT NULL) was deliberately separated from a nullable WHERE comparison; the latter support comes from Subqueries' inequality example and is recorded as static derivation. Negative wording is essential to the stated business rule, not answer hiding. The repeated BatchId correlations prevent a separate scope error. No forced physical-plan claim or live SQL execution.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:43:33.507Z",
+    "confidenceReason": "High for the logical result: three minimal counterexample batches independently defeat a, b and d; c enforces all stated conditions."
+  },
+  {
+    "id": "dp800-20260916-d1-029",
+    "question": "Run the two variants separately in SQL Server 2022 using SSMS. dbo.NoSuchTable does not exist, the connection remains open, and no other error occurs. Variant A references it directly at the same level as TRY...CATCH; variant B places that SELECT in sp_executesql. Which CATCH behavior follows from the execution-level distinction?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Both variants enter their associated CATCH blocks because TRY catches every name-resolution error."
+      },
+      {
+        "id": "b",
+        "text": "Neither variant enters CATCH because name-resolution errors are never catchable."
+      },
+      {
+        "id": "c",
+        "text": "Variant A enters CATCH; variant B bypasses CATCH because its SQL text is dynamic."
+      },
+      {
+        "id": "d",
+        "text": "Variant A bypasses its CATCH; variant B's lower-level compilation error is caught by its outer CATCH."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "The dynamic batch creates a lower execution level that the surrounding TRY...CATCH can handle.",
+    "deepExplanation": "TRY...CATCH does not handle same-level compilation or object-name-resolution errors of this kind. sp_executesql compiles and executes its statement as a separate batch at a lower level; the outer CATCH can handle that failure. This is not a claim that dynamic SQL errors are ignored, or that all errors—including connection termination—are catchable.",
+    "whyOtherAnswersAreWrong": {
+      "a": "The product explicitly excludes same-level compilation and name-resolution errors from that CATCH scope.",
+      "b": "The product explicitly permits an outer CATCH to handle compilation errors arising at a lower execution level.",
+      "c": "This reverses the distinction: separating the dynamic batch creates the catching boundary rather than defeating it."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "write-advanced-t-sql-code",
+    "subskill": "Implement error handling",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/try-catch-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-executesql-transact-sql"
+    ],
+    "documentationTitles": [
+      "TRY...CATCH (Transact-SQL)",
+      "sp_executesql (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.355Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.355Z",
+    "featureStatus": "GA",
+    "tags": [
+      "sql-server-2022",
+      "try-catch",
+      "compilation-scope",
+      "dynamic-batch"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "-- Variant A: execute separately.\nBEGIN TRY\n    SELECT * FROM dbo.NoSuchTable;\nEND TRY\nBEGIN CATCH\n    SELECT ERROR_NUMBER() AS CaughtError;\nEND CATCH;\nGO\n-- Variant B: execute separately.\nBEGIN TRY\n    EXEC sys.sp_executesql N'SELECT * FROM dbo.NoSuchTable;';\nEND TRY\nBEGIN CATCH\n    SELECT ERROR_NUMBER() AS CaughtError;\nEND CATCH;",
+    "conceptId": "sql-try-catch-name-resolution-depends-on-compilation-level",
+    "verificationStatus": "verified",
+    "verifiedAt": "2026-09-17T00:07:47.814Z",
+    "verifiedAgainstSourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+    "verificationNotes": "PASS 3 independently evaluated same-level name resolution, lower-level dynamic compilation and the excluded connection/error alternatives. d survives those challenges. The real training reference has an overbroad same-session claim; the two cited product bodies instead establish the precise boundary. Reviewed GO as an SSMS separator and confirmed no handler crosses it. Warnings for absolute and negative wording are acknowledged with rubric deductions. This is not a review of d1-028's transaction logging repair.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:36:26.420Z",
+    "confidenceReason": "High for the scoped two-variant behavior because the exact product article expressly names sp_executesql and the stem excludes competing failure modes."
+  }
+]

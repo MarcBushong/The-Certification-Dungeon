@@ -1,0 +1,620 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-direct-014": {
+      "generation": {
+        "questionFingerprint": "d25b61d57813fa65bb740ecf5004b7aca83a88300cf69024b42b673c8fc06139",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-transaction-guide"],
+            "summary": "RCSI selects a committed view per statement. It suits statements that may observe fresh commits between reads; it does not give this multi-statement report one transaction-level view."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-transaction-guide"],
+            "summary": "SERIALIZABLE uses locking to protect reads and ranges, which conflicts with freely committing overlapping ordinary updates. It is appropriate when that blocking is acceptable to enforce serializable access."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-transaction-guide"],
+            "summary": "SNAPSHOT uses a transaction-level committed versioned view once data access establishes the transaction snapshot. The read-only, no-DDL/no-hint conditions exclude writer conflicts and schema-lock cases that would need separate analysis."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2-isolation-unit",
+              "dp800-d2-transaction-guide"
+            ],
+            "summary": "READ UNCOMMITTED permits dirty reads and supplies no stable committed transaction snapshot. It can suit explicitly approximate reads that tolerate those anomalies, not this consistent report."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-010": {
+      "generation": {
+        "questionFingerprint": "34381a11cd22e1de708482a0c35d682b17123b7e2681e264eddcb9492bdd21b9",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-external-rest"],
+            "summary": "Table SELECT can authorize reading the payload's source data. It does not authorize the outgoing managed identity at Azure OpenAI, and SQL permissions are already complete."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-external-rest"],
+            "summary": "A different user-assigned identity could be used if selected as primary in a different configuration. With multiple identities here, the documented selection is the configured primary, ModelCaller."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-external-rest"],
+            "summary": "The REST article says the primary user-assigned identity is used when user-assigned identities are present, even alongside a system-assigned identity. Its Azure OpenAI example requires Cognitive Services OpenAI User on the endpoint resource."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-external-rest"],
+            "summary": "The system-assigned identity is used when no user-assigned identity is assigned. Regranting its role does not change the primary-user-assigned identity selection in this configuration."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-016": {
+      "generation": {
+        "questionFingerprint": "00a6f32d37fde13bb3b648260421763656ef02cf18f89cf1dfeedb96fa06f063",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2-transaction-guide",
+              "dp800-d2-isolation-unit"
+            ],
+            "summary": "A SNAPSHOT update detects a row changed by a transaction that committed after its snapshot and terminates on conflict. Application-managed retry must use a new snapshot and reevaluate the decision rather than retaining a stale computed balance."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d2-transaction-guide",
+              "dp800-d2-isolation-unit"
+            ],
+            "summary": "Waiting can resolve ordinary lock blocking while a transaction is still valid. Here the other writer has committed and the snapshot transaction has encountered a terminating update conflict."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d2-transaction-guide",
+              "dp800-d2-isolation-unit"
+            ],
+            "summary": "A new transaction could accept an update based on a fresh valid context, but reusing the old calculation skips the business decision against the now-current balance. It does not preserve the stated read-calculate-write consistency."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2-transaction-guide",
+              "dp800-d2-isolation-unit"
+            ],
+            "summary": "A successful uncontested SNAPSHOT write can commit normally. An update conflict instead terminates the transaction; it is not evidence that the intended debit was accepted."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-017": {
+      "generation": {
+        "questionFingerprint": "9ea6547391afb5fa9b6d0af4fe1083d85f032a6a01a5c4f590d3b70e3ce0a95d",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-query-store"],
+            "summary": "The frozen Query Store article describes persisted plan variants and runtime statistics aggregated into time windows. Comparing those retained records addresses plan changes across the release, rather than ranking currently cached statements."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-plans-unit"],
+            "summary": "The training unit documents sys.dm_exec_query_stats as aggregate statistics for cached plans. Ranking CPU and reads is a legitimate workload-prioritization step, but does not furnish a retained plan-version timeline or actual per-operator row measurements."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-plans-unit"],
+            "summary": "The missing-index DMVs expose equality, inequality and included-column recommendations. They are appropriate for considering access-path improvements, not as measurements of plan history or current operator cardinality."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-plans-unit"],
+            "summary": "An actual execution plan includes observed operator row counts alongside estimates. Capturing the representative execution tests the cardinality hypothesis; Query Store supplies the separate historical comparison. Neither observation alone establishes an index or statistics remedy."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-018": {
+      "generation": {
+        "questionFingerprint": "4ef808b82ff564d99a59bfa918b529a2f63eff9e06d39229da95787f1382c6e6",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-plans-unit", "dp800-d2-deadlock-unit"],
+            "summary": "The frozen training supports execution-plan and index investigation for long-running statements holding locks. That is a credible tuning path when such a statement is the head blocker. The supplied wait edge from 61 to 58 instead makes 61 a downstream waiter."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d2-deadlock-unit",
+              "dp800-d2-transaction-guide"
+            ],
+            "summary": "Short transactions and limited data access reduce lock contention. Investigating batch size can be appropriate for an active head blocker, but session 58 also waits on 52; its own workload is not the end of the observed dependency chain."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-deadlock-unit"],
+            "summary": "The frozen training states that SQL Server system_health captures deadlock reports and distinguishes circular dependencies and victim recovery from ordinary blocking. Those reports support a deadlock investigation, whereas this snapshot identifies a chain ending at an open sleeping session."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2-deadlock-unit",
+              "dp800-d2-plans-unit",
+              "dp800-d2-transaction-guide"
+            ],
+            "summary": "Following 61 to 58 to 52 locates the upstream session for investigation. Sleeping sessions can retain open transactions despite having no active request. The transaction guide recommends identifying the owner for appropriate completion or rollback and cautions against careless termination."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-019": {
+      "generation": {
+        "questionFingerprint": "108310ff8617cad64b724fbd45e4b4f70ee77c50e5e662461c68304e48ee928e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-project-build", "dp800-d2x-testing-unit"],
+            "summary": "A model build validates syntax and references. It is useful for structural changes but does not establish the invoice amount or end-to-end inventory effects."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-testing-unit"],
+            "summary": "The testing unit distinguishes Scalar Value from Row Count. A deterministic expected total tests the calculation rather than merely the existence of one row."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-testing-unit"],
+            "summary": "Row Count is appropriate when cardinality is the requirement. The supplied defect preserves row count while changing the amount, so this does not address it."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-testing-unit"],
+            "summary": "Integration tests exercise sequences across procedures, triggers and tables. An isolated, known-state database lets this test observe cross-object effects that a single-value unit test does not cover."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-023": {
+      "generation": {
+        "questionFingerprint": "f148cfffa882dc8b88a4cd557f7b72ff8ea6a1fc2c5de56e46ef1cf60b3d8706",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2x-sql-projects",
+              "dp800-d2x-project-automation"
+            ],
+            "summary": "Ordinary SDK-style SQL projects support cross-platform .NET builds. The product article explicitly retains the .NET Framework build requirement for projects containing SQLCLR objects."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d2x-sql-projects",
+              "dp800-d2x-project-automation"
+            ],
+            "summary": "Removing SQLCLR would remove the particular build requirement, but it also removes required application functionality. That could fit a redesigned non-CLR application, not this preservation requirement."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d2x-sql-projects",
+              "dp800-d2x-project-automation"
+            ],
+            "summary": "The documentation says both original and SDK-style projects support SQLCLR with .NET Framework builds. Keeping the original format is an option for other toolchain reasons, not a representation necessity."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2x-sql-projects",
+              "dp800-d2x-project-automation"
+            ],
+            "summary": "The SQLCLR exception concerns building the project. The product article explicitly permits deploying the resulting .dacpac with SqlPackage on .NET or .NET Framework, preserving the required objects and the separate deployment-agent choice."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-026": {
+      "generation": {
+        "questionFingerprint": "bda29b8b04fe1540a04a543703bfbfac80b09fe29db1b3c23cb30b912e5bcac3",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-branching-unit"],
+            "summary": "Retaining an old column can be part of an explicitly approved compatibility transition. It contradicts the stated accepted removal requirement and leaves the intended migration incomplete."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-branching-unit", "dp800-d2-project-build"],
+            "summary": "File naming can improve project organization, but the broken reference is inside the view's T-SQL. A filesystem rename does not reconcile it with RouteCode."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d2x-branching-unit",
+              "dp800-d2-project-build",
+              "dp800-d2x-testing-unit"
+            ],
+            "summary": "The branching unit specifically warns that cross-file renames can merge cleanly yet break references. Reconciling the dependent object, rebuilding and testing preserves both the removed old column and retained view."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-branching-unit"],
+            "summary": "Choosing one branch can be appropriate when the other change is intentionally rejected. Here both intentions are accepted, and Git's lack of a text conflict is not a reason to discard required functionality."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-027": {
+      "generation": {
+        "questionFingerprint": "340bacb78821f29c511a289f986c9487e7c04fa1ee46b884c6af01ac761182a2",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2x-branching-unit",
+              "dp800-d2x-testing-unit",
+              "dp800-d2x-sql-projects"
+            ],
+            "summary": "A build checks structural validity, not compatibility with both business flows. Choosing the newer definition is reasonable only after intentionally retiring or adapting the conflicting contract."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d2x-branching-unit",
+              "dp800-d2x-testing-unit",
+              "dp800-d2x-sql-projects"
+            ],
+            "summary": "Separate source files help organize distinct objects. They do not resolve incompatible definitions of the same object or establish which nullability contract dependent procedures should use."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d2x-branching-unit",
+              "dp800-d2x-testing-unit",
+              "dp800-d2x-sql-projects"
+            ],
+            "summary": "Clean text merging is useful but cannot validate nullable-input behavior. Deferring these known contract checks discards the purpose of PR review and isolated database tests."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2x-branching-unit",
+              "dp800-d2x-testing-unit",
+              "dp800-d2x-sql-projects"
+            ],
+            "summary": "The training requires PR review of breaking query/procedure effects and post-merge validation. Since either isolated definition can compile, resolving the actual input contract and testing it is necessary rather than mechanically choosing a side."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-030": {
+      "generation": {
+        "questionFingerprint": "c02507c5d098e41ed6814bf421a540d3395d805cf7909847503b8c5c3b0c1101",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2x-compare-project",
+              "dp800-d2x-schema-compare",
+              "dp800-d2-drift"
+            ],
+            "summary": "That direction brings a live target toward the project's state and can be appropriate when the project is authoritative and drift should be undone. It is not the direction for retaining the approved production hotfix in source."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d2x-compare-project",
+              "dp800-d2x-schema-compare",
+              "dp800-d2-drift"
+            ],
+            "summary": "Schema comparison can apply a selected subset of source differences to the target project. This direction imports the approved live index without blindly adopting the monitoring object's definition."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d2x-compare-project",
+              "dp800-d2x-schema-compare",
+              "dp800-d2-drift"
+            ],
+            "summary": "A complete import is useful when intentionally baselining the entire live schema. Here it would also add an object explicitly excluded from the application model."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2x-compare-project",
+              "dp800-d2x-schema-compare",
+              "dp800-d2-drift"
+            ],
+            "summary": "Artifact comparisons help identify differences between releases. They cannot reveal a hotfix that exists only in the live database and in neither artifact."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-031": {
+      "generation": {
+        "questionFingerprint": "c2dab15167f1916462352f65c93341b5f4f725b879eb5579870b75afad95c752",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+            "summary": "An .scmp saves comparison configuration, including endpoints/options/exclusions. It is useful for repeating a recipe, not proof of complete current schema equality when relevant objects are excluded."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+            "summary": "Excluding an object type can be valid when it is intentionally outside the comparison scope. Here indexes are explicitly in scope, so matching the blind spot would not detect required drift."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+            "summary": "The schema comparison article documents saved options and excluded object types. Aligning the recipe to the required index scope and rerunning addresses the evidence mismatch without concealing it."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-schema-compare", "dp800-d2-drift"],
+            "summary": "Reversing comparison direction changes the proposed target actions. It does not remove an explicit object-type exclusion; direction alone cannot expose excluded index differences."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-033": {
+      "generation": {
+        "questionFingerprint": "98172963e71501157ed489457abe3308b633c6f80035d470b14e253376d6dd0d",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2x-branch-policies",
+              "dp800-d2x-pipeline-unit"
+            ],
+            "summary": "Azure Repos build validation checks proposed PR changes before merge. Configuring it as required addresses the pre-main structural gate, unlike the existing post-merge build."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-branch-policies"],
+            "summary": "A linked work item improves traceability and can be a useful policy. It does not itself compile the SQL model or provide the requested production approval."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d2x-project-automation",
+              "dp800-d2x-pipeline-unit"
+            ],
+            "summary": "Timing controls can enforce a pause or business window. A delay without approval does not supply the explicitly required human decision."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-project-automation"],
+            "summary": "The automation documentation separates production environment approvals from build artifact creation. This creates the human gate at deployment rather than treating a merged PR as that approval."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-034": {
+      "generation": {
+        "questionFingerprint": "2fceab4287d80d1468b2937a12604bd6967101507fc4dc8b2dc64ba8862ab5b6",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-project-automation"],
+            "summary": "Authentication is required for authorized deployment, but the scenario already establishes it. Repeating sign-in does not give the agent a route into the private network."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-project-automation"],
+            "summary": "Tool updates can address compatibility problems. They do not establish private network reachability, and rebuilding would unnecessarily replace the tested artifact."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-project-automation"],
+            "summary": "The automation article specifically recommends self-hosted runners for databases not exposed to the public internet. Separating build and deploy lets the private agent use the same validated .dacpac under existing approval controls."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-project-automation"],
+            "summary": "Temporary public access can be a deliberately authorized connectivity approach in another environment. The explicit no-public-access policy rules it out here."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-036": {
+      "generation": {
+        "questionFingerprint": "2954fde66e42d0cf6f6fcbb8318f6674f17175d917460eb696dd3bacf319d6e1",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-dab-cache"],
+            "summary": "The frozen cache article documents per-route, per-parameter behavior. Parameter variation is a valid diagnosis for distinct eligible REST cache entries. Here the GraphQL API is outside the documented L1 scope, so that mechanism is not the applicable starting diagnosis."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-dab-cache"],
+            "summary": "The behavior list documents invalidation when entity data is created, updated or deleted. Correlating writes with misses is legitimate for REST caching, but presupposes an eligible cached API and cannot account for GraphQL's lack of L1 applicability."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-dab-cache"],
+            "summary": "The article defines TTL and entity override of the global lifetime. Expiry investigation is valid when eligible REST entries time out. The lifetime settings do not add GraphQL to the feature's separately documented REST-only coverage."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-dab-cache"],
+            "summary": "The current frozen article explicitly states DAB 2.0-and-later L1 applies only to REST endpoints. GraphQL reads therefore need a separate performance investigation rather than being classified as misses from that cache."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-037": {
+      "generation": {
+        "questionFingerprint": "ccbd05f782aeb73c7cb04dc39fa25a9d9717591b63264ff3d21e10f89ac79818",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-dab-entities-unit"],
+            "summary": "Physical names would be appropriate if exposed unchanged. The training says clients use mapped/exposed names, so these internal names do not match the stated GraphQL contract."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-dab-entities-unit"],
+            "summary": "The training shows typed GraphQL field filters using exposed names and comparison operators. Both supplied conditions are required, so this filter expresses the intended subset."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-dab-entities-unit"],
+            "summary": "first controls page size. Omitting after is appropriate for the initial page or restarting the result set, not advancing after the page already received."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-dab-entities-unit"],
+            "summary": "The GraphQL response's endCursor is the documented continuation input for after when hasNextPage is true. Keeping the same logical filter and page size advances the intended request rather than guessing a cursor from an ID."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-040": {
+      "generation": {
+        "questionFingerprint": "3dcb1d33d8e0fb7198137c25c57e845b1786cfe297b5d00a56bbebe2369323e5",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2x-dab-entities-unit",
+              "dp800-d2-dab-objects"
+            ],
+            "summary": "Those fields express the foreign-key join, but cardinality one would describe a one-target relationship. The stated customer-to-invoices direction permits multiple target rows."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d2x-dab-entities-unit",
+              "dp800-d2-dab-objects"
+            ],
+            "summary": "The training uses many for a one-to-many traversal and explicitly maps corresponding source and target fields. These settings match the required direction and the documented foreign-key relationship."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d2x-dab-entities-unit",
+              "dp800-d2-dab-objects"
+            ],
+            "summary": "The cited relationship examples require matching source and target fields for the declared relationship. The stem specifies Customers.CustomerId to Invoices.CustomerId; substituting InvoiceId does not express that supplied foreign-key join. Another field pair could fit a different explicitly established relationship, without assuming InvoiceId is a key here."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2x-dab-entities-unit",
+              "dp800-d2-dab-objects"
+            ],
+            "summary": "That is a valid inverse many-to-one traversal from an invoice to its customer. It does not define the requested relationship field on Customer for reaching multiple invoices."
+          }
+        ]
+      }
+    },
+    "dp800-20260916-d2-043": {
+      "generation": {
+        "questionFingerprint": "3e2b7b99df19f021d736ec4158550f2ae16771e474124900c29003a5740c2271",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T22:44:52.544Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-monitor-unit", "dp800-d2x-app-insights"],
+            "summary": "Aggregate duration is useful for trends, but can conceal an intermittent request's timing. It does not attribute SQL time to the specific affected request."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-monitor-unit", "dp800-d2x-app-insights"],
+            "summary": "The monitoring unit describes end-to-end correlation and dependency timing, and Application Insights provides transaction investigation. Existing correlated spans let the engineer inspect the actual slow call before selecting a remedy."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-monitor-unit", "dp800-d2x-app-insights"],
+            "summary": "Availability tests establish reachability/responsiveness for the tested path and time. They do not substitute for the SQL dependency timings within the already observed slow request."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-monitor-unit", "dp800-d2x-app-insights"],
+            "summary": "Index changes may help a demonstrated query bottleneck. Without attributing the slow request to SQL behavior, broad changes are not an evidence-based diagnosis of this incident."
+          }
+        ]
+      }
+    }
+  }
+}

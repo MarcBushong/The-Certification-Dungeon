@@ -1,0 +1,307 @@
+[
+  {
+    "id": "dp800-direct-009",
+    "question": "A database team uses GitHub Copilot with repository instruction support enabled. SQL naming and review guidance should be included automatically as repository-wide context instead of being pasted into each chat or invoked as a reusable task prompt. Which documented repository file should hold that guidance?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": ".github/prompts/sql-review.prompt.md"
+      },
+      {
+        "id": "b",
+        "text": "A comment block in the currently open SQL script"
+      },
+      {
+        "id": "c",
+        "text": "A prompt pasted into the current chat only"
+      },
+      {
+        "id": "d",
+        "text": ".github/copilot-instructions.md"
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Use .github/copilot-instructions.md for the shared repository instructions.",
+    "deepExplanation": "Instruction files provide contextual guidance rather than an enforcement guarantee. Reusable task prompts and one-off chat prompts serve different scopes, so they do not meet the stated automatic repository-context requirement.",
+    "whyOtherAnswersAreWrong": {
+      "a": "A .prompt.md file represents a reusable task prompt. That differs from the repository-wide instruction file included automatically for the stated purpose.",
+      "b": "Open-file code can provide context to an assistant, but a comment in one SQL script is not the documented automatically included repository instruction file.",
+      "c": "A chat-local prompt repeats context for that conversation and does not supply the shared repository instruction file requested."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Create and configure GitHub Copilot instruction files",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d1-ai-instructions", "dp800-d1-ai-security"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/6-create-configure-copilot-instruction-files",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/3-interpret-security-impact"
+    ],
+    "documentationTitles": [
+      "Create and configure GitHub Copilot instruction files",
+      "Interpret security impact of using AI-assisted tools"
+    ],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["copilot", "sql-development", "repository-instructions"],
+    "conceptId": "copilot-repository-instructions-versus-reusable-task-prompts",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent PASS 3 re-derived d from actual file/context distinctions. HOLD the unchanged snapshot because no admitted receipt establishes GA maturity of the named instruction/prompt functionality; the source label and prior pass are not proof. Rubric 45/48 fails mandatory accuracy/documentation 4s. Static path inspection only, no client or SQL execution. direct-009 differs from d1-035's target-version maintenance fact.",
+    "requiresManualReview": true,
+    "confidenceReason": "High confidence in the file-scope answer and actual provenance; insufficient captured lifecycle evidence to attest GA. This does not assert the feature is actually Preview.",
+    "sourceLastReviewedAt": "2026-09-16T19:53:11.576Z"
+  },
+  {
+    "id": "dp800-direct-010",
+    "question": "An AI assistant reaches SQL Server through an MCP connection for approved read tasks. After the connection is established, which control determines the database operations its principal is authorized to perform, rather than merely guiding suggestions or controlling network reachability?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "The connection principal's database permissions"
+      },
+      {
+        "id": "b",
+        "text": "Repository instructions describing preferred SQL"
+      },
+      {
+        "id": "c",
+        "text": "The endpoint's private-network configuration"
+      },
+      {
+        "id": "d",
+        "text": "Human review of the generated query text"
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use database permissions to enforce the connection principal's authorization.",
+    "deepExplanation": "Model guidance, network controls and review processes serve useful but different purposes. The database principal should possess only the operations approved for its workflow; this is a control-layer distinction, not an advanced architecture claim.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Custom instructions provide model context and guidance, not a replacement for database authorization.",
+      "c": "Network configuration controls reachability and network exposure, not the SQL permissions held by an established connection's principal.",
+      "d": "Review is a workflow control for assessing proposed SQL. It does not itself grant or revoke the database principal's permissions."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Interpret security impact of using AI-assisted tools",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": ["dp800-d1-ai-security", "dp800-d1-ai-instructions"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/3-interpret-security-impact",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/6-create-configure-copilot-instruction-files"
+    ],
+    "documentationTitles": [
+      "Interpret security impact of using AI-assisted tools",
+      "Create and configure GitHub Copilot instruction files"
+    ],
+    "generatedAt": "2026-09-16T20:07:35.998Z",
+    "lastValidatedAt": "2026-09-16T20:07:35.998Z",
+    "featureStatus": "GA",
+    "tags": ["mcp", "least-privilege", "ai-assisted-sql"],
+    "conceptId": "sql-mcp-read-only-authorization-independent-of-model-guidance",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d1-ai-security",
+      "dp800-d1-ai-instructions"
+    ],
+    "verificationNotes": "Independent PASS 3 selected a after network-blocking, human-veto, prompt-guidance and additional-tool-policy counterexamples. None changes which control authorizes the established SQL principal. GA concerns the existing SQL account/permission mechanism documented by actual account and GRANT/REVOKE guidance, not a named MCP implementation. Rubric 46/48 meets every critical minimum. The integration d2-013 repeats the decisive fact and its rejection must remain. Static conceptual review only: no SQL, client or generated code execution.",
+    "requiresManualReview": false,
+    "confidenceReason": "High confidence in the narrow authorization distinction, genuine source ancestry and unique key. Extra tool restrictions and disclosure policy are outside the question; lexical checks are not semantic originality proof.",
+    "sourceLastReviewedAt": "2026-09-16T19:53:11.576Z",
+    "verifiedAt": "2026-09-16T23:46:50.238Z"
+  },
+  {
+    "id": "dp800-20260916-d1-031",
+    "question": "SSMS 22 has the AI Assistance workload installed, and its SQL database connection and network are working. Copilot is inactive. The active GitHub account has no Copilot access, while another available GitHub account has an active Copilot entitlement. Organizational policy permits use. Which change directly addresses the missing prerequisite?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Upgrade the connected SQL Server instance while keeping the same active GitHub account."
+      },
+      {
+        "id": "b",
+        "text": "Grant the SQL login broader database permissions while keeping the same active GitHub account."
+      },
+      {
+        "id": "c",
+        "text": "Sign in with and activate the GitHub account that has Copilot access."
+      },
+      {
+        "id": "d",
+        "text": "Change the preferred chat model without changing the active GitHub account."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Activate a GitHub account with Copilot access; the database connection does not supply that entitlement.",
+    "deepExplanation": "The supported host components, internet access and organizational approval are already present. Copilot's account prerequisite is separate from SQL authentication and database privileges. Switching models is a later chat configuration task, not a replacement for account access.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Changing the database engine does not grant Copilot access to the current GitHub account.",
+      "b": "SQL permissions control database operations, not GitHub Copilot entitlement.",
+      "d": "A model preference does not give the active account access to Copilot."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Enable GitHub Copilot and Microsoft Copilot in Fabric",
+    "difficulty": "beginner",
+    "complexity": "troubleshooting",
+    "sourceIds": [
+      "dp800-d1x-enable-unit",
+      "dp800-d1-ai-security",
+      "dp800-d1x-model-tools-unit"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/4-enable-github-copilot-fabric-copilot",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/3-interpret-security-impact",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/5-configure-model-mcp-tool-options"
+    ],
+    "documentationTitles": [
+      "Enable GitHub Copilot and Fabric Copilot",
+      "Interpret security impact of using AI-assisted tools",
+      "Configure model and model context protocol (MCP) tool options in a GitHub Copilot or Fabric Copilot chat session"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.772Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.772Z",
+    "featureStatus": "GA",
+    "tags": ["ssms-22", "copilot-enablement", "account-entitlement"],
+    "conceptId": "ssms-copilot-active-github-entitlement-distinct-from-sql-login",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent PASS 3 re-derived c from actual SSMS sign-in/multiple-account text, including Copilot Free. HOLD: permitted receipts do not establish native SSMS 22 Copilot GA. Separately, a working SQL/network connection does not necessarily establish the active internet declared present by the explanation. c remains the necessary account fix, not a guarantee of overall readiness. Rubric 41/48 fails threshold and critical scores. No held SSMS source, fabricated MCP schema or runtime execution was used.",
+    "requiresManualReview": true,
+    "confidenceReason": "High confidence that c fixes the known account prerequisite; verification is withheld for lifecycle, precondition/explanation and quality gaps, not an alternative account key.",
+    "sourceLastReviewedAt": "2026-09-16T20:16:15.902Z"
+  },
+  {
+    "id": "dp800-20260916-d1-032",
+    "question": "A development Fabric workspace is still assigned to a trial capacity. The team has an approved paid F4 capacity in a supported region and will move this workspace there for Copilot use. Tenant Copilot settings include the users and are delegated to capacity administrators, but the F4 capacity's Copilot setting is off. All applicable data-processing settings and user permissions are otherwise satisfied. Which two changes complete this setup? Choose two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Buy GitHub Copilot subscriptions for the workspace users instead of changing Fabric configuration."
+      },
+      {
+        "id": "b",
+        "text": "Enable the delegated Copilot setting for the intended F4 capacity and approved users."
+      },
+      {
+        "id": "c",
+        "text": "Assign the workspace to that approved Copilot-enabled paid F4 capacity."
+      },
+      {
+        "id": "d",
+        "text": "Keep the workspace on trial capacity and rely only on the tenant-level toggle."
+      },
+      {
+        "id": "e",
+        "text": "Grant users SQL database administrator rights instead of enabling the capacity setting."
+      }
+    ],
+    "correctAnswer": ["b", "c"],
+    "explanation": "Enable the delegated setting on the target capacity and place the workspace on that supported paid capacity.",
+    "deepExplanation": "Tenant enablement does not complete delegated capacity configuration. The workspace also must be assigned to a supported Copilot-enabled capacity for the chosen setup. F4 satisfies the documented paid F2-or-higher requirement; a GitHub Copilot subscription and SQL privileges belong to different control layers.",
+    "whyOtherAnswersAreWrong": {
+      "a": "GitHub Copilot entitlement does not enable Copilot for a Fabric capacity or change workspace placement.",
+      "d": "The documented setup requires a supported paid capacity and the delegated capacity setting, not only a tenant toggle.",
+      "e": "Database administration rights do not replace Fabric capacity enablement."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Enable GitHub Copilot and Microsoft Copilot in Fabric",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d1x-fabric-enable", "dp800-d1x-enable-unit"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/fabric/fundamentals/copilot-enable-fabric",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/4-enable-github-copilot-fabric-copilot"
+    ],
+    "documentationTitles": [
+      "Enable and configure Copilot in Microsoft Fabric",
+      "Enable GitHub Copilot and Fabric Copilot"
+    ],
+    "generatedAt": "2026-09-16T21:01:26.772Z",
+    "lastValidatedAt": "2026-09-16T21:01:26.772Z",
+    "featureStatus": "GA",
+    "tags": ["fabric-copilot", "capacity-delegation", "workspace-assignment"],
+    "conceptId": "fabric-copilot-delegated-capacity-and-workspace-placement-gates",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent PASS 3 re-derived b,c from delegated-capacity and assignment sections, checked F4 against F2+ and considered the separate Pro/PPU route. Other prerequisites are supplied. HOLD for unestablished named-feature GA and overcued intermediate difficulty: the stem nearly supplies both actions and no plausible Fabric configuration competes. Rubric 41/48 fails threshold and critical scores. No tenant operation, question/source approval/date edit or runtime execution occurred.",
+    "requiresManualReview": true,
+    "confidenceReason": "High confidence in the bounded raw configuration answer and genuine workflow provenance; maturity and quality requirements remain unmet.",
+    "sourceLastReviewedAt": "2026-09-16T20:43:33.655Z"
+  },
+  {
+    "id": "dp800-20260916-d1-035",
+    "question": "Repository instructions are already enabled for a database project targeting SQL Server 2022. The shared instruction file still says to use SQL Server 2025's native json type for new JSON columns, and generated migrations fail on the actual target. Future chats must automatically receive accurate project constraints. Which instruction-maintenance change best addresses the mismatch?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the native-json instruction and switch the preferred model for later migration requests."
+      },
+      {
+        "id": "b",
+        "text": "Keep the shared instruction and place the SQL Server 2022 guidance only in a manually invoked migration prompt."
+      },
+      {
+        "id": "c",
+        "text": "Update the shared instructions with the SQL Server 2022 target and validated nvarchar JSON patterns, then test representative prompts."
+      },
+      {
+        "id": "d",
+        "text": "Replace the specific instruction with 'use the newest SQL features' without identifying the project's target version."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Correct the shared target-version guidance and provide compatible, checked examples rather than leave a contradictory automatic instruction in place.",
+    "deepExplanation": "The current training recommends specific instructions, examples, iteration and keeping guidance current. SQL Server 2022 can use JSON text in nvarchar and the established JSON functions, but not the native json type introduced for newer targets. Updating the repository context fixes the identified mismatch; generated migrations still require technical review and target-platform validation.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Another model does not repair the explicit incorrect repository constraint automatically supplied to it.",
+      "b": "An invoked task prompt can help that invocation, but the stale shared instruction remains the automatic context for other chats.",
+      "d": "Removing the target version leaves vague guidance and continues inviting features unavailable on the deployed platform."
+    },
+    "objectiveDomain": "design-and-develop-database-solutions",
+    "skill": "design-and-implement-sql-solutions-by-using-ai-assisted-tools",
+    "subskill": "Create and configure GitHub Copilot instruction files",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d1-ai-instructions",
+      "dp800-d1-json-columns-unit",
+      "dp800-d1x-json-overview"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-sql-solutions-ai-assisted-tools/6-create-configure-copilot-instruction-files",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-database-objects/7-design-implement-json",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server"
+    ],
+    "documentationTitles": [
+      "Create and configure GitHub Copilot instruction files",
+      "Manage JSON columns and indexes",
+      "JSON data in SQL Server"
+    ],
+    "generatedAt": "2026-09-16T21:16:50.204Z",
+    "lastValidatedAt": "2026-09-16T21:16:50.204Z",
+    "featureStatus": "GA",
+    "tags": [
+      "copilot-instructions",
+      "sql-server-2022",
+      "target-version",
+      "grounded-guidance"
+    ],
+    "conceptId": "copilot-sql-repository-target-version-corrects-stale-feature-guidance",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent PASS 3 selected c after reading both SQL bodies, the real JSON-unit reference and instruction maintenance text. SQL Server 2022 text storage differs from native-json GA on 2025; the stale .modify() Preview example is outside this item. HOLD for unestablished instruction-file GA and overcued intermediate implementation. Rubric 42/48 fails threshold and critical scores. No migration/client was executed; authored difficulty, content, citations and source dates remain unchanged.",
+    "requiresManualReview": true,
+    "confidenceReason": "High confidence in the bounded maintenance answer and SQL version distinction. Instruction lifecycle and actual reasoning depth prevent independent approval, not an alternative SQL key.",
+    "sourceLastReviewedAt": "2026-09-16T21:16:50.204Z"
+  }
+]

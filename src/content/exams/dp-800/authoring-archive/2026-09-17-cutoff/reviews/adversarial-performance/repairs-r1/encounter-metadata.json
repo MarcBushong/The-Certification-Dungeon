@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-direct-014": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "d25b61d57813fa65bb740ecf5004b7aca83a88300cf69024b42b673c8fc06139",
+      "sourceIds": ["dp800-d2-isolation-unit", "dp800-d2-transaction-guide"],
+      "retrievedAt": "2026-09-16T19:43:04.550Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "c",
+          "sourceIds": [
+            "dp800-d2-transaction-guide",
+            "dp800-d2-isolation-unit"
+          ],
+          "summary": "Supported, not incorrect: SNAPSHOT selects committed row versions from one transaction snapshot for the successive reads. The enabling option is supplied, and read-only ordinary data access avoids the shared data-read locks that would obstruct the relevant writers. First data access establishes the snapshot; neither schema-lock freedom nor write-conflict immunity is claimed."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": [
+            "dp800-d2-transaction-guide",
+            "dp800-d2-isolation-unit"
+          ],
+          "summary": "An intervening committed update can be visible to the next RCSI statement: the product says each statement selects versions using its newly sampled sequence boundary. That is useful for fresh committed reads per statement, but it does not provide the report’s common versioned view across all statements."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2-transaction-guide"],
+          "summary": "SERIALIZABLE can protect a stable read set through retained data/range locks, not the requested versioned read view. Those locks prevent conflicting updates from freely completing against the read set. It is appropriate when that locking is acceptable to enforce serializable access, but it does not meet this combination of requirements."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": [
+            "dp800-d2-isolation-unit",
+            "dp800-d2-transaction-guide"
+          ],
+          "summary": "READ UNCOMMITTED can read a writer’s uncommitted value that is later rolled back and can observe changing values across reads. Avoiding shared read locks does not construct a stable committed transaction snapshot. A deliberately approximate read that tolerates those anomalies is a different acceptable context."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-17T00:23:24.542Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        },
+        "notes": "45/48. Alignment, accuracy, scenarioCompleteness and uniqueness 4: exact current subskill, explicit option prerequisites, fixed ordinary-read scope and decisive version boundaries. DistractorPlausibility 3 because the definition eliminates alternatives quickly; distractorEvidence 4 because each has a sourced usable context. DocumentationStrength and citationSpecificity 4 credit actual product first-access, schema-lock and isolation passages. DifficultyAuthenticity 3 for lower-intermediate recognition, not advanced schedule reasoning. ExplanationQuality and clarityAccessibility 4 for bounded, readable distinctions. Originality 3 for a conventional reporting scenario. Scores are independent, not converted from the prior hold."
+      }
+    },
+    "dp800-20260916-d2-016": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "00a6f32d37fde13bb3b648260421763656ef02cf18f89cf1dfeedb96fa06f063",
+      "sourceIds": ["dp800-d2-transaction-guide", "dp800-d2-isolation-unit"],
+      "retrievedAt": "2026-09-16T19:43:04.550Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": [
+            "dp800-d2-transaction-guide",
+            "dp800-d2-isolation-unit"
+          ],
+          "summary": "Supported, not incorrect: conflict ends the old SNAPSHOT transaction, so a retry must use a new attempt. Rereading and recalculating rebuild the debit’s input context after the competing commit instead of carrying an unvalidated old result forward. With no external effects and bounded retries permitted, this preserves the read-calculate-write unit without promising that every retry succeeds."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2-transaction-guide"],
+          "summary": "Waiting cannot resume a transaction terminated by a SNAPSHOT conflict, and the competing writer has already committed. Waiting is appropriate for a still-live transaction blocked on an active lock owner; it cannot make this failed transaction or its old computation valid again."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": [
+            "dp800-d2-transaction-guide",
+            "dp800-d2-isolation-unit"
+          ],
+          "summary": "A new transaction alone does not validate the old read-derived UPDATE value. If an absolute remaining balance was calculated before a competing credit, blindly storing that value could discard the credit. A result independently known to remain valid could be reused under a different contract, but the stem supplies no such validation and this option expressly omits rereading."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d2-transaction-guide"],
+          "summary": "An update conflict is failed validation of this write attempt, not acceptance of the intended debit. The product terminates that transaction. An uncontested SNAPSHOT write whose validation succeeds can commit normally, but this failed attempt has no accepted original debit to finalize."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-17T00:23:24.542Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 3,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        },
+        "notes": "45/48. Alignment, accuracy, completeness and uniqueness 4 credit the current isolation subskill, terminating conflict, explicit safe retry and lack of old-input validation. DistractorPlausibility 3: success-after-conflict is weak, although stale-value replay is credible. DistractorEvidence, documentationStrength and citationSpecificity 4: actual modifying-data/commit/version passages and sourced alternative contexts. DifficultyAuthenticity 3: lower-intermediate recovery rather than advanced schedule reasoning. Originality 3: conventional balance/debit setup. ExplanationQuality and clarityAccessibility 4: complete read/calculate/write scope, clear actor order and no success guarantee. No prior score or verdict was converted."
+      }
+    },
+    "dp800-20260916-d2-017": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "9ea6547391afb5fa9b6d0af4fe1083d85f032a6a01a5c4f590d3b70e3ce0a95d",
+      "sourceIds": ["dp800-d2-query-store", "dp800-d2-plans-unit"],
+      "retrievedAt": "2026-09-16T19:43:06.818Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2-query-store"],
+          "summary": "Supported, not incorrect: retained Query Store plan variants and time-windowed runtime records let the engineer compare the query across the release. The product explicitly documents plan-history auditing and persisted stores. Capture across both periods and record survival are stipulated; this step satisfies the history need, not current per-operator observed rows by itself."
+        },
+        {
+          "choiceId": "d",
+          "sourceIds": ["dp800-d2-plans-unit"],
+          "summary": "Supported, not incorrect: the representative execution’s actual plan pairs estimates with observed operator row counts, directly testing the current cardinality hypothesis. It complements a’s historical window rather than replacing it. A mismatch is evidence to investigate, not proof of a particular statistics or index remedy."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2-plans-unit", "dp800-d2-query-store"],
+          "summary": "Ranking cached statements by CPU and logical reads is a valid way to prioritize costly workload candidates. That aggregate ranking does not produce the requested retained plan-version comparison or measured rows at each current operator. The new option is not impossible; it answers a different diagnostic question."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2-plans-unit"],
+          "summary": "Missing-index DMV column recommendations help formulate possible access-path improvements. They are recommendations, not a record of plan changes or a measurement of current operator rows. Testing them may be appropriate after an access-path diagnosis, but they do not replace either requested observation."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-17T00:23:24.542Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        },
+        "notes": "46/48. Alignment, accuracy, completeness and uniqueness 4: exact evaluation subskill, surviving capture, representative run and two complementary measurements. DistractorPlausibility and distractorEvidence 4: CPU ranking and index suggestions are real activities with explicit source-backed purposes, not strawman impossibilities. DocumentationStrength/citationSpecificity 4 credit the product history stores and exact actual-plan/DMV sections. DifficultyAuthenticity 3: Intermediate selection, not artifact interpretation. Originality 3: conventional regression investigation. ExplanationQuality and clarityAccessibility 4: positive two-choice instruction, balanced options and no unsupported remedy inference. All scores are newly reasoned."
+      }
+    },
+    "dp800-20260916-d2-018": {
+      "credentialId": "dp-800",
+      "objectiveVersion": "March 12, 2026",
+      "questionFingerprint": "4ef808b82ff564d99a59bfa918b529a2f63eff9e06d39229da95787f1382c6e6",
+      "sourceIds": [
+        "dp800-d2-deadlock-unit",
+        "dp800-d2-plans-unit",
+        "dp800-d2-transaction-guide"
+      ],
+      "retrievedAt": "2026-09-16T19:43:04.550Z",
+      "lastValidatedAt": "2026-09-16T22:44:52.544Z",
+      "answerEvidence": [
+        {
+          "choiceId": "d",
+          "sourceIds": [
+            "dp800-d2-deadlock-unit",
+            "dp800-d2-plans-unit",
+            "dp800-d2-transaction-guide"
+          ],
+          "summary": "Supported, not incorrect: following 61 to 58 to 52 reaches the upstream session in the supplied chain. Its sleeping state and absent active request do not close the stated open transaction. Inspecting it with its application owner supports appropriate authorized completion or rollback, not automatic COMMIT, KILL or a claim every lock has already been proven."
+        }
+      ],
+      "distractorEvidence": [
+        {
+          "choiceId": "a",
+          "sourceIds": ["dp800-d2-plans-unit", "dp800-d2-deadlock-unit"],
+          "summary": "Execution-plan and index testing can help when a long-running statement’s access path holds too many locks. In this snapshot 61 is waiting on 58, so tuning 61 does not first locate the upstream transaction keeping the chain waiting. It may be worthwhile later without answering the immediate dependency question."
+        },
+        {
+          "choiceId": "b",
+          "sourceIds": ["dp800-d2-deadlock-unit", "dp800-d2-transaction-guide"],
+          "summary": "Shorter batches or a narrower predicate can reduce long lock retention when the targeted transaction is the relevant cause. Although 58 blocks 61, it is itself waiting on 52. Stopping at 58 therefore misses the next dependency; its batch design can be assessed after locating the upstream open transaction."
+        },
+        {
+          "choiceId": "c",
+          "sourceIds": ["dp800-d2-deadlock-unit"],
+          "summary": "SQL Server system_health deadlock reports are legitimate evidence for recorded circular dependencies and victim recovery. This supplied snapshot instead points to a sleeping session with a still-open transaction. Historical victim analysis does not first locate that live transaction; the question does not claim no deadlock ever occurred elsewhere."
+        }
+      ],
+      "rubric": {
+        "version": 2,
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-17T00:23:24.542Z",
+        "scores": {
+          "alignment": 4,
+          "accuracy": 4,
+          "scenarioCompleteness": 4,
+          "answerUniqueness": 4,
+          "distractorPlausibility": 4,
+          "distractorEvidence": 4,
+          "documentationStrength": 4,
+          "citationSpecificity": 4,
+          "difficultyAuthenticity": 3,
+          "explanationQuality": 4,
+          "originality": 3,
+          "clarityAccessibility": 4
+        },
+        "notes": "46/48. Alignment, accuracy, completeness and uniqueness 4: current blocking subskill, explicit wait directions/open transaction and a bounded first-investigation task. DistractorPlausibility/evidence 4: index tuning, batching and deadlock reports are genuine source-backed activities, now distinguished by priority rather than impossible claims. DocumentationStrength/citationSpecificity 4 credit actual sleeping-session, request, owner-discovery and event-capture sections. DifficultyAuthenticity 3 for a short two-edge chain; Originality 3 for a familiar idle-transaction setup. ExplanationQuality/clarityAccessibility 4 for clear session numbers, balanced options and explicit no-automatic-KILL limits. No prior rubric was converted."
+      }
+    }
+  }
+}

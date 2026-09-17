@@ -1,0 +1,594 @@
+[
+  {
+    "id": "dp800-20260916-d3-011",
+    "question": "A SQL Server 2025 catalog has a populated English full-text index and valid same-model float32 embeddings. One screen must match the indexed phrase \"carbon shaft\"; another supports conceptual discovery even when users and documents use different wording. Which two query choices match their respective screen's intent? Select two.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use a quoted CONTAINS phrase condition for the exact-phrase screen."
+      },
+      {
+        "id": "b",
+        "text": "Use embedding distance alone to enforce the exact phrase's presence."
+      },
+      {
+        "id": "c",
+        "text": "Use a query embedding and VECTOR_DISTANCE for conceptual discovery."
+      },
+      {
+        "id": "d",
+        "text": "Use an unconstrained FREETEXT expansion as an exact-phrase requirement."
+      }
+    ],
+    "correctAnswer": ["a", "c"],
+    "explanation": "A quoted full-text phrase condition implements the lexical requirement; semantic distance supports concept-oriented discovery.",
+    "deepExplanation": "Matching an indexed phrase and retrieving semantically similar descriptions are different contracts. Linguistic expansion does not require the complete exact phrase, and vector similarity does not require particular words to occur. The scenario supplies the necessary indexes and compatible embeddings; it does not claim any particular result is guaranteed relevant.",
+    "whyOtherAnswersAreWrong": {
+      "b": "A semantically related document can lack the exact words, so distance is not the required phrase predicate.",
+      "d": "FREETEXT expands the search linguistically instead of enforcing the quoted phrase condition."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Choose from full-text, semantic vector, and hybrid search",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": [
+      "dp800-d3x-search-choice",
+      "dp800-d3x-fulltext-unit",
+      "dp800-d3-vector-distance"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/02-choose-intelligent-search-approach",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/03-implement-full-text-search",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+    ],
+    "documentationTitles": [
+      "Choose an intelligent search approach",
+      "Implement full-text search",
+      "VECTOR_DISTANCE (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.867Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.867Z",
+    "featureStatus": "GA",
+    "tags": [
+      "search-selection",
+      "full-text",
+      "semantic-search",
+      "query-intent"
+    ],
+    "conceptId": "sql-search-routes-exact-indexed-phrase-versus-conceptual-discovery",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d3x-search-choice",
+      "dp800-d3x-fulltext-unit",
+      "dp800-d3-vector-distance"
+    ],
+    "verificationNotes": "Independent PASS 3 retained a/c after lexical and model-space counterexamples. Actual frozen MCP bodies, real root ancestry and installed exact catalog approvals were inspected, not simulated. GA is bounded to full-text and exact float32 operations. Static API review only, not live SQL or measured relevance. Rubric 45/48; prefix grammar and input selection remain distinct concepts.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High technical confidence; moderate editorial confidence because the rejected enforcement claims are deliberately easy to separate.",
+    "verifiedAt": "2026-09-16T23:52:28.747Z"
+  },
+  {
+    "id": "dp800-20260916-d3-013",
+    "question": "An Azure SQL Database table has a populated English full-text index on Body. Indexing checks confirm the sample words remain single tokens as written. The search must match any token beginning with calib, even without the word sensor, but not an interior calib substring. Which predicate implements that lexical requirement?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "CONTAINS(Body, N'\"calib\"')"
+      },
+      {
+        "id": "b",
+        "text": "Body LIKE N'%calib%'"
+      },
+      {
+        "id": "c",
+        "text": "CONTAINS(Body, N'\"calib*\"')"
+      },
+      {
+        "id": "d",
+        "text": "CONTAINS(Body, N'\"calib*\" AND \"sensor\"')"
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "Use a quoted full-text prefix term with the asterisk inside the quotes.",
+    "deepExplanation": "The full-text prefix condition matches tokens that start with calib, unlike a character-pattern search that can also match the interior of precalibration. Adding an AND sensor condition would exclude a required calibration guide. The explicit indexing premise avoids relying on an unexamined language-specific word-breaking outcome.",
+    "whyOtherAnswersAreWrong": {
+      "a": "It requests the exact term calib rather than the required family of words beginning with that prefix.",
+      "b": "The character pattern also matches calib inside the supplied precalibration token.",
+      "d": "It adds a sensor requirement that is absent from the requested search contract."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Implement full-text search",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d3x-fulltext-unit", "dp800-d3x-containstable"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/03-implement-full-text-search",
+      "https://learn.microsoft.com/en-us/sql/relational-databases/system-functions/containstable-transact-sql"
+    ],
+    "documentationTitles": [
+      "Implement full-text search",
+      "CONTAINSTABLE (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.872Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.872Z",
+    "featureStatus": "GA",
+    "tags": [
+      "full-text",
+      "prefix-term",
+      "token-versus-substring",
+      "azure-sql-database"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "-- Representative Body values and their confirmed indexed words:\n-- 'calibrated sensor'      -> should match\n-- 'calibration guide'      -> should match\n-- 'precalibration guide'   -> should not match",
+    "conceptId": "sql-full-text-prefix-term-differs-from-interior-substring-and-extra-term-restriction",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d3x-fulltext-unit",
+      "dp800-d3x-containstable"
+    ],
+    "verificationNotes": "Independent PASS 3 found only c accepts both required samples while rejecting precalibration. Checked actual shared CONTAINS/CONTAINSTABLE grammar, immediate training reference and exact catalog approval. Static predicate analysis, not a live SQL or word-breaker test. GA scope remains unchanged. Rubric 46/48 with modest difficulty/originality deductions.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence: the explicit tokenization premise and three samples independently separate all four documented forms.",
+    "verifiedAt": "2026-09-16T23:52:28.750Z"
+  },
+  {
+    "id": "dp800-20260916-d3-014",
+    "question": "In Azure SQL Database, Papers has PaperId as its primary key, but the full-text index uses the separate unique SearchKey. The application needs the five highest-ranked published matches, breaking relevance ties by PaperId. More than five published matches exist, while the five global highest matches are unpublished. Which repair fixes the shown query's key mapping and premature candidate limit?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Join p.SearchKey to ft.[KEY], remove top_n_by_rank, filter Published, and apply outer TOP (5) ordered by ft.RANK DESC, p.PaperId ASC."
+      },
+      {
+        "id": "b",
+        "text": "Join p.SearchKey to ft.[KEY], retain top_n_by_rank = 5, then filter Published and order the surviving rows."
+      },
+      {
+        "id": "c",
+        "text": "Keep the PaperId-to-KEY join, remove top_n_by_rank, and apply the published filter before an ordered outer TOP (5)."
+      },
+      {
+        "id": "d",
+        "text": "Join p.SearchKey to ft.[KEY], remove top_n_by_rank, filter Published, and apply outer TOP (5) ordered by ft.[KEY] DESC."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Use the actual full-text key, let published matches reach the relational filter, and select the ordered top five afterward.",
+    "deepExplanation": "CONTAINSTABLE's KEY is the configured full-text key, not necessarily the table's primary key. Its top_n_by_rank limit can discard all published rows before WHERE runs. Removing that inner limit and using the correct join allows TOP and the required relevance/tie ordering to act on published matches.",
+    "whyOtherAnswersAreWrong": {
+      "b": "The inner function has already kept only five unpublished hits, so the later filter cannot recover the desired published matches.",
+      "c": "The full-text index identifies rows by SearchKey, so leaving the PaperId join does not restore the required row mapping.",
+      "d": "KEY identifies a row; descending KEY order does not implement relevance rank and the required PaperId tie-break."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Implement full-text search",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d3x-containstable", "dp800-d3x-top"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/relational-databases/system-functions/containstable-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql"
+    ],
+    "documentationTitles": [
+      "CONTAINSTABLE (Transact-SQL)",
+      "TOP (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.872Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.872Z",
+    "featureStatus": "GA",
+    "tags": [
+      "full-text",
+      "ranked-retrieval",
+      "key-mapping",
+      "filter-placement",
+      "azure-sql-database"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "SELECT p.PaperId, ft.[RANK]\nFROM dbo.Papers AS p\nJOIN CONTAINSTABLE(\n    dbo.Papers, Body, N'\"calibration drift\"', 5\n) AS ft ON p.PaperId = ft.[KEY]\nWHERE p.Published = 1\nORDER BY ft.[RANK] DESC, p.PaperId ASC;",
+    "conceptId": "sql-full-text-ranked-published-search-fixes-key-mapping-and-prelimit-filter-loss",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3x-containstable", "dp800-d3x-top"],
+    "verificationNotes": "Independent PASS 3 retained a after wrong-key, five-unpublished-hit and key-versus-relevance counterexamples. Read actual CONTAINSTABLE remarks/permissions and TOP scope text with exact approved ancestry. Static SQL derivation only. Technical key survives; scaffolded difficulty, related cap pattern and reading density reduce the rubric to 45/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High technical confidence; Advanced is defensible as the combined repair, not any single fact.",
+    "verifiedAt": "2026-09-16T23:52:28.751Z"
+  },
+  {
+    "id": "dp800-20260916-d3-015",
+    "question": "A SQL Server 2025 design will store 60,000 float32 vectors. The vector-component budget is 300 MiB, excluding all row and index overhead. The stipulated model configurations below have measured task quality, and the minimum accepted score is 91. Which configuration fits the native dimension limit, component budget and quality floor?",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "1,536 dimensions with measured quality 93."
+      },
+      {
+        "id": "b",
+        "text": "1,024 dimensions with measured quality 92."
+      },
+      {
+        "id": "c",
+        "text": "768 dimensions with measured quality 88."
+      },
+      {
+        "id": "d",
+        "text": "2,048 dimensions with measured quality 94."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "The 1,024-dimensional configuration uses 245,760,000 component bytes, or 234.375 MiB, and its supplied quality score meets the floor.",
+    "deepExplanation": "The default float32 representation uses four bytes per component and supports at most 1,998 dimensions. At 1,536 dimensions the components alone need 351.5625 MiB. The smaller 768 configuration fits storage but fails the stipulated quality floor. No assumption is made that quality universally rises with dimensionality or that component bytes equal total database storage.",
+    "whyOtherAnswersAreWrong": {
+      "a": "60,000 × 1,536 × 4 bytes exceeds the 300 MiB component budget.",
+      "c": "Its measured quality 88 is below the required 91 despite its smaller footprint.",
+      "d": "2,048 exceeds the documented native limit of 1,998 and also exceeds the component budget."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Design for vector data, including vector data type, vector indexes, and size",
+    "difficulty": "intermediate",
+    "complexity": "architecture-design",
+    "sourceIds": ["dp800-d3-vector-type", "dp800-d3x-models-evaluate"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/data-types/vector-data-type",
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-models-embeddings-with-sql/02-understand-evaluate-models-sql-database-workloads"
+    ],
+    "documentationTitles": [
+      "Vector data type",
+      "Understand and evaluate models for SQL database workloads"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.872Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.872Z",
+    "featureStatus": "GA",
+    "tags": [
+      "vector-storage",
+      "float32",
+      "capacity-planning",
+      "measured-quality",
+      "sql-server-2025"
+    ],
+    "conceptId": "sql-vector-storage-selection-combines-component-bytes-dimension-limit-and-measured-quality",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d3-vector-type",
+      "dp800-d3x-models-evaluate"
+    ],
+    "verificationNotes": "Independent PASS 3 recalculated all footprints and rejected smallest/highest-quality shortcuts; only b meets all gates. Read float32, separate Preview float16 and workload-selection passages with full ancestry. Static arithmetic, not measured model/database results; no executable snippet is present. Rubric 46/48; source and authored dates unchanged.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": "High confidence in arithmetic and native bounds; quality scores remain provided premises, not externally verified model specifications.",
+    "verifiedAt": "2026-09-16T23:52:28.752Z"
+  },
+  {
+    "id": "dp800-20260916-d3-018",
+    "question": "On SQL Server 2025, @queryVector and @storedVector are valid, nonnull, nonzero native vectors. Before attempting a comparison, a diagnostic must report each vector's component count without rescaling either value. Which function/property combination directly returns those counts?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "VECTORPROPERTY(vector, 'Dimensions') for each vector."
+      },
+      {
+        "id": "b",
+        "text": "VECTOR_NORMALIZE(vector, 'norm2') for each vector."
+      },
+      {
+        "id": "c",
+        "text": "VECTORPROPERTY(vector, 'BaseType') for each vector."
+      },
+      {
+        "id": "d",
+        "text": "VECTOR_DISTANCE('cosine', @queryVector, @storedVector)."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "VECTORPROPERTY with Dimensions returns the integer component count of its input vector.",
+    "deepExplanation": "Metadata inspection is different from normalizing vector scale or calculating a distance. Matching dimensions is useful validation, but is not proof that two vectors share a model space or provide relevant search results.",
+    "whyOtherAnswersAreWrong": {
+      "b": "It returns a rescaled vector, not a component-count metadata value.",
+      "c": "BaseType reports the element type name rather than the number of dimensions.",
+      "d": "It attempts a pairwise distance calculation instead of reporting the two dimension counts."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Identify when to use vector-related types and functions for semantic searching, including VECTOR\\_NORMALIZE, VECTOR\\_DISTANCE, VECTORPROPERTY, and VECTOR\\_SEARCH",
+    "difficulty": "beginner",
+    "complexity": "concept-recall",
+    "sourceIds": [
+      "dp800-d3x-vector-property",
+      "dp800-d3-vector-normalize",
+      "dp800-d3-vector-distance"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vectorproperty-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-normalize-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+    ],
+    "documentationTitles": [
+      "VECTORPROPERTY (Transact-SQL)",
+      "VECTOR_NORMALIZE (Transact-SQL)",
+      "VECTOR_DISTANCE (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T21:09:02.686Z",
+    "lastValidatedAt": "2026-09-16T21:09:02.686Z",
+    "featureStatus": "GA",
+    "tags": ["vectorproperty", "dimensions", "metadata", "sql-server-2025"],
+    "conceptId": "sql-vectorproperty-dimensions-inspects-component-count-without-normalization",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d3x-vector-property",
+      "dp800-d3-vector-normalize",
+      "dp800-d3-vector-distance"
+    ],
+    "verificationNotes": "Independent PASS 3 retained a after unit-vector and equal-BaseType counterexamples. Checked actual return contracts, refreshed generation binding, real training references and installed exact approvals. Static fragment analysis only. No model-compatibility or Preview behavior is smuggled into the GA property lookup. Rubric 46/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:50:00.844Z",
+    "confidenceReason": "High confidence: explicit return types uniquely determine the output even for unit vectors or matching base types.",
+    "verifiedAt": "2026-09-16T23:52:28.753Z"
+  },
+  {
+    "id": "dp800-20260916-d3-020",
+    "question": "Before choosing a metric for a Preview DiskANN index in an enabled Azure SQL Database lab, a team validates its model's stipulated scoring contract: larger unnormalized q·v is better, and magnitude must remain meaningful. Which index metric and exact validation ordering implement that contract for the shown vectors?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "METRIC = 'dot'; order VECTOR_DISTANCE('dot', @q, v) descending."
+      },
+      {
+        "id": "b",
+        "text": "METRIC = 'dot'; order VECTOR_DISTANCE('dot', @q, v) ascending."
+      },
+      {
+        "id": "c",
+        "text": "METRIC = 'cosine'; order VECTOR_DISTANCE('cosine', @q, v) ascending."
+      },
+      {
+        "id": "d",
+        "text": "METRIC = 'euclidean'; order VECTOR_DISTANCE('euclidean', @q, v) ascending."
+      }
+    ],
+    "correctAnswer": ["b"],
+    "explanation": "SQL's dot distance is the negative dot product, so ascending distance implements descending unnormalized q·v.",
+    "deepExplanation": "The raw products for A, B and C are 4, 3 and 1; SQL dot distances are -4, -3 and -1. Cosine changes the objective by ignoring magnitude, and Euclidean measures a different geometry. VECTOR_DISTANCE remains an exact validation operation even though the selected metric will also configure a Preview index.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Descending negative dot distance reverses the required preference.",
+      "c": "Cosine does not preserve the stipulated magnitude-sensitive scoring objective.",
+      "d": "Euclidean proximity is not the specified unnormalized dot-product score."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Evaluate vector index types and metrics",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d3-vector-distance", "dp800-d3x-create-vector-index"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-vector-index-transact-sql"
+    ],
+    "documentationTitles": [
+      "VECTOR_DISTANCE (Transact-SQL)",
+      "CREATE VECTOR INDEX (Transact-SQL) (Preview)"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.874Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+    "featureStatus": "Preview",
+    "tags": [
+      "vector-metric",
+      "negative-dot",
+      "diskann",
+      "preview",
+      "magnitude"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "DECLARE @q VECTOR(2) = '[1,0]';\nDECLARE @a VECTOR(2) = '[4,6]';\nDECLARE @b VECTOR(2) = '[3,0]';\nDECLARE @c VECTOR(2) = '[1,1]';",
+    "conceptId": "sql-negative-dot-distance-orders-magnitude-sensitive-model-scores-ascending",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d3-vector-distance",
+      "dp800-d3x-create-vector-index"
+    ],
+    "verificationNotes": "Independent PASS 3 retained b after deriving every metric ordering. SQL dot is negative similarity; the proposed index remains Preview and exact validation is not ANN execution. Actual DDL permission/minimums were reviewed as context, not asserted satisfied by the three-vector fixture. Full exact source ancestry passed. Static arithmetic and fragment review only. Rubric 46/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence from explicit metric definitions and unequal-norm counterexamples; deployment and benchmark execution remain outside this static review.",
+    "verifiedAt": "2026-09-16T23:52:28.754Z"
+  },
+  {
+    "id": "dp800-20260916-d3-021",
+    "question": "An enabled Azure SQL Database uses a latest-version Preview vector index and a valid matching query vector. A report must request a global pool of up to 20 approximate document matches, count those rows by Category, then show the three largest categories with alphabetical tie-breaking. Which rewrite preserves those stages and the current approximate-query restrictions?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Use inner TOP (20) WITH APPROXIMATE ordered only by distance; group its output in an outer query with TOP (3) ordered by count descending, Category ascending."
+      },
+      {
+        "id": "b",
+        "text": "Group by Category inside the TOP WITH APPROXIMATE query; order that same query by count descending and Category ascending."
+      },
+      {
+        "id": "c",
+        "text": "Request up to 20 matches separately for each Category; combine those pools, then retain the three categories with the largest counts."
+      },
+      {
+        "id": "d",
+        "text": "Use inner TOP (3) WITH APPROXIMATE ordered by distance and Category; then count its output by Category without another limit."
+      }
+    ],
+    "correctAnswer": ["a"],
+    "explanation": "Separate approximate candidate selection from aggregation and final category ordering.",
+    "deepExplanation": "The latest approximate layer requires distance-only ascending ordering; GROUP BY and secondary ordering belong in an outer query over its results. The 20-document cap and three-category cap apply to different objects. Per-category retrieval would change the global-pool semantics, while applying a three-document cap too early changes the report.",
+    "whyOtherAnswersAreWrong": {
+      "b": "Grouping and ordering by count in the approximate layer violate the documented subquery pattern and distance-only ordering restriction.",
+      "c": "Twenty candidates per category are not the requested global pool of up to twenty documents.",
+      "d": "It both changes the document budget to three and adds a disallowed secondary ordering key inside the approximate layer."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Implement vector search",
+    "difficulty": "advanced",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d3-vector-search", "dp800-d3x-top"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql"
+    ],
+    "documentationTitles": [
+      "VECTOR_SEARCH (Transact-SQL) (Preview)",
+      "TOP (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.874Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+    "featureStatus": "Preview",
+    "tags": [
+      "vector-search",
+      "latest-index",
+      "preview",
+      "aggregation",
+      "query-layers"
+    ],
+    "codeLanguage": "sql",
+    "codeSnippet": "-- The attempted single-layer report is not valid for this contract.\nSELECT TOP (3) WITH APPROXIMATE\n    d.Category, COUNT(*) AS Hits\nFROM VECTOR_SEARCH(\n    TABLE = dbo.Documents AS d,\n    COLUMN = Embedding,\n    SIMILAR_TO = @q,\n    METRIC = 'cosine'\n) AS r\nGROUP BY d.Category\nORDER BY Hits DESC, d.Category ASC;",
+    "conceptId": "sql-latest-vector-search-separates-global-document-cap-from-outer-category-aggregation",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": ["dp800-d3-vector-search", "dp800-d3x-top"],
+    "verificationNotes": "Independent PASS 3 retained a after per-category, premature-cap and illegal inner-group/order counterexamples. Read the complete raw VECTOR_SEARCH response including the contradictory workflow sample and explicit errors/subquery pattern. Normative passages support a without that sample. Latest enabled Azure Preview only, static query derivation rather than execution. Exact source ancestry passed; rubric 46/48.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence from explicit restrictions and matching aggregation examples; the conflicting illustrative sample is a recorded limitation, not ignored evidence.",
+    "verifiedAt": "2026-09-16T23:52:28.755Z"
+  },
+  {
+    "id": "dp800-20260916-d3-022",
+    "question": "In an enabled Azure SQL Database Preview environment, a latest-version vector index matches the query's column and metric. The optimizer selects kNN for a selective filter. An engineer wants a controlled comparison that forces ANN for this benchmark, not a claim that ANN is better in production. Which change uses the documented control?",
+    "questionType": "single-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Drop the vector index and keep the same approximate request."
+      },
+      {
+        "id": "b",
+        "text": "Remove WITH APPROXIMATE while keeping TOP and distance ordering."
+      },
+      {
+        "id": "c",
+        "text": "Keep TOP WITH APPROXIMATE and the compatible index, and add WITH (FORCE_ANN_ONLY) to the VECTOR_SEARCH result alias."
+      },
+      {
+        "id": "d",
+        "text": "Change the query to a metric for which the column has no matching ANN index."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "FORCE_ANN_ONLY is the documented hint for forcing the approximate index strategy when its prerequisites are present.",
+    "deepExplanation": "Latest-version optimization can legitimately choose kNN despite a compatible index. The hint requires both an index and a TOP WITH APPROXIMATE query; it is not a way to manufacture a missing index. Benchmark the resulting latency and recall instead of treating forced ANN as an automatic improvement.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Without the index the approximate index strategy is unavailable.",
+      "b": "TOP ordered by distance without APPROXIMATE uses exact kNN semantics.",
+      "d": "A metric mismatch removes ANN compatibility and leads to the documented fallback rather than forcing ANN."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Choose between using ANN and ENN for vector search",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": ["dp800-d3-vector-search"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql"
+    ],
+    "documentationTitles": ["VECTOR_SEARCH (Transact-SQL) (Preview)"],
+    "generatedAt": "2026-09-16T20:50:00.874Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+    "featureStatus": "Preview",
+    "tags": [
+      "ann-versus-knn",
+      "force-ann-only",
+      "benchmark",
+      "preview",
+      "latest-index"
+    ],
+    "conceptId": "sql-latest-vector-search-force-ann-only-is-a-benchmark-control-not-a-performance-promise",
+    "verificationStatus": "manual-review-required",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Independent PASS 3 confirms technical key c but withholds promotion at 42/48. FORCE_ANN_ONLY mirrors forces ANN and is uniquely long; every alternative removes an ANN condition or asks for exact behavior. Difficulty authenticity and distractor plausibility score 2; qualityReviewed is false. Exact frozen sources, actual approval, chronology, placement and Preview scope passed. No authored repair or live SQL execution. A new authored snapshot must restart all three passes.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence in both technical support and the independent quality hold: unchanged answer cues and level mismatch miss 44/48."
+  },
+  {
+    "id": "dp800-20260916-d3-023",
+    "question": "A SQL Server 2025 hybrid pipeline receives one row per DocumentId in each hit table. Nonnull keyword scores and vector distances have no ties. It needs each branch's best ten, then the five highest fused scores; fused-score ties may be in any order. RRF arithmetic is already correct. Which repair makes all three candidate limits honor their intended ranking?",
+    "questionType": "code",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Keep the three CTEs unchanged and sort only the final output by rrf_score."
+      },
+      {
+        "id": "b",
+        "text": "Order TOP in K by KeywordScore DESC and in V by Distance ASC, but leave F's TOP unordered."
+      },
+      {
+        "id": "c",
+        "text": "Order F's TOP by rrf_score DESC, but rely on each branch's RANK window to control its TOP."
+      },
+      {
+        "id": "d",
+        "text": "Add query-level ORDER BY to K's TOP, V's TOP and F's TOP using their respective intended scores."
+      }
+    ],
+    "correctAnswer": ["d"],
+    "explanation": "Each TOP must have the appropriate query-level ORDER BY in its own scope.",
+    "deepExplanation": "A RANK window computes a position; it does not supply the query-level ordering that defines TOP's selected subset. Likewise, sorting after an unordered fusion cap cannot recover a higher-scoring row that the cap discarded. The necessary orders are KeywordScore DESC in K, Distance ASC in V and rrf_score DESC in F.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Final presentation sorting cannot repair any of the three earlier unordered selections.",
+      "b": "The branch pools become correct, but F can still discard the best fused rows before final sorting.",
+      "c": "The fusion limit becomes correct only over whichever arbitrary branch rows survived; a window order does not bind branch TOP."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Implement hybrid search",
+    "difficulty": "advanced",
+    "complexity": "troubleshooting",
+    "sourceIds": ["dp800-d3-hybrid", "dp800-d3x-top", "dp800-d3x-rank"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/design-implement-intelligent-search-with-sql/06-implement-hybrid-search-ranking",
+      "https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql",
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/rank-transact-sql"
+    ],
+    "documentationTitles": [
+      "Implement hybrid search and ranking",
+      "TOP (Transact-SQL)",
+      "RANK (Transact-SQL)"
+    ],
+    "generatedAt": "2026-09-16T20:50:00.874Z",
+    "lastValidatedAt": "2026-09-16T20:50:00.874Z",
+    "featureStatus": "GA",
+    "tags": ["hybrid-search", "rank-fusion", "top-ordering", "query-scope"],
+    "codeLanguage": "sql",
+    "codeSnippet": "WITH K AS (\n    SELECT TOP (10) DocumentId,\n        RANK() OVER (ORDER BY KeywordScore DESC) AS kr\n    FROM dbo.KeywordHits\n), V AS (\n    SELECT TOP (10) DocumentId,\n        RANK() OVER (ORDER BY Distance ASC) AS vr\n    FROM dbo.VectorHits\n), F AS (\n    SELECT TOP (5) COALESCE(K.DocumentId,V.DocumentId) AS DocumentId,\n        COALESCE(1.0/(30+kr),0.0) + COALESCE(1.0/(30+vr),0.0) AS rrf_score\n    FROM K FULL OUTER JOIN V ON K.DocumentId = V.DocumentId\n)\nSELECT DocumentId, rrf_score FROM F ORDER BY rrf_score DESC;",
+    "conceptId": "sql-hybrid-shortlists-bind-top-ordering-in-each-branch-and-fusion-scope",
+    "verificationStatus": "verified",
+    "verifiedAgainstSourceIds": [
+      "dp800-d3-hybrid",
+      "dp800-d3x-top",
+      "dp800-d3x-rank"
+    ],
+    "verificationNotes": "Independent PASS 3 retained d after incidental-sort, small-input and late-fusion-order challenges. Actual RANK and TOP examples establish selection guarantees; hybrid training supplies only the fusion pattern. Ordinary GA SQL, static derivation rather than live execution. Distinct from numeric/null and list-inclusion facts. Rubric 45/48 with repetition and reading-density deductions.",
+    "requiresManualReview": false,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": "High confidence in documented subset guarantees and the sole complete repair; editorial confidence is moderated by repetitive repair structure.",
+    "verifiedAt": "2026-09-16T23:52:28.757Z"
+  }
+]

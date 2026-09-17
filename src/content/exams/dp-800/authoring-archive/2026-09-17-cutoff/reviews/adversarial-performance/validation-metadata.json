@@ -1,0 +1,613 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-direct-015": {
+      "generation": {
+        "questionFingerprint": "e9a2f7ce4f27d31975203452cb31f86610856c40f2a5368b574ed6bfae836e87",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "summary": "AVG gives each statistics row equal weight and yields 505 here. It measures the mean of interval means, which could be intended with equal interval weighting, but not the mean per execution."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "summary": "The teaching query weights each duration average by count_executions and divides by the summed counts. Here total duration is 2,000 over 101 positive-count executions, so this expression uses the required denominator."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "summary": "The weighted sum reconstructs total duration, 2,000, and would answer a total-resource-use question. Without division by 101 it does not compute the requested per-execution mean."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "summary": "MAX returns 1,000, the largest supplied interval average. It is useful for identifying the largest aggregate interval mean, not the mean across all executions or a maximum individual execution."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-015",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "e9a2f7ce4f27d31975203452cb31f86610856c40f2a5368b574ed6bfae836e87",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-store-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/05-monitor-tune-queries-query-store",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-05-monitor-tune-queries-query-store.json",
+              "retrievedAt": "2026-09-16T19:33:08.032Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Query the Query Store with T-SQL explicitly sums avg_duration multiplied by count_executions and divides by total executions, with NULLIF and rounding in its broader example. Runtime statistics are aggregates per interval. This supports weighting the supplied complete, positive-count rows, not a claim that a last_execution_time filter perfectly trims a real time window."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "The ordinary average of 10 and 1000 is 505: the row with one execution receives the same weight as the row with 100. AVG(avg_duration) would suit an intentionally equal-weight average of row means, or coincidentally equal execution counts, neither of which is the requested per-execution mean.",
+              "sourceIds": ["dp800-d2-store-unit"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "The observed training query uses execution-count weighting. Independently, total duration is 10*100 + 1000*1 = 2000 and the count is 101, giving approximately 19.801980198. The float duration in the supplied derived table prevents integer division, and the positive complete inputs make the denominator nonzero.",
+              "sourceIds": ["dp800-d2-store-unit"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "The numerator reconstructs represented total duration, 2000, but has not normalized by 101 executions. It would answer a total-duration question, not the requested mean. The unit's weighted-mean expression includes the missing denominator explicitly.",
+              "sourceIds": ["dp800-d2-store-unit"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "MAX(avg_duration) returns 1000, the larger aggregate row mean. It can rank the worst interval mean, not the combined per-execution mean; it also must not be described as the maximum individual execution duration.",
+              "sourceIds": ["dp800-d2-store-unit"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independent answer: b. Static T-SQL review checked the derived VALUES table, alias/column list, CAST types, aggregate result type and positive denominator; independent arithmetic gives 2000/101. This was not live SQL execution. Inputs are explicitly complete and nonoverlapping, from the same plan and execution type and with consistent units; no active-interval merging, catalog join or permission-sensitive DMV query is prescribed. Query Store is an established SQL Server feature, not vendor-independent methodology, so GA rather than Not applicable is appropriate. The module's SQL Server scope and actual Query Store product evidence read in this pass corroborate availability; the exact cited snapshot remains only the store unit. Actual module ancestry was checked. The expression is longer because shorter aggregates omit required weighting/normalization, not because of a prose clue. Intermediate implementation reasoning is credible. This preserves baseline/live dp800-direct-015 under its existing ID and differs from the historical/actual-plan evidence-selection candidate. PASS 2 only: no adversarial review, rubric or gameplay authorization.",
+          "confidenceReason": "High confidence because the exact retrieved training formula and independent numerical/type analysis converge. The conclusion is bounded to the two stipulated rows and does not claim a production Query Store extraction or database execution test."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "e9a2f7ce4f27d31975203452cb31f86610856c40f2a5368b574ed6bfae836e87",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-16T23:10:51.414Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "An ordinary average of the two stored means yields the average duration of their combined executions.",
+            "whyIncorrectInContext": "The 1000-unit mean represents one execution, not half the population. Equal row weighting produces 505 instead of 2000/101.",
+            "couldBeCorrectWhen": "If both rows represented the same number of executions, the documented weighted formula reduces algebraically to the ordinary mean. It also answers an explicitly equal-weight average-of-interval-means question.",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "evidenceSummary": "The raw unit defines interval-aggregated runtime statistics and demonstrates the weighted SELECT. Equal-count cancellation and the unequal-count counterexample here are static derivations from that formula, not SQL execution claims."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "The combined execution mean equals reconstructed total duration divided by its execution count.",
+            "whyIncorrectInContext": "It is supported, not incorrect: the complete disjoint inputs supply 2000 duration units and 101 executions, with float-valued means and no zero count denominator.",
+            "couldBeCorrectWhen": "Compatible duration aggregates represent the requested execution population with a nonzero total count, as here. A general report also needs the source’s NULLIF-style protection and correct population selection.",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "evidenceSummary": "The teaching query explicitly multiplies avg_duration by count_executions and divides summed products by summed counts. Its NULLIF guard matters to a general query but is unnecessary for these supplied positive counts."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "The sum of duration means multiplied by their counts is already a per-execution mean.",
+            "whyIncorrectInContext": "It stops at the numerator: 2000 represents summed execution duration. The requested mean requires normalization by 101.",
+            "couldBeCorrectWhen": "The report asks for total represented execution duration rather than its mean. Summed execution duration is not necessarily elapsed wall-clock time of concurrent work.",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "evidenceSummary": "The cited SELECT uses exactly this weighted sum as its numerator before normalization; the report also distinguishes Average and Total aggregations. The missing denominator makes this valid total wrong for the stem."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "The largest statistics-row average supplies the mean across all executions.",
+            "whyIncorrectInContext": "MAX chooses the 1000-unit row mean and discards the 100 fast executions. It neither pools duration nor uses execution counts.",
+            "couldBeCorrectWhen": "The requested comparison is the largest recorded interval mean. An individual-execution maximum requires different input evidence, not only a column of means.",
+            "sourceIds": ["dp800-d2-store-unit"],
+            "evidenceSummary": "The runtime-store description identifies interval aggregates, while the report separates Maximum from Average. Those meanings support maximum-row selection, not a pooled execution mean."
+          }
+        ],
+        "challenges": {
+          "scope": "SQL Server 2022 is explicit, not Azure-portal QPI or a Fabric warehouse. The module names SQL Server and supplementary admitted product text covers 2016 and later. Supplied rows do not assert cross-replica Query Store support.",
+          "plan": "Rows share a plan and execution type. No alternate physical plan, plan-forcing setting or Azure service-tier choice changes the arithmetic. Mixing populations would instead change the statistic.",
+          "role": "A report reader interprets a supplied VALUES result. No live Query Store access, ALTER permission, sysadmin role or provider subscription plan is required to select an aggregate. Those would belong to an unasked collection task.",
+          "preconditions": "Completeness, nonoverlap, units and plan/type match are explicit; the fixture gives nonnull positive counts and float means. Empty/zero counts and integer-only division were challenged rather than silently treating this as a general production query.",
+          "featureStatus": "GA is appropriate for SQL Server 2022 Query Store and ordinary T-SQL aggregates. Despite the arithmetic, this is a named software-feature question, not Not applicable methodology. No 2025 replica or Preview capability is required.",
+          "sourceChanges": "The unit remains the MCP retrieval at 2026-09-16T19:33:08.032Z and frozen review at 2026-09-16T20:48:01.996Z. I reread its body and parent reference without renewing dates or claiming another network retrieval.",
+          "stemSufficiency": "The fixture supplies the target population and all operands. No missing query identifier, real execution plan, time-window edge or active-interval merge must be inferred. interval_id is a derived-table alias, not an actual catalog-column prescription.",
+          "explanationBounds": "Every numerical distractor explanation recomputes correctly. Maximum means maximum row mean, and 2000 is a total rather than the requested mean. The simplified expression is approved for the positive fixture, not empty-input extraction.",
+          "reasoningDepth": "Distinguishing row and execution populations, reconstructing work and normalizing defeats the mean-of-means mistake. This is lower-intermediate implementation reasoning, not advanced tuning; the small fixture limits the rubric score.",
+          "answerClues": "The correct expression is longest because both weighting and normalization are necessary, not because it alone uses reassuring prose. All choices are real aggregates. The 100:1 counts are substantive evidence, not a position cue."
+        },
+        "qualityNotes": "46/48. ScenarioCompleteness loses one for limited operational realism of a two-row synthetic report; DifficultyAuthenticity loses one for straightforward weighting. No arithmetic, citation or uniqueness deduction. The canonical ID and authored choice order are preserved."
+      }
+    },
+    "dp800-direct-016": {
+      "generation": {
+        "questionFingerprint": "ca899bb7c5a3546a8c2a876c8d569fd45a8709a7e584f33f93be07c169bad5ba",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "summary": "Retrying only the failed statement would omit the first UPDATE because the entire victim transaction was rolled back. A statement-only retry can be meaningful for a different operation whose unit of work is that single statement."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "summary": "COMMIT finalizes a surviving transaction; error 1205 has already rolled back this victim transaction. It cannot preserve the original transaction's first update."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "summary": "Waiting for a lock can resume an ordinarily blocked transaction before victim selection. Once 1205 is returned, the old transaction does not survive to resume."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "summary": "A fresh transaction must repeat both updates after the safe bounded delay. The explicit absence of external effects and safe whole-operation retry premise are essential; arbitrary business operations are not automatically retryable."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-016",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "ca899bb7c5a3546a8c2a876c8d569fd45a8709a7e584f33f93be07c169bad5ba",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-deadlocks",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-deadlocks-guide",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-deadlocks.json",
+              "retrievedAt": "2026-09-16T19:43:09.576Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Deadlock detection and Handle deadlocks state that error 1205 follows rollback of the victim transaction; all its work is undone. Handle with TRY...CATCH permits catching the error, and retry guidance recommends a brief randomized pause. Ordinary blocking instead waits on a surviving transaction."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "The victim is the entire explicit transaction, not just its second UPDATE. Retrying only that statement loses the rolled-back first UPDATE and no longer repeats the stated atomic operation. A one-statement unit of work would be a different case.",
+              "sourceIds": ["dp800-d2-deadlocks"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Error 1205 reports rollback of the original victim transaction, so its changes cannot be committed afterward. A CATCH block can still run, but that control-flow continuation does not mean the original transaction survived.",
+              "sourceIds": ["dp800-d2-deadlocks"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Waiting may allow an ordinarily blocked, still-live transaction to resume after its blocker completes. Here victim selection and error 1205 have already ended the original transaction. A delay is useful before a new attempt, not to resume the rolled-back attempt.",
+              "sourceIds": ["dp800-d2-deadlocks"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "Starting a new transaction and repeating both UPDATEs reconstructs the complete atomic operation after rollback. The bounded retry, randomized pause and absence of external effects satisfy the recovery assumptions; this does not license unbounded retries or repeating a non-idempotent external action.",
+              "sourceIds": ["dp800-d2-deadlocks"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independent answer: d. The actual product guide supports SQL Server 2022's mature 1205/transaction rollback behavior and catching the error; no Preview or edition-specific mechanism is invoked. Victim-selection priorities are irrelevant because selection already occurred; I did not adopt the training unit's oversimplified cheapest-victim rule. No executable retry snippet is authored here, and no SQL was executed. Approval does not endorse an unconditional second ROLLBACK of an already rolled-back transaction. The module summary directly links the exact Deadlocks guide, with complete course/path ancestry inspected. Intermediate troubleshooting is appropriate for interpreting a two-statement atomic boundary. Its longer correct option expresses that boundary without persuasive qualifiers. The baseline/live record has this same canonical ID and fact; the separate SNAPSHOT candidate adds stale read-derived calculation semantics, and the sleeping-blocker candidate has no victim/error-1205 event. PASS 2 only.",
+          "confidenceReason": "High confidence from the product guide's explicit transaction-wide rollback and randomized retry guidance. Safe whole-operation retry and absence of external effects are supplied, so neither statement-only recovery nor survival of the old transaction remains defensible."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "ca899bb7c5a3546a8c2a876c8d569fd45a8709a7e584f33f93be07c169bad5ba",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-16T23:10:51.414Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Recovery can repeat only the failing second UPDATE while preserving the first UPDATE’s contribution.",
+            "whyIncorrectInContext": "Victim rollback removed both statements’ work. Replaying the second alone constructs a different operation and omits the first update.",
+            "couldBeCorrectWhen": "If one autocommit statement is the complete safely retryable transaction, repeating that statement repeats the complete unit. The actual example contrasts an autocommit UPDATE with a multi-statement explicit transaction.",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "evidenceSummary": "Handle deadlocks identifies transaction rollback, and the demonstration labels Session A’s explicit transaction and Session B’s autocommit statement. That sourced boundary, not which statement errors, decides retry scope."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "The original victim transaction remains available to commit after error 1205.",
+            "whyIncorrectInContext": "The engine has already rolled it back. Catching the error provides control flow, not a committable original transaction.",
+            "couldBeCorrectWhen": "COMMIT finalizes a live, committable transaction whose work completed without victim rollback. In the source’s same-order example, the first transaction commits or rolls back before the blocked transaction continues.",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "evidenceSummary": "Deadlock detection and Handle deadlocks describe rollback before 1205 is returned. Access objects in the same order separately describes normal commit, supporting the legitimate non-victim context."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Waiting for the conflicting lock to disappear lets the original victim transaction continue.",
+            "whyIncorrectInContext": "That describes a still-blocked request. The stipulated 1205 event has terminated this transaction, and waiting cannot restore its rolled-back state.",
+            "couldBeCorrectWhen": "Under ordinary non-deadlocked blocking, before victim termination or another abort, the requester can proceed when the owner releases its lock.",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "evidenceSummary": "Understand deadlocks explicitly contrasts normal lock waiting with monitor-selected victim termination. The recovery section recommends a brief wait before resubmission, not continuation of the discarded transaction."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "After victim rollback, recovery repeats the complete safe unit of work inside a newly begun transaction.",
+            "whyIncorrectInContext": "It is supported, not incorrect: both UPDATEs were rolled back, so a fresh transaction containing both retries the stated operation.",
+            "couldBeCorrectWhen": "The application establishes that the complete operation is safely replayable, excludes or reconciles external effects, and bounds retries. Those are explicit premises here; the retry can still encounter another failure.",
+            "sourceIds": ["dp800-d2-deadlocks"],
+            "evidenceSummary": "The actual 1205 message says to rerun the transaction, and recovery guidance recommends an error handler and randomized pause. The warning that deadlocks cannot be completely avoided rules out guaranteed-success readings."
+          }
+        ],
+        "challenges": {
+          "scope": "SQL Server 2022 and an explicit transaction are fixed. The ordinary Database Engine victim behavior governs; Azure optimized-locking discussion is not required and no Fabric or Managed Instance default is borrowed.",
+          "plan": "Victim selection already occurred. Physical plans, DEADLOCK_PRIORITY and edition/service-tier limits cannot make a terminated victim transaction survive 1205. Priority/cost qualifications do not create another recovery answer.",
+          "role": "The issuing application handles its returned error. No authority to kill another session or read server diagnostic views is prescribed. Existing permission to perform the operation is not converted into a fabricated sysadmin or Azure role requirement.",
+          "preconditions": "Both UPDATEs belong to one transaction; complete bounded retry is safe and no external effects occurred. Without those premises generic replay could be unsafe. The randomized pause reduces recurrence risk but is not proof of success.",
+          "featureStatus": "GA covers established SQL Server victim rollback and catchable error 1205, not Preview concurrency features or methodology-only reasoning. The actual source documents the behavior without a new edition qualification.",
+          "sourceChanges": "The guide remains the MCP capture at 2026-09-16T19:43:09.576Z with frozen review at 2026-09-16T20:48:01.996Z. I reread the actual body and summary reference without changing either date or approval.",
+          "stemSufficiency": "Error type and transaction boundary are explicit, so predicates, an isolation-level choice and a deadlock graph are unnecessary to select recovery. The reader need not guess whether only the second statement was rolled back.",
+          "explanationBounds": "The explanation separates CATCH control flow from transaction survival. It does not prescribe another unconditional ROLLBACK, automatic replay or universal idempotence. The complete operation includes the first UPDATE.",
+          "reasoningDepth": "Applying transaction-level failure to two statements and distinguishing it from normal blocking supports lower-intermediate troubleshooting. Once rollback is recognized the alternatives resolve quickly, so difficulty receives 3.",
+          "answerClues": "The safe-retry premise repeats complete-operation language used in d, making the question easier. It establishes a necessary safety premise rather than proving which transaction survives. Option c is also lengthy; no unique verbosity cue independently establishes d."
+        },
+        "qualityNotes": "46/48. DistractorPlausibility 3 because commit/continue are easy to eliminate after recognizing rollback; DifficultyAuthenticity 3 because 1205 and safe replay narrow the inference. The sourced autocommit alternative tests a real boundary mistake. Repeated complete-operation wording is recorded as a nonblocking cue."
+      }
+    },
+    "dp800-20260916-d2-014": {
+      "generation": {
+        "questionFingerprint": "220ced71df9b5e91aa055c518dbf90b8e4e5bebc61bff7eafec447ac1e62ad3c",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-service-tiers"],
+            "summary": "General Purpose provisioned compute fits steady workloads within its supported storage size. Its documented 4-TB data limit cannot hold the projected 12-TB single database."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-service-tiers"],
+            "summary": "Business Critical supplies local SSD storage and a readable replica for demanding OLTP. It also has a documented 4-TB data limit, so those advantages do not meet the 12-TB requirement."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+            "summary": "Serverless can fit intermittent demand, but changing compute tier does not remove General Purpose's storage boundary. This workload is also steady rather than the stated intermittent serverless use case."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+            "summary": "Hyperscale supports storage well beyond 12 TB and named replicas for read scale-out. Provisioned compute matches the stipulated steady resource use without relying on Preview high-vCore sizes."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-014",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "220ced71df9b5e91aa055c518dbf90b8e4e5bebc61bff7eafec447ac1e62ad3c",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-service-tiers",
+              "url": "https://learn.microsoft.com/en-us/azure/azure-sql/database/service-tiers-sql-database-vcore",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-service-tiers.json",
+              "retrievedAt": "2026-09-16T19:43:11.879Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The Azure SQL Database comparison gives General Purpose and Business Critical 4-TB ceilings versus Hyperscale's 128 TB. Compute distinguishes continuous provisioned resources from serverless autoscaling. The Hyperscale section supports named-replica read scale-out. The 160/192-vCore Preview footnote is outside the stem's ordinary-GA-size assumptions."
+            },
+            {
+              "sourceId": "dp800-d2x-config-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/02-recommend-database-configurations",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-02-recommend-database-configurations.json",
+              "retrievedAt": "2026-09-16T19:33:00.061Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Choose a compute tier associates provisioned compute with consistent usage and serverless with intermittent traffic. Match the configuration to your workload pairs large single databases and named-replica read scale with Hyperscale. Product limits, not sweeping unlimited-capacity, price or latency language, control this recommendation."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "Provisioned compute is compatible with steady usage, but the actual Azure SQL Database vCore table caps General Purpose data size at 4 TB. A smaller database could fit; adding CPU does not make this tier support the stipulated unsharded 12-TB database.",
+              "sourceIds": ["dp800-d2x-service-tiers"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Business Critical's local SSD and readable secondary can suit demanding OLTP and reporting, but its documented 4-TB maximum fails the mandatory 12-TB single-database requirement. Performance and read-scale benefits do not override a capacity limit.",
+              "sourceIds": ["dp800-d2x-service-tiers"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Serverless changes compute scaling and billing, not General Purpose's 4-TB data boundary. It can suit intermittent smaller workloads, but cannot accommodate this 12-TB database. Steady usage favors provisioned compute; serverless is not being asserted technically incapable of every steady workload.",
+              "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "The captured Hyperscale limit accommodates 12 TB, and the product section explicitly provides named replicas for read scale-out. Provisioned compute matches steady demand. The answer requires neither Preview 160/192-vCore sizes nor a promise about price, latency or replica freshness.",
+              "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independent answer: d. The product applies to Azure SQL Database, not Managed Instance; the comparison concerns service tiers rather than every compute size. Region availability and ordinary GA sizes are supplied; no administrative permission or deployment command is tested. No SQL was executed. GA is justified for ordinary Hyperscale/provisioned capability; the Preview high-vCore footnote does not apply. Contradictory generic default-tier marketing was not used. The absolute-wording warning comes from denying a guarantee, not promising unlimited capacity: the candidate uses finite 12-TB storage and disclaims latency/cost/freshness guarantees. Options have parallel construction. Intermediate is appropriate because capacity eliminates three alternatives without advanced design analysis. This concept differs from plan-cache configuration and the three preserved performance facts. I inspected the module's configuration-unit link, the summary's direct vCore link and root ancestry. PASS 2 only; a cloned exact-URL policy was used solely for structural validation.",
+          "confidenceReason": "High confidence from the product's explicit 4-TB/128-TB comparison and named-replica discussion, cross-checked against compute-pattern guidance. No conclusion depends on Preview sizes, pricing estimates or a claim that Hyperscale has unlimited storage."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "220ced71df9b5e91aa055c518dbf90b8e4e5bebc61bff7eafec447ac1e62ad3c",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-16T23:10:51.414Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "General Purpose with continuously provisioned compute meets the whole unsharded 12-TB requirement.",
+            "whyIncorrectInContext": "Its compute pattern fits but its 4-TB data limit does not. More CPU is not a service tier that supports the required database size.",
+            "couldBeCorrectWhen": "A database within General Purpose’s supported size has predictable activity and moderate I/O requirements. That alternative context does not retain this 12-TB single-database condition.",
+            "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+            "evidenceSummary": "The product table states 1 GB–4 TB for General Purpose and describes remote storage. The unit separately recommends provisioned compute for consistent usage, explaining why only part of a is appropriate."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Business Critical’s local storage and readable replica make it sufficient for one 12-TB database.",
+            "whyIncorrectInContext": "Its real read-offload benefit cannot override the product table’s 4-TB storage maximum.",
+            "couldBeCorrectWhen": "A smaller supported database needs low-latency local SSD I/O and a readable secondary for reports; Business Critical provisioned compute is defensible for that workload.",
+            "sourceIds": ["dp800-d2x-service-tiers"],
+            "evidenceSummary": "The product’s Business Critical section documents local SSD, primary/secondary design and read-only reporting offload. The comparison table independently limits data size to 4 TB."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Changing General Purpose to serverless solves large-database capacity and matches the compute pattern.",
+            "whyIncorrectInContext": "Serverless changes compute allocation/billing, not General Purpose’s 4-TB boundary. No intermittent-demand justification is supplied for this steady-workload recommendation.",
+            "couldBeCorrectWhen": "An intermittent smaller database fits General Purpose and uses supported serverless hardware. This is not a general rule forbidding steady workloads on serverless.",
+            "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+            "evidenceSummary": "The product Compute section separates continuous provisioning from autoscaling and states the hardware constraint; the unit supplies intermittent-use guidance. Neither says serverless expands General Purpose storage."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Hyperscale supplies the required single-database storage and read scaling, with provisioned compute for steady demand.",
+            "whyIncorrectInContext": "It is supported, not incorrect: 12 TB fits below 128 TB, named replicas address read scale-out, and continuous provisioning matches the stated consumption.",
+            "couldBeCorrectWhen": "The single database exceeds the other offered tiers’ size limits, relevant regional GA configurations are available, and stable demand favors continuous provisioning, as here. Real resource sizing still requires workload evaluation.",
+            "sourceIds": ["dp800-d2x-service-tiers", "dp800-d2x-config-unit"],
+            "evidenceSummary": "The actual storage table and Hyperscale named-replica section support the required capabilities; the unit supplies the compute-pattern distinction. Generic default recommendations and Preview high-vCore options are unnecessary."
+          }
+        ],
+        "challenges": {
+          "scope": "The Azure SQL Database product tab governs, not Managed Instance, SQL Server edition limits, Fabric or a sharded collection. The stem specifies one unsharded database, not combined elastic-pool storage.",
+          "plan": "Service tier sets storage architecture; compute tier sets provisioned or demand-scaled resources. More vCores, serverless or Business Critical’s readable replica do not escape its tier’s 4-TB limit. Hyperscale named replicas satisfy the read-scale direction.",
+          "role": "This is a recommendation, not an execution or privilege-selection task. A real deployment needs an authorized operator, but no Azure RBAC/database principal is claimed to have that authority and missing role names do not change capacity.",
+          "preconditions": "Twelve-TB growth, one database, no sharding, steady usage, independent reads and regional ordinary-GA-size availability are explicit. Exact vCore sizing, quota, prices, replica lag and latency are not inferred from unprovided measurements.",
+          "featureStatus": "GA applies to ordinary Hyperscale/provisioned capabilities. I inspected the actual 160/192-vCore Preview footnote and excluded those sizes. This real service-feature question cannot be relabeled Not applicable; no Preview feature is needed by the answer.",
+          "sourceChanges": "The product capture is 2026-09-16T19:43:11.879Z and the unit capture 19:33:00.061Z; both retain frozen review 20:48:01.996Z. The table and qualifications were reread without changing dates. Conflicting generic default-tier prose is not used.",
+          "stemSufficiency": "Capacity excludes a, b and c, with steady use selecting the specified compute recommendation. Independent reads are meaningful but not needed to break an unstated tie. No immediate-replica-freshness requirement is smuggled in.",
+          "explanationBounds": "Authored text separates storage architecture from compute billing/scaling and explicitly disclaims latency, cost and freshness guarantees. Its finite 4-TB comparisons match the source; it does not say serverless can never run steady demand.",
+          "reasoningDepth": "A hard capacity constraint plus a compute preference is intermediate selection, not a detailed architecture trade study. The shared 4-TB failure makes three alternatives easy to eliminate; difficulty and distractor plausibility each receive 3.",
+          "answerClues": "All options use parallel tier-plus-compute phrasing. Hyperscale’s name suggests size, but the numeric storage boundary supplies the actual proof. The absolute-word warning matches a denial of a guarantee, not persuasive wording unique to the key."
+        },
+        "qualityNotes": "45/48. DistractorPlausibility 3 for the shared 4-TB elimination; DifficultyAuthenticity 3 for absence of detailed sizing/failure analysis; Originality 3 for a conventional large-database setup. The critical correctness/source dimensions remain 4 after checking finite capacity and the actual Preview footnote."
+      }
+    },
+    "dp800-20260916-d2-015": {
+      "generation": {
+        "questionFingerprint": "87217dc0228def37600a5d694a8382e1e0159f198c4226a9f403e4e6dca2e48c",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "summary": "MAXDOP constrains query parallelism and can be relevant to CPU/thread contention. It does not select compiled stubs instead of full first-use ad hoc plans."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "summary": "The configuration unit documents a small compiled plan stub on first execution and a full cached plan on reuse. That specifically addresses the supplied single-use plan-cache footprint."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "summary": "Compatibility level enables version-specific optimizer behavior. It is relevant to testing newer optimizer features, not the named control for retaining stubs for first-use ad hoc statements."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "summary": "Automatic plan correction addresses regressions between alternative plans for a query. It is useful for that scenario, not the accumulation of many distinct statements executed once."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-015",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-performance-20260916",
+          "questionFingerprint": "87217dc0228def37600a5d694a8382e1e0159f198c4226a9f403e4e6dca2e48c",
+          "reviewedAt": "2026-09-16T21:32:23.338Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-config-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/optimize-database-performance/02-recommend-database-configurations",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\performance-02-recommend-database-configurations.json",
+              "retrievedAt": "2026-09-16T19:33:00.061Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "Reduce plan cache bloat explicitly documents ALTER DATABASE SCOPED CONFIGURATION SET OPTIMIZE_FOR_AD_HOC_WORKLOADS = ON and first-use compiled plan stubs. Separate sections assign MAXDOP to parallelism, compatibility level to optimizer behavior, and FORCE_LAST_GOOD_PLAN to regression correction; none is the documented stub-retention control."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "MAXDOP controls parallel execution and can help a demonstrated parallelism/thread-contention problem. Setting it to one does not instruct the cache to retain only first-use ad hoc stubs. The supplied diagnosis is storage consumed by many distinct single-use plans, not parallel execution.",
+              "sourceIds": ["dp800-d2x-config-unit"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "The retrieved Azure SQL Database unit explicitly provides this database-scoped switch and says first execution retains a compiled plan stub instead of a full cached plan. That targets first-use cache footprint; it does not eliminate first-execution compilation or promise indefinite residency of every important plan.",
+              "sourceIds": ["dp800-d2x-config-unit"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Compatibility level selects version-dependent optimizer behavior and should be evaluated against a baseline when changed. Level 170 is not the named setting for first-use ad hoc stub retention. It may be relevant when adopting an optimizer feature, not as a substitute for the cache-policy control asked here.",
+              "sourceIds": ["dp800-d2x-config-unit"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "FORCE_LAST_GOOD_PLAN addresses a query's regression to a worse plan by restoring a prior good plan. Thousands of distinct statements executed only once are a cache-footprint problem, not a prior-plan regression case. Automatic plan correction is real but does not select first-use stubs.",
+              "sourceIds": ["dp800-d2x-config-unit"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independent answer: b. Actual cited text demonstrates database-scoped Azure SQL Database syntax, not a server-level sp_configure prescription. This targets future first-use storage; it does not promise to remove existing full plans immediately or avoid compilation. The candidate asks which setting addresses the diagnosis, not who can execute ALTER; a fabricated permission rule is unnecessary. The named configuration and alternative optimizer/tuning features are presented as available, with no relevant Preview qualification in the retrieved section; GA is appropriate. SQL identifiers and scope were statically checked, with no live execution. The negative-wording warning is a useful exclusion of parallelism/plan forcing, not a negative-selection task; 'Their' and 'that goal' unambiguously refer to the plans and cache footprint. All four settings are real alternatives for other diagnoses. Intermediate is credible for targeted configuration selection. Distinct from capacity sizing and retained Query Store history. Actual module/unit/root ancestry was inspected. PASS 2 only.",
+          "confidenceReason": "High confidence because the retrieved unit directly differentiates all four settings and includes the exact database-scoped stub setting. Approval is limited to first-use ad hoc storage, not immediate cache remediation, parameterization or guaranteed plan retention."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "87217dc0228def37600a5d694a8382e1e0159f198c4226a9f403e4e6dca2e48c",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-performance-20260916",
+        "reviewedAt": "2026-09-16T23:10:51.414Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Serializing query execution with MAXDOP 1 changes first-use ad hoc cache storage to stubs.",
+            "whyIncorrectInContext": "MAXDOP controls execution parallelism rather than whether a first-use plan is retained in full. The question identifies cache storage, not CPU/thread contention.",
+            "couldBeCorrectWhen": "A measured parallelism or thread-contention problem warrants evaluating lower MAXDOP, including serial execution where appropriate. That different diagnosis needs workload evaluation, not a universal MAXDOP-1 recommendation.",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "evidenceSummary": "Control parallelism with MAXDOP describes database/query parallelism settings. The separate ad hoc section assigns first-use stub retention to another control, distinguishing their mechanisms."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Database-scoped OPTIMIZE_FOR_AD_HOC_WORKLOADS reduces retained cache for first-use ad hoc plans.",
+            "whyIncorrectInContext": "It is supported, not incorrect. The actual source describes small compiled stubs on first execution and gives the database-scoped switch implementing that policy.",
+            "couldBeCorrectWhen": "Substantial one-use ad hoc footprint makes reduced first-use retention the objective, as stipulated. This does not remove compilation work or promise immediate eviction of every existing full plan.",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "evidenceSummary": "The raw cache-bloat section contains ALTER DATABASE SCOPED CONFIGURATION SET OPTIMIZE_FOR_AD_HOC_WORKLOADS = ON and describes stubs followed by full-plan caching on reuse. Its stronger guaranteed-residency prose is not adopted."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Compatibility level 170 chooses stubs instead of full first-use ad hoc plans.",
+            "whyIncorrectInContext": "Compatibility level governs optimizer behavior, not the first-use retention policy. A new optimizer can change plans without enabling the requested stub setting.",
+            "couldBeCorrectWhen": "An Azure SQL Database team adopts an optimizer capability supported at level 170 and tests its workload against the prior baseline. The unit recommends this compare-and-test process rather than blind production change.",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "evidenceSummary": "The compatibility subsection discusses level 170, its ALTER statement and baseline testing. The ad hoc subsection separately names the stub-retention setting; they are not interchangeable."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Restoring a previous good plan solves accumulation of full plans for distinct statements used once.",
+            "whyIncorrectInContext": "The supplied population lacks the repeated-query regression target. Automatic plan correction does not set first-use stub retention across thousands of distinct entries.",
+            "couldBeCorrectWhen": "A repeated query has switched from a better previous plan to a regressed plan that automatic tuning can correct. That is the source’s prior-plan context, not this storage problem.",
+            "sourceIds": ["dp800-d2x-config-unit"],
+            "evidenceSummary": "Let automatic tuning catch regressions defines FORCE_LAST_GOOD_PLAN as restoring the earlier fast plan after regression. The ad hoc section addresses the separate population of single-use cached full plans."
+          }
+        ],
+        "challenges": {
+          "scope": "Azure SQL Database is explicit and the raw source demonstrates ALTER DATABASE SCOPED CONFIGURATION. SQL Server’s server-level sp_configure interface, Managed Instance behavior and Fabric warehouse features are not substituted.",
+          "plan": "Cached full first-use plans are a storage problem; FORCE_LAST_GOOD_PLAN instead manages a repeated query’s regressed physical-plan choice. MAXDOP and compatibility level affect other behaviors. Only b is the documented stub-retention policy.",
+          "role": "The question selects a setting, not execution rights. An actual change needs an authorized database operator, but the source provides no permission matrix and I invent none. No server sysadmin or subscription role is claimed as a prerequisite to answering.",
+          "preconditions": "Distinct one-use full plans and cache pressure are supplied, while parameterization changes are unavailable. The target is first-use retained storage, not instant eviction or an experimental observation that the switch is currently OFF.",
+          "featureStatus": "The database-scoped switch, MAXDOP, automatic plan correction and documented compatibility-level choice are real Azure SQL Database features. The relevant sections present them without a Preview qualification. This is GA software scope, not a Not applicable methodology fallback.",
+          "sourceChanges": "The actual unit remains the MCP capture at 2026-09-16T19:33:00.061Z with frozen review at 2026-09-16T20:48:01.996Z. Relevant sections and module reference were reread without a new approval, retrieval claim or source-date change.",
+          "stemSufficiency": "The population, pressure and first-use goal identify the mechanism among the offered settings. An omitted current switch-value measurement cannot make another option implement stubs: this is capability selection, not a complete operational remediation procedure.",
+          "explanationBounds": "The candidate does not claim uncompiled first execution, permanent residency or retroactive clearing of all old plans. The unit’s broader residency statement is not adopted. Parameterization remains a separate later improvement.",
+          "reasoningDepth": "Separating the diagnosed retention mechanism from three real controls supports lower-intermediate troubleshooting. The stem rules out parallelism and forcing, reducing inference depth; difficulty is 3 rather than claiming an advanced investigation.",
+          "answerClues": "Ad hoc echoes the correct identifier, and the stated goal eliminates a and d, so cueing is a genuine nonblocking limitation. Every choice remains a real setting; compatibility modernization is a plausible broad-tuning mistake. Pronoun/negative wording does not obscure the goal."
+        },
+        "qualityNotes": "45/48. DistractorPlausibility 3 for alternatives partly excluded by the stem; DifficultyAuthenticity 3 for the descriptive-name cue and narrow inference; Originality 3 for a familiar one-use-cache setup. Exact syntax, independent mechanisms and bounded explanations support the critical 4s."
+      }
+    }
+  }
+}

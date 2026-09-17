@@ -1,0 +1,1670 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-direct-017": {
+      "generation": {
+        "questionFingerprint": "835250490fbf6d3b30f8dae7383eae9055309daeab9883606c138d4573815502",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-project-build"],
+            "summary": "Publish executes the source-to-target deployment. It is appropriate after authorization to apply changes, rather than for producing the requested nonexecuting approval artifact."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-drift", "dp800-d2-project-build"],
+            "summary": "Script generates the proposed deployment T-SQL without applying it. Its target connection and actual deployment options determine that artifact, matching the approver's requirement."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-drift"],
+            "summary": "DeployReport returns an XML summary of planned changes. It suits automated operation-level review but is not the actual executable T-SQL the approver requested."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-drift"],
+            "summary": "Extract captures a live schema as a model or object files. That supports schema baselining/drift work, not this .dacpac-to-target deployment script."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-017",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-cicd-20260916",
+          "questionFingerprint": "835250490fbf6d3b30f8dae7383eae9055309daeab9883606c138d4573815502",
+          "reviewedAt": "2026-09-16T21:42:30.049Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-drift",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/05-detect-resolve-schema-drift",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-05-detect-resolve-schema-drift.json",
+              "retrievedAt": "2026-09-16T19:33:08.760Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The actual deployment-review sections distinguish Script's nonexecuting T-SQL output, DeployReport's XML operations, and Extract's live-schema output. I exclude the introductory claim that every target-only object is dropped; the candidate correctly does not repeat it. The actual module/unit link and full DP-800 course/path ancestry were inspected."
+            },
+            {
+              "sourceId": "dp800-d2-project-build",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-02-create-build-validate-sql-database-projects.json",
+              "retrievedAt": "2026-09-16T19:33:00.260Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The captured Deploy the project section identifies Publish as the operation that changes the target and separates Script/DeployReport preview artifacts. The stem supplies the built dacpac and authorized target access. I do not endorse the unit's blanket claim that repeated deployment changes nothing when custom scripts may execute."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "Publish applies changes to the target, crossing the explicit no-changes-before-approval boundary. It fits an authorized deployment, not this nonexecuting artifact-generation step.",
+              "sourceIds": ["dp800-d2-project-build"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "The drift unit explicitly says Script produces the T-SQL that would execute without running it. The supplied source dacpac and target access provide the inputs for this target-specific approval artifact.",
+              "sourceIds": ["dp800-d2-drift", "dp800-d2-project-build"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "DeployReport produces an XML summary of planned operations. It is useful for automated review and is nonexecuting, but it is not the actual T-SQL required by the approver.",
+              "sourceIds": ["dp800-d2-drift"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "Extract retrieves a live schema model or object-definition files. That supports baselining and reconciliation, rather than computing the supplied dacpac's proposed target-update T-SQL.",
+              "sourceIds": ["dp800-d2-drift"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. Independently derived B from output format and execution side effects. Current deployment subskill and GA ordinary SqlPackage actions are supported; no preview IDE integration is required. No command was supplied or executed: codeReviewed means static action semantics. The pronoun warning resolves to the proposed deployment. Intermediate fits distinguishing actual SQL from other useful artifacts. This is the same preserved baseline ID, not a second encounter. Bounded duplicate checks found none; d2-032 instead tests pre-script planning order. No registration-dependent DriftReport behavior or universal object-drop behavior is approved.",
+          "confidenceReason": "High confidence in the unique action selection because actual cited training gives all four roles and the target-access/nonexecution requirements bound the answer. This is not a final attestation."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "835250490fbf6d3b30f8dae7383eae9055309daeab9883606c138d4573815502",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-16T22:57:00.484Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Publish is the action for a nonexecuting approval artifact.",
+            "whyIncorrectInContext": "Publish carries out a deployment rather than stopping at the requested T-SQL review artifact. A no-op publish still does not make Publish the specified artifact-generation action.",
+            "couldBeCorrectWhen": "The proposed changes have already been approved and the job is authorized to apply the package to the target, rather than merely submit its SQL for approval.",
+            "sourceIds": ["dp800-d2-project-build", "dp800-d2-drift"],
+            "evidenceSummary": "The build unit's Deploy the project section uses Publish for new or existing database updates; both units separately prescribe Script for nonexecuting T-SQL review. No universal drop behavior is assumed."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Script generates the proposed source-to-target deployment T-SQL.",
+            "whyIncorrectInContext": "Supported, not incorrect: the requested deliverable is executable-format T-SQL and deployment must not be applied. Script is the documented action satisfying both requirements.",
+            "couldBeCorrectWhen": "A valid source package and readable target schema are available and the artifact will be reviewed before execution. If the target or publish settings subsequently change, the plan needs renewed review.",
+            "sourceIds": ["dp800-d2-drift", "dp800-d2-project-build"],
+            "evidenceSummary": "Generate a deployment script explicitly says Script produces the T-SQL without running it and recommends retaining Deployment.sql as a pipeline approval artifact."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "DeployReport returns the actual deployment T-SQL artifact.",
+            "whyIncorrectInContext": "It returns an XML operations summary rather than the actual T-SQL. It is nonexecuting and useful for approval, but fails the explicit output-format requirement.",
+            "couldBeCorrectWhen": "An approver or automated policy needs a machine-readable list of planned operations or high-impact changes instead of the complete deployment SQL.",
+            "sourceIds": ["dp800-d2-drift", "dp800-d2-project-build"],
+            "evidenceSummary": "Both read units distinguish Script's SQL from DeployReport's XML; the drift unit gives operation and alert examples rather than a runnable SQL payload."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Extract computes this built package's proposed deployment SQL.",
+            "whyIncorrectInContext": "Extract reads a database schema into a model or object files. Producing SQL object-definition files does not make it a source-package-to-target deployment script.",
+            "couldBeCorrectWhen": "The task is to baseline the live schema, import approved database changes, or obtain source-controlled object definitions for a separate comparison.",
+            "sourceIds": ["dp800-d2-drift"],
+            "evidenceSummary": "Automate with SqlPackage extract uses a SourceConnectionString and SchemaObjectType output. The later Script section separately compares the built source model with the target."
+          }
+        ],
+        "challenges": {
+          "scope": "The question is one .dacpac-to-database proposed deployment, not extraction, database-to-project import, or registered-DAC drift history. SqlPackage DriftReport and its registration prerequisite are not alternatives and are not silently assumed.",
+          "plan": "Output SQL versus XML and nonexecution determine the choice; no GitHub subscription, tenant plan, Azure SQL pricing tier or IDE-specific control is required.",
+          "role": "Authorized target access is explicitly supplied. This is not a claim that an approval role automatically grants database metadata or deployment permissions.",
+          "preconditions": "The built source and accessible target are given. No command line is supplied; an appropriate output path and actual deployment settings remain operator inputs, not unexplained missing answer conditions.",
+          "featureStatus": "These are documented ordinary SqlPackage actions, with the build unit distinguishing GA VS Code/CLI functionality from Visual Studio SDK preview. The software action claim is GA, not hypothetical lifecycle-independent methodology.",
+          "sourceChanges": "The saved source reviews are September 16 snapshots. The drift unit's overbroad dropping claim was rejected while its explicit Script/DeployReport distinction was read directly; no source date was refreshed and online success was not treated as validation.",
+          "stemSufficiency": "Both required properties are explicit: actual T-SQL and no application of changes. Extract producing SQL files and DeployReport being reviewable do not satisfy both. No alternate key survives those constraints.",
+          "explanationBounds": "The answer does not promise a future publish has identical SQL after target/settings changes. It correctly avoids unconditional object-drop claims and does not imply the generated script has been executed or proven safe.",
+          "reasoningDepth": "A short Intermediate implementation choice applies two artifact/side-effect distinctions. It is not an Advanced deployment-design exercise, and receives a reduced authenticity score for the one-step structure.",
+          "answerClues": "All options are short real action names, so length does not reveal the key. The pronoun warning resolves to the proposed deployment; requesting SQL necessarily tests action semantics rather than creating an accidental wording clue."
+        },
+        "qualityNotes": "Keep distinct from d2-032: this asks which artifact action to use, not when planning happens relative to prerequisite execution. Compared the integrated CI/CD records and selected lexical warnings; no same-fact duplicate found. The preserved direct-017 ID is not a second installed item. Rubric 46/48; one-step depth and familiar framing are acknowledged."
+      }
+    },
+    "dp800-direct-018": {
+      "generation": {
+        "questionFingerprint": "b3fa6425fe5e0f96edbae7f5a3ca5b49a3be5abdb87cfd01adfbbcaedebfbfe6",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "summary": "Pre-deployment work occurs before schema changes and can prepare already-existing objects. It cannot insert required reference rows into a table that this initial schema deployment has not yet created."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "summary": "Plain append INSERT can work for a one-time empty table. On later runs with retained stable primary keys, it does not reconcile existing rows and can raise duplicate-key errors."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "summary": "A versioned post-deployment script runs after table creation and can deliberately reconcile existing and absent keys. This meets initial ordering and rerun behavior without assuming that every MERGE is concurrency-safe."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "summary": "Schema-only deployment is sufficient when the application has no required seeded data or loads it separately. This workflow explicitly requires the reference rows afterward, so the model alone is incomplete."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-018",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-cicd-20260916",
+          "questionFingerprint": "b3fa6425fe5e0f96edbae7f5a3ca5b49a3be5abdb87cfd01adfbbcaedebfbfe6",
+          "reviewedAt": "2026-09-16T21:42:30.049Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-reference-data",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/03-configure-source-control-manage-reference-data",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-03-configure-source-control-manage-reference-data.json",
+              "retrievedAt": "2026-09-16T19:33:04.473Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The actual unit places seeding after schema-plan execution, says post-deployment scripts run on every deployment, and illustrates matching existing keys and inserting absent keys. This supports ordering and repeatability, not whole-deployment atomicity or universal concurrency safety. The candidate makes neither broader claim."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "Pre-script timing precedes schema-plan execution. This plan first creates the lookup table, so the data-only seed has no table to populate beforehand. Pre-scripts can prepare already existing objects in other scenarios.",
+              "sourceIds": ["dp800-d2-reference-data"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Appending the same stable primary keys does not reconcile existing rows. The unit warns that repeat plain INSERT seeding causes duplicate-key failures. Conditional upsert logic would be reconciliation, not this stated append-only strategy.",
+              "sourceIds": ["dp800-d2-reference-data"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "supported",
+              "rationale": "Post-deployment reconciliation runs after the table exists and handles both present and absent keys on later runs. These are exactly the two requirements established by the placement and idempotent-seeding sections.",
+              "sourceIds": ["dp800-d2-reference-data"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "The compiled declarative model supplies schema objects, not the required lookup rows. Schema-only deployment is appropriate without a seed-data requirement, but it leaves this workflow's reference data absent.",
+              "sourceIds": ["dp800-d2-reference-data"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. C uniquely handles the explicit new-table first run and retained-key later runs. No particular MERGE implementation, deletion policy, concurrency guarantee or atomic transaction is assumed. Post-deployment is established GA functionality; no preview-only IDE behavior is needed. No executable seed snippet was supplied or run; review is static lifecycle/statement semantics. Intermediate fits ordering plus rerun state. The same baseline ID is a preserved refresh, not duplicate content. No construction or bounded duplicate warning occurred. d2-021 concerns project-item packaging rather than execution idempotence. The exact current subskill and real training ancestry were checked.",
+          "confidenceReason": "High confidence in C because documented placement and repeated-key reconciliation jointly determine the answer. The strategy does not purport to validate an unseen seed implementation."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "b3fa6425fe5e0f96edbae7f5a3ca5b49a3be5abdb87cfd01adfbbcaedebfbfe6",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-16T22:57:00.484Z",
+        "verdict": "manual-review-required",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Seed the newly modeled lookup table before the schema plan executes.",
+            "whyIncorrectInContext": "The first deployment creates the lookup table in the schema plan, so it is not yet available at the proposed seeding time. Later-run success cannot satisfy the initial deployment requirement.",
+            "couldBeCorrectWhen": "The needed table already exists before this deployment and the data preparation must precede compatible schema changes. A script that independently creates the table would be a different, unstated workflow.",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "evidenceSummary": "The source distinguishes preparation before the plan from post-plan lookup population. The candidate explicitly assigns initial table creation to the plan, ruling out this timing."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Append reference rows using INSERT after the schema deployment.",
+            "whyIncorrectInContext": "A blind replay of the same primary keys is incorrect, but that restriction is absent from B. An append operation guarded to insert only missing keys remains an INSERT-based post-schema strategy. With unchanged reference values, that reading can satisfy the stated presence and rerun requirements.",
+            "couldBeCorrectWhen": "The required values do not change, each execution skips already present stable keys, and only missing rows are inserted after table creation. The stem does not require updating changed values, and the option does not explicitly prohibit such a guard. No particular SQL syntax or concurrency implementation is asserted.",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "evidenceSummary": "Write idempotent reference data scripts limits its failure warning to plain INSERT replay and demonstrates separating existing from missing keys. The authored distractor explanation adds 'without handling existing rows', which the option itself never states. This is an unexcluded contextual interpretation, not an executed counterexample."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Use a versioned post-deployment reconciliation script for existing and missing keys.",
+            "whyIncorrectInContext": "Supported, not incorrect: post-plan execution gives the new table time to exist, and explicit existing/missing-key reconciliation addresses reruns. The hold concerns exclusivity against B, not C's technical soundness.",
+            "couldBeCorrectWhen": "The script correctly implements the reference-data policy after schema creation and handles already-present keys. Correct deletion policy, changed values and concurrent writers would need separate implementation decisions if introduced.",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "evidenceSummary": "The source describes versioning data scripts alongside schema and illustrates post-deployment matched/not-matched handling. It does not say every implementation using a different DML form is invalid."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "The schema model alone supplies the required reference rows.",
+            "whyIncorrectInContext": "The question assigns row population to this deployment lifecycle and the declarative model supplies schema objects, not those required data values. Merely creating the table leaves the stated row requirement unmet.",
+            "couldBeCorrectWhen": "No lookup rows are required, or a separately specified authorized data-provisioning process supplies them after schema deployment. No such process is given here.",
+            "sourceIds": ["dp800-d2-reference-data"],
+            "evidenceSummary": "The unit explicitly introduces pre/post data scripts because essential lookup and configuration rows sit outside the compiled schema model."
+          }
+        ],
+        "challenges": {
+          "scope": "This is initial table creation followed by retained-key repeat deployments. Existing-table pre-data preparation is outside that initial state; arbitrary database backups or bacpac data import are not among the proposed strategies.",
+          "plan": "No service pricing plan or IDE feature changes the ordering problem. The critical distinction is the data script's conditions, not a vendor plan or a mandatory MERGE implementation.",
+          "role": "No particular permission level is tested. Any real data script needs authorized data access; granting higher privilege would not cure blind key duplication or missing-table timing.",
+          "preconditions": "The initial absence and later retention of the table are sufficient to choose post-plan timing. They are insufficient to exclude guarded insertion: existing values are not said to change, and B does not specify unconditional inserts.",
+          "featureStatus": "SDK-style post-deployment scripts and SQL primary-key/data operations are real GA claims. They cannot be labeled Not applicable merely because the item asks for a strategy. No preview IDE is needed.",
+          "sourceChanges": "The unchanged source says plain INSERT replay fails and illustrates a reconciliation strategy. Independent rereading narrows that warning; its retrieval/review dates are not changed to fix the ambiguity.",
+          "stemSufficiency": "HOLD: C is sound, but B can describe a post-schema append that skips existing stable keys when values remain unchanged. Neither the option nor stem excludes that interpretation. The distractor explanation supplies the missing 'without handling existing' premise afterward.",
+          "explanationBounds": "The C explanation is supported. B's categorical exclusion depends on an unspoken implementation, and the deep explanation's 'only' claim is therefore too strong. MERGE syntax or universal concurrency safety is not required or approved.",
+          "reasoningDepth": "Initial ordering plus repeated-key state is genuine Intermediate implementation reasoning. Difficulty is not the defect; the breadth of INSERT wording prevents a unique single-select key.",
+          "answerClues": "C states both desired properties explicitly and is more comprehensive than the alternatives. That can lead readers to the intended answer without resolving B's semantic breadth. The absence of lexical warnings does not prove unique correctness."
+        },
+        "qualityNotes": "No lexical duplicate warning is needed to detect this option-level ambiguity. Compared with d2-021, which tests project-item classification rather than runtime row reconciliation. Rubric 41/48 with accuracy and uniqueness below mandatory 4. Preserve this full hold; do not patch B or change the key under these hashes."
+      }
+    },
+    "dp800-20260916-d2-020": {
+      "generation": {
+        "questionFingerprint": "c0f4e8347b36b490b5f37aaad328ae85e4977b41f5c55c720e71eb39237b8bc2",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-testing-unit"],
+            "summary": "A fixed sequence can be appropriate for an explicitly ordered integration journey. It does not make independent unit tests robust against leftover data or reveal their hidden state coupling."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-testing-unit"],
+            "summary": "Connectivity checks are useful smoke tests but do not verify the intended database logic. Removing value assertions hides the contamination instead of repairing test isolation."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-testing-unit"],
+            "summary": "The documented pre-test/test/post-test structure establishes inputs and cleans up to avoid contaminating subsequent tests. This addresses the state dependency while retaining meaningful assertions."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2x-testing-unit",
+              "dp800-d2x-pre-post-deployment"
+            ],
+            "summary": "The model build does not execute test cleanup or validate deployment-script behavior. Schema validation is valuable but is not a reset of the deployed database's business data."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-020",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-cicd-20260916",
+          "questionFingerprint": "c0f4e8347b36b490b5f37aaad328ae85e4977b41f5c55c720e71eb39237b8bc2",
+          "reviewedAt": "2026-09-16T21:42:30.049Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-testing-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-07-design-implement-testing-strategy.json",
+              "retrievedAt": "2026-09-16T19:33:13.916Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The actual unit describes pre-test setup clearing leftover rows and post-test cleanup preventing contamination. It separately recommends a dedicated target and resetting known state, so production isolation does not itself isolate one test from another."
+            },
+            {
+              "sourceId": "dp800-d2x-pre-post-deployment",
+              "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-pre-post-deployment.json",
+              "retrievedAt": "2026-09-16T19:43:06.749Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The article places pre/post scripts in the dacpac but outside object-model compilation/validation. It distinguishes build from executed data actions, not a promise that unchanged schema deployment erases business rows or that unseen cleanup is atomic."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "A fixed sequence can define an integration journey, but it preserves the data coupling these independent unit tests must remove. Documented reset/setup/cleanup, not a lucky order, addresses contamination.",
+              "sourceIds": ["dp800-d2x-testing-unit"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Connection checks establish reachability, not the total-value contract. Removing the substantive assertion hides the stated defect and violates the requirement to keep meaningful expected results.",
+              "sourceIds": ["dp800-d2x-testing-unit"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "supported",
+              "rationale": "Per-test deterministic setup establishes the starting rows and cleanup removes each test's residue. This is the documented pre-test/test/post-test structure for avoiding contamination of later totals.",
+              "sourceIds": ["dp800-d2x-testing-unit"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "An object-model build does not execute database cleanup. The pre/post article separates model validation from data-script execution, so cleanup cannot be inferred from a successful build.",
+              "sourceIds": [
+                "dp800-d2x-pre-post-deployment",
+                "dp800-d2x-testing-unit"
+              ]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. C is unique given the dedicated target, residual rows and retained assertions. GA concerns established SQL Server test hooks, not a preview SDK integration. The question does not claim every dacpac deployment retains all data; retention is a scenario fact. No cleanup code, transaction rollback or live test run was reviewed. Intermediate fits the single isolation defect. The negative-wording warning protects assertion quality rather than creating ambiguity. This is not d2-019's test-coverage decision; no scoped duplicate was found. Actual source ancestry, exact current subskill, and frozen dates were checked.",
+          "confidenceReason": "High confidence: the setup/cleanup text directly addresses the failure mode, while alternatives preserve coupling or remove the tested behavior. Approval covers strategy, not unseen test code."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "c0f4e8347b36b490b5f37aaad328ae85e4977b41f5c55c720e71eb39237b8bc2",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-16T22:57:00.484Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "A fixed successful execution order makes the unit tests independent.",
+            "whyIncorrectInContext": "A favorable order hides the residual-row dependency; it does not make shuffled independent tests start from the intended state.",
+            "couldBeCorrectWhen": "The test is intentionally one ordered integration journey whose steps share state, and the journey itself has controlled initial and final state. That differs from the independent unit tests requested.",
+            "sourceIds": ["dp800-d2x-testing-unit"],
+            "evidenceSummary": "The unit separates individual unit-test behavior from multi-operation integration scenarios and explicitly prescribes setup/cleanup and reset to known state."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Replacing total assertions with connection checks fixes the unreliable tests.",
+            "whyIncorrectInContext": "It removes the business-result checks the question requires retaining. Connectivity can succeed while the wrong totals remain undetected.",
+            "couldBeCorrectWhen": "The sole goal is a smoke check of database connectivity, with behavioral tests maintained separately rather than weakened.",
+            "sourceIds": ["dp800-d2x-testing-unit"],
+            "evidenceSummary": "The unit explains that successful build/connection is not proof of correct stored-procedure results and describes Scalar Value conditions for actual returned values."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Each test establishes known inputs and cleans its owned data.",
+            "whyIncorrectInContext": "Supported, not incorrect: deterministic setup removes dependency on predecessor state while owned-data cleanup prevents later contamination, without discarding total assertions.",
+            "couldBeCorrectWhen": "Setup and cleanup manage the rows relevant to each test on the dedicated target. Parallel execution would additionally require isolation of concurrent test ownership; the stem only describes shuffled order.",
+            "sourceIds": ["dp800-d2x-testing-unit"],
+            "evidenceSummary": "The documented test structure explicitly inserts/clears data in pre-test actions and cleans up in post-test actions, with known-state requirements for both unit and integration tests."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Successful model compilation automatically removes deployed business rows.",
+            "whyIncorrectInContext": "Build validation checks the model, not live test-data cleanup. Even deployment-script behavior is outside that model validation, and the stem expressly says this redeployment retains the rows.",
+            "couldBeCorrectWhen": "A separately configured and tested reset process runs as part of test preparation. In that different workflow, cleanup belongs to the reset process, never to the bare model build claimed by D.",
+            "sourceIds": [
+              "dp800-d2x-testing-unit",
+              "dp800-d2x-pre-post-deployment"
+            ],
+            "evidenceSummary": "Testing guidance distinguishes structure from behavior, and the pre/post product article excludes script execution correctness from compilation. Neither gives model build an automatic data-deletion side effect."
+          }
+        ],
+        "challenges": {
+          "scope": "Dedicated SQL Server 2022 unit tests still share data inside their test database. Production separation and inter-test isolation are distinct. No Fabric test-feature parity is assumed.",
+          "plan": "The fix does not rely on an Azure service tier or repository plan. It uses the documented SQL test lifecycle and owned-data fixture design.",
+          "role": "The existing tests already write rows. Cleanup must stay within test-owned data on the dedicated target; broader production privileges or wiping unrelated data are not prescribed.",
+          "preconditions": "Residual business rows are explicitly identified as the cause and redeployment is explicitly nonresetting here. No generic claim that all dacpac deployments preserve every row is needed. Concurrent tests are not stipulated.",
+          "featureStatus": "Documented SQL Server unit-test setup and cleanup are GA software capabilities, not Visual Studio SDK-preview project creation. The scenario does not claim unknown version-specific test APIs or lifecycle-independent methodology.",
+          "sourceChanges": "Actual saved testing and pre/post bodies agree that model validation and executed data effects differ. No source review is redated; runtime validation remains unperformed.",
+          "stemSufficiency": "The dedicated target, passing-alone observation, order sensitivity, residual-row cause and retained assertion requirement rule out the three competing strategies.",
+          "explanationBounds": "The explanation requires deliberate state management rather than claiming post-test cleanup always runs after any failure. Deterministic pre-test setup protects the next run even if prior cleanup was incomplete.",
+          "reasoningDepth": "Intermediate troubleshooting fits recognizing hidden state coupling and selecting a fixture lifecycle. The cause is disclosed, limiting diagnostic depth but not inflating the label to Advanced.",
+          "answerClues": "C is the only data-state remedy; fixed order and weakened assertions are common novice shortcuts, while D is the weakest distractor. Negative wording protects expected results, not a trick inversion."
+        },
+        "qualityNotes": "Keep distinct from held d2-019: that item selects value/integration coverage; this one fixes persistent state between tests. No same-fact integrated duplicate found. The negative-wording warning is a necessary 'without weakening' constraint. Rubric 45/48; disclosed cause, familiar framing and weak D are acknowledged."
+      }
+    },
+    "dp800-20260916-d2-021": {
+      "generation": {
+        "questionFingerprint": "28f1d8bcab5406106cda035e871067d559733194b384d91031d26cc2e72e3298",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2-reference-data",
+              "dp800-d2x-pre-post-deployment"
+            ],
+            "summary": "The SDK's default globbing would otherwise compile the included data script as model input. Build Remove excludes it from the model while the SQLCMD include still packages it in the post-deployment script."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": [
+              "dp800-d2-reference-data",
+              "dp800-d2x-pre-post-deployment"
+            ],
+            "summary": "Removing generated outputs from source control is appropriate, but this seed file is required authored data logic. Deleting it breaks the include and loses its version history."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d2-reference-data",
+              "dp800-d2x-pre-post-deployment"
+            ],
+            "summary": "The product article explicitly pairs None Include with Build Remove to keep a script visible in the project view without compiling it as schema input."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2-reference-data",
+              "dp800-d2x-pre-post-deployment"
+            ],
+            "summary": "The project supports one post-deployment entry point. Multiple data files are combined through SQLCMD includes; separate entry points are not the documented model for this requirement."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-021",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-cicd-20260916",
+          "questionFingerprint": "28f1d8bcab5406106cda035e871067d559733194b384d91031d26cc2e72e3298",
+          "reviewedAt": "2026-09-16T21:42:30.049Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-reference-data",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/03-configure-source-control-manage-reference-data",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-03-configure-source-control-manage-reference-data.json",
+              "retrievedAt": "2026-09-16T19:33:04.473Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The actual unit shows one PostDeploy entry point, SQLCMD :r includes, and paired Build Remove/None Include items. It treats reference-data scripts as authored versioned files, unlike generated bin/obj output. These distinct roles independently support the two selected changes."
+            },
+            {
+              "sourceId": "dp800-d2x-pre-post-deployment",
+              "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-pre-post-deployment.json",
+              "retrievedAt": "2026-09-16T19:43:06.749Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The directly linked product article permits one pre- and one post-entry point, removes included files from model compilation, restores VS Code visibility through None, and shows the same relative-path SQLCMD syntax. Microsoft.Build.Sql combines those included files in the dacpac."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "Build Remove excludes the data-changing child script from default model compilation without deleting it. This is the documented handling for scripts executed through the existing SQLCMD post-deployment include.",
+              "sourceIds": [
+                "dp800-d2x-pre-post-deployment",
+                "dp800-d2-reference-data"
+              ]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "The seed is required authored data logic, not a generated output. Removing its source-control record loses a reproducible include dependency and violates the explicit versioning requirement.",
+              "sourceIds": ["dp800-d2-reference-data"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "supported",
+              "rationale": "The product article adds a None item after Build Remove specifically to retain VS Code project visibility without model compilation. The existing :r continues to provide deployment inclusion.",
+              "sourceIds": ["dp800-d2x-pre-post-deployment"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "A second independent PostDeploy entry conflicts with the documented single-entry-point model. Multiple data files must instead be invoked from the one entry point using SQLCMD includes.",
+              "sourceIds": [
+                "dp800-d2x-pre-post-deployment",
+                "dp800-d2-reference-data"
+              ]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. A,C follows from separating compilation, visibility and packaging. The displayed :r .\\Seed\\delivery-states.sql is valid SQLCMD include syntax, not standalone ordinary T-SQL. Static syntax, path spelling and item semantics were checked; no seed body was supplied, project compiled or live deployment executed. GA applies to the explicit VS Code SDK context, not Visual Studio's preview SDK UI. Intermediate fits the two item responsibilities. Negative/pronoun warnings resolve to the named data script and entry point. Unlike direct-018 this asks about packaging, not rerun idempotence. No scoped duplicate was found; exact current objective and full ancestry were verified.",
+          "confidenceReason": "High confidence in A,C because the product article explicitly documents both changes and their different effects with matching SQLCMD syntax. Code review is static only."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "28f1d8bcab5406106cda035e871067d559733194b384d91031d26cc2e72e3298",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-16T22:57:00.484Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Build Remove excludes the referenced seed file from model compilation.",
+            "whyIncorrectInContext": "Supported, not incorrect as part of the required pair: the data-changing child script must not be treated as a schema definition under default SQL globbing.",
+            "couldBeCorrectWhen": "The removed file remains reachable through the valid PostDeploy SQLCMD include, and None Include separately restores the requested VS Code project visibility. Removing a required table definition would be a different and harmful use.",
+            "sourceIds": [
+              "dp800-d2x-pre-post-deployment",
+              "dp800-d2-reference-data"
+            ],
+            "evidenceSummary": "Both bodies show Build Remove for SQLCMD child scripts and explicitly distinguish this action from their eventual deployment packaging."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Deleting the authored seed source while retaining its include meets the requirements.",
+            "whyIncorrectInContext": "It breaks the retained include and removes the required versioned data logic. Excluding compilation is not deleting the file or its source history.",
+            "couldBeCorrectWhen": "A no-longer-needed authored script is deliberately retired with its references updated, or a disposable generated file is ignored. The named seed and unchanged include in this option do not meet those conditions.",
+            "sourceIds": [
+              "dp800-d2-reference-data",
+              "dp800-d2x-pre-post-deployment"
+            ],
+            "evidenceSummary": "Reference data belongs in source control; the sources prescribe item classification, not deleting SQLCMD-referenced authored data scripts."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "None Include keeps the Build-removed seed visible in the VS Code project.",
+            "whyIncorrectInContext": "Supported, not incorrect as the companion to A: the file must be visible while excluded from the compiled database model. None alone is not being claimed to cancel Build globbing.",
+            "couldBeCorrectWhen": "Build Remove has also been applied and the child remains included by the single PostDeploy entry point. Without the SQLCMD include, None by itself would not schedule data execution.",
+            "sourceIds": [
+              "dp800-d2x-pre-post-deployment",
+              "dp800-d2-reference-data"
+            ],
+            "evidenceSummary": "The product article explicitly re-adds Build-removed SQL files as None to restore VS Code visibility, while preserving model exclusion."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "The same SQL project may add a second independent PostDeploy entry point.",
+            "whyIncorrectInContext": "The documented project contract permits one post-deployment entry point. Multiple files belong behind that entry point through includes, as already configured.",
+            "couldBeCorrectWhen": "The file becomes the sole post-deployment entry point of a different project, or replaces the existing one with references reorganized. It cannot be an additional independent entry point in this same project.",
+            "sourceIds": [
+              "dp800-d2x-pre-post-deployment",
+              "dp800-d2-reference-data"
+            ],
+            "evidenceSummary": "Both sources state the single pre/single post limit and show SQLCMD :r combining multiple files into the permitted entry point."
+          }
+        ],
+        "challenges": {
+          "scope": "The project is explicitly SDK-style with VS Code visibility, default .sql globbing and an existing PostDeploy entry point. Original-project UI instructions are not substituted.",
+          "plan": "Build item classification, IDE visibility and deployment include packaging are different mechanisms. No cloud service tier, repository plan or runtime database permission changes which two project items are needed.",
+          "role": "These are source-authoring edits, not grants to execute against production. An eventual deployment principal still needs the data permissions required by the unprovided seed body.",
+          "preconditions": "The child is versioned, consists of data statements, is currently globbed into Build and has the shown valid include. The stem explicitly asks for two edits, preventing None alone or Build Remove alone from being treated as complete.",
+          "featureStatus": "The exact VS Code SDK behavior is covered by the product article and GA SDK context. Visual Studio SDK preview is a separate surface; this is an actual software contract, not Not applicable methodology.",
+          "sourceChanges": "The saved product body includes the None-after-Build-Remove clarification. Both current snapshots were read without changing their dates or promoting a claim merely because the source was reachable.",
+          "stemSufficiency": "A and C jointly satisfy compilation exclusion and visibility while :r supplies deployment inclusion. No extra independent PostDeploy root is allowed. The absent seed body does not affect this project-item decision.",
+          "explanationBounds": "The explanation does not assert None Include alone packages or executes the script. It correctly gives that responsibility to the SQLCMD reference and avoids claiming the resulting data script is model-validated.",
+          "reasoningDepth": "Intermediate is appropriate: the learner must combine two complementary item operations and keep a third packaging mechanism separate. This is more than choosing a single acronym.",
+          "answerClues": "A and C have matched project-item syntax, but the explicit two-property problem genuinely requires that pair. Negative/pronoun warnings refer unambiguously to the named child and required visibility."
+        },
+        "qualityNotes": "Keep distinct from direct-018's execution-time ordering/idempotence. The same reference-data topic does not make item metadata and runtime row behavior identical facts. SQLCMD :r syntax and the exact child path were checked statically; no project build or seed execution occurred. Rubric 46/48."
+      }
+    },
+    "dp800-20260916-d2-022": {
+      "generation": {
+        "questionFingerprint": "158aef5cc805247d5de7d9b29f087e03dc6a7db887f8b2c89f1d1ccef25963cb",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-project-build", "dp800-d2x-sql-projects"],
+            "summary": "The connection string selects the runtime deployment destination. It is appropriate when the destination changes, but it does not change the project's build-time SQL syntax target."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-project-build", "dp800-d2x-sql-projects"],
+            "summary": "Excluding nonmodel deployment scripts can be appropriate, but this object is required schema. Bypassing its model validation loses the target-version check instead of aligning it."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-project-build", "dp800-d2x-sql-projects"],
+            "summary": "The project target platform determines which T-SQL syntax and features are validated. Matching it to the actual SQL Server 2022 deployment target repairs the stated configuration mismatch."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-project-build", "dp800-d2x-sql-projects"],
+            "summary": "A newer target is appropriate when deploying to that newer engine. It can admit features outside a SQL Server 2022 contract, so it is not the requested version-aligned validation."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-022",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-cicd-20260916",
+          "questionFingerprint": "158aef5cc805247d5de7d9b29f087e03dc6a7db887f8b2c89f1d1ccef25963cb",
+          "reviewedAt": "2026-09-16T21:42:30.049Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-project-build",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-02-create-build-validate-sql-database-projects.json",
+              "retrievedAt": "2026-09-16T19:33:00.260Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The real unit identifies Sql140 as SQL Server 2017 and says the .sqlproj target platform controls build-time syntax validation. It separates deployment connection from model validation and identifies VS Code SDK-style support as GA."
+            },
+            {
+              "sourceId": "dp800-d2x-sql-projects",
+              "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-database-projects",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-sql-projects.json",
+              "retrievedAt": "2026-09-16T19:43:04.751Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The product Validation section gives the SQL Server 2022-versus-Sql140 example. Its SDK section explicitly distinguishes GA VS Code support from Visual Studio 2022 preview. The unspecified feature boundary is stipulated; the named target-platform mechanism and lifecycle claims are actually documented."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "A connection string selects the deployment destination, whereas the validation target is a project property. Retaining Sql140 therefore retains the older build-time syntax boundary.",
+              "sourceIds": ["dp800-d2-project-build", "dp800-d2x-sql-projects"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "The object is required schema. Suppressing its validation does not establish engine compatibility; excluding nonmodel data scripts is a different task, not correction of this object's target.",
+              "sourceIds": ["dp800-d2-project-build"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "supported",
+              "rationale": "The target-platform property controls which SQL-version syntax is accepted. Matching it to the SQL Server 2022 deployment contract and rebuilding corrects the specific older-target mismatch.",
+              "sourceIds": ["dp800-d2x-sql-projects", "dp800-d2-project-build"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "A newer unrelated target can admit syntax unavailable on the actual SQL Server 2022 engine. The documented instruction is engine-aligned validation, not choosing the highest available version.",
+              "sourceIds": ["dp800-d2-project-build", "dp800-d2x-sql-projects"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. C follows from the independently read Sql140 mapping and validation contract. The unnamed feature's 2022/2017 boundary is stipulated, not invented syntax; the named SDK/target-platform software claims require and have real evidence. GA fits the explicit VS Code context; Not applicable would not excuse missing lifecycle evidence. No snippet or live SDK build was provided; review is static semantics. Intermediate fits one target-property diagnosis. Negative wording defines the version contrast, not a trick. This differs from d2-023's SQLCLR build/runtime exception; no duplicate was found. Actual summary-unit links and complete DP-800 ancestry were checked.",
+          "confidenceReason": "High confidence: the product article gives the exact 2022-versus-Sql140 distinction, and alternatives fail the engine-aligned validation contract. No unknown feature lifecycle is inferred."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "158aef5cc805247d5de7d9b29f087e03dc6a7db887f8b2c89f1d1ccef25963cb",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-16T22:57:00.484Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Changing only the deployment connection string changes the model's SQL syntax target.",
+            "whyIncorrectInContext": "The .sqlproj still names Sql140, so build-time validation still uses the older SQL boundary. Selecting a runtime destination does not edit that property.",
+            "couldBeCorrectWhen": "The model already targets the intended SQL platform and only the destination database or deployment environment was wrong.",
+            "sourceIds": ["dp800-d2-project-build", "dp800-d2x-sql-projects"],
+            "evidenceSummary": "Both sources place target-platform validation in the project build and connection-string selection in the separate deployment step."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Bypassing a required schema object's validation aligns it with SQL Server 2022.",
+            "whyIncorrectInContext": "Removing the check does not correct the model's target contract and leaves a required object without the requested validation. This is not a nonmodel seed-script exception.",
+            "couldBeCorrectWhen": "A file intentionally belongs outside the database model, such as deployment data logic, rather than being a required schema object. That separate classification task is not the stated defect.",
+            "sourceIds": ["dp800-d2-project-build", "dp800-d2x-sql-projects"],
+            "evidenceSummary": "The build and product validation sections identify reference/syntax checking as the model's safety boundary and target-platform selection as its configuration."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Target SQL Server 2022 in the project and rebuild the model.",
+            "whyIncorrectInContext": "Supported, not incorrect: it makes the engine-version validation match the explicit SQL Server 2022-only deployment contract while retaining validation.",
+            "couldBeCorrectWhen": "The required features are within SQL Server 2022 and the installed SDK supports that target, as stipulated. A mixed fleet including SQL Server 2017 would require a different compatibility decision.",
+            "sourceIds": ["dp800-d2-project-build", "dp800-d2x-sql-projects"],
+            "evidenceSummary": "The product article supplies the exact SQL Server 2022 versus Sql140/2017 example; the training instructs setting the target to the actual deployment platform."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Always use the newest SQL target regardless of the actual deployment engine.",
+            "whyIncorrectInContext": "A target newer than SQL Server 2022 can validate features unavailable in the contracted engine. Coincidental equality with an installed target would not justify the 'regardless' selection rule.",
+            "couldBeCorrectWhen": "The deployment contract is deliberately upgraded to that newest SQL engine and the complete schema is reviewed against it.",
+            "sourceIds": ["dp800-d2-project-build", "dp800-d2x-sql-projects"],
+            "evidenceSummary": "Target-platform validation checks syntax against the chosen SQL version; the documented instruction is to match the deployment target, not maximize the version."
+          }
+        ],
+        "challenges": {
+          "scope": "Only SQL Server 2022 is in the deployment contract. The issue is Sql140 engine validation, not Azure SQL Database's platform provider or the .NET version used to run the build.",
+          "plan": "No paid IDE edition, Azure service tier or repository plan affects the declared SQL platform property. Selecting the correct target does not require moving the runtime database.",
+          "role": "This is a developer's model configuration change. It is not a database permission fix and does not imply building a project grants deployment rights.",
+          "preconditions": "The source objects exist and the feature boundary is stipulated. The current product article independently supplies a 2022/Sql140 contrast, so a particular unnamed preview function need not be invented.",
+          "featureStatus": "The stem explicitly uses GA VS Code SDK-style projects. The actual product article confirms this and separately marks Visual Studio SDK support preview. The unnamed hypothetical feature does not erase the real target-platform software claim.",
+          "sourceChanges": "Current saved bodies contain the exact Sql140=SQL Server 2017 mapping and the VS Code/Visual Studio availability distinction. No source timestamp or version label was updated during this review.",
+          "stemSufficiency": "A 2022-only target and a mistakenly older project setting uniquely support C. Connection changes, exclusion and an arbitrarily newer target fail to align the existing validation boundary.",
+          "explanationBounds": "The explanation distinguishes build runtime from SQL target and avoids claiming a green model proves correct application behavior. It does not silently promise Visual Studio SDK GA or newer-feature portability.",
+          "reasoningDepth": "This is a direct Intermediate configuration correction with the cause already disclosed. Specialized terminology does not justify a higher difficulty label, and the rubric records the limited inference.",
+          "answerClues": "The right answer repeats the required engine, but the distractors represent distinct build/runtime and newest-is-best errors. Negative wording merely defines the 2022-versus-2017 boundary."
+        },
+        "qualityNotes": "Keep distinct from held d2-023's SQLCLR build/runtime exception and d2-021's nonmodel script classification. No same-fact duplicate found in the inspected integrated items. The negative-wording warning expresses a real compatibility contrast. Rubric 45/48; no Advanced credit is inferred from SDK terminology."
+      }
+    },
+    "dp800-20260916-d2-024": {
+      "generation": {
+        "questionFingerprint": "0b2c994951c8e8aa38fb2422253b72aa8358c01fcfdd490b7337034ba180a92f",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2-reference-data", "dp800-d2-project-build"],
+            "summary": "The source-control unit versions the project and authored SQL while excluding build outputs. This supports object-level diffs and rebuilds, and keeps required reference data with its schema."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2-reference-data", "dp800-d2-project-build"],
+            "summary": "A .dacpac is a useful deployment artifact, but binary-only versioning does not provide the requested authored object diffs or a complete reproducible source set."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2-reference-data", "dp800-d2-project-build"],
+            "summary": "Generated build folders can be retained as temporary build diagnostics, but they are not the authored model and seed-data source the team needs to review and rebuild."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2-reference-data", "dp800-d2-project-build"],
+            "summary": "Extraction can help baseline or reconcile a live database. Connection settings alone do not version the reviewed object definitions and data scripts that should drive this development workflow."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-024",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-cicd-20260916",
+          "questionFingerprint": "0b2c994951c8e8aa38fb2422253b72aa8358c01fcfdd490b7337034ba180a92f",
+          "reviewedAt": "2026-09-16T21:42:30.049Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2-reference-data",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/03-configure-source-control-manage-reference-data",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-03-configure-source-control-manage-reference-data.json",
+              "retrievedAt": "2026-09-16T19:33:04.473Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The actual source-control unit versions .sqlproj and per-object SQL plus data scripts, while .gitignore excludes bin, obj and dacpac outputs. It directly supplies the authored-source versus generated-artifact distinction required for reviewable changes and reproducible builds."
+            },
+            {
+              "sourceId": "dp800-d2-project-build",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/02-create-build-validate-sql-database-projects",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-02-create-build-validate-sql-database-projects.json",
+              "retrievedAt": "2026-09-16T19:33:00.260Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The real build unit describes singular object definitions compiled into a deployment dacpac. Importing a live database can start a model, but does not replace maintaining reviewed source definitions and versioned reference-data scripts."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "Authored project/object definitions and deployment-data scripts are the reviewable inputs needed to rebuild. The source-control unit explicitly excludes generated build directories and dacpac output from the source tree.",
+              "sourceIds": ["dp800-d2-reference-data", "dp800-d2-project-build"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "A dacpac is a compiled deployment output, but keeping editable definitions only on individual machines does not meet source-review or reproducibility requirements. Artifact retention alone is not source control.",
+              "sourceIds": ["dp800-d2-project-build", "dp800-d2-reference-data"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "The documentation classifies bin and obj as generated outputs to exclude. Tracking these instead of the model and seed scripts preserves products rather than the authoritative inputs needed to rebuild.",
+              "sourceIds": ["dp800-d2-reference-data"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "Connection settings identify a destination, not authored object definitions or seed history. Extraction can initialize a project; release-time extraction without versioned source abandons the requested development contract.",
+              "sourceIds": ["dp800-d2-project-build", "dp800-d2-reference-data"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. A supplies the complete source set rather than binary-only history. The explanation appropriately permits an artifact store outside the authoritative source tree. GA concerns established SQL-project and Git file-based development, not a preview integration. No commands/build were supplied or executed; filenames and source/output semantics were reviewed statically. Beginner/concept-recall honestly fits this source-versus-output distinction. The pronoun refers to the team/current repository. d2-025 instead asks how one object changes within the source set. No scoped duplicate was found, and the exact current source-control objective and unit ancestry are supported.",
+          "confidenceReason": "High confidence because the actual repository and .gitignore examples directly match the requested authored inputs. This is appropriately foundational rather than padded as Advanced."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "0b2c994951c8e8aa38fb2422253b72aa8358c01fcfdd490b7337034ba180a92f",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-16T22:57:00.484Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Version the SQL project, object definitions and data scripts, not generated build directories.",
+            "whyIncorrectInContext": "Supported, not incorrect: this is the reviewed, editable input set that contains both schema and authored seed behavior, while generated outputs can be regenerated or retained separately.",
+            "couldBeCorrectWhen": "The repository is the development source of truth and CI builds releases from it. Reproducible build operations still require controlled tools and dependencies; the answer is a layout recommendation, not a bit-for-bit build guarantee.",
+            "sourceIds": ["dp800-d2-reference-data", "dp800-d2-project-build"],
+            "evidenceSummary": "The source-control unit gives the per-object/project/data-script layout and .gitignore entries; the build unit identifies .dacpac as the resulting compiled artifact."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Only released .dacpac files are needed in authoritative development source control.",
+            "whyIncorrectInContext": "This repeats the current problem: developers retain editable source locally rather than versioning the complete reviewed source set. Artifact retention is useful but does not provide the requested source-level development workflow.",
+            "couldBeCorrectWhen": "A release artifact store retains built packages with provenance while a separate repository already versions the full model and seed sources. That is not binary-only authoritative development.",
+            "sourceIds": ["dp800-d2-reference-data", "dp800-d2-project-build"],
+            "evidenceSummary": "The training explicitly tracks .sql/.sqlproj and excludes regenerated .dacpac from source control; the build unit explains its deployable-artifact role."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Generated bin and obj directories are a complete source-of-truth layout.",
+            "whyIncorrectInContext": "Build outputs are not the versioned authored model and data scripts. Keeping only those directories cannot supply the specified readable object changes and seed-source review.",
+            "couldBeCorrectWhen": "Generated outputs are temporarily retained for build diagnostics or caching, alongside rather than instead of actual versioned source.",
+            "sourceIds": ["dp800-d2-reference-data", "dp800-d2-project-build"],
+            "evidenceSummary": "The exact .gitignore example excludes bin and obj, and the build unit identifies the generated package as an output of authored SQL inputs."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Production connection settings and recurring extraction replace reviewed model and seed sources.",
+            "whyIncorrectInContext": "Connection settings record where to connect, not the reviewed schema and data logic. Re-extracting production each release makes live state authoritative instead of the requested source-controlled development inputs.",
+            "couldBeCorrectWhen": "Extraction establishes an initial baseline or reconciles an approved live change into an actual SQL source project. It is not a replacement for retaining that source under review.",
+            "sourceIds": ["dp800-d2-project-build", "dp800-d2-reference-data"],
+            "evidenceSummary": "The build unit describes importing an existing database into a project; the source-control unit then versions model and seed files, rather than only connectivity configuration."
+          }
+        ],
+        "challenges": {
+          "scope": "The question asks for authoritative editable development source, not whether Git can technically store a binary or an artifact store can retain a .dacpac.",
+          "plan": "No cloud tier or repository subscription affects the source-versus-generated-output boundary. Source-control choice alone does not pin every CI dependency or guarantee identical builds.",
+          "role": "The proposed repository contains authored SQL and data logic, not credentials. Access to production extraction would require separate authorization and is not granted by tracking connection settings.",
+          "preconditions": "The existing binary-only practice and requested per-object reviews, CI rebuild inputs and seed versioning are explicit. The layout is necessary input management rather than a complete pipeline configuration.",
+          "featureStatus": "This uses established SQL project, Git and .dacpac software behavior. It is GA rather than Not applicable even though it concerns development practice; no preview IDE integration is claimed.",
+          "sourceChanges": "The actual unit's ignore list and editable-file guidance were read. Source retrieval and curation dates remain unchanged; no claim of permanent freshness or proof from online availability is made.",
+          "stemSufficiency": "A is uniquely the authored model plus seed source set. A binary deployment archive can be retained separately without making B's 'only' layout correct.",
+          "explanationBounds": "The deep explanation explicitly permits release artifacts outside the authoritative source tree. It does not say Git cannot store binaries, that extraction is never useful, or that folder choice proves deterministic builds.",
+          "reasoningDepth": "Beginner/concept-recall accurately labels the direct authored-input versus generated-output distinction. The longer scenario is not counted as Advanced reasoning.",
+          "answerClues": "A is the most complete and longer option, and the 'only' restrictions make alternatives easy to reject. These are real layout constraints for a foundational item, but the rubric reduces distractor plausibility rather than calling the construction flawless."
+        },
+        "qualityNotes": "Keep distinct from d2-025: this selects the complete authoritative source set; that item changes a single object's desired-state declaration. Also distinct from direct-018's row lifecycle and d2-021's item inclusion. The pronoun refers to the team. Rubric 46/48; obvious layout exclusions are noted, not hidden."
+      }
+    },
+    "dp800-20260916-d2-025": {
+      "generation": {
+        "questionFingerprint": "96d8b4eaa3c3b70f816c251823cf7d7f8ee19ad8c154c5abf86e8a16a341a8ea",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-sql-projects"],
+            "summary": "Sequential migration tooling can use ordered change scripts. A SQL project instead models each object once, so filename order does not turn two object declarations into a migration chain."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-sql-projects", "dp800-d2-reference-data"],
+            "summary": "The product article describes modifying the single declarative object file when columns change. Git provides history while the current model represents one desired object definition."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-pre-post-deployment"],
+            "summary": "Post-deployment scripts are useful for data work outside the schema model. Leaving the desired schema change out of that model defeats the stated declarative source-of-truth requirement."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-sql-projects"],
+            "summary": "A live database can be used as an extraction source, but it does not replace the required table definition in a self-contained model. This would discard the object's versioned desired state."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-025",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-cicd-20260916",
+          "questionFingerprint": "96d8b4eaa3c3b70f816c251823cf7d7f8ee19ad8c154c5abf86e8a16a341a8ea",
+          "reviewedAt": "2026-09-16T21:42:30.049Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-sql-projects",
+              "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-database-projects",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-sql-projects.json",
+              "retrievedAt": "2026-09-16T19:43:04.751Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The actual Overview directs declaring each object once and modifying that singular definition when columns/types change. Deployment derives differences from the desired model. Date-ordered duplicate CREATE declarations are therefore not a migration sequence in this project."
+            },
+            {
+              "sourceId": "dp800-d2-reference-data",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/03-configure-source-control-manage-reference-data",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-03-configure-source-control-manage-reference-data.json",
+              "retrievedAt": "2026-09-16T19:33:04.473Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The source-control unit provides per-object Git history and separates schema definitions from reference-data scripts. It supports retaining the old table shape through version history, not by adding a second current declaration."
+            },
+            {
+              "sourceId": "dp800-d2x-pre-post-deployment",
+              "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-pre-post-deployment.json",
+              "retrievedAt": "2026-09-16T19:43:06.749Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The product article places pre/post scripts outside the compiled and validated database model. A schema difference stored only in an unmodeled script therefore does not become part of the desired table model explicitly required here."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "The desired-state model declares an object once. Filename order does not turn two CREATE declarations for dbo.Parcel into sequential migrations; ordering applies to a different migration-based authoring approach.",
+              "sourceIds": ["dp800-d2x-sql-projects"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "Editing the existing definition describes the new desired table, and Git retains its prior version. This combines the product's single-object declaration rule with the training's source-history model.",
+              "sourceIds": ["dp800-d2x-sql-projects", "dp800-d2-reference-data"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Post-deployment code sits outside the compiled model. Keeping this schema difference only there leaves the desired table definition obsolete and violates the retained declarative source-of-truth requirement.",
+              "sourceIds": [
+                "dp800-d2x-pre-post-deployment",
+                "dp800-d2x-sql-projects"
+              ]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "Removing all table definitions removes this required object from the self-contained desired model. A live database can be an extraction source, but does not automatically supply missing authored definitions at build time.",
+              "sourceIds": ["dp800-d2x-sql-projects"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. B uniquely retains one current table model and history. Named CREATE TABLE and post-deployment mechanisms are actual GA software claims, not a methodology-only lifecycle shortcut. No executable CREATE definition or live build was supplied; review covers static model semantics only. Intermediate fits a migration-versus-model authoring mistake. No construction heuristic fired. d2-024 asks which files are authoritative; this asks how an object's desired state is changed. No deterministic duplicate was found; shared source-control subject matter is not a duplicate fact. The current objective and all actual immediate training links were checked.",
+          "confidenceReason": "High confidence in B because the product overview directly defines the authoring model and the pre/post article independently bounds the competing unmodeled-script approach."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "96d8b4eaa3c3b70f816c251823cf7d7f8ee19ad8c154c5abf86e8a16a341a8ea",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-16T22:57:00.484Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Dated duplicate CREATE TABLE declarations become sequential model migrations.",
+            "whyIncorrectInContext": "A declarative project models dbo.Parcel once. Filename ordering does not turn two current declarations of that same object into a supported change history.",
+            "couldBeCorrectWhen": "A separate migration-based system deliberately executes distinct ordered change scripts. Even there, repeatedly creating an existing table without suitable migration logic would not become valid merely through names.",
+            "sourceIds": ["dp800-d2x-sql-projects", "dp800-d2-reference-data"],
+            "evidenceSummary": "The product overview specifies one declaration per object and editing that declaration; the source-control unit assigns version history to Git, not a sequence of duplicate current model files."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Edit the existing Parcel declaration and let Git preserve prior states.",
+            "whyIncorrectInContext": "Supported, not incorrect: a single updated declaration expresses the desired column while version control retains the earlier definition outside the current model.",
+            "couldBeCorrectWhen": "The new column is part of the desired schema of this existing table, as stated. A renamed object or data migration would require its own reviewed deployment/data plan in addition to maintaining the desired model.",
+            "sourceIds": ["dp800-d2x-sql-projects", "dp800-d2-reference-data"],
+            "evidenceSummary": "The product overview uses adding columns as the exact example of modifying an object's singular file; the training supplies object-level Git history."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Leave the model old and express the required schema change only in an unmodeled post script.",
+            "whyIncorrectInContext": "The script may perform SQL work, but the project no longer declares the required desired table state. That violates the explicit source-of-truth condition even if one deployment appears successful.",
+            "couldBeCorrectWhen": "A post-deployment task intentionally manages data or other explicitly out-of-model work whose behavior is tested separately. It is not the sole representation of this required modeled column.",
+            "sourceIds": [
+              "dp800-d2x-pre-post-deployment",
+              "dp800-d2x-sql-projects",
+              "dp800-d2-reference-data"
+            ],
+            "evidenceSummary": "Pre/post scripts are outside model compilation, whereas the product overview assigns table structure to the singular declarative object definition. The answer need not claim post scripts can never execute DDL."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Delete the table model and depend on production to supply its desired definition at every build.",
+            "whyIncorrectInContext": "The described self-contained current-state model loses the required table declaration. Building the local model does not implicitly read production as a replacement for deleted definitions.",
+            "couldBeCorrectWhen": "A live schema is intentionally extracted as an initial source baseline and the resulting definition is then included in the model, or a different explicit external-reference architecture is used. Neither is the proposed deletion-only fix.",
+            "sourceIds": ["dp800-d2x-sql-projects", "dp800-d2-reference-data"],
+            "evidenceSummary": "The product calls the project a local representation of schema objects and describes extraction as a way to create source, not an implicit live lookup during every build."
+          }
+        ],
+        "challenges": {
+          "scope": "Both declarations concern the same dbo.Parcel table in one SDK-style model. This is not two distinct schemas, split partial metadata or a separate migration runner.",
+          "plan": "A build orders model validation/dependencies, not chronological DDL execution by filename. No service edition or repository plan changes the declarative authoring contract.",
+          "role": "The change belongs to an authorized source author; production DDL or extraction permissions cannot compensate for deleting required model source.",
+          "preconditions": "The table already has a versioned definition, the new column is required, and the project must remain declarative. No full CREATE snippet is needed to decide how the source change is represented.",
+          "featureStatus": "Microsoft.Build.Sql, model compilation and SQL post scripts are actual GA mechanisms. The abstract migration comparison does not make the item Not applicable, and no preview Visual Studio feature is relied upon.",
+          "sourceChanges": "The unchanged product overview directly states singular-object editing and the pre/post article bounds script compilation. The evidence remains the September 16 retrieval/curation snapshot.",
+          "stemSufficiency": "The explicit desired-schema requirement excludes unmodeled-only DDL even if such a script can execute. It also excludes a production-authoritative architecture or a different migration framework.",
+          "explanationBounds": "The distractor explanation says post scripts are useful for data, not that they are incapable of DDL. The decisive objection is leaving required desired schema out of the model, not an invented universal prohibition.",
+          "reasoningDepth": "Intermediate applies the declarative-versus-migration distinction to a duplicate-object authoring error. The symptom and remedy are close to the source text, so multistep difficulty credit is limited.",
+          "answerClues": "B is not uniquely long or ornamented. C is a plausible workaround until the source-of-truth constraint is applied. Zero deterministic wording warnings is not being treated as proof of editorial perfection."
+        },
+        "qualityNotes": "Keep distinct from d2-024's source-set selection and held d2-026/d2-027's cross-branch reference/business conflicts. Here the semantic fact is one desired-state declaration versus a migration chain. No lexical warning or integrated same-fact duplicate found; that did not replace direct reasoning. Rubric 45/48."
+      }
+    },
+    "dp800-20260916-d2-028": {
+      "generation": {
+        "questionFingerprint": "d414354440cfda9ba210db4beb681ccb37adb0f8304dac57a19b3656653fb8fe",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-pipeline-unit"],
+            "summary": "Repository secrets avoid hardcoding credentials and suit decentralized secret ownership. Separate copies do not provide the requested single centrally rotated authoritative value."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-pipeline-unit"],
+            "summary": "The pipeline unit describes Key Vault for centralized secrets management and deployment-time retrieval. This uses the already authorized access and avoids repository edits when the central value rotates."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-pipeline-unit"],
+            "summary": "Environment secrets are useful for environment-specific isolation. Independent copies still require coordinated updates and do not satisfy the stated single central password source."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-pipeline-unit"],
+            "summary": "Federation is a strong alternative when the target and policy permit it. This scenario explicitly retains SQL authentication temporarily, so changing the identity method is outside the current constraint."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-028",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-cicd-20260916",
+          "questionFingerprint": "d414354440cfda9ba210db4beb681ccb37adb0f8304dac57a19b3656653fb8fe",
+          "reviewedAt": "2026-09-16T21:42:30.049Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-pipeline-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/06-implement-cicd-pipelines",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-06-implement-cicd-pipelines.json",
+              "retrievedAt": "2026-09-16T19:33:11.257Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The actual unit separately describes repository/environment secrets, centrally stored Key Vault credentials retrieved at deployment time, and OIDC federation. The Key Vault paragraph supports one authoritative secret rather than independent copies. Job access and safe logging remain responsibilities, not automatic vault guarantees."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "Repository secrets protect values from source tracking, but separate copies per repository do not supply one centrally managed value and rotation point. They suit decentralized ownership instead.",
+              "sourceIds": ["dp800-d2x-pipeline-unit"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "The unit explicitly recommends central Key Vault storage and deployment-time retrieval. With stipulated workload access and authorized jobs, this preserves the single password source without repository edits or value logging.",
+              "sourceIds": ["dp800-d2x-pipeline-unit"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Environment-secret copies isolate environments, but independent copied values still require coordinated rotation. They do not meet the expressly requested single authoritative password source across pipelines.",
+              "sourceIds": ["dp800-d2x-pipeline-unit"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "OIDC federation is a documented alternative to stored credentials, but changes authentication method. The stem temporarily retains approved SQL authentication, so switching methods without changing that contract cannot meet it.",
+              "sourceIds": ["dp800-d2x-pipeline-unit"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. B uniquely meets central ownership while retaining the temporary SQL-password contract. Key Vault and pipeline secret storage are real GA capabilities in this DP-800-linked Learn unit; no GitHub documentation or borrowed credential approval is used. Workload access is preconfigured; not logging is an explicit operational requirement, not an automatic guarantee. No CLI/YAML, secret value or live authentication was reviewed. Intermediate design selection fits. The absolute-wording warning is in an explanation rejecting blanket leak immunity; pronouns refer to the vault/password. d2-029 removes a stored credential, whereas this item preserves one centrally governed password. No scoped duplicate was found.",
+          "confidenceReason": "High confidence in B from actual Key Vault integration text and the explicit authentication constraints. Vault storage alone is not being credited with preventing an authorized job from leaking a value."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "d414354440cfda9ba210db4beb681ccb37adb0f8304dac57a19b3656653fb8fe",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-16T22:57:00.484Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Independent repository-secret copies provide one centrally rotated authoritative password.",
+            "whyIncorrectInContext": "Separate copies create multiple stored values to update and authorize. Protected storage addresses hardcoding, but not the specified single central password source.",
+            "couldBeCorrectWhen": "Repositories deliberately own independent credentials or decentralized secret values and coordinated copy updates are accepted. A synchronization system would be extra machinery, not this option's single-value design.",
+            "sourceIds": ["dp800-d2x-pipeline-unit"],
+            "evidenceSummary": "The unit distinguishes repository secrets from the Key Vault subsection introduced specifically for centralized secrets management and runtime retrieval."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Authorized deployment jobs retrieve the current centralized Key Vault secret without logging it.",
+            "whyIncorrectInContext": "Supported, not incorrect: it preserves the approved SQL-password contract while using one centrally governed value rather than separate repository/environment copies.",
+            "couldBeCorrectWhen": "The authorized workload can reach/read the vault and inject the intended current secret into the deployment. Actual SQL-account rotation and the stored value must remain coordinated; vault storage is not automatic rotation of the database account.",
+            "sourceIds": ["dp800-d2x-pipeline-unit"],
+            "evidenceSummary": "Azure Key Vault integration explicitly has pipelines pull centrally stored credentials at deployment time, via a task or authenticated CLI. Rotation is described as a separate operational responsibility."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Independent per-environment secret copies meet the single-authoritative-value requirement.",
+            "whyIncorrectInContext": "Environment scoping limits access to copies, but independent values still need coordinated updates. It does not turn several stored passwords into one central source.",
+            "couldBeCorrectWhen": "Each deployment environment intentionally has a different credential or isolated secret lifecycle. An environment storing only a reference to the central secret would be different from this option's explicit copies.",
+            "sourceIds": ["dp800-d2x-pipeline-unit"],
+            "evidenceSummary": "The source describes environment secrets as environment-scoped and Key Vault as the central retrieval pattern. These solve different access and ownership requirements."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Immediately substitute federated Entra sign-in while retaining the approved SQL-authentication contract.",
+            "whyIncorrectInContext": "The option changes the authentication mechanism that the scenario explicitly must retain temporarily. A preferable future identity design is not a compliant current solution.",
+            "couldBeCorrectWhen": "The target and security policy approve Entra authentication and the necessary trust, SQL principal and access are configured. Federation then avoids a stored login secret rather than centrally managing this required SQL password.",
+            "sourceIds": ["dp800-d2x-pipeline-unit"],
+            "evidenceSummary": "The unit separately identifies SQL authentication and federated OIDC, describing federation as an alternative that avoids stored client secrets, not a way to preserve SQL-password authentication unchanged."
+          }
+        ],
+        "challenges": {
+          "scope": "This item centralizes an intentionally retained SQL-authentication secret. It does not ask which modern identity is generally preferred or whether GitHub/Azure DevOps secret stores are inherently unsafe.",
+          "plan": "The vault and workload access are already configured. No GitHub environment-protection subscription or paid feature entitlement is assumed merely because a distractor mentions environment secrets.",
+          "role": "Only authorized deployment jobs may retrieve the value. Vault access is separate from permission to connect to or change the SQL target; secret retrieval is not itself a SQL privilege grant.",
+          "preconditions": "The temporary SQL-authentication requirement and configured vault/workload access are explicit. Rotation still needs coordination between the actual SQL account and central value; no version-pinned secret URI or automatic database rotation is promised.",
+          "featureStatus": "Key Vault runtime secret retrieval and pipeline secret injection are real established GA software claims. The item is not lifecycle-independent methodology, and no preview integration, encryption feature or specific YAML action version is asserted.",
+          "sourceChanges": "The saved unit's central-vault, secret-store and OIDC sections were read directly. Incomplete sample workflows and blanket pipeline-safety claims elsewhere in that unit are not inherited; evidence dates remain unchanged.",
+          "stemSufficiency": "The one-central-value condition excludes copies, while the retained SQL-authentication condition excludes D. Runtime retrieval plus authorized access and no value logging makes B the unique pattern among these options.",
+          "explanationBounds": "The explanation correctly refuses to promise that Key Vault prevents a careless authorized job from leaking a secret. It recommends a storage/retrieval pattern, not a tested rotation implementation.",
+          "reasoningDepth": "Intermediate design selection distinguishes central ownership, scoped storage and identity replacement. The vault is explicitly named, so the design space is narrow rather than Advanced.",
+          "answerClues": "B echoes the named central-vault requirement and D openly conflicts with the temporary contract. Repository and environment copies are still realistic protected alternatives; reduced plausibility/depth scores record the leading construction."
+        },
+        "qualityNotes": "Keep distinct from d2-029: this retains and centralizes a password; that item uses configured federation to avoid a managed long-lived login credential. Related d2-033/d2-034 address gates/network, not central secret ownership. Absolute-wording warning is a rejection of leak immunity, not a claim of it. Rubric 45/48."
+      }
+    },
+    "dp800-20260916-d2-029": {
+      "generation": {
+        "questionFingerprint": "8d7a93c7da1e954813a8ac67601cac4fdb8b2ae7913941106a67dc0c1c04a1ba",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d2x-pipeline-unit"],
+            "summary": "The pipeline training describes federated OIDC authentication without a stored client secret. The stem explicitly supplies the trust, token, database and network prerequisites rather than treating identifier values alone as authentication."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-pipeline-unit"],
+            "summary": "Key Vault protects and centralizes a client secret and can fit a secret-based service principal. It still relies on the long-lived credential that this requirement excludes."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-permissions-unit"],
+            "summary": "Certificate-based authentication can be stronger than a shared secret, but the stated option still introduces a pipeline-managed long-lived private key. It fits a different credential-management policy."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d2x-pipeline-unit"],
+            "summary": "Protected environment secrets are appropriate for authorized password-based deployments. This still uses a SQL password instead of the configured federation and violates the no-long-lived-credential requirement."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-029",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-cicd-20260916",
+          "questionFingerprint": "8d7a93c7da1e954813a8ac67601cac4fdb8b2ae7913941106a67dc0c1c04a1ba",
+          "reviewedAt": "2026-09-16T21:42:30.049Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-pipeline-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/06-implement-cicd-pipelines",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-06-implement-cicd-pipelines.json",
+              "retrievedAt": "2026-09-16T19:33:11.257Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The actual OIDC section describes azure/login with federated credentials and no stored client secret, contrasting Key Vault and repository/environment-secret storage. It establishes the pattern, not completeness of the illustrative YAML's token permissions or automatic SQL authorization."
+            },
+            {
+              "sourceId": "dp800-d2x-permissions-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-data-security-compliance/5-design-implement-object-level-permissions",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\security-5-design-implement-object-level-permissions.json",
+              "retrievedAt": "2026-09-16T19:33:08.151Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The read secure-access unit distinguishes SQL passwords from Entra identities and separately discusses database principals, permissions, client secrets and certificate authentication. The private-key/client-secret distinction is supported; unconditional claims about eliminating credential theft are not adopted."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "The pipeline unit identifies federated OIDC Azure sign-in without a stored application secret. The stem supplies federated trust and job token permissions, as well as the independent SQL and network prerequisites.",
+              "sourceIds": ["dp800-d2x-pipeline-unit"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Key Vault protects a service-principal secret, but retrieving it still relies on the long-lived credential excluded here. Central storage is useful for permitted secret-based authentication, not this no-secret requirement.",
+              "sourceIds": [
+                "dp800-d2x-pipeline-unit",
+                "dp800-d2x-permissions-unit"
+              ]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Certificate authentication is a documented alternative to shared secrets, but this option still stores a long-lived private key under pipeline management. That violates the explicitly stated credential boundary.",
+              "sourceIds": ["dp800-d2x-permissions-unit"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "An environment secret can deliver an authorized SQL-password connection string, but does not make it passwordless. The option retains the SQL password explicitly excluded by the authentication contract.",
+              "sourceIds": [
+                "dp800-d2x-pipeline-unit",
+                "dp800-d2x-permissions-unit"
+              ]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. A was re-derived from the actual federation text. This is Azure sign-in design, not an executable SQL access-token exchange or a claim sign-in grants database rights. Trust, token permission, SQL principal/permissions and network access are explicit, not inferred from incomplete YAML. GA fits this documented flow; Not applicable would not excuse a named service contract. No token, secret, action version or live deployment was executed: static semantic review only. Intermediate fits the stored-credential distinction. Unlike d2-028 this eliminates, rather than centralizes, a long-lived login credential. No construction or bounded duplicate warning occurred. Both evidence chains are DP-800-specific Learn sources.",
+          "confidenceReason": "High confidence in A because actual training identifies secretless federation and each alternative retains a forbidden credential. Overbroad source claims about theft prevention are expressly excluded."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "8d7a93c7da1e954813a8ac67601cac4fdb8b2ae7913941106a67dc0c1c04a1ba",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-16T22:57:00.484Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Use the job's OIDC token with the configured federated Azure credential.",
+            "whyIncorrectInContext": "Supported, not incorrect: this consumes the stated federated trust and token permissions without introducing a pipeline-managed long-lived client secret, private key or SQL password.",
+            "couldBeCorrectWhen": "The federation matches the workload identity and the target's SQL principal, permissions and network are independently configured, as stated. Azure sign-in alone is not a complete database connection or authorization flow.",
+            "sourceIds": [
+              "dp800-d2x-pipeline-unit",
+              "dp800-d2x-permissions-unit"
+            ],
+            "evidenceSummary": "The pipeline unit explicitly identifies OIDC federated Azure sign-in as avoiding client-secret storage. The permissions unit separately requires creating identities and assigning SQL access."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "A Key Vault client-secret sign-in uses the configured secretless federation design.",
+            "whyIncorrectInContext": "It selects secret-based service-principal authentication rather than using the provided OIDC trust. Moving a reusable credential to Key Vault protects its storage but does not make that authentication flow federated.",
+            "couldBeCorrectWhen": "Policy permits client-secret service-principal authentication with protected storage and rotation. A separately engineered short-lived secret lifecycle would be a different design and still would not use the specified federated credential prerequisites.",
+            "sourceIds": [
+              "dp800-d2x-pipeline-unit",
+              "dp800-d2x-permissions-unit"
+            ],
+            "evidenceSummary": "The pipeline unit separates Key Vault credential retrieval from the OIDC flow; the permissions unit says client secrets should be securely stored and rotated, not that vault storage changes their authentication type."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "A stored long-lived service-principal private key meets the no-managed-long-lived-key requirement.",
+            "whyIncorrectInContext": "The option explicitly introduces the private key the requirement excludes. Certificate authentication can be legitimate without satisfying this selected credential-management policy.",
+            "couldBeCorrectWhen": "Certificate-based service-principal authentication is approved and private-key protection, renewal and rotation are deliberately managed.",
+            "sourceIds": [
+              "dp800-d2x-permissions-unit",
+              "dp800-d2x-pipeline-unit"
+            ],
+            "evidenceSummary": "The permissions unit discusses certificate-based authentication as an alternative to shared secrets; the pipeline unit separately provides the no-stored-client-secret federation pattern."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Injecting a protected SQL-password connection string uses the provided federated Azure sign-in.",
+            "whyIncorrectInContext": "It still supplies a SQL password, explicitly prohibited here, and is not an Azure OIDC federated sign-in. Protecting storage does not change the underlying identity method.",
+            "couldBeCorrectWhen": "The deployment target and policy permit SQL authentication and authorized environment-secret injection is the chosen credential strategy.",
+            "sourceIds": [
+              "dp800-d2x-pipeline-unit",
+              "dp800-d2x-permissions-unit"
+            ],
+            "evidenceSummary": "Both bodies distinguish SQL username/password authentication from Entra-based access and the pipeline unit describes environment secret injection as a stored-credential mechanism."
+          }
+        ],
+        "challenges": {
+          "scope": "The question asks for Azure sign-in using an already configured job federation. It is not an executable SqlPackage access-token exchange, a claim of automatic SQL access, or a replacement for network reachability.",
+          "plan": "No GitHub organization plan or paid environment protection feature is needed to select the stated OIDC flow. No platform-specific YAML version is supplied or assumed valid.",
+          "role": "The target Entra principal and SQL permissions are explicit and separate from Azure authentication. A subscription role, successful sign-in or client ID alone is not being credited with SQL data access.",
+          "preconditions": "Trust, job token permissions, SQL identity/rights and network are all supplied. A managed identity on a different Azure-hosted runner or a custom short-lived secret system would be another architecture, not one of the stated federation-consuming alternatives.",
+          "featureStatus": "Federated OIDC sign-in and Entra/SQL authentication are real GA software contracts, not lifecycle-free hypothetical methodology. The current sources describe the established flow; no preview agent identity or new SDK token API is claimed.",
+          "sourceChanges": "Actual source bodies were checked, including the incomplete illustrative pipeline and the permissions unit's overbroad theft-immunity language. Those claims are excluded; no captured evidence date is replaced by this review date.",
+          "stemSufficiency": "Only A uses the explicitly configured federated credential and token permissions while avoiding the prohibited stored credential types. B cannot become OIDC merely because a secret might have a shorter lifetime or live outside a repository.",
+          "explanationBounds": "Federation removes a stored credential category, not all tokens, signing infrastructure, threats or access configuration. Azure sign-in does not itself prove database connection; the candidate's deep explanation preserves that distinction.",
+          "reasoningDepth": "Intermediate technical design selection fits distinguishing credential types and prerequisites. Because all setup and the desired policy are supplied, the inference is intentionally short rather than advanced integration work.",
+          "answerClues": "The stem names OIDC and federation, making A strongly cued. The other choices are real authentication patterns, not fake features. The rubric reduces difficulty/originality and acknowledges the directness despite zero lexical warnings."
+        },
+        "qualityNotes": "Keep distinct from d2-028's retained central password and d2-034's independent network route. This tests consuming established federation, not vault ownership or private connectivity. No same-fact integrated duplicate found. Zero lexical warnings do not conceal the strong OIDC cue. Rubric 45/48."
+      }
+    },
+    "dp800-20260916-d2-032": {
+      "generation": {
+        "questionFingerprint": "7bff6269fe21d5659721f2f439b6a8425f3b2f77a29f51f0549dd2a4bca2434e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-secure-20260916",
+        "generatedAt": "2026-09-16T20:48:04.030Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d2x-pre-post-deployment",
+              "dp800-d2x-compare-project",
+              "dp800-d2x-testing-unit"
+            ],
+            "summary": "The product article states that the plan is calculated before the pre-deployment script executes. A separately staged prerequisite followed by a newly calculated plan and integration validation makes the planner's target state explicit."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d2x-pre-post-deployment"],
+            "summary": "Pre-deployment runs before plan execution, not before plan calculation. It can perform compatible preparation, but the documented ordering does not support this assumed automatic replan."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d2x-pre-post-deployment"],
+            "summary": "Filename organization can help navigation, but it does not change the documented deployment-planning order. Pre/post script treatment is defined by project items and deployment stages, not lexical filenames."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": [
+              "dp800-d2x-pre-post-deployment",
+              "dp800-d2x-testing-unit"
+            ],
+            "summary": "Pre/post scripts are packaged but not compiled or validated with the database object model. A green build is useful structural evidence, not proof of this target-dependent staged migration."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d2-032",
+          "authorId": "dp800-expansion-author-secure-20260916",
+          "reviewerId": "dp800-technical-cicd-20260916",
+          "questionFingerprint": "7bff6269fe21d5659721f2f439b6a8425f3b2f77a29f51f0549dd2a4bca2434e",
+          "reviewedAt": "2026-09-16T21:42:30.049Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d2x-pre-post-deployment",
+              "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-pre-post-deployment.json",
+              "retrievedAt": "2026-09-16T19:43:06.749Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The first paragraph explicitly puts plan calculation before pre-script execution and plan execution afterward. It also excludes pre/post scripts from object-model compilation/validation. That ordering, not the word pre, is the decisive implementation contract."
+            },
+            {
+              "sourceId": "dp800-d2x-compare-project",
+              "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/howto/compare-database-project",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-compare-project.json",
+              "retrievedAt": "2026-09-16T19:43:11.829Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The product article derives deploy reports and deployment T-SQL from a source model and the actual target state. This supports generating a new reviewed plan after a separate prerequisite changes that state, rather than assuming the previously calculated plan incorporates it."
+            },
+            {
+              "sourceId": "dp800-d2x-testing-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-07-design-implement-testing-strategy.json",
+              "retrievedAt": "2026-09-16T19:33:13.916Z",
+              "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+              "supportingSummary": "The actual unit requires deployed integration tests for related operations and known state and distinguishes these from structural builds. It supports validating the complete staged sequence against the available isolated clone, not accepting a green model build as migration-safety proof."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "A separate controlled prerequisite stage makes its resulting schema the input for newly generated deployment planning. Reviewing that plan and testing the full sequence addresses both planning order and unvalidated script/data effects.",
+              "sourceIds": [
+                "dp800-d2x-pre-post-deployment",
+                "dp800-d2x-compare-project",
+                "dp800-d2x-testing-unit"
+              ]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Pre-deployment runs before execution of an already calculated plan. The article does not provide automatic dependency replanning after the script, so retaining the rename under that assumption preserves the hazard.",
+              "sourceIds": ["dp800-d2x-pre-post-deployment"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Lexically renaming a file does not change its PreDeploy item semantics or the documented calculation order. It may organize files but cannot move this mutation before calculation of the existing plan.",
+              "sourceIds": ["dp800-d2x-pre-post-deployment"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "Pre/post scripts are expressly outside object-model compilation and validation. A green build therefore cannot prove the prerequisite's target-dependent effects or the safety of the staged migration sequence.",
+              "sourceIds": [
+                "dp800-d2x-pre-post-deployment",
+                "dp800-d2x-testing-unit"
+              ]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "PASS 2 only. A uniquely changes target-state input before regenerating the plan and still validates script/data effects. The staged procedure must be derived across calculation-versus-execution and compilation-versus-deployed-behavior boundaries; unlike a setting lookup, these interdependent stages justify Advanced. Final adversarial review must still challenge depth. The isolated clone and approved window make this a test/review recommendation, not an automatic live rename, the only possible migration design, or an atomicity promise. No rename code or live SqlPackage execution was supplied; static planning semantics only. Established planning behavior is GA, independent of preview IDEs. The pronoun denotes the prerequisite. This differs from direct-017's artifact action choice, and no scoped duplicate was found.",
+          "confidenceReason": "High confidence in A because the product ordering defeats the alternatives and the controlled staged validation follows from that ordering plus target-specific planning. No unseen migration script is attested."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "7bff6269fe21d5659721f2f439b6a8425f3b2f77a29f51f0549dd2a4bca2434e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-cicd-20260916",
+        "reviewedAt": "2026-09-16T22:57:00.484Z",
+        "verdict": "manual-review-required",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Test the prerequisite separately, then replan for its resulting target schema and validate the staged sequence.",
+            "whyIncorrectInContext": "Supported, not incorrect: a separate controlled stage changes the target before a new plan is calculated, removing reliance on pre-script-triggered replanning. Review and full-sequence testing avoid a blanket safety assertion.",
+            "couldBeCorrectWhen": "The prerequisite is actually valid for the desired model, the isolated target represents the deployment state, and the staged window is authorized, as the recommendation requires checking. A rename/refactor alternative may exist but is not claimed impossible.",
+            "sourceIds": [
+              "dp800-d2x-pre-post-deployment",
+              "dp800-d2x-compare-project",
+              "dp800-d2x-testing-unit"
+            ],
+            "evidenceSummary": "Combining the explicit plan-before-pre-script order with target-dependent Script generation and dedicated integration testing supports this controlled recommendation; it does not execute or prove a migration."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "The same publish automatically recalculates all dependencies after its pre-deployment script.",
+            "whyIncorrectInContext": "The product contract calculates the plan before pre-script execution, so the assumed automatic full replan is unsupported. The stem already labels that planning-order assumption false.",
+            "couldBeCorrectWhen": "A pre-script performs preparation compatible with the already calculated plan, or a separate explicitly requested operation subsequently recalculates it. Neither is the automatic same-publish behavior B claims.",
+            "sourceIds": ["dp800-d2x-pre-post-deployment"],
+            "evidenceSummary": "The product article's opening paragraph distinguishes calculation, pre-script execution and plan execution in that order."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Lexically renaming the pre-script changes SqlPackage's planning/execution order.",
+            "whyIncorrectInContext": "A file name does not move pre-script execution ahead of plan calculation. Project items determine the pre/post script role, while the documented planning boundary remains.",
+            "couldBeCorrectWhen": "A filename is changed for organization with its project reference updated, or an explicit SQLCMD include list is deliberately reordered within a supported entry point. That does not alter when the deployment plan is calculated.",
+            "sourceIds": ["dp800-d2x-pre-post-deployment"],
+            "evidenceSummary": "The article declares scripts through PreDeploy/PostDeploy items and orders child execution through SQLCMD includes, not lexical ordering against model files."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "The unchanged successful model build proves the prerequisite script and migration safe.",
+            "whyIncorrectInContext": "The prerequisite script is outside model compilation/validation, and a build does not test target data or the staged behavior. A green model is useful but insufficient evidence.",
+            "couldBeCorrectWhen": "The narrow question is whether the compiled model passes structural checks. Deployment-script behavior still requires separate review and tests before a safety claim.",
+            "sourceIds": [
+              "dp800-d2x-pre-post-deployment",
+              "dp800-d2x-testing-unit"
+            ],
+            "evidenceSummary": "The product source excludes pre/post scripts from model validation, and the testing unit separates structural build checks from live behavioral verification."
+          }
+        ],
+        "challenges": {
+          "scope": "This is a target-dependent schema migration with a prerequisite rename, not simply source-file ordering. No specific rename/refactor-log implementation or automatic data preservation guarantee is supplied.",
+          "plan": "The key distinction is plan calculation versus execution, not an Azure or GitHub plan entitlement. The question already identifies the false order assumption and offers an approved separate stage.",
+          "role": "An approved migration window and isolated target are given. A recommends controlled testing/review, not unauthorized production DDL; approval alone does not validate the missing rename code.",
+          "preconditions": "The clone and staged window make A a reasonable strategy. Actual schema/data dependencies and compatibility still need implementation validation; A explicitly calls for it rather than claiming the prerequisite always works.",
+          "featureStatus": "The named SqlPackage planning and model-compilation behavior is GA software functionality. Hypothetical migration wording cannot make the lifecycle Not applicable. No preview-only graphical comparison surface is required.",
+          "sourceChanges": "The exact product order and script-validation boundary were read, alongside target-dependent comparison and testing guidance. The independent disagreement with Pass 2 concerns difficulty, not a changed source date or unsupported new planning behavior.",
+          "stemSufficiency": "The scenario is sufficient for the safe broad recommendation A. It is also overly helpful for its authored Advanced label: it identifies the false assumption, observed stale plan and availability of the separate stage before asking for that stage.",
+          "explanationBounds": "The explanation is technically bounded: it calls for full schema/data validation, not a universal rename recipe, automatic rollback, atomicity or absence of alternative refactoring approaches. No unseen migration is attested.",
+          "reasoningDepth": "HOLD for inflated Advanced architecture-design. The learner is told the misconception is false and that staged migration is permitted; A directly says stage, replan and test. No interacting migration constraint, actual dependency trace or meaningful tradeoff must be resolved. Knowing two boundaries does not by itself create advanced reasoning.",
+          "answerClues": "A is the longest and only cautious test/review answer. B repeats the premise already declared false, C is filename magic, and D substitutes a green build for the specifically exposed script problem. Those clues let a reader select A without doing advanced migration analysis."
+        },
+        "qualityNotes": "Independent disagreement with Pass 2's Advanced assessment. Direct-017 tests output action selection; this item tests plan timing, so no semantic duplicate is declared. Nevertheless the disclosed diagnosis, longest-safe-answer cue and shallow alternatives lower difficulty authenticity and plausibility. Rubric 43/48; all mandatory technical evidence criteria remain 4. Preserve a manual hold instead of silently relabeling the candidate."
+      }
+    }
+  }
+}

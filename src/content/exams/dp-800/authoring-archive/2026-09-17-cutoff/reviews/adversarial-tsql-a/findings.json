@@ -1,0 +1,2067 @@
+{
+  "schemaVersion": 1,
+  "phase": "PASS 3 - independent adversarial review",
+  "persistedValidationResults": {
+    "questionValidation": {
+      "entrypoint": "scripts\\validate-questions.ts",
+      "exitCode": 0,
+      "report": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-tsql-a\\question-check.txt",
+      "result": "Structural validation passed for 10 records, 78 unchanged frozen sources and 3 objective domains."
+    },
+    "scopedAttestationsAndThreePass": {
+      "entrypoint": "scripts\\verify-questions.ts",
+      "exitCode": 0,
+      "report": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-tsql-a\\verification-check.json",
+      "mode": "three-pass-recorded-attestations",
+      "attestationChecksPassed": true,
+      "findings": [],
+      "reviewedVerifiedQuestions": 10,
+      "playableVerifiedQuestions": 0
+    },
+    "offlineSources": {
+      "entrypoint": "scripts\\validate-sources.ts",
+      "exitCode": 0,
+      "report": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-tsql-a\\source-check.txt",
+      "sourceRecords": 78,
+      "allowlistedOfficialUrls": 78,
+      "networkRequests": 0,
+      "result": "Offline source structure and credential approvals passed. No retrieval or source-review dates were updated."
+    },
+    "boundedCoverage": {
+      "entrypoint": "scripts\\check-question-coverage.ts",
+      "exitCode": 0,
+      "report": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-tsql-a\\coverage-check.json",
+      "reviewedVerifiedQuestions": 10,
+      "playableVerifiedQuestions": 0,
+      "studyEnabled": false,
+      "gauntletEnabled": false,
+      "result": "Expected incomplete coverage for a ten-record single-skill subset; unchanged 25/75 and breadth gates keep both modes closed."
+    },
+    "readBackIntegrity": {
+      "records": 10,
+      "frozenInputFilesChecked": 40,
+      "changedFrozenInputs": [],
+      "authoredFieldsUnchanged": true,
+      "generationAndTechnicalUnchanged": true,
+      "ledgerAdversarialRubricReviewerAndTimeMatch": true,
+      "envelopeRationalesAndSourceIdsExactlyMatchFinalLedger": true,
+      "repositoryStatus": "The only tracked modification remained the pre-existing src/content/credentials/credentials.json change; this reviewer wrote only within the assigned ignored output directory."
+    }
+  },
+  "requestId": "dp800-adversarial-tsql-a-20260916",
+  "reviewerId": "dp800-adversarial-tsql-a-20260916",
+  "authorId": "dp800-expansion-author-design-20260916",
+  "technicalReviewerId": "dp800-technical-tsql-20260916",
+  "objectiveVersion": "March 12, 2026",
+  "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+  "scope": {
+    "selection": "technical-reviews.json.reviews.filter(review => review.verdict === 'verified').slice(0, 10), preserving array order",
+    "technicalInput": ".grounding\\dp800-expansion-20260916\\reviews\\technical-tsql\\technical-reviews.json",
+    "selectedIds": [
+      "dp800-direct-006",
+      "dp800-direct-007",
+      "dp800-direct-008",
+      "dp800-direct-028",
+      "dp800-direct-029",
+      "dp800-direct-030",
+      "dp800-direct-031",
+      "dp800-direct-032",
+      "dp800-direct-034",
+      "dp800-direct-035"
+    ],
+    "selectedCount": 10,
+    "technicalApprovedTotal": 20,
+    "explicitlyExcludedTechnicalHolds": [
+      "dp800-20260916-d1-026",
+      "dp800-20260916-d1-028"
+    ],
+    "scopeBoundary": "Only CTE lifetime, window aggregation/ranking and the seven selected JSON encounters were adjudicated. Regex, fuzzy matching, graph traversal, correlated queries and error handling belong to the other half; no verdict or rubric was created for them. direct-036 and direct-038 are not selected. The current direct-036 text was read only as a semantic neighbor, not approved.",
+    "writeBoundary": ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-tsql-a\\"
+  },
+  "method": {
+    "independence": "A third context re-read the frozen authored questions and actual MCP content before recording these judgments. Technical verdicts identify the assigned queue, not the answer. These individually authored decisions are serialized into the final ledger and envelopes; serialization neither scores nor approves questions.",
+    "execution": "All SQL outcomes and counterexamples are static deductions from the retrieved contracts. No SQL Server connection, query execution, optimizer inspection or performance benchmark occurred.",
+    "freshness": "No retrieval, source review-date refresh, source grant, authored repair or objective edit occurred. Review freshness is relative to the frozen September 16 evidence, not a promise of live documentation currency.",
+    "sourceQualification": "Checked exact URLs against the actual DP-800 catalog exactUrls, and followed the finite credential -> current course -> design path -> module -> instructional unit -> named implementation document ancestry. Course and credential material supplies ancestry/identity, not answer evidence. No documentation-to-documentation, assessment, video, blog or other-credential fallback was used.",
+    "scopePreservation": "Generation and technical objects are retained unchanged as data, including all claims and technical choice judgments. The final review is separately authored. Candidate changes are restricted to the seven verification metadata fields excluded by questionFingerprint."
+  },
+  "provenanceAudit": [
+    {
+      "sourceIds": ["dp800-guide", "dp800-course", "dp800-training-design"],
+      "evidencePaths": [
+        ".grounding\\dp800-expansion-20260916\\guide.json",
+        ".grounding\\dp800-expansion-20260916\\credential.json",
+        ".grounding\\dp800-expansion-20260916\\credential.html",
+        ".grounding\\dp800-expansion-20260916\\course.json",
+        ".grounding\\dp800-expansion-20260916\\course.html",
+        ".grounding\\dp800-expansion-20260916\\training-design.json",
+        ".grounding\\dp800-expansion-20260916\\training-design.html",
+        ".grounding\\dp800-expansion-20260916\\credential-headers.txt",
+        ".grounding\\dp800-expansion-20260916\\course-headers.txt"
+      ],
+      "finding": "The actual guide says Skills measured as of March 12, 2026, names CTEs, window functions and JSON under Write advanced T-SQL code, and gives domain weights 35-40%, 35-40%, 25-30%. Credential HTML contains data-learn-uid=\"course.dp-800t00\". Course HTML identifies that UID and learn.wwl.design-develop-database-solutions. The path HTML has the same UID and exact canonical English URL, while its MCP body names and links the three relevant modules. The course MCP body has Loading placeholders; those placeholders were not treated as path evidence. Scheduling and absence of a beta word were not used to infer GA."
+    },
+    {
+      "sourceIds": [
+        "dp800-d1-module-programmability",
+        "dp800-d1-views",
+        "dp800-d1-module-advanced",
+        "dp800-d1-cte-unit",
+        "dp800-d1-cte"
+      ],
+      "evidencePaths": [
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\module-programmability.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\module-advanced.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-cte-unit.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-views.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-cte.json"
+      ],
+      "finding": "The programmability module actually links 2-create-views. The advanced module actually links 2-common-table-expressions. That CTE unit's closing reference names WITH common_table_expression and links the exact clause article with an azure-portal transport query; the canonical stored citation is query-free and the registry records an explicit reference. The product Usage guidelines distinguish nonmaterialized CTE references from a temporary object. The instructional view source explicitly describes query-defined virtual storage."
+    },
+    {
+      "sourceIds": ["dp800-d1-window-unit", "dp800-d1-over"],
+      "evidencePaths": [
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\module-advanced.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-window-unit.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-over.json"
+      ],
+      "finding": "The advanced module links 3-window-functions. The unit demonstrates ROW_NUMBER, RANK, DENSE_RANK and NTILE, and its closing Window Functions link actually targets select-over-clause-transact-sql. This is a real training-to-document reference, not an inferred topical link. OVER's SQL Server 2012-and-later ROWS/RANGE sections cover the 2022 frame question."
+    },
+    {
+      "sourceIds": [
+        "dp800-d1-json-unit",
+        "dp800-d1-json-value",
+        "dp800-d1-openjson",
+        "dp800-d1-json-query"
+      ],
+      "evidencePaths": [
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\module-advanced.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-unit.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-value.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-openjson.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-query.json"
+      ],
+      "finding": "The module links 4-json-functions. Its actual text explicitly names and demonstrates JSON_VALUE, JSON_QUERY and OPENJSON, including the WITH projection; these named APIs qualify their exact approved implementation pages. The technical distinctions were checked in those pages, not the training overview. OPENJSON states compatibility 130+, BIN2 matching, AS JSON's nvarchar(max) dependency, the default type table and literal dotted column matching."
+    },
+    {
+      "sourceIds": [
+        "dp800-d1-module-objects",
+        "dp800-d1-json-columns-unit",
+        "dp800-d1-json-modify"
+      ],
+      "evidencePaths": [
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\module-objects.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-columns-unit.json",
+        ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-modify.json"
+      ],
+      "finding": "The object module links 7-design-implement-json. Its actual code calls JSON_MODIFY(CAST(ConfigSettings AS NVARCHAR(MAX)), '$.notifications', CAST(0 AS BIT)); that named function, rather than the generic JSON index, is the parent reference. The unit separately labels the native-json modify method Preview. The selected questions use the established SQL Server 2022 text function, not that method."
+    }
+  ],
+  "sourceQualifications": [
+    "The current JSON_VALUE body contains both 2022-and-earlier syntax without RETURNING and 2025 syntax with it. Its return section has a 2025 heading but explicitly distinguishes the no-RETURNING nvarchar(4000) contract. The training parent independently states nvarchar(4000). No native-json RETURNING capability was backported to the 2022 question.",
+    "The JSON training unit overgeneralizes JSON_ARRAYAGG availability in an unrelated paragraph. That paragraph was not used to prove any selected API's version or lifecycle. Each selected JSON claim is restricted to the dedicated product contract and SQL Server 2022 text input.",
+    "OPENJSON's current page mentions a database configuration exception to its compatibility prerequisite. Every selected OPENJSON question already specifies level 160, above 130; none depends on that exception or on Synapse's separate $.sql:identity().",
+    "JSON_MODIFY example A's printed result list does not display the added strict-null intermediate state. The explicit mode/value/existence table and the strict-null call establish that behavior; the incomplete printed sequence was not used as contrary or affirmative evidence.",
+    "No cited question uses JSON_QUERY's newer native-json array wrapper, preview JSON-column modify methods, optimizer materialization promises, or undocumented transaction/compiler behavior."
+  ],
+  "duplicateReview": {
+    "corpus": ".grounding\\dp800-expansion-20260916\\integration\\all-candidates.json",
+    "diagnostics": ".grounding\\dp800-expansion-20260916\\integration\\combined-duplicates.txt",
+    "corpusCount": 155,
+    "method": "Read actual related stems, choices, keys, explanations and code for the comparisons below, including related items without lexical warnings. Lexical silence is not a semantic verdict. Neighbor comparisons do not confer source approval or PASS 3 status on the neighbors.",
+    "comparisons": [
+      {
+        "ids": ["dp800-direct-006", "dp800-20260916-d1-021"],
+        "decision": "keep-distinct",
+        "reason": "The selected item chooses persistent intermediate rows across statements; d1-021 must simultaneously repair recursive string types and a recursion-member termination predicate. Knowing statement lifetime does not solve recursive depth/type safety."
+      },
+      {
+        "ids": [
+          "dp800-direct-007",
+          "dp800-direct-008",
+          "dp800-20260916-d1-022"
+        ],
+        "decision": "keep-distinct",
+        "reason": "The three decisions are cumulative partition/order/frame composition, ranking ties without gaps, and preserving pre-cutoff rows for LAG. Their code and distractors fail for different reasons; they are not renamed running-total exercises."
+      },
+      {
+        "ids": [
+          "dp800-direct-028",
+          "dp800-direct-027",
+          "dp800-20260916-d1-006"
+        ],
+        "decision": "keep-distinct",
+        "reason": "A 5,100-character scalar requires a different extractor; direct-027 selects a bounded scalar's response-envelope path; d1-006 safely narrows an indexed computed key using an independently guaranteed maximum. Shared JSON_VALUE facts do not make the requested repairs interchangeable."
+      },
+      {
+        "ids": ["dp800-direct-029", "dp800-direct-031"],
+        "decision": "keep-distinct",
+        "reason": "Case-sensitive property lookup despite SQL collation and literal dots in a SQL-delimited column name are separate mapping rules. The case item needs a case-exact explicit path; the dotted-key item predicts an already successful literal default match."
+      },
+      {
+        "ids": ["dp800-direct-030", "dp800-20260916-d3-032"],
+        "decision": "keep-distinct",
+        "reason": "AS JSON fragment retention is a component of both, but d3-032 additionally requires decoding a JSON-containing scalar before a second parse. The selected item's wrong scalar fields isolate projection shape; the RAG item's key must solve two encoding layers and the array type."
+      },
+      {
+        "ids": ["dp800-direct-032", "dp800-direct-035"],
+        "decision": "keep-distinct",
+        "reason": "OPENJSON observes the original JSON token through a read-time discriminator; JSON_MODIFY chooses a newly written token from the SQL argument type. Reading type 2 does not establish whether an nvarchar update produces type 1."
+      },
+      {
+        "ids": [
+          "dp800-direct-034",
+          "dp800-direct-035",
+          "dp800-direct-036",
+          "dp800-direct-037"
+        ],
+        "decision": "keep-distinct",
+        "reason": "The decisions are existing-path strict-null mutation, typed number/string serialization, append-result assignment followed by indexed replacement, and constructor-time ABSENT ON NULL. Their NULL, assignment, path and constructor rules are not cosmetic variants."
+      }
+    ],
+    "constructionWarnings": "Reviewed the actual warning records: direct-006 absolute/pronoun wording; direct-007 pronoun; direct-028,030,032 negative/pronoun wording; direct-029,031,035 pronoun; repeated 'A SQL Server 2022 database' opening for 028/031 and two other-domain items. Pronouns identify adjacent concrete code/data; negative phrases state required output distinctions. The no-spool caveat in 006 limits an absolute rather than asserting one. The shared opening is editorial repetition, not equivalent reasoning.",
+    "blockingDuplicatesFound": [],
+    "limitation": "This bounded comparison is not a new whole-catalog semantic certification and does not independently adjudicate unrelated cross-exam pairs."
+  },
+  "holds": [],
+  "decisions": [
+    {
+      "questionId": "dp800-direct-006",
+      "verdict": "verified",
+      "derivedAnswer": ["a"],
+      "sourceSummaries": {
+        "dp800-d1-cte": "The opening defines a CTE within one statement; Usage guidelines say its result is not materialized and recommend a temporary object for repeated references. This supports populating a temporary result once, not any promise about execution plans or internal spools.",
+        "dp800-d1-views": "The Create views unit calls a view a virtual table based on SELECT, with underlying data retrieved when queried. That directly disqualifies the expressly ordinary, non-indexed view as storage for one reusable intermediate snapshot."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "claimRepresented": "Populate one local temporary table and use its stored rows in both SELECT statements.",
+          "whyIncorrectInContext": "Supported, not incorrect: explicitly storing the producer's output once supplies the reusable rowset that survives the first consumer statement in this connection.",
+          "couldBeCorrectWhen": "The temporary result is created in a scope shared by both consumers and is neither dropped nor rolled back before the second reads it. It is appropriate when a fixed intermediate snapshot, rather than fresh recomputation, is wanted.",
+          "sourceIds": ["dp800-d1-cte"],
+          "evidenceSummary": "CTE Usage guidelines contrast nonmaterialized expressions with a temporary object for reuse. The question expressly permits temporary-table creation; it does not require a cached CTE or an optimizer-specific spool."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "claimRepresented": "One CTE definition before the first SELECT also supplies that named result to a later SELECT.",
+          "whyIncorrectInContext": "The CTE's expression name belongs to one consuming statement. The second statement cannot retrieve the first statement's CTE result merely because it uses the same connection.",
+          "couldBeCorrectWhen": "For a single SELECT with multiple references, a CTE can organize shared query text. A later statement would need its own definition or a separately existing table; that would not extend the original CTE's lifetime.",
+          "sourceIds": ["dp800-d1-cte"],
+          "evidenceSummary": "The article defines execution scope as a single SELECT/INSERT/UPDATE/MERGE/DELETE and requires one following statement. Name reuse cannot create cross-statement stored rows."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "claimRepresented": "Repeating the producing CTE before each SELECT meets a produce-once, shared-result requirement.",
+          "whyIncorrectInContext": "Both statements get valid query definitions but not one explicitly saved result. Repeated definition does not establish a single producing execution whose rows both statements reuse.",
+          "couldBeCorrectWhen": "Independent recalculation is acceptable or each SELECT should see a fresh result from its underlying tables. That requirement differs from this fixed, once-produced intermediate rowset.",
+          "sourceIds": ["dp800-d1-cte"],
+          "evidenceSummary": "The nonmaterialization guideline applies to each independently defined CTE. It supplies no promise of shared storage between statement executions."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "claimRepresented": "An ordinary non-indexed view stores the expensive query's output so two SELECTs reuse it.",
+          "whyIncorrectInContext": "A regular view persists a query definition, not its result rows. Its durable name is insufficient for the expressly materialized intermediate snapshot.",
+          "couldBeCorrectWhen": "Consumers need a stable query interface or current underlying results each time. A separately designed indexed view would be a different option and is explicitly excluded here.",
+          "sourceIds": ["dp800-d1-views"],
+          "evidenceSummary": "The instructional source distinguishes virtual views from physical tables and explains retrieval from underlying tables when the view is queried."
+        }
+      ],
+      "challenges": {
+        "scope": "SQL Server 2022 and two statements in one connection distinguish statement-scoped CTE names from stored temporary rows; no Fabric nested-CTE behavior is imported.",
+        "plan": "The question requires explicit materialization, not a speed comparison. An optimizer spool within one query cannot establish a reusable named result for a later statement.",
+        "role": "Temporary-table creation is expressly allowed. No cloud service role, Copilot plan or administrator-only permission is needed to choose between these data-lifetime designs.",
+        "preconditions": "Both consumers must share the temporary table's creation scope; no intervening DROP, rollback or scope-ending procedure is stipulated. The natural proposed design creates it for these two consumers.",
+        "featureStatus": "The selected statement-scope and ordinary temporary-result techniques are established SQL Server features. The cited view/CTE contracts do not make the question depend on a Preview feature.",
+        "sourceChanges": "Read the frozen CTE usage section and view text. The CTE page also discusses internal spools in other circumstances, which is why the explanation's no-global-spool-claim qualification is important.",
+        "stemSufficiency": "Produce once, preserve rows after the first SELECT, same connection and permission to create temporary tables jointly identify the requirement. A similarly named existing table cannot make the CTE itself persist.",
+        "explanationBounds": "The explanation correctly distinguishes stored results from stored definitions without claiming that CTEs always physically re-evaluate every operation or can never receive a spool.",
+        "reasoningDepth": "Intermediate is credible: the learner must distinguish query reuse from result reuse and statement lifetime from connection lifetime. This is not an optimizer-tuning or advanced recursive problem.",
+        "answerClues": "The word materialized states an essential requirement, not a secret answer. The view alternative is a credible reusable-name confusion; repeated CTE options are somewhat less competitive."
+      },
+      "rubric": {
+        "alignment": {
+          "score": 4,
+          "note": "Directly applies the March 12 CTE subskill through its scope and materialization contract."
+        },
+        "accuracy": {
+          "score": 4,
+          "note": "Local stored rows meet reuse; neither a one-statement CTE nor an ordinary view promises that storage."
+        },
+        "scenarioCompleteness": {
+          "score": 4,
+          "note": "Connection, two consumers, producing-once requirement and temporary-object permission are explicit."
+        },
+        "answerUniqueness": {
+          "score": 4,
+          "note": "Only a explicitly stores the producer's rows for both separate statements."
+        },
+        "distractorPlausibility": {
+          "score": 3,
+          "note": "The ordinary view is attractive, but the repeated-CTE alternatives are closely related misconceptions."
+        },
+        "distractorEvidence": {
+          "score": 4,
+          "note": "One-statement scope, lack of materialization and virtual-view storage each have direct cited support."
+        },
+        "documentationStrength": {
+          "score": 4,
+          "note": "The implementation CTE guideline expressly recommends a temporary object for the relevant reuse need."
+        },
+        "citationSpecificity": {
+          "score": 4,
+          "note": "Both cited pages address the particular scope/storage distinction rather than only introducing SQL."
+        },
+        "difficultyAuthenticity": {
+          "score": 4,
+          "note": "Intermediate fits comparing lifetime and materialization without fabricated performance facts."
+        },
+        "explanationQuality": {
+          "score": 4,
+          "note": "The explanation actively bounds the inference by excluding a universal no-spool claim."
+        },
+        "originality": {
+          "score": 3,
+          "note": "The two-consumer setup is useful but is a familiar CTE-versus-storage teaching pattern."
+        },
+        "clarityAccessibility": {
+          "score": 4,
+          "note": "Plain alternatives and an unambiguous reference to the intermediate result avoid unnecessary SQL syntax."
+        }
+      },
+      "checkAssessments": {
+        "answerDefensible": {
+          "passed": true,
+          "note": "A temporary stored rowset satisfies both consumer lifetimes."
+        },
+        "correctOptionsSupported": {
+          "passed": true,
+          "note": "The CTE product guideline explicitly supplies the temporary-object alternative."
+        },
+        "distractorsIncorrect": {
+          "passed": true,
+          "note": "Each of b/c/d fails storage or cross-statement lifetime, not merely performance preference."
+        },
+        "explanationsSupported": {
+          "passed": true,
+          "note": "The caveat preserves possible internal spooling without treating it as persistent reuse."
+        },
+        "directSources": {
+          "passed": true,
+          "note": "Read CTE-unit-to-clause and programmability-module-to-view receipts under actual exact DP-800 grants."
+        },
+        "featureStatus": {
+          "passed": true,
+          "note": "The 2022 CTE/temporary-object/view behavior is not a Preview-only contract."
+        },
+        "currentTerminology": {
+          "passed": true,
+          "note": "CTE, local temporary table and ordinary non-indexed view name distinct actual SQL constructs."
+        },
+        "prerequisitesComplete": {
+          "passed": true,
+          "note": "The connection and creation permission needed for the proposed reuse are given."
+        },
+        "codeReviewed": {
+          "passed": true,
+          "note": "No executable snippet is supplied; statement/name lifetime was reasoned statically."
+        },
+        "originalContent": {
+          "passed": true,
+          "note": "The setup and options are original explanatory prose, not copied practice-assessment content."
+        },
+        "duplicatesReviewed": {
+          "passed": true,
+          "note": "Read d1-021's actual recursive repair; it needs different type/termination reasoning."
+        },
+        "qualityReviewed": {
+          "passed": true,
+          "note": "Reviewed the absolute/pronoun diagnostics and scored the weaker paired CTE distractors."
+        }
+      },
+      "verificationNotes": "PASS 3 independently retains a. Tried repeated definitions, a persistent view name, a same-named base object and optimizer spooling; none gives the requested explicitly stored single production across two statements. The fixed-result design is bounded to the shared temporary-object scope, not a performance guarantee. The actual source ancestry and recursive-CTE neighbor were inspected. Static reasoning only.",
+      "confidenceReason": "High confidence in the data-lifetime distinction because the dedicated CTE contract and ordinary-view text directly separate definitions from reusable stored rows."
+    },
+    {
+      "questionId": "dp800-direct-007",
+      "verdict": "verified",
+      "derivedAnswer": ["b"],
+      "sourceSummaries": {
+        "dp800-d1-over": "OVER defines per-partition calculation, a separate logical order and ROWS/RANGE boundaries. Its arguments and SQL Server 2012+ frame sections establish cross-tenant restart, timestamp-peer expansion for RANGE and first-row-to-current-row accumulation; this is not a guarantee of final display order."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "claimRepresented": "A global ordered ROWS total also provides a lifetime total independently for every tenant.",
+          "whyIncorrectInContext": "There is no tenant partition. A different tenant's earlier Amount 7 would be included in the total for a tenant whose first Amount is 2, yielding 9 instead of 2.",
+          "couldBeCorrectWhen": "The input is restricted to exactly one tenant, or the desired total is intentionally global across tenants. Neither condition is the report's separate-per-tenant contract.",
+          "sourceIds": ["dp800-d1-over"],
+          "evidenceSummary": "Without PARTITION BY, the entire rowset is one partition. The numeric counterexample is a static consequence of that documented rule."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "claimRepresented": "Partition by tenant, order by EventTime and unique EventId, and sum from the first row through the current row.",
+          "whyIncorrectInContext": "Supported, not incorrect: the three clauses independently satisfy tenant isolation, deterministic timestamp tie-breaking and lifetime cumulative scope while keeping each event row.",
+          "couldBeCorrectWhen": "The input contains the tenant history to be accumulated and EventId uniquely breaks its time ties, as stipulated. If a later report filters history before the window, the desired lifetime input would need restoration.",
+          "sourceIds": ["dp800-d1-over"],
+          "evidenceSummary": "PARTITION BY restarts calculation; multiple ORDER BY expressions define logical order; UNBOUNDED PRECEDING and ROWS CURRENT ROW include the prefix ending at this row."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "claimRepresented": "A timestamp-only RANGE prefix is the same event-by-event cumulative sequence as the required time-and-ID order.",
+          "whyIncorrectInContext": "For two same-time amounts 2 and 3, RANGE includes both peers and gives 5 to each. The required EventId sequence advances from 2 to 5; EventId is absent from this order.",
+          "couldBeCorrectWhen": "The business wants the timestamp-peer total on every tied event, or timestamps are unique within each tenant. Accidental equality for particular zero amounts is not a general implementation of the required order.",
+          "sourceIds": ["dp800-d1-over"],
+          "evidenceSummary": "The RANGE CURRENT ROW definition includes all rows with matching ORDER BY values; the two-event example exposes the effect without executing SQL."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "claimRepresented": "A preceding-one-row frame accumulates the entire tenant lifetime.",
+          "whyIncorrectInContext": "At the third event with amounts 2, 3 and 5, the frame contains 3 and 5 only and produces 8 rather than the lifetime 10.",
+          "couldBeCorrectWhen": "A two-event rolling total is requested. It also happens to match a lifetime prefix for partitions with at most two rows, but the question explicitly allows many events.",
+          "sourceIds": ["dp800-d1-over"],
+          "evidenceSummary": "The bounded ROWS PRECEDING rule counts physical preceding rows; it is distinct from the partition-start boundary UNBOUNDED PRECEDING."
+        }
+      ],
+      "challenges": {
+        "scope": "The expression targets SQL Server 2022 row-preserving analytic aggregation; no GROUP BY collapse, Fabric-specific window syntax or Synapse restriction is assumed.",
+        "plan": "No physical sort or speed claim is made. Window ORDER BY establishes calculation order only; displaying rows in that order would separately require an outer ORDER BY.",
+        "role": "These are SELECT expressions over accessible event data. None needs an extra service plan or special administrative role that could choose an alternative.",
+        "preconditions": "The non-null values and tenant-unique EventId tie-breaker close the stated null and tie cases. Amount must be a normal SUM-compatible value; no overflow behavior or restricted history is claimed.",
+        "featureStatus": "The actual OVER article marks ROWS/RANGE and their bounds as SQL Server 2012 onward; the 2022 formulation is established GA behavior, not a new preview window feature.",
+        "sourceChanges": "The frozen page explicitly explains peer-inclusive RANGE, including all ORDER BY expressions, and the default RANGE frame. No source date was refreshed and no default-frame assumption replaces the shown explicit frame.",
+        "stemSufficiency": "Separate tenants, lifetime scope, possible time ties and a unique tie-breaker are all given. Coincidental equality for one tenant, no ties or two rows cannot satisfy the general contract.",
+        "explanationBounds": "The explanation correctly separates the three concerns. It neither asserts output display order nor guarantees deterministic results from incomplete ordering.",
+        "reasoningDepth": "Static examples independently defeat a, c and d. Advanced is at the lower end because the stem exposes all three clauses to compose, but it still requires three interacting constraints.",
+        "answerClues": "The two fully ordered partitioned expressions are near-identical in length; b must beat d on frame scope. There is no grammar or unique lengthy prose cue to the key."
+      },
+      "rubric": {
+        "alignment": {
+          "score": 4,
+          "note": "Tests the exact current window-functions subskill through an analytical report requirement."
+        },
+        "accuracy": {
+          "score": 4,
+          "note": "Per-tenant prefixes 2,5,10 distinguish the key from timestamp peers 5,5,10 and the sliding third result 8."
+        },
+        "scenarioCompleteness": {
+          "score": 4,
+          "note": "Time ties, key uniqueness, null exclusion, tenant separation and lifetime scope are explicit."
+        },
+        "answerUniqueness": {
+          "score": 4,
+          "note": "Only b satisfies partition, full order and unbounded frame for all admissible event sets."
+        },
+        "distractorPlausibility": {
+          "score": 4,
+          "note": "Each alternative preserves two real requirements while failing the third."
+        },
+        "distractorEvidence": {
+          "score": 4,
+          "note": "One product article separately documents each counterexample's omitted or changed clause."
+        },
+        "documentationStrength": {
+          "score": 4,
+          "note": "OVER's syntax and argument definitions directly govern every displayed expression."
+        },
+        "citationSpecificity": {
+          "score": 4,
+          "note": "Partition, order, RANGE peers and frame bounds are exact sections in the cited article."
+        },
+        "difficultyAuthenticity": {
+          "score": 3,
+          "note": "Three constraints justify applied reasoning, though advanced is a lower-edge label for these visible differences."
+        },
+        "explanationQuality": {
+          "score": 4,
+          "note": "The explanation separates isolation, tie handling and prefix extent without performance claims."
+        },
+        "originality": {
+          "score": 3,
+          "note": "A sound multi-tenant adaptation of a common running-total pattern, distinct from the LAG history repair."
+        },
+        "clarityAccessibility": {
+          "score": 4,
+          "note": "Parallel expressions and named tie-breaker make the decision readable without a hidden data schema."
+        }
+      },
+      "checkAssessments": {
+        "answerDefensible": {
+          "passed": true,
+          "note": "Independent cross-tenant, peer and third-event counterexamples leave only b."
+        },
+        "correctOptionsSupported": {
+          "passed": true,
+          "note": "The complete partition/order/ROWS prefix matches OVER definitions."
+        },
+        "distractorsIncorrect": {
+          "passed": true,
+          "note": "a merges tenants, c merges time peers and d discards older rows."
+        },
+        "explanationsSupported": {
+          "passed": true,
+          "note": "The three stated failures are independent logical effects, not plan speculation."
+        },
+        "directSources": {
+          "passed": true,
+          "note": "The current window unit actually links the exact approved OVER page."
+        },
+        "featureStatus": {
+          "passed": true,
+          "note": "2012+ frame availability covers SQL Server 2022."
+        },
+        "currentTerminology": {
+          "passed": true,
+          "note": "PARTITION BY, ROWS, RANGE and their bounds use current T-SQL terms."
+        },
+        "prerequisitesComplete": {
+          "passed": true,
+          "note": "Non-null inputs and unique within-tenant ordering are expressly provided."
+        },
+        "codeReviewed": {
+          "passed": true,
+          "note": "All four expressions were checked statically for legal aggregate OVER syntax."
+        },
+        "originalContent": {
+          "passed": true,
+          "note": "The tenant/EventId composition is original scenario text, not a copied assessment."
+        },
+        "duplicatesReviewed": {
+          "passed": true,
+          "note": "Read direct-008 and d1-022; ranking ties and prefilter visibility require different reasoning."
+        },
+        "qualityReviewed": {
+          "passed": true,
+          "note": "Checked the tie pronoun and parallel options; deducted for lower-edge advanced difficulty."
+        }
+      },
+      "verificationNotes": "PASS 3 retains b after independently constructing tenant pollution, two timestamp peers and a third-event frame counterexample. The calculations 2/5/10 versus 5/5/10 and 2/5/8 are static reasoning, not executed results. Outer display order and optimizer behavior are outside the claim. The question is distinct from dense ranking and LAG's input-filter boundary; advanced difficulty receives a qualified score.",
+      "confidenceReason": "High confidence in the key because the sole cited product contract directly defines all three independent window dimensions and their boundary cases."
+    },
+    {
+      "questionId": "dp800-direct-008",
+      "verdict": "verified",
+      "derivedAnswer": ["c"],
+      "sourceSummaries": {
+        "dp800-d1-window-unit": "The current ranking section separately demonstrates unique ROW_NUMBER values, equal RANK values followed by a gap, equal DENSE_RANK values followed by the next integer, and NTILE's roughly equal-sized groups. These four contracts resolve the precise no-gap tie requirement."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "claimRepresented": "ROW_NUMBER assigns equal numbers to equal Priority values while maintaining consecutive ranks.",
+          "whyIncorrectInContext": "Each row receives a distinct ordinal, so two tied priorities cannot both receive the same rank from this function.",
+          "couldBeCorrectWhen": "A unique row ordinal is desired, or priorities happen to be unique so the tie rule is never exercised. The latter is not a guarantee for reports that must preserve equal-priority ranks.",
+          "sourceIds": ["dp800-d1-window-unit"],
+          "evidenceSummary": "The unit's ROW_NUMBER example gives different ordinals to equal prices; its rule expressly excludes duplicate numbers even on ties."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "claimRepresented": "RANK preserves ties and immediately continues with the next distinct consecutive rank.",
+          "whyIncorrectInContext": "After priorities 3,3,8, competition ranking produces 1,1,3 rather than the required 1,1,2. Ties cause gaps before the next distinct value.",
+          "couldBeCorrectWhen": "Competition-style ranks with skipped positions are required, or there are no ties. Neither replaces the required no-gap behavior when ties occur.",
+          "sourceIds": ["dp800-d1-window-unit"],
+          "evidenceSummary": "The RANK section explicitly states same ranks for ties followed by skipped numbers and shows that contrast against DENSE_RANK."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "claimRepresented": "DENSE_RANK assigns one rank per distinct ordered Priority, preserving ties without gaps.",
+          "whyIncorrectInContext": "Supported, not incorrect: equal priorities share a rank and the next distinct priority gets the next integer, exactly the two requested properties.",
+          "couldBeCorrectWhen": "The OVER order uses the priority whose equality should define ties, as stated. Adding a unique row identifier to that order would change peer groups and defeat the original equal-priority requirement.",
+          "sourceIds": ["dp800-d1-window-unit"],
+          "evidenceSummary": "The DENSE_RANK section explicitly gives tied rows rank 1 and the next distinct value rank 2, in contrast to RANK's gap."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "claimRepresented": "NTILE(4) inherently creates a separate consecutive rank for every distinct Priority value.",
+          "whyIncorrectInContext": "Four approximately equal-sized row groups are not distinct-priority ranks. Group boundaries can combine different values or split a tied group, so this does not guarantee the requested semantics.",
+          "couldBeCorrectWhen": "Four balanced workload or percentile bands are the desired output. A specially aligned data distribution can coincidentally match dense ranks, but that coincidence is not the function's contract.",
+          "sourceIds": ["dp800-d1-window-unit"],
+          "evidenceSummary": "The unit defines NTILE by a specified number of roughly equal groups and gives percentile/work-distribution use cases, not one rank per distinct value."
+        }
+      ],
+      "challenges": {
+        "scope": "The question asks which SQL Server 2022 ranking function to use with an order by Priority. It does not ask to execute an isolated bare function call.",
+        "plan": "No plan, edition or storage selection determines the tie semantics. Different physical ordering among equal-priority rows cannot change the chosen dense rank value.",
+        "role": "The task is a report expression, with no permission-sensitive object creation or cloud-service role premise. Access control cannot turn an NTILE bucket into a dense rank.",
+        "preconditions": "Priority is the ordering key defining equality. The problem does not add a unique tie-breaker that would dissolve peers; a NULL priority group would still be a peer group rather than make ROW_NUMBER preserve ties.",
+        "featureStatus": "These are established SQL ranking functions used in the current instructional examples, not preview 2025-only additions. The 2022 scope is consistent with those contracts.",
+        "sourceChanges": "Read the actual four ranking subsections and examples rather than the module's title. Unrelated aggregate or newer function material is not needed for this answer.",
+        "stemSufficiency": "Equal priorities must match and the next distinct priority must have the next consecutive rank. Ascending versus descending changes the order of groups but not which function preserves these two properties.",
+        "explanationBounds": "The explanation promises only rank-value semantics, not output row order or deterministic ordering within a tie. NTILE is described as grouping rather than an impossible function.",
+        "reasoningDepth": "Beginner and concept-recall are honest labels: two familiar ranking properties select a function without a complex query repair.",
+        "answerClues": "All choices are concise real function names. 'Without a gap' is necessarily diagnostic of the tested contract; the distant NTILE alternative modestly weakens distractor competition."
+      },
+      "rubric": {
+        "alignment": {
+          "score": 4,
+          "note": "Ranking is directly within the current window-functions objective."
+        },
+        "accuracy": {
+          "score": 4,
+          "note": "The static 1,1,2 dense sequence versus 1,1,3 competition sequence checks both requirements."
+        },
+        "scenarioCompleteness": {
+          "score": 3,
+          "note": "The required semantics are complete, but the report context is intentionally thin and has no concrete rows."
+        },
+        "answerUniqueness": {
+          "score": 4,
+          "note": "Only DENSE_RANK guarantees both equal-peer values and no rank gaps."
+        },
+        "distractorPlausibility": {
+          "score": 3,
+          "note": "RANK and ROW_NUMBER are close confusions; fixed four-way NTILE is less competitive."
+        },
+        "distractorEvidence": {
+          "score": 4,
+          "note": "All four functions are explicitly contrasted in the one cited unit."
+        },
+        "documentationStrength": {
+          "score": 4,
+          "note": "The admitted instructional material directly states and illustrates the relevant ranking contracts."
+        },
+        "citationSpecificity": {
+          "score": 4,
+          "note": "The ranking subsections support every answer distinction without a topic-only citation."
+        },
+        "difficultyAuthenticity": {
+          "score": 4,
+          "note": "Beginner recall is not mislabeled advanced because of the containing skill's name."
+        },
+        "explanationQuality": {
+          "score": 4,
+          "note": "The explanation distinguishes peer preservation, gaps and bucketing without overclaiming determinism."
+        },
+        "originality": {
+          "score": 3,
+          "note": "A conventional original function-selection item, useful but not an elaborate new scenario."
+        },
+        "clarityAccessibility": {
+          "score": 4,
+          "note": "Short requirements and real parallel function names make the task accessible."
+        }
+      },
+      "checkAssessments": {
+        "answerDefensible": {
+          "passed": true,
+          "note": "Both tie preservation and next-group consecutiveness point to c."
+        },
+        "correctOptionsSupported": {
+          "passed": true,
+          "note": "The actual DENSE_RANK example shows the next distinct group at rank 2."
+        },
+        "distractorsIncorrect": {
+          "passed": true,
+          "note": "Unique ordinals, competition gaps and fixed row buckets each violate a requirement."
+        },
+        "explanationsSupported": {
+          "passed": true,
+          "note": "All stated distinctions occur in the instructional ranking text."
+        },
+        "directSources": {
+          "passed": true,
+          "note": "The approved window unit is directly linked by the actual advanced-T-SQL module."
+        },
+        "featureStatus": {
+          "passed": true,
+          "note": "The four existing ranking functions do not require Preview status."
+        },
+        "currentTerminology": {
+          "passed": true,
+          "note": "Function names and the distinction between rank and bucket match current instruction."
+        },
+        "prerequisitesComplete": {
+          "passed": true,
+          "note": "Ordering by Priority defines peers; no hidden unique tie-breaker is added."
+        },
+        "codeReviewed": {
+          "passed": true,
+          "note": "The choices name functions for an OVER clause rather than pretending to be complete executable statements."
+        },
+        "originalContent": {
+          "passed": true,
+          "note": "The Priority requirement is original concise prose, not copied example result rows."
+        },
+        "duplicatesReviewed": {
+          "passed": true,
+          "note": "The actual running-total and LAG-neighbor code has different success criteria."
+        },
+        "qualityReviewed": {
+          "passed": true,
+          "note": "Scored the thin scenario and weaker NTILE distractor instead of giving a full-score template."
+        }
+      },
+      "verificationNotes": "PASS 3 retains c after testing a repeated priority followed by a distinct priority. ROW_NUMBER separates peers, RANK skips the next rank and NTILE partitions row counts rather than distinct values. Special no-tie or perfectly aligned inputs only create incidental agreement, not alternate guaranteed answers. Function names are selection shorthand, and beginner recall is retained honestly. No SQL execution is claimed.",
+      "confidenceReason": "High confidence: the actual current training unit explicitly contrasts all four options and directly demonstrates the key's tie/no-gap behavior."
+    },
+    {
+      "questionId": "dp800-direct-028",
+      "verdict": "verified",
+      "derivedAnswer": ["b"],
+      "sourceSummaries": {
+        "dp800-d1-json-value": "The article shows SQL Server 2022 syntax without RETURNING, the no-RETURNING nvarchar(4000) result, lax NULL and strict error for overlength scalars, and recommends OPENJSON for longer scalar text. Its newer native-json RETURNING branch is not applicable to this nvarchar 2022 input.",
+        "dp800-d1-openjson": "OPENJSON allows an explicit WITH column type and a scalar property path; nvarchar(max) can retain the long string. Its SQL Server 2016+ and compatibility-130 prerequisite is satisfied by the stated 2022/160 environment.",
+        "dp800-d1-json-query": "JSON_QUERY returns object/array fragments rather than scalar strings, yields NULL for a scalar in lax mode, and defaults its path to the whole input. These clauses separately defeat the property-level and whole-document alternatives."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "claimRepresented": "Changing JSON_VALUE to strict mode removes the scalar result-length limit.",
+          "whyIncorrectInContext": "A 5,100-character scalar remains beyond the no-RETURNING nvarchar(4000) contract. Strict mode substitutes an error for the lax NULL; it does not return the full text.",
+          "couldBeCorrectWhen": "The existing scalar fits the 4,000-character contract and a missing or incompatible property should raise an error. This candidate's known long string fails that precondition.",
+          "sourceIds": ["dp800-d1-json-value"],
+          "evidenceSummary": "The no-RETURNING return-value section explicitly states both overlength branches. The 2022 syntax excludes using a newer RETURNING argument to change the return type."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "claimRepresented": "Project the message path with OPENJSON into an explicit nvarchar(max) column.",
+          "whyIncorrectInContext": "Supported, not incorrect: the explicit scalar projection reads the existing top-level message into a type that can contain all 5,100 characters without returning the surrounding object.",
+          "couldBeCorrectWhen": "The input is valid JSON, the property is the scalar to extract, and OPENJSON is supported at the database's compatibility level. Those conditions are explicitly present here.",
+          "sourceIds": ["dp800-d1-json-value", "dp800-d1-openjson"],
+          "evidenceSummary": "JSON_VALUE recommends OPENJSON for overlength scalars; OPENJSON's WITH syntax permits a chosen SQL column type and path. The supplied object has one message, avoiding a duplicate-property/cardinality ambiguity."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "claimRepresented": "JSON_QUERY at the message path extracts its scalar string as a JSON fragment.",
+          "whyIncorrectInContext": "The path identifies a string, not an object or array. The shown default lax call therefore returns SQL NULL instead of the required scalar text.",
+          "couldBeCorrectWhen": "The message property instead contains an object or array and the application needs that fragment. Strict mode alone would not turn a scalar into an object or array.",
+          "sourceIds": ["dp800-d1-json-query"],
+          "evidenceSummary": "JSON_QUERY's purpose and return-value section limit successful fragment extraction to objects/arrays; the scalar lax branch is expressly NULL."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "claimRepresented": "JSON_QUERY without a property path returns only the message text.",
+          "whyIncorrectInContext": "The omitted path defaults to the root, so it returns the complete input object, including the message member and JSON structure. That is not the scalar-only result.",
+          "couldBeCorrectWhen": "The application wants the whole valid object as JSON text rather than the contained message string. It is a valid expression for that different output-shape requirement.",
+          "sourceIds": ["dp800-d1-json-query"],
+          "evidenceSummary": "The path argument explicitly defaults to $, returning the input expression; the object's surrounding structure is not stripped by that call."
+        }
+      ],
+      "challenges": {
+        "scope": "The explicit SQL Server 2022 and nvarchar(max) input constrain the question to text JSON functions. New native-json RETURNING syntax cannot be borrowed from another version to rescue a.",
+        "plan": "The outcome is a return-type and shape contract, not a memory grant, optimizer plan or service-tier issue. OPENJSON's declared max column, not a larger client buffer, addresses extraction.",
+        "role": "The expressions operate on a supplied variable and require no external resource authorization, model access or special administrator permission. No such role could change scalar versus fragment behavior.",
+        "preconditions": "Valid input, an existing single top-level string property, a known overlength value and compatibility 160 rule out malformed JSON, missing keys and unavailable OPENJSON as alternative explanations.",
+        "featureStatus": "The product pages identify SQL Server 2016+ text JSON support. The chosen 2022 OPENJSON projection is established GA; neither RETURNING nor WITH ARRAY WRAPPER is part of the answer.",
+        "sourceChanges": "The frozen JSON_VALUE page contains newer syntax and a 2025 return-section heading. Its explicitly separate no-RETURNING contract and 2022 syntax, corroborated by the training parent's nvarchar(4000), support the older behavior without relabeling the source.",
+        "stemSufficiency": "The stated length, valid scalar and required output shape uniquely distinguish truncation-limit handling from absent-property diagnostics or whole-document retrieval.",
+        "explanationBounds": "The explanation correctly rejects interpreting NULL as necessarily absent and says strict mode changes failure behavior. It does not claim arbitrary long scalar extraction with JSON_VALUE.",
+        "reasoningDepth": "Intermediate troubleshooting is justified by recognizing the extraction limit and choosing a different rowset projection while excluding scalar/fragment confusions.",
+        "answerClues": "The valid text, length and output-shape qualifiers are necessary evidence, not answer leakage. Repetition of the generic SQL Server opening and the long stem slightly reduce editorial crispness."
+      },
+      "rubric": {
+        "alignment": {
+          "score": 4,
+          "note": "Directly tests current JSON_VALUE/OPENJSON functionality in the advanced-T-SQL JSON subskill."
+        },
+        "accuracy": {
+          "score": 4,
+          "note": "Strict overlength error, OPENJSON max extraction and both JSON_QUERY outcomes were re-derived separately."
+        },
+        "scenarioCompleteness": {
+          "score": 4,
+          "note": "Length, validity, property shape, SQL version, compatibility and scalar-only output are all given."
+        },
+        "answerUniqueness": {
+          "score": 4,
+          "note": "Only b both retains the full long text and strips the surrounding JSON object."
+        },
+        "distractorPlausibility": {
+          "score": 4,
+          "note": "Strict-mode repair and two fragment-function variants are credible wrong troubleshooting choices."
+        },
+        "distractorEvidence": {
+          "score": 4,
+          "note": "The three implementation pages directly distinguish each alternate call and result."
+        },
+        "documentationStrength": {
+          "score": 4,
+          "note": "The JSON_VALUE recommendation and OPENJSON typed projection form direct implementation evidence."
+        },
+        "citationSpecificity": {
+          "score": 4,
+          "note": "Each page supports the exact function call or limit that differentiates its option."
+        },
+        "difficultyAuthenticity": {
+          "score": 4,
+          "note": "Intermediate fits a return-contract troubleshooting decision rather than unsupported advanced complexity."
+        },
+        "explanationQuality": {
+          "score": 4,
+          "note": "The NULL-versus-absence and newer-RETURNING qualifications prevent misleading generalization."
+        },
+        "originality": {
+          "score": 3,
+          "note": "The long-message case is useful but a familiar extraction-limit teaching example."
+        },
+        "clarityAccessibility": {
+          "score": 3,
+          "note": "Accurate but qualifier-heavy wording and a repeated generic opening add reading overhead."
+        }
+      },
+      "checkAssessments": {
+        "answerDefensible": {
+          "passed": true,
+          "note": "Only the max-typed scalar projection meets both length and output-shape requirements."
+        },
+        "correctOptionsSupported": {
+          "passed": true,
+          "note": "JSON_VALUE explicitly recommends OPENJSON for the overlength case."
+        },
+        "distractorsIncorrect": {
+          "passed": true,
+          "note": "a errors, c is lax NULL and d returns the whole object."
+        },
+        "explanationsSupported": {
+          "passed": true,
+          "note": "The source branches support the failure-mode and 2022 RETURNING exclusions."
+        },
+        "directSources": {
+          "passed": true,
+          "note": "The current training unit actually names all three exact approved function pages' APIs."
+        },
+        "featureStatus": {
+          "passed": true,
+          "note": "Only established text JSON support is used despite newer syntax elsewhere in the sources."
+        },
+        "currentTerminology": {
+          "passed": true,
+          "note": "SQL NULL, scalar text and object/array fragments are kept distinct."
+        },
+        "prerequisitesComplete": {
+          "passed": true,
+          "note": "2022/160, valid input and one existing overlength property are explicit."
+        },
+        "codeReviewed": {
+          "passed": true,
+          "note": "All replacement SELECTs and the explicit nvarchar(max) WITH schema were checked statically."
+        },
+        "originalContent": {
+          "passed": true,
+          "note": "The message scenario and choices are independently worded, not an assessment excerpt."
+        },
+        "duplicatesReviewed": {
+          "passed": true,
+          "note": "Read direct-027's bounded response path and d1-006's safe index narrowing; neither asks this extraction repair."
+        },
+        "qualityReviewed": {
+          "passed": true,
+          "note": "Reviewed the negative/pronoun/repeated-opening warnings and deducted for wording overhead."
+        }
+      },
+      "verificationNotes": "PASS 3 retains b. Tested the tempting strict-mode substitution against the same overlength scalar, the fragment function against a scalar, and root extraction against the scalar-only requirement. Also checked the 2022 syntax boundary so newer RETURNING support is not smuggled in from the current mixed-version page. All cited evidence and named training references were read. The conclusions are static, not a live SQL execution.",
+      "confidenceReason": "High confidence: the no-RETURNING length rule, the recommended OPENJSON alternative and JSON_QUERY's two relevant path/shape rules directly cover all four choices."
+    },
+    {
+      "questionId": "dp800-direct-029",
+      "verdict": "verified",
+      "derivedAnswer": ["c"],
+      "sourceSummaries": {
+        "dp800-d1-openjson": "WITH defaults to case-sensitive matching of column names to JSON keys, while column_path explicitly overrides that default. The article states BIN2, collation-unaware property/path matching and explains scalar projections and array navigation, distinguishing SKU, absent sku, SKU[0] and category."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "claimRepresented": "Default lowercase sku mapping can find the uppercase SKU property because the database is case-insensitive.",
+          "whyIncorrectInContext": "The exact lowercase key is absent. OPENJSON property matching ignores database case-insensitive collation, so repeating the original column definition retains the NULL.",
+          "couldBeCorrectWhen": "The payload contains an exact lowercase sku property with the identifier. That would be a different input; changing only the SQL database collation cannot supply the missing exact JSON key.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "The WITH introduction and column_path section explicitly make default property-name matching case-sensitive and the step comparison BIN2/collation-unaware."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "claimRepresented": "The uppercase SKU property can be read as the first array element even though it is a string.",
+          "whyIncorrectInContext": "SKU contains the scalar R-84, not an array. The index step requests a different shape and cannot retrieve that scalar as element zero under the shown lax projection.",
+          "couldBeCorrectWhen": "SKU contains an array such as [\"R-84\"] and the required identifier is its first element. Bracket index zero is appropriate for that array input, not the supplied scalar.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "OPENJSON's array example uses zero-based element keys and its path/column_path rules address JSON structure. Missing or incompatible lax paths do not reinterpret scalar strings as arrays."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "claimRepresented": "Keep the SQL output name sku but explicitly read the uppercase JSON property $.SKU.",
+          "whyIncorrectInContext": "Supported, not incorrect: the case-exact path matches the existing string and maps R-84 into the unchanged nvarchar(20) output column.",
+          "couldBeCorrectWhen": "The uppercase property contains the desired scalar and it fits the declared column, as R-84 does. Output alias spelling need not match a key once an explicit path is supplied.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "The article explicitly permits column_path to override default mapping when the output name differs from the JSON key; the BIN2 comparison is satisfied by uppercase SKU."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "claimRepresented": "Mapping sku to $.category returns the product identifier from this input.",
+          "whyIncorrectInContext": "The category property exists but contains spare, not R-84. A syntactically valid mapping to the wrong business field does not satisfy the identifier requirement.",
+          "couldBeCorrectWhen": "The required output is category text, or a different payload contract actually stores the desired identifier in that field. Neither is the unchanged input and output contract here.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "An explicit column_path selects the addressed property's value. The displayed JSON supplies spare at category, so this is a content-target error rather than a syntax error."
+        }
+      ],
+      "challenges": {
+        "scope": "SQL Server 2022/160 and an nvarchar payload are explicit. The comparison at issue belongs to JSON key resolution, not general case-insensitive SQL identifier matching.",
+        "plan": "No execution plan, index or tier can make a wrong property path select the intended field. This is a parser mapping problem on one supplied object.",
+        "role": "The snippet uses only a local variable and OPENJSON; no additional SELECT grant on a remote table or elevated role is needed to distinguish these options.",
+        "preconditions": "The input is valid, SKU is a scalar of four characters fitting nvarchar(20), and category is a different scalar. Compatibility 160 satisfies OPENJSON's required baseline.",
+        "featureStatus": "The basic OPENJSON explicit schema/path feature is documented for SQL Server 2016 onward. No preview array-wildcard or native-json capability is invoked.",
+        "sourceChanges": "Read the actual repeated BIN2/collation-unaware statements and the default mapping rule, not the source summary. The currently documented compatibility exception is immaterial at 160.",
+        "stemSufficiency": "The code fixes both real keys and values, while the stem fixes the output alias and input. Thus changing the payload, alias or collation is not an alternative repair.",
+        "explanationBounds": "The explanation correctly separates the SQL column name from path spelling. It does not claim that every SQL comparison uses BIN2.",
+        "reasoningDepth": "Intermediate fits separating collation, output naming and structural path navigation. Choosing the category field is a weaker but genuine wrong-target alternative.",
+        "answerClues": "The case difference is visible because it is the concept to diagnose, not because the correct answer is phrased more carefully. All options use valid WITH-clause grammar."
+      },
+      "rubric": {
+        "alignment": {
+          "score": 4,
+          "note": "OPENJSON's explicit-schema mapping directly fits the current JSON-query objective."
+        },
+        "accuracy": {
+          "score": 4,
+          "note": "Static projection yields NULL, NULL, R-84 and spare for the four respective paths."
+        },
+        "scenarioCompleteness": {
+          "score": 4,
+          "note": "Actual input, alias-preservation rule, collation, engine and compatibility close the ambiguity."
+        },
+        "answerUniqueness": {
+          "score": 4,
+          "note": "Only $.SKU selects the required identifier without changing the input or alias."
+        },
+        "distractorPlausibility": {
+          "score": 3,
+          "note": "Collation and array indexing are credible mistakes; choosing category is easier to eliminate."
+        },
+        "distractorEvidence": {
+          "score": 4,
+          "note": "The exact default mapping, override and structural-path rules support every rejection."
+        },
+        "documentationStrength": {
+          "score": 4,
+          "note": "The implementation page explicitly says the comparison is case-sensitive and collation-unaware."
+        },
+        "citationSpecificity": {
+          "score": 4,
+          "note": "The cited WITH/column_path sections govern the exact displayed clauses."
+        },
+        "difficultyAuthenticity": {
+          "score": 4,
+          "note": "Intermediate is appropriate for a documented JSON-versus-SQL collation distinction."
+        },
+        "explanationQuality": {
+          "score": 4,
+          "note": "The explanation clearly separates output naming from property-path spelling."
+        },
+        "originality": {
+          "score": 3,
+          "note": "A conventional case-mapping repair, distinguished from the separate literal-dot item."
+        },
+        "clarityAccessibility": {
+          "score": 4,
+          "note": "Compact real JSON and parallel typed clauses make the mismatch inspectable."
+        }
+      },
+      "checkAssessments": {
+        "answerDefensible": {
+          "passed": true,
+          "note": "Only the uppercase case-exact explicit path returns R-84."
+        },
+        "correctOptionsSupported": {
+          "passed": true,
+          "note": "The article directly permits preserving an output name through column_path."
+        },
+        "distractorsIncorrect": {
+          "passed": true,
+          "note": "Absent lowercase key, wrong array shape and wrong category value were evaluated separately."
+        },
+        "explanationsSupported": {
+          "passed": true,
+          "note": "The BIN2 distinction is expressly in the product text."
+        },
+        "directSources": {
+          "passed": true,
+          "note": "The approved OPENJSON page has an actual named reference in the linked JSON unit."
+        },
+        "featureStatus": {
+          "passed": true,
+          "note": "The chosen explicit-schema projection is established 2016+ functionality."
+        },
+        "currentTerminology": {
+          "passed": true,
+          "note": "Output column, JSON property, path and SQL collation are not conflated."
+        },
+        "prerequisitesComplete": {
+          "passed": true,
+          "note": "Valid literal input, type length and compatibility 160 support this exact projection."
+        },
+        "codeReviewed": {
+          "passed": true,
+          "note": "All WITH substitutions were checked statically; no scalar-to-array reinterpretation was assumed."
+        },
+        "originalContent": {
+          "passed": true,
+          "note": "The SKU/category sample and target-preservation constraint are original authored content."
+        },
+        "duplicatesReviewed": {
+          "passed": true,
+          "note": "Read direct-031's full literal-dot example; it depends on a different mapping distinction."
+        },
+        "qualityReviewed": {
+          "passed": true,
+          "note": "The pronoun identifies the displayed sku alias; the category distractor receives a lower plausibility score."
+        }
+      },
+      "verificationNotes": "PASS 3 retains c. Tried the case-insensitive-database interpretation, scalar-as-array interpretation and a valid but wrong business-field path. The actual input yields the identifier only through the explicit uppercase SKU path while retaining the output name. The new counterconditions are payload changes, not alternate answers to the unchanged stem. The closely related dotted-name question tests another mapping rule. Static SQL reasoning only.",
+      "confidenceReason": "High confidence from the product's exact BIN2/default-mapping/column_path rules and the complete literal input, rather than the technical review's prior key."
+    },
+    {
+      "questionId": "dp800-direct-030",
+      "verdict": "verified",
+      "derivedAnswer": ["a"],
+      "sourceSummaries": {
+        "dp800-d1-openjson": "The AS JSON section requires nvarchar(max) for fragment projection and distinguishes objects/arrays from scalar WITH columns. The default lax behavior, explicit paths and illustrated fragment output explain why the other definitions return NULL, 2 or ship rather than the complete detail object."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "claimRepresented": "Project the nested detail object with an nvarchar(max) AS JSON column.",
+          "whyIncorrectInContext": "Supported, not incorrect: the type meets AS JSON's requirement and the path identifies the whole nested object, retaining both items and memo together as JSON text.",
+          "couldBeCorrectWhen": "The selected property is an object or array that must remain a fragment, as in this input. It is not the right projection for a required scalar value.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "The product definition explicitly reserves AS JSON for inner objects/arrays and requires the column type nvarchar(max); both are present in a."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "claimRepresented": "Declaring a large string column without AS JSON is enough to extract a nested object.",
+          "whyIncorrectInContext": "This is still a scalar projection. The detail property is an object, so the default lax extraction yields NULL instead of preserving its JSON structure.",
+          "couldBeCorrectWhen": "detail contains a scalar string and the application wants that string. Length capacity alone does not convert a scalar projection into an object/array fragment projection.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "The AS JSON section contrasts scalar extraction without the modifier with fragment extraction using it, including NULL/error behavior for an incompatible shape."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "claimRepresented": "Projecting detail.items as int preserves the complete detail object for later processing.",
+          "whyIncorrectInContext": "It returns the integer 2 and discards memo and the enclosing object. It also does not meet the requested nvarchar(max) output type.",
+          "couldBeCorrectWhen": "Only the item count is required as a typed integer for a calculation. That would intentionally flatten one field rather than retain the whole object.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "The explicit schema defines both a target SQL type and property path. A path to the items leaf selects that value, not its parent object."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "claimRepresented": "Projecting detail.memo as text returns the entire detail fragment.",
+          "whyIncorrectInContext": "It returns only ship, losing the items member and object structure. Correct string capacity does not repair selecting the wrong level of the JSON tree.",
+          "couldBeCorrectWhen": "The downstream consumer needs only the scalar memo. The path and type are valid for that narrower requirement.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "A scalar column_path reads the addressed leaf, while the documented AS JSON modifier is needed for the parent object/array fragment."
+        }
+      ],
+      "challenges": {
+        "scope": "The code runs OPENJSON on an nvarchar literal under SQL Server 2022/160. It is not a native-json column method or an instruction to flatten an array into multiple rows.",
+        "plan": "The decision is a schema projection modifier, not an index, memory size or service-tier choice. Merely increasing a scalar column's maximum length cannot change its shape contract.",
+        "role": "The supplied procedure example performs a local SELECT expression. No additional role or deployment privilege makes a scalar projection preserve an object.",
+        "preconditions": "The shown valid root has one detail object with two members. The keyed definition uses the mandatory nvarchar(max), an exact path and AS JSON; the compatibility level is sufficient.",
+        "featureStatus": "OPENJSON's established SQL Server 2016+ fragment projection is applicable in 2022. No Preview label is required for this text-based feature.",
+        "sourceChanges": "The actual product page has awkward conditional wording around unavailable paths, but its explicit AS JSON definition and nested-fragment example unambiguously require the modifier for object preservation.",
+        "stemSufficiency": "Complete object, one max-length text column and no flattening rule out both leaf projections. The sample distinguishes both leaves so neither can accidentally equal the object.",
+        "explanationBounds": "The explanation correctly says increasing text length alone does not change scalar extraction. Preserving the object is a semantic-fragment claim, not a promise about insignificant whitespace.",
+        "reasoningDepth": "The type-plus-modifier combination is applied schema reasoning, but the plainly scalar leaf alternatives make this a lighter intermediate item, not an advanced encounter.",
+        "answerClues": "All definitions are syntactically plausible. c's integer type and d's leaf path are comparatively easy eliminations; they lower distractor plausibility without introducing a second answer."
+      },
+      "rubric": {
+        "alignment": {
+          "score": 4,
+          "note": "Tests an explicit OPENJSON projection in the current JSON-functions subskill."
+        },
+        "accuracy": {
+          "score": 4,
+          "note": "The fragment modifier, mandatory max type and scalar/leaf outcomes match the actual implementation contract."
+        },
+        "scenarioCompleteness": {
+          "score": 4,
+          "note": "Input shape, output column/type, engine and compatibility are provided."
+        },
+        "answerUniqueness": {
+          "score": 4,
+          "note": "Only a returns both nested members inside the required JSON object."
+        },
+        "distractorPlausibility": {
+          "score": 3,
+          "note": "Omitting AS JSON is strong; the numeric and memo leaves are easier to reject."
+        },
+        "distractorEvidence": {
+          "score": 4,
+          "note": "Explicit schema types, paths and the scalar/fragment distinction directly explain all alternatives."
+        },
+        "documentationStrength": {
+          "score": 4,
+          "note": "The dedicated OPENJSON AS JSON definition and example support the exact behavior."
+        },
+        "citationSpecificity": {
+          "score": 4,
+          "note": "The article's WITH/AS JSON sections precisely govern the placeholder substitution."
+        },
+        "difficultyAuthenticity": {
+          "score": 3,
+          "note": "Applied but at the easier edge of intermediate because one modifier is decisive."
+        },
+        "explanationQuality": {
+          "score": 4,
+          "note": "The explanation exposes the type-capacity versus projection-shape misconception."
+        },
+        "originality": {
+          "score": 3,
+          "note": "A compact foundational projection item; the related RAG case adds genuinely different double-decoding reasoning."
+        },
+        "clarityAccessibility": {
+          "score": 4,
+          "note": "A short complete input and simple placeholder keep code reading manageable."
+        }
+      },
+      "checkAssessments": {
+        "answerDefensible": {
+          "passed": true,
+          "note": "Only a retains both members as one object-valued text projection."
+        },
+        "correctOptionsSupported": {
+          "passed": true,
+          "note": "The exact AS JSON definition requires the shown max-length text type."
+        },
+        "distractorsIncorrect": {
+          "passed": true,
+          "note": "b yields lax NULL; c and d select different scalar leaves."
+        },
+        "explanationsSupported": {
+          "passed": true,
+          "note": "String size alone cannot turn a scalar projection into a fragment projection."
+        },
+        "directSources": {
+          "passed": true,
+          "note": "The product OPENJSON page is explicitly referenced by the linked JSON training unit."
+        },
+        "featureStatus": {
+          "passed": true,
+          "note": "The basic text OPENJSON fragment feature is established, not the native-json Preview method."
+        },
+        "currentTerminology": {
+          "passed": true,
+          "note": "Scalar, fragment, WITH schema and AS JSON are used consistently."
+        },
+        "prerequisitesComplete": {
+          "passed": true,
+          "note": "2022/160 and a known valid object supply the needed parser conditions."
+        },
+        "codeReviewed": {
+          "passed": true,
+          "note": "Each column definition was substituted mentally into WITH and its projected type/shape checked."
+        },
+        "originalContent": {
+          "passed": true,
+          "note": "The detail/items/memo example is original and contains no assessment text."
+        },
+        "duplicatesReviewed": {
+          "passed": true,
+          "note": "Read d3-032's actual double-encoded response; its extra parse-layer decision is substantive."
+        },
+        "qualityReviewed": {
+          "passed": true,
+          "note": "No-flattening wording is necessary; the weak leaf alternatives and light intermediate depth were scored down."
+        }
+      },
+      "verificationNotes": "PASS 3 retains a after comparing the whole object with a scalar projection and each of its two leaves. The decisive rule is AS JSON plus nvarchar(max), not just a sufficiently large text type. The supplied data fixes shape and cardinality, and compatibility 160 removes the parser-availability issue. Related RAG parsing reuses fragment retention but additionally requires decoding another JSON layer. Only static reasoning was performed.",
+      "confidenceReason": "High confidence in the unique answer from the exact AS JSON type/shape requirements; editorial confidence is qualified by the simpler leaf distractors."
+    },
+    {
+      "questionId": "dp800-direct-031",
+      "verdict": "verified",
+      "derivedAnswer": ["d"],
+      "sourceSummaries": {
+        "dp800-d1-openjson": "The Remarks explicitly contrast a WITH column named [Address.Country], matched to a literal dotted key, with an explicit $.Address.Country path for a nested key. That exact rule, default matching and scalar/fragment behavior determine the billing.code example without extrapolating from SQL identifier punctuation."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "claimRepresented": "The bracketed column name billing.code implicitly navigates to the nested billing object's code field.",
+          "whyIncorrectInContext": "No explicit nested path is supplied. The WITH column name is matched literally to billing.code, whose value is A7, not to the nested code value B2.",
+          "couldBeCorrectWhen": "The column declaration includes an explicit '$.billing.code' path, or the literal dotted property itself contains B2. Both would change the displayed mapping or input.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "The article explicitly distinguishes [Address.Country] literal-key matching from the $.Address.Country nested path; the candidate applies the same parser rule to different data."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "claimRepresented": "The default projection cannot find the bracketed dotted key and therefore returns SQL NULL.",
+          "whyIncorrectInContext": "The exact top-level billing.code key exists and holds a scalar that fits nvarchar(10). The default mapping therefore succeeds rather than following a missing path.",
+          "couldBeCorrectWhen": "The literal key is absent, differs in case, or contains an incompatible nonscalar under the same lax scalar projection. Those are excluded by the shown input.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "Default WITH mapping compares literal key names, with lax NULL for absent/incompatible scalar paths. The actual matching key prevents that NULL branch here."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "claimRepresented": "The default scalar column projects the nested billing object itself as JSON text.",
+          "whyIncorrectInContext": "The declaration neither points to billing nor requests AS JSON. It maps the literal dotted key to a scalar nvarchar(10) column, so the object is not its result.",
+          "couldBeCorrectWhen": "A different definition uses nvarchar(max) '$.billing' AS JSON to preserve the billing fragment. A dotted SQL column name alone is insufficient.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "The WITH scalar/fragment rules require AS JSON for object projection, and column_path determines the addressed JSON location."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "claimRepresented": "The default WITH mapping selects A7 from the literal top-level billing.code property.",
+          "whyIncorrectInContext": "Supported, not incorrect: SQL brackets delimit the output identifier, and OPENJSON uses that literal column name to find the exact existing scalar key.",
+          "couldBeCorrectWhen": "No explicit column_path overrides default matching and the literal billing.code scalar exists, as shown. Removing the literal property would not make the same declaration traverse the nested object.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "The product Remarks spell out literal dotted-name matching and the explicit-path alternative, directly supporting the static A7 outcome."
+        }
+      ],
+      "challenges": {
+        "scope": "This is SQL Server 2022/160 OPENJSON default WITH mapping. SQL-delimited identifiers and JSON path syntax are separate parsing layers.",
+        "plan": "No index, optimizer rewrite or physical ordering is involved in selecting one scalar from this literal object. Object member order does not substitute a nested path for a literal key.",
+        "role": "Only a local variable is queried. A service plan or security permission cannot alter the documented literal-key mapping.",
+        "preconditions": "Both competing properties are present with different scalar values, the default path is omitted intentionally and nvarchar(10) fits A7. The literal input is valid and compatibility is sufficient.",
+        "featureStatus": "This is ordinary OPENJSON WITH behavior documented under SQL Server 2016+ support. No newer native-json path feature or Preview option is used.",
+        "sourceChanges": "The actual Remarks give an unusually specific [Address.Country] example matching a literal key. That direct statement was inspected; a source title or a general JSON example alone would not establish this edge case.",
+        "stemSufficiency": "Showing both the dotted key and the nested object forces an observable choice. The complete query makes 'this query' unambiguous and avoids assuming a nonexistent output path.",
+        "explanationBounds": "The explanation correctly limits SQL brackets to identifier delimiting and says a separately explicit nested JSON path would select B2. It does not imply dots can never appear in JSON paths.",
+        "reasoningDepth": "Intermediate is appropriate for crossing two syntactic layers. It is not merely remembering which JSON extractor returns an object.",
+        "answerClues": "Short literal outputs are parallel. The whole-object distractor is weaker, but answer d is not distinguished by length, grammar or a unique technical term."
+      },
+      "rubric": {
+        "alignment": {
+          "score": 4,
+          "note": "Literal/default path mapping is an exact OPENJSON concern within the current JSON-query objective."
+        },
+        "accuracy": {
+          "score": 4,
+          "note": "The explicit product dotted-column example directly predicts A7, not nested B2."
+        },
+        "scenarioCompleteness": {
+          "score": 4,
+          "note": "Both keys, distinct values, full query, type width and compatibility are present."
+        },
+        "answerUniqueness": {
+          "score": 4,
+          "note": "The existing exact literal key makes d unique; no implicit nested path is supplied."
+        },
+        "distractorPlausibility": {
+          "score": 3,
+          "note": "B2 and NULL are credible parser misconceptions; returning the whole object is less competitive."
+        },
+        "distractorEvidence": {
+          "score": 4,
+          "note": "Literal-key matching, missing-path NULL and AS JSON requirements directly cover the alternatives."
+        },
+        "documentationStrength": {
+          "score": 4,
+          "note": "A precise implementation Remarks example establishes the edge-case rule."
+        },
+        "citationSpecificity": {
+          "score": 4,
+          "note": "The cited OPENJSON article contains the exact literal-dot versus nested-path distinction."
+        },
+        "difficultyAuthenticity": {
+          "score": 4,
+          "note": "Intermediate fits the SQL-identifier/JSON-path separation with observable competing values."
+        },
+        "explanationQuality": {
+          "score": 4,
+          "note": "The explanation gives the precise explicit path that would instead select B2."
+        },
+        "originality": {
+          "score": 3,
+          "note": "A compact original adaptation of the documented literal-dot principle, distinct from case-sensitive mapping."
+        },
+        "clarityAccessibility": {
+          "score": 4,
+          "note": "Complete short code makes the required parser reasoning visible despite the repeated generic opening."
+        }
+      },
+      "checkAssessments": {
+        "answerDefensible": {
+          "passed": true,
+          "note": "Literal default mapping deterministically selects A7 from the shown object."
+        },
+        "correctOptionsSupported": {
+          "passed": true,
+          "note": "The product explicitly discusses bracketed dotted WITH column names."
+        },
+        "distractorsIncorrect": {
+          "passed": true,
+          "note": "The nested value, missing-key NULL and object-fragment outcomes each require a changed definition or input."
+        },
+        "explanationsSupported": {
+          "passed": true,
+          "note": "The explicit $.billing.code contrast follows the source's literal/nested distinction."
+        },
+        "directSources": {
+          "passed": true,
+          "note": "The exact approved OPENJSON page is reached through the actual named API reference in training."
+        },
+        "featureStatus": {
+          "passed": true,
+          "note": "This default WITH behavior does not depend on Preview native-json extensions."
+        },
+        "currentTerminology": {
+          "passed": true,
+          "note": "Identifier brackets and JSON path separators are deliberately distinguished."
+        },
+        "prerequisitesComplete": {
+          "passed": true,
+          "note": "The displayed scalar fits the declared width and both possible target keys are shown."
+        },
+        "codeReviewed": {
+          "passed": true,
+          "note": "The SQL-delimited select name and WITH declaration were traced statically with no invented implicit path."
+        },
+        "originalContent": {
+          "passed": true,
+          "note": "The short billing example is original question content, not a copied assessment."
+        },
+        "duplicatesReviewed": {
+          "passed": true,
+          "note": "Compared the actual case-sensitive SKU repair; its missing-key diagnosis is a different rule."
+        },
+        "qualityReviewed": {
+          "passed": true,
+          "note": "Read the pronoun/repeated-opening warning and scored the weaker whole-object alternative."
+        }
+      },
+      "verificationNotes": "PASS 3 retains d. Challenged the apparent dotted name as nested JSON traversal, an invalid key, and a whole-object projection. The explicit product Remarks settle the distinction: default WITH matching uses the literal key; only an explicit nested column_path would select B2. Both potential targets are deliberately present and differ. The case-sensitive SKU item requires another mapping rule, so the pair remains distinct. Static prediction only.",
+      "confidenceReason": "High confidence because the cited implementation article states this exact dotted-column edge case, and the full input makes the result independent of external data or permissions."
+    },
+    {
+      "questionId": "dp800-direct-032",
+      "verdict": "verified",
+      "derivedAnswer": ["b"],
+      "sourceSummaries": {
+        "dp800-d1-openjson": "The default-schema Return value table defines type 0 as null, 1 as string, 2 as number and 3 as true/false. It separately says value is nvarchar(max) and type is unavailable with explicit WITH schemas. Thus a numeric-looking string remains distinguishable from a JSON numeric token."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "claimRepresented": "Default-schema type 1 identifies a JSON numeric token because its value can look like digits.",
+          "whyIncorrectInContext": "Type 1 means JSON string and therefore selects label with the quoted \"8\", exactly the token the validator must exclude.",
+          "couldBeCorrectWhen": "The validation task instead selects JSON strings, including strings containing digits. Converting those characters to a SQL number would be a different test from preserving the original token category.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "OPENJSON's default type table maps 1 to string and 2 to number, independent of the nvarchar value column's printable contents."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "supported",
+          "claimRepresented": "Default-schema type 2 selects the original JSON numeric tokens only.",
+          "whyIncorrectInContext": "Supported, not incorrect: the numeric count value 8 has type 2, while the quoted label, boolean and null have different discriminators. The result selects only the count row.",
+          "couldBeCorrectWhen": "The call retains OPENJSON's default schema, as shown. Adding an explicit WITH projection would remove this built-in discriminator and require a different token-inspection design.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "The return-value table explicitly defines type 2 as number and limits the built-in type column to default-schema OPENJSON."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "claimRepresented": "Default-schema type 3 identifies numbers rather than JSON booleans.",
+          "whyIncorrectInContext": "The enabled:true member has type 3. A JSON boolean is not the requested numeric token, even though other SQL contexts can represent boolean state numerically.",
+          "couldBeCorrectWhen": "The caller needs to select original JSON true/false members. That token filter is valid for a boolean validator, not this numeric-token validator.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "The exact default-schema type table maps 3 to true/false, not to a numeric SQL representation."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "claimRepresented": "Default-schema type 0 selects the desired numeric values.",
+          "whyIncorrectInContext": "It selects missing:null, whose value is SQL NULL in the rowset. The member exists but its JSON token is null, not a number.",
+          "couldBeCorrectWhen": "The validator must locate explicit JSON null members. That differs from both missing keys and JSON numeric tokens.",
+          "sourceIds": ["dp800-d1-openjson"],
+          "evidenceSummary": "OPENJSON's type table maps 0 to null; the source example likewise exposes JSON null as a row with a NULL value and type 0."
+        }
+      ],
+      "challenges": {
+        "scope": "The default-schema OPENJSON rowset exposes key/value/type on SQL Server 2022 at compatibility 160. A typed WITH projection is expressly absent.",
+        "plan": "The answer is a token discriminator, not a query-plan or conversion-performance decision. Parsing numeric-looking value text cannot replace inspecting original JSON type.",
+        "role": "This query reads a JSON literal and needs no application identity, external access or permission escalation. Those dimensions cannot change the default type codes.",
+        "preconditions": "The complete valid JSON has one number, one digit string, one true token and one null. WHERE can filter the rowset's type column even though SELECT only returns key and value.",
+        "featureStatus": "The default type discriminator belongs to established OPENJSON support, not a Preview native-json enhancement. The stated level 160 exceeds the documented 130 baseline.",
+        "sourceChanges": "The actual frozen Return value table was read, including its warning that Key/Value/Type are not available with explicit WITH. No future-schema behavior was inferred.",
+        "stemSufficiency": "The quoted and unquoted 8 values make accidental SQL text conversion visible. The task is original JSON numeric tokens, not values that can be converted to an integer.",
+        "explanationBounds": "The explanation properly separates the SQL value-column type from the original token and limits the discriminator to default-schema OPENJSON.",
+        "reasoningDepth": "Beginner/concept-recall is accurate: this is selecting the documented type code, with a small code context rather than a multi-step advanced parser repair.",
+        "answerClues": "Each option has identical grammar and length apart from one numeral. The nonnumeric codes are real token categories, though the recall format limits distractor depth."
+      },
+      "rubric": {
+        "alignment": {
+          "score": 4,
+          "note": "Uses OPENJSON's default-schema semantics within the current JSON-functions objective."
+        },
+        "accuracy": {
+          "score": 4,
+          "note": "The static filter outcomes distinguish count, label, enabled and the explicit null member."
+        },
+        "scenarioCompleteness": {
+          "score": 4,
+          "note": "All token types, the schema mode, engine version and compatibility are shown."
+        },
+        "answerUniqueness": {
+          "score": 4,
+          "note": "Only type 2 selects the unquoted numeric token without also accepting quoted digits."
+        },
+        "distractorPlausibility": {
+          "score": 3,
+          "note": "All codes are real, but this remains a direct table-recall question rather than three rich misconceptions."
+        },
+        "distractorEvidence": {
+          "score": 4,
+          "note": "Each wrong numeral maps to its exact alternate token in the product table."
+        },
+        "documentationStrength": {
+          "score": 4,
+          "note": "The product's return schema and complete type table directly establish the key."
+        },
+        "citationSpecificity": {
+          "score": 4,
+          "note": "The cited Return value section explicitly covers the discriminator and its schema limitation."
+        },
+        "difficultyAuthenticity": {
+          "score": 4,
+          "note": "Beginner/concept-recall honestly matches selecting a documented enum value."
+        },
+        "explanationQuality": {
+          "score": 4,
+          "note": "The SQL-string versus original-JSON-type distinction explains why printable digits are insufficient."
+        },
+        "originality": {
+          "score": 3,
+          "note": "A useful original minimal token fixture, but a familiar discriminator exercise."
+        },
+        "clarityAccessibility": {
+          "score": 4,
+          "note": "Tiny valid input and uniformly formed filters make the necessary contrast clear."
+        }
+      },
+      "checkAssessments": {
+        "answerDefensible": {
+          "passed": true,
+          "note": "Only type 2 selects count:8 in the shown default rowset."
+        },
+        "correctOptionsSupported": {
+          "passed": true,
+          "note": "The actual return-value table explicitly identifies 2 as number."
+        },
+        "distractorsIncorrect": {
+          "passed": true,
+          "note": "The other filters choose a string, boolean or explicit null, respectively."
+        },
+        "explanationsSupported": {
+          "passed": true,
+          "note": "Both nvarchar(max) value and default-only type are explicitly documented."
+        },
+        "directSources": {
+          "passed": true,
+          "note": "The cited parser article has a current named-API training reference and exact catalog grant."
+        },
+        "featureStatus": {
+          "passed": true,
+          "note": "The ordinary 2016+ discriminator is not a newer Preview contract."
+        },
+        "currentTerminology": {
+          "passed": true,
+          "note": "JSON number, string, boolean, null and SQL NULL are distinguished."
+        },
+        "prerequisitesComplete": {
+          "passed": true,
+          "note": "The default schema and compatibility 160 make type available for the shown WHERE."
+        },
+        "codeReviewed": {
+          "passed": true,
+          "note": "Filtering an unselected input column is valid; the complete query was inspected statically."
+        },
+        "originalContent": {
+          "passed": true,
+          "note": "The small count/label/enabled/missing fixture is original instructional content."
+        },
+        "duplicatesReviewed": {
+          "passed": true,
+          "note": "The actual JSON_MODIFY neighbor writes a token from a SQL type rather than observing this discriminator."
+        },
+        "qualityReviewed": {
+          "passed": true,
+          "note": "Negative wording is necessary to exclude quoted digits; the honest recall label and real alternative codes were scored."
+        }
+      },
+      "verificationNotes": "PASS 3 retains b after mapping each displayed JSON member to its original token type rather than converting its nvarchar value. The type column is in scope for WHERE despite its omission from SELECT, and remains available because no WITH schema is supplied. Read-time token observation is distinct from direct-035's write-time serialization. The row outcomes are static deductions from the explicit source type table.",
+      "confidenceReason": "High confidence because the frozen product reference enumerates every offered discriminator and the complete input contains a separate example of each."
+    },
+    {
+      "questionId": "dp800-direct-034",
+      "verdict": "verified",
+      "derivedAnswer": ["a"],
+      "sourceSummaries": {
+        "dp800-d1-json-modify": "The Remarks table explicitly maps an existing path plus SQL NULL to deletion in lax mode and a retained null value in strict mode. The newValue text-handling rules distinguish N'null' and N'' from SQL NULL. Its update-one-property contract leaves revision outside the addressed change."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "claimRepresented": "Strict JSON_MODIFY with SQL NULL retains contact and assigns the JSON null token.",
+          "whyIncorrectInContext": "Supported, not incorrect: contact exists, so the strict/NULL branch changes its value to null rather than removing the member. The separate revision value remains 6.",
+          "couldBeCorrectWhen": "The path already exists and the contract requires an explicit JSON null, as stipulated. A missing contact would instead make strict mode raise an invalid-property error.",
+          "sourceIds": ["dp800-d1-json-modify"],
+          "evidenceSummary": "The mode/value/path-existence table expressly says 'Set the existing value to null' for strict mode with NULL and an existing path."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "claimRepresented": "Lax JSON_MODIFY with SQL NULL retains the contact member as JSON null.",
+          "whyIncorrectInContext": "On an existing path, the lax/NULL branch deletes contact. Its returned document has revision:6 but no contact member, violating retention.",
+          "couldBeCorrectWhen": "The API's desired patch is deletion of contact. It is not correct for a contract distinguishing absence from an explicit null value.",
+          "sourceIds": ["dp800-d1-json-modify"],
+          "evidenceSummary": "The same table separately defines 'Delete the existing property' for lax mode with NULL and an existing path."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "claimRepresented": "The SQL text N'null' is serialized as the JSON null token.",
+          "whyIncorrectInContext": "N'null' is a non-null nvarchar value. It becomes the JSON string \"null\", keeping contact as a string rather than assigning the null token.",
+          "couldBeCorrectWhen": "The application intentionally stores the four-character textual sentinel null. That is a distinct data state from both a JSON null and a missing property.",
+          "sourceIds": ["dp800-d1-json-modify"],
+          "evidenceSummary": "newValue is typed SQL data; ordinary varchar/nvarchar values are serialized as text, while the separate SQL NULL branch controls null/deletion behavior."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "claimRepresented": "An empty nvarchar new value is equivalent to JSON null.",
+          "whyIncorrectInContext": "The empty string is non-null SQL text and produces contact:\"\". It retains the key but fails the required JSON null value.",
+          "couldBeCorrectWhen": "The patch contract requires a present empty string. Empty text, literal text null, explicit JSON null and key absence must remain separate states.",
+          "sourceIds": ["dp800-d1-json-modify"],
+          "evidenceSummary": "The non-NULL/existing-path branch updates the value; the text-serialization rule makes an empty nvarchar an empty JSON string, not the SQL NULL branch."
+        }
+      ],
+      "challenges": {
+        "scope": "The question uses the SQL Server 2022 JSON_MODIFY text function over an nvarchar document, not the native-json column modify method shown elsewhere in the training parent.",
+        "plan": "The four outcomes follow mode and value type, not optimization or a database service tier. No deployment option can equate deletion, null and two different strings.",
+        "role": "The snippet contains a local variable and expression alternatives. There is no table-update permission or privileged identity condition deciding the return value.",
+        "preconditions": "The literal is valid JSON and contact already exists. That known existence is essential to distinguish strict-null success from the missing-property strict error.",
+        "featureStatus": "JSON_MODIFY on text is documented for SQL Server 2016+ and applies in 2022. The parent unit's separate Preview native-json modify method is not used and does not change this function's label.",
+        "sourceChanges": "The current product example A omits an intermediate strict-null printed result. I relied on its explicit mode/existence table and typed newValue rules rather than treating that incomplete example output as a full execution trace.",
+        "stemSufficiency": "Retention of contact, explicit JSON null and unchanged revision are separate stated requirements. All four calls are valid expressions but only a satisfies the exact document state.",
+        "explanationBounds": "The explanation correctly says known path existence removes the separate strict missing-key failure. JSON_MODIFY returns a changed document; it does not mutate the variable unless assigned.",
+        "reasoningDepth": "Intermediate is justified by composing path existence, strict/lax mode and SQL NULL versus text, with a real API patch contract rather than a one-word function recall.",
+        "answerClues": "All alternatives are realistic calls with the same API and path. There is no non-existent feature or length clue; the meaningful distinctions are mode and newValue."
+      },
+      "rubric": {
+        "alignment": {
+          "score": 4,
+          "note": "Mutating a JSON property is within the current JSON-functions skill and its linked instructional API."
+        },
+        "accuracy": {
+          "score": 4,
+          "note": "All four returned contact states were separately derived from the explicit mode/type table."
+        },
+        "scenarioCompleteness": {
+          "score": 4,
+          "note": "Valid input, existing target key, untouched sibling and desired null-versus-absence contract are explicit."
+        },
+        "answerUniqueness": {
+          "score": 4,
+          "note": "Only strict plus SQL NULL retains the existing key with a JSON null token."
+        },
+        "distractorPlausibility": {
+          "score": 4,
+          "note": "Deletion, a textual null sentinel and empty string are realistic integration confusions."
+        },
+        "distractorEvidence": {
+          "score": 4,
+          "note": "The explicit NULL branches and text serialization rule support every alternate document state."
+        },
+        "documentationStrength": {
+          "score": 4,
+          "note": "The normative mode/existence table directly answers the question despite an incomplete example output list."
+        },
+        "citationSpecificity": {
+          "score": 4,
+          "note": "The cited JSON_MODIFY arguments and Remarks precisely cover mode, existence and value typing."
+        },
+        "difficultyAuthenticity": {
+          "score": 4,
+          "note": "Intermediate fits combining three interacting but bounded JSON mutation conditions."
+        },
+        "explanationQuality": {
+          "score": 4,
+          "note": "It distinguishes four document states and explicitly closes the missing-property strict-mode caveat."
+        },
+        "originality": {
+          "score": 3,
+          "note": "An original practical patch example of a familiar null-versus-absence contract."
+        },
+        "clarityAccessibility": {
+          "score": 4,
+          "note": "A tiny document and parallel function calls keep the subtle state distinctions readable."
+        }
+      },
+      "checkAssessments": {
+        "answerDefensible": {
+          "passed": true,
+          "note": "Only a yields a retained contact:null with revision still 6."
+        },
+        "correctOptionsSupported": {
+          "passed": true,
+          "note": "The product table explicitly supports the existing-path strict-NULL branch."
+        },
+        "distractorsIncorrect": {
+          "passed": true,
+          "note": "The lax call deletes; the two nvarchar literals store distinct strings."
+        },
+        "explanationsSupported": {
+          "passed": true,
+          "note": "The stem's existing key closes the documented strict-mode error alternative."
+        },
+        "directSources": {
+          "passed": true,
+          "note": "Read the actual JSON-column unit's named JSON_MODIFY call and its approved product target."
+        },
+        "featureStatus": {
+          "passed": true,
+          "note": "The 2022 text function is not the separately labeled Preview native-json method."
+        },
+        "currentTerminology": {
+          "passed": true,
+          "note": "SQL NULL, JSON null, deletion and empty/textual strings remain distinct."
+        },
+        "prerequisitesComplete": {
+          "passed": true,
+          "note": "Valid input and known contact existence supply the strict-call prerequisites."
+        },
+        "codeReviewed": {
+          "passed": true,
+          "note": "Each mode and newValue was traced as a returned expression, not implicit variable mutation or live execution."
+        },
+        "originalContent": {
+          "passed": true,
+          "note": "The contact/revision patch scenario is original and not an assessment transcription."
+        },
+        "duplicatesReviewed": {
+          "passed": true,
+          "note": "Read the actual construction-null, numeric-string and two-call-array neighbors; their decisions use different contracts."
+        },
+        "qualityReviewed": {
+          "passed": true,
+          "note": "Independently scored all twelve dimensions and noted the source example's incomplete printed sequence."
+        }
+      },
+      "verificationNotes": "PASS 3 retains a. The four static returned states are contact:null, absent contact, contact:\"null\" and contact:\"\", with revision unaffected. Known key existence makes the strict branch legitimate; a missing-key variant would fail. The primary mode/existence table, not the source's incomplete printed example sequence, grounds the result. Constructor omission, string serialization and append assignment neighbors are materially different. No live execution occurred.",
+      "confidenceReason": "High confidence from the explicit strict/lax NULL table and SQL newValue typing rules; the limited source-example omission does not contradict the decisive contract."
+    },
+    {
+      "questionId": "dp800-direct-035",
+      "verdict": "verified",
+      "derivedAnswer": ["d"],
+      "sourceSummaries": {
+        "dp800-d1-json-modify": "The newValue contract accepts SQL scalar types and serializes ordinary nvarchar as text. Example C explicitly says failing to cast a numeric-looking value to a numeric type makes JSON_MODIFY surround it with double quotes. The existing-path table updates non-NULL values and reserves lax deletion for SQL NULL."
+      },
+      "options": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "claimRepresented": "The nvarchar characters 3 are automatically stored as a JSON number because the old property was numeric.",
+          "whyIncorrectInContext": "The new value is typed nvarchar, not int or another SQL numeric type. The old numeric JSON value does not coerce that text argument into a number.",
+          "couldBeCorrectWhen": "The caller validates and passes a numeric SQL value, such as CONVERT(int, @next), rather than the nvarchar value. That is a deliberate conversion absent from this code.",
+          "sourceIds": ["dp800-d1-json-modify"],
+          "evidenceSummary": "The article explicitly states that an uncast numeric-looking value is treated as text and surrounded with double quotes; its numeric example casts before modifying."
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "claimRepresented": "The SELECT returns the original numeric attempt value 2 despite a non-null update value.",
+          "whyIncorrectInContext": "The SELECT returns JSON_MODIFY's result, and the existing-path/non-NULL branch updates the property. The old number is not preserved in that returned document.",
+          "couldBeCorrectWhen": "The new SQL argument is the numeric value 2, or the caller selects the unmodified original document instead of the returned expression. A function not mutating its input in place does not prevent SELECT from returning its new result.",
+          "sourceIds": ["dp800-d1-json-modify"],
+          "evidenceSummary": "The API returns updated JSON text; its table says a non-NULL new value updates an existing path in both lax and strict mode."
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "claimRepresented": "The non-null text update deletes attempt and leaves an empty object.",
+          "whyIncorrectInContext": "Deletion in the default lax mode requires SQL NULL. @next is explicitly the non-null nvarchar value N'3', so the deletion branch is not taken.",
+          "couldBeCorrectWhen": "The same lax path receives SQL NULL as newValue. That would delete the existing sole property, unlike any non-null text argument.",
+          "sourceIds": ["dp800-d1-json-modify"],
+          "evidenceSummary": "The lax/NULL/existing-path table row specifies deletion; the non-NULL/existing-path row instead specifies an update."
+        },
+        {
+          "choiceId": "d",
+          "assessment": "supported",
+          "claimRepresented": "The returned JSON document stores attempt as the JSON string \"3\".",
+          "whyIncorrectInContext": "Supported, not incorrect: the provided nvarchar value is ordinary text, and the SELECT returns the modified document with that value serialized as a quoted JSON string.",
+          "couldBeCorrectWhen": "The newValue is a normal text-typed SQL value and the output intentionally preserves text representation, as shown. Passing a typed numeric value would change the JSON token category.",
+          "sourceIds": ["dp800-d1-json-modify"],
+          "evidenceSummary": "The product's text handling and explicit cast-versus-double-quotes explanation establish the JSON string outcome independently of the old property's token type."
+        }
+      ],
+      "challenges": {
+        "scope": "SQL Server 2022 uses the ordinary JSON_MODIFY text function. The declared nvarchar parameter, rather than native-json metadata or an application-language number type, determines the new token.",
+        "plan": "This is deterministic serialization of a supplied scalar, not an optimizer, index or service-tier choice. No storage setting makes digit text a numeric SQL argument.",
+        "role": "The code reads constants and a local variable; no external authorization or role-dependent operation affects which JSON value is returned.",
+        "preconditions": "The input is valid, attempt exists and @next is a short non-null string. There is no parameter truncation, failed conversion, missing-key error or SQL NULL to alter the branch.",
+        "featureStatus": "The cited product supports JSON_MODIFY text operations on SQL Server 2016 onward. Neither a Preview native-json method nor newer RETURNING syntax appears in this code.",
+        "sourceChanges": "Read the actual numeric-cast example and its explicit double-quote warning. The special treatment of proper fragments produced by JSON_QUERY/FOR JSON does not apply to the ordinary N'3' parameter.",
+        "stemSufficiency": "The declaration fixes the SQL argument type and SELECT exposes the function result. Thus the original input remaining unmutated cannot make the returned value stay 2.",
+        "explanationBounds": "The explanation correctly recommends validation and conversion when a numeric contract is intended. It does not recommend blindly casting arbitrary untrusted strings or conflate empty text with NULL.",
+        "reasoningDepth": "Beginner/concept-recall fits one serialization rule. The parameter context makes the type misconception practical without pretending it is multi-step advanced SQL.",
+        "answerClues": "The options are concrete result categories with the same property name. The number/string contrast is essential evidence; retained-number and deletion alternatives are somewhat weaker."
+      },
+      "rubric": {
+        "alignment": {
+          "score": 4,
+          "note": "Tests the JSON-function write-time type contract under the current T-SQL JSON objective."
+        },
+        "accuracy": {
+          "score": 4,
+          "note": "The new nvarchar value produces a quoted JSON string regardless of the old numeric token."
+        },
+        "scenarioCompleteness": {
+          "score": 4,
+          "note": "The exact SQL declaration, input document and returned SELECT expression are supplied."
+        },
+        "answerUniqueness": {
+          "score": 4,
+          "note": "Only d follows both non-NULL updating and text-typed serialization."
+        },
+        "distractorPlausibility": {
+          "score": 3,
+          "note": "Automatic numeric coercion is strong; old-value retention and deletion are easier to eliminate."
+        },
+        "distractorEvidence": {
+          "score": 4,
+          "note": "Numeric casting, non-NULL existing-path updates and NULL deletion each have explicit support."
+        },
+        "documentationStrength": {
+          "score": 4,
+          "note": "The product directly states the uncast numeric-looking-text rule rather than implying it from an example alone."
+        },
+        "citationSpecificity": {
+          "score": 4,
+          "note": "The cited newValue section, mode table and cast warning address every option."
+        },
+        "difficultyAuthenticity": {
+          "score": 4,
+          "note": "Beginner recall honestly describes the single decisive type distinction."
+        },
+        "explanationQuality": {
+          "score": 4,
+          "note": "The explanation distinguishes SQL argument typing and advises validation before numeric conversion."
+        },
+        "originality": {
+          "score": 3,
+          "note": "An original small parameter example of a familiar text-versus-number serialization pitfall."
+        },
+        "clarityAccessibility": {
+          "score": 4,
+          "note": "Short declarations and quoted result wording make the token distinction accessible."
+        }
+      },
+      "checkAssessments": {
+        "answerDefensible": {
+          "passed": true,
+          "note": "The exact nvarchar argument gives the JSON string outcome d."
+        },
+        "correctOptionsSupported": {
+          "passed": true,
+          "note": "The source expressly warns that an uncast numeric-looking value is quoted."
+        },
+        "distractorsIncorrect": {
+          "passed": true,
+          "note": "No numeric cast, unchanged-result selection or SQL NULL appears to support a/b/c."
+        },
+        "explanationsSupported": {
+          "passed": true,
+          "note": "SQL input type rather than visual digits or old JSON type determines serialization."
+        },
+        "directSources": {
+          "passed": true,
+          "note": "The exact approved JSON_MODIFY document has a genuine named call in the JSON-column training parent."
+        },
+        "featureStatus": {
+          "passed": true,
+          "note": "The established 2022 text function is distinct from the parent's native-json Preview method."
+        },
+        "currentTerminology": {
+          "passed": true,
+          "note": "nvarchar, JSON string, JSON number and SQL NULL retain their distinct meanings."
+        },
+        "prerequisitesComplete": {
+          "passed": true,
+          "note": "Short non-null parameter, valid literal and known existing path close the relevant edge cases."
+        },
+        "codeReviewed": {
+          "passed": true,
+          "note": "The return expression, lack of an explicit cast and lack of in-place mutation assumptions were checked statically."
+        },
+        "originalContent": {
+          "passed": true,
+          "note": "The attempt update is original question wording and does not copy a practice assessment."
+        },
+        "duplicatesReviewed": {
+          "passed": true,
+          "note": "Read token-discriminator, strict-null and append-assignment neighbors; their decisions do not reduce to this newValue type rule."
+        },
+        "qualityReviewed": {
+          "passed": true,
+          "note": "The code-adjacent pronoun is clear; real but weaker retained/deleted result distractors were scored down."
+        }
+      },
+      "verificationNotes": "PASS 3 retains d. Independently tested whether the old JSON number coerces the new SQL text, whether SELECT could return the untouched original, and whether non-null text takes lax deletion. None survives the actual newValue and return-value contracts. A numeric cast would make a correct under a changed program; SQL NULL would make c correct under another. This bounded input needs neither. Static reasoning only, not an executed SQL trace.",
+      "confidenceReason": "High confidence because the implementation article explicitly distinguishes uncast text from numeric newValue and separately documents update versus deletion."
+    }
+  ],
+  "reviewedAt": "2026-09-17T00:04:37.728Z",
+  "counts": {
+    "selected": 10,
+    "verified": 10,
+    "manualReviewRequired": 0,
+    "rejected": 0,
+    "holds": 0,
+    "sourceIdsCited": 8,
+    "sourceAndAncestryRecords": 17,
+    "sourceAttestations": 13,
+    "optionChallenges": 40,
+    "challengeCategories": 100,
+    "rubricCriteriaScored": 120,
+    "independentReviewChecks": 120,
+    "retainedGenerationPasses": 10,
+    "retainedTechnicalPasses": 10,
+    "adversarialPasses": 10,
+    "finalAttestations": 10,
+    "productionCandidatesPromoted": 0
+  },
+  "verdictIds": {
+    "verified": [
+      "dp800-direct-006",
+      "dp800-direct-007",
+      "dp800-direct-008",
+      "dp800-direct-028",
+      "dp800-direct-029",
+      "dp800-direct-030",
+      "dp800-direct-031",
+      "dp800-direct-032",
+      "dp800-direct-034",
+      "dp800-direct-035"
+    ],
+    "manualReviewRequired": [],
+    "rejected": []
+  },
+  "scores": {
+    "byQuestion": {
+      "dp800-direct-006": 46,
+      "dp800-direct-007": 46,
+      "dp800-direct-008": 45,
+      "dp800-direct-028": 46,
+      "dp800-direct-029": 46,
+      "dp800-direct-030": 45,
+      "dp800-direct-031": 46,
+      "dp800-direct-032": 46,
+      "dp800-direct-034": 47,
+      "dp800-direct-035": 46
+    },
+    "minimum": 45,
+    "maximum": 47,
+    "mean": 45.9,
+    "requiredMinimum": 44,
+    "criticalCriteria": "accuracy, answerUniqueness, documentationStrength, citationSpecificity are independently scored 4; distractorEvidence is 4 for all ten; no zero scores"
+  },
+  "sourceSnapshots": [
+    {
+      "sourceId": "dp800-d1-cte",
+      "title": "WITH common_table_expression (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/with-common-table-expression-transact-sql",
+      "retrievedAt": "2026-09-16T19:34:39.453Z",
+      "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+      "featureStatus": "GA",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-cte.json"
+    },
+    {
+      "sourceId": "dp800-d1-views",
+      "title": "Create views",
+      "url": "https://learn.microsoft.com/en-us/training/modules/implement-programmability-objects/2-create-views",
+      "retrievedAt": "2026-09-16T19:34:37.513Z",
+      "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+      "featureStatus": "GA",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-views.json"
+    },
+    {
+      "sourceId": "dp800-d1-over",
+      "title": "SELECT - OVER clause (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql",
+      "retrievedAt": "2026-09-16T19:34:42.597Z",
+      "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+      "featureStatus": "GA",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-over.json"
+    },
+    {
+      "sourceId": "dp800-d1-window-unit",
+      "title": "Apply window functions for analytics",
+      "url": "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/3-window-functions",
+      "retrievedAt": "2026-09-16T19:34:42.929Z",
+      "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+      "featureStatus": "GA",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-window-unit.json"
+    },
+    {
+      "sourceId": "dp800-d1-json-value",
+      "title": "JSON_VALUE (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-value-transact-sql",
+      "retrievedAt": "2026-09-16T19:34:47.556Z",
+      "lastReviewedAt": "2026-09-16T20:07:33.618Z",
+      "featureStatus": "GA",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-value.json"
+    },
+    {
+      "sourceId": "dp800-d1-openjson",
+      "title": "OPENJSON (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql",
+      "retrievedAt": "2026-09-16T19:34:47.890Z",
+      "lastReviewedAt": "2026-09-16T20:07:33.618Z",
+      "featureStatus": "GA",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-openjson.json"
+    },
+    {
+      "sourceId": "dp800-d1-json-query",
+      "title": "JSON_QUERY (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-query-transact-sql",
+      "retrievedAt": "2026-09-16T19:34:49.819Z",
+      "lastReviewedAt": "2026-09-16T20:07:33.618Z",
+      "featureStatus": "GA",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-query.json"
+    },
+    {
+      "sourceId": "dp800-d1-json-modify",
+      "title": "JSON_MODIFY (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-modify-transact-sql",
+      "retrievedAt": "2026-09-16T19:34:49.979Z",
+      "lastReviewedAt": "2026-09-16T20:07:33.618Z",
+      "featureStatus": "GA",
+      "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-modify.json"
+    }
+  ],
+  "sourceAncestryIds": [
+    "dp800-guide",
+    "dp800-d1-cte",
+    "dp800-d1-cte-unit",
+    "dp800-d1-module-advanced",
+    "dp800-training-design",
+    "dp800-course",
+    "dp800-d1-views",
+    "dp800-d1-module-programmability",
+    "dp800-d1-over",
+    "dp800-d1-window-unit",
+    "dp800-d1-json-value",
+    "dp800-d1-json-unit",
+    "dp800-d1-openjson",
+    "dp800-d1-json-query",
+    "dp800-d1-json-modify",
+    "dp800-d1-json-columns-unit",
+    "dp800-d1-module-objects"
+  ],
+  "questionFingerprints": {
+    "dp800-direct-006": "a54b253dc9f92326282ad9efbcbb920adc278b955d4966bb5d3e2cb8f76c14a7",
+    "dp800-direct-007": "5b4f5737550cccaee2a1804139bb4c1ffb5e2beefbc82222969e8c71cc980d3b",
+    "dp800-direct-008": "a4a93c7ea0a384b21fab04a3927268db24c43333faf3db5d87495422ee2f4c75",
+    "dp800-direct-028": "0ba829a67c1562e105a62afb742a2ac050bb838df5f4c3cbd06e5bc7288db6ba",
+    "dp800-direct-029": "8a55b4f9a03deab6844515265c7d3714083051c03b41c0f4339e50cc13cdfe3d",
+    "dp800-direct-030": "a5473f4710d3510976baf64f1fe47cc5d8fddea5d8f78c535658f37b5e224bdd",
+    "dp800-direct-031": "aa4583d7235fc0a61042618c2eb14bb1fb85e1948256d4546cabea48c7cd36e6",
+    "dp800-direct-032": "db0afd05c1e19a825b1dc0863cb953bf88bf63126cea5a366ef29ee28b6340f9",
+    "dp800-direct-034": "6b1971b7d1bfbf694024616b550bc60a60626be87f521b0eadb23089382511ec",
+    "dp800-direct-035": "dd1ccd4c5dfa34878c794023402615373eb8d899c5d240e94d05353fb6cc905a"
+  },
+  "frozenInputSha256": {
+    ".grounding\\dp800-expansion-20260916\\design\\candidates.json": "d25466e6327ef45fe701e5936a627e9aa9f26dcb8a0682d61ea7ffcd50d846b0",
+    ".grounding\\dp800-expansion-20260916\\design\\generation-output.json": "c763a40c4dffadd48a7cab7db01896a491b05c645885ba4c5c93f46d1c01a690",
+    ".grounding\\dp800-expansion-20260916\\design\\validation-metadata.json": "c12feedb02963f189630e3558f568f33c9cbda2551f68767772021b68ebafe39",
+    ".grounding\\dp800-expansion-20260916\\design\\sources.json": "4b1f98ae84359234501aae5ddf95c7a5368f514058878537bd2510204dfca69d",
+    ".grounding\\dp800-expansion-20260916\\design\\source-registry.json": "4072434b43003478e688f0de58d196c314170494517bdb53de16b4f4089e8516",
+    ".grounding\\dp800-expansion-20260916\\design\\evidence-index.json": "19cff83ff879007e1ce2b7b48aa816a639a25d085aa5c5bb48ade4dc43d15159",
+    ".grounding\\dp800-expansion-20260916\\reviews\\technical-tsql\\technical-reviews.json": "e05b0a36f1b79a96c5f1a313b2ef06db635e8ce1b40ad73b7ba6a03601c385e3",
+    ".grounding\\dp800-expansion-20260916\\reviews\\technical-tsql\\validation-metadata.json": "e911a91b70d35a164de435d8359107c57b915a46fae62604b181e6034cc69b34",
+    ".grounding\\dp800-expansion-20260916\\reviews\\technical-tsql\\findings.json": "8b0d94bf601a585e6a28cb749bac2ff5735f6b392629451c15549943d6ed97d3",
+    ".grounding\\dp800-expansion-20260916\\roots\\sources.json": "00cbfbb8919d003e87c799c94b77ebc0c0732e2846ee31a1da800c0544a14aba",
+    ".grounding\\dp800-expansion-20260916\\roots\\source-registry.json": "226c538f8c8f54a2ef8bc1df4f356a778ebdea55bd22db1f4da472f178047993",
+    ".grounding\\dp800-expansion-20260916\\roots\\evidence-index.json": "1b8a3350f167612cc893cc393a4316d7d64d807b2ed0e67aaf2eb70046ff2359",
+    ".grounding\\dp800-expansion-20260916\\objectives.json": "31145831d8edac3152d07a7899f377ab401a67210f8d2ac49599c3bc3a833630",
+    ".grounding\\dp800-expansion-20260916\\integration\\all-candidates.json": "82ff48d0817cc84292994657f6c60a4b8c58d931393ee75631c1e1b0f6efeaf5",
+    ".grounding\\dp800-expansion-20260916\\integration\\combined-duplicates.txt": "d2786f60e9430a26c14c113197694b0c6e94e334efacb2463ffddb2380d4ea1c",
+    "src\\content\\credentials\\credentials.json": "525d2e1d9fb3d5eb0c2a7410beb1a17f733c03da9e730982ab12dbb2bc714a56",
+    "src\\content\\exams\\dp-800\\manifest.json": "527301593d13313e1625d12d99e04c01be6286f9f2d188d9a45fbc32200be3e2",
+    ".grounding\\dp800-expansion-20260916\\guide.json": "9a102535996e4386ac2d6f34ed4e5dde616c044ba87ec62ab9cb56fc6bb89c38",
+    ".grounding\\dp800-expansion-20260916\\credential.json": "d0ccc4731b1ee820c4df4fd98a40d2dda9ce59c450cd77d1252cd2a3e7d1587e",
+    ".grounding\\dp800-expansion-20260916\\credential.html": "e4a0be5184c2b048c090f2e582f384bcba4ce3d9ed7a0b1b7044345638f615c9",
+    ".grounding\\dp800-expansion-20260916\\course.json": "01304410f0db8458f74d7626d424b4b7199b639d9787aa43d7443847274e132b",
+    ".grounding\\dp800-expansion-20260916\\course.html": "1dfe9f7d6268e920421f8dfdb93a914173d97d0f771b4eea3033e1848675e636",
+    ".grounding\\dp800-expansion-20260916\\training-design.json": "cfb344dc3c0fc2e59138d975121320186ecdfa592ffc47f22f8c75752e9c239f",
+    ".grounding\\dp800-expansion-20260916\\training-design.html": "fa0e8625874f8344d6bd0b2b3717367fe419d2a9d93272a4a957cfcc608dae00",
+    ".grounding\\dp800-expansion-20260916\\credential-headers.txt": "a58c0175047459ff2c50b8a7f56a1bb97c33294515a628ea7e4e83e5bce36b90",
+    ".grounding\\dp800-expansion-20260916\\course-headers.txt": "5fcd53daf1c9686c085126c607d115e32f8c0fde38b763653972468627c15f2c",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\module-programmability.json": "a5b02fab0ccab4bdf38c26c9a2ecffb44b132f3ef687cb404eae9b33dc4ceb41",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\module-advanced.json": "96131470460cd2bb920818b6b74ffbf1f1025fc0f1701e7917fe6d0565868aff",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-cte-unit.json": "08fd8b7b8a72e3ed40fe1765e22c9493c8b50a7649488e237ecfddb008f5065a",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-views.json": "b2ea4f0887d74d76e44f1bb12cd3b3387c4ce1a87c2297a83dcd51831d4a0d88",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-cte.json": "6d2018fc5c87fe87ef0b96abb62a0fda1379589badd4ca92155cb0915c6e3d34",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-window-unit.json": "4076490e145450e2af567d416cddd51180447e610121395a121f07121ed8a4f5",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-over.json": "903992a7e07f6d540b11c869bd34f17e7b82fd501c90350b18fbf322d929a5a7",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-unit.json": "ef9662372f6efe28b7408eea0d8b3ab1792e3d2df7a9c2cfcbd038c1c994da41",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-value.json": "2db193dab025cfc6278302e720a89c09d224472f36372b047a13b8280ac90fbd",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-openjson.json": "de42eab4aee7a4f0c82333e93644484f180a394c773b803a8faf0293e4af0364",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-query.json": "d6bdcc75277233c5bb2ad31d3077fe65b2b808021dc418fcb59a83a546f31199",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\module-objects.json": "8b471ad36b7e2e323e09dc8f25a1dc1c26a46ca615208f04b1353a756793bdfb",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-columns-unit.json": "2585f670e0014984eea3c1a40580df2331a66657f5fd006792bd272c495900d7",
+    ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-modify.json": "5f52edbcdaf136c3e5df3d16d10937c1e06326a43df55682f8f8e49da6a6d99b"
+  },
+  "outputs": [
+    ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-tsql-a\\verification-reviews.json",
+    ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-tsql-a\\validation-metadata.json",
+    ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-tsql-a\\encounter-metadata.json",
+    ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-tsql-a\\reviewed-candidates.json",
+    ".grounding\\dp800-expansion-20260916\\reviews\\adversarial-tsql-a\\findings.json"
+  ],
+  "validation": {
+    "validatedAt": "2026-09-17T00:04:37.802Z",
+    "schemas": "PASS: Question, VerificationReview, ValidationMetadata, EncounterMetadata, SourceRegistry, taxonomy and manifest using authoritative TypeScript/Zod exports",
+    "scopedAttestationFindings": [],
+    "provenanceFindings": [],
+    "threePassFindings": [],
+    "packageErrors": [],
+    "packageWarnings": [],
+    "reviewedVerified": 10,
+    "scopedEligibleQuestionCount": 0,
+    "readiness": {
+      "study": false,
+      "gauntlet": false,
+      "reasons": [
+        "Not every major floor has verified encounters.",
+        "Torchlight Run needs 25 verified encounters; 10 available.",
+        "Boss Gauntlet needs 75 verified encounters; 10 available.",
+        "Boss Gauntlet needs verified breadth across every skill."
+      ]
+    },
+    "generationAndTechnicalPreserved": true,
+    "onlyVerificationFieldsChanged": true,
+    "allRecordedInputHashesUnchanged": true,
+    "scope": "Ten-record in-memory package with exact frozen source records and their complete ancestor closure; no new source records or approvals. No committed package or consolidated ledger was changed.",
+    "limitations": "Schema and binding checks validate declarations and hashes, not factual truth. This 10-record subset does not unlock Study/Boss and is not a production integration."
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-technical-cicd-adversarial-repairs-r1-20260916",
+  "reviews": [
+    {
+      "questionId": "dp800-direct-018",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-technical-cicd-adversarial-repairs-r1-20260916",
+      "questionFingerprint": "766effb9401adb0d7ec3a75231c01c4baf179897f9d327cf3435822ab1853f44",
+      "reviewedAt": "2026-09-17T00:43:29.833Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2-reference-data",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/03-configure-source-control-manage-reference-data",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-03-configure-source-control-manage-reference-data.json",
+          "retrievedAt": "2026-09-16T19:33:04.473Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread the actual frozen reference-data unit, not its curator summary. It separates object definitions from versioned row data, places seeding after schema-plan execution, and explains that post-deployment scripts run repeatedly. Its example updates matched reference values and inserts missing keys. The warning concerns plain INSERT replay, not every INSERT-based implementation; this review does not promote MERGE as mandatory or infer concurrency safety or whole-deployment atomicity."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "contradicted",
+          "rationale": "The first schema plan creates the lookup table, so a reference-data script executed before that plan has no such table to populate. Existing-table preparation could use the earlier hook, but independently creating the table there would introduce a different, unstated schema-authoring workflow.",
+          "sourceIds": ["dp800-d2-reference-data"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "B now expressly limits the workflow to unconditional replay of the full set and prohibits existing-row checking or updating. It cannot update changed values for retained keys and supplies none of the documented existing/missing-row reconciliation. The prior guarded-INSERT interpretation is explicitly excluded; moreover missing-key-only insertion would not satisfy the newly stated value-update requirement. The rejection does not depend on claiming every possible INSERT must raise an error.",
+          "sourceIds": ["dp800-d2-reference-data"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Post-deployment reconciliation runs after initial table creation and can bring retained rows to the current reference values while inserting missing keys. The unit's matched UPDATE and not-matched INSERT example directly demonstrates these two required operations. C names the strategy rather than insisting on one particular DML implementation.",
+          "sourceIds": ["dp800-d2-reference-data"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The declarative schema model describes table objects; the source introduces separate data scripts because it does not populate or update the required lookup values. Schema-only deployment would fit externally provisioned data, but the stem assigns versioned row convergence to this deployment itself.",
+          "sourceIds": ["dp800-d2-reference-data"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Genuinely fresh technical review of the 23:43:34.173Z generation. Independently derived C after reading the prior final-context guarded-INSERT counterexample and re-reading the actual unit. Both elements that made old B defensible are removed: B is explicitly unconditional without existing-row handling, and the stem now requires changed values to converge as well as missing keys to appear. The explanation correctly preserves valid guarded INSERT uses elsewhere and does not mandate MERGE, deletion of unrelated keys, concurrent-upsert safety or atomicity. Initial absence and later retention of the table are sufficient for this strategy question; no trigger, special constraint setting or executable schema is invented. GA concerns established SQL-project data hooks, not a preview-only IDE feature or an unknown API. No candidate SQL or live deployment was supplied or executed; codeReviewed is static DML/lifecycle semantics only. Intermediate fits initial ordering plus repeat-run state. The longer option is now the explicitly bounded distractor, not a uniquely long correct answer; no construction heuristic fired. Its fact remains distinct from d2-021's build-item packaging and d2-032's plan-input timing. No scoped duplicate was found. The earlier technical approval and later final hold remain historical and unchanged.",
+      "confidenceReason": "High confidence in exclusive C for the repaired wording: the actual source supports both update and insert reconciliation, while the formerly viable guarded-append reading no longer fits B or the full requirement. This PASS 2 approval does not replace the required new third-context review."
+    },
+    {
+      "questionId": "dp800-20260916-d2-032",
+      "authorId": "dp800-expansion-author-secure-20260916",
+      "reviewerId": "dp800-technical-cicd-adversarial-repairs-r1-20260916",
+      "questionFingerprint": "34f231893ecb3b062cbfa939b87c6c940d720d718ddc87ae0f300694841426ca",
+      "reviewedAt": "2026-09-17T00:43:29.833Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d2x-pre-post-deployment",
+          "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-pre-post-deployment.json",
+          "retrievedAt": "2026-09-16T19:43:06.749Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread the opening product contract and project-item examples. The deployment plan is calculated before PreDeploy executes; PreDeploy then precedes plan execution, and PostDeploy follows completion. These are actual stage boundaries, not filename rules. The article also excludes pre/post scripts from object-model validation, so correct ordering alone is not implementation-safety proof."
+        },
+        {
+          "sourceId": "dp800-d2x-compare-project",
+          "url": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/howto/compare-database-project",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\doc-compare-project.json",
+          "retrievedAt": "2026-09-16T19:43:11.829Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread Deploy report and Review deployment T-SQL scripts in the actual frozen article. Plan/report generation compares the source model with the connected target, and Script materializes the target-specific T-SQL for later review and execution. A prerequisite completed before this generation can change the input schema; executing a previously generated file does not itself request a fresh comparison."
+        },
+        {
+          "sourceId": "dp800-d2x-testing-unit",
+          "url": "https://learn.microsoft.com/en-us/training/modules/implement-cicd-sql-database-projects/07-design-implement-testing-strategy",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\secure\\raw\\cicd-07-design-implement-testing-strategy.json",
+          "retrievedAt": "2026-09-16T19:33:13.916Z",
+          "lastReviewedAt": "2026-09-16T20:48:01.996Z",
+          "supportingSummary": "Reread the testing-level and integration sections. Structural builds do not establish runtime correctness; multi-operation integration tests use a deployed dedicated database and known state. This supports the explanation's requirement to validate the prerequisite and full sequence on the isolated target, not a guarantee that the selected ordering makes any migration safe."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "Completing the prerequisite first means the later source-to-target comparison reads its resulting schema. Generating, reviewing and executing the script afterward therefore meets the specific planning-input requirement. The proposed order remains subject to the explanation's separate validation of actual schema and data effects.",
+          "sourceIds": [
+            "dp800-d2x-pre-post-deployment",
+            "dp800-d2x-compare-project",
+            "dp800-d2x-testing-unit"
+          ]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "A supported PreDeploy hook executes before the schema plan runs, but only after that plan has been calculated. Including it in the generated combined script does not execute its prerequisite while the comparison is reading the target. This workflow can perform preparation compatible with an already calculated plan, not supply the required new comparison state.",
+          "sourceIds": ["dp800-d2x-pre-post-deployment"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "contradicted",
+          "rationale": "The documented PostDeploy hook executes after the schema plan, so it is later still than plan calculation. It is suitable for tasks such as populating objects after their creation, but cannot make a prerequisite schema mutation visible to the calculation that generated that same plan.",
+          "sourceIds": ["dp800-d2x-pre-post-deployment"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The saved script is generated and reviewed before the prerequisite changes the target. Running the prerequisite before executing the saved file changes execution conditions but does not regenerate that file from a new comparison. A previously approved script may remain valid after compatible preparation; that possibility does not meet this explicit requirement to calculate from the changed schema.",
+          "sourceIds": [
+            "dp800-d2x-compare-project",
+            "dp800-d2x-pre-post-deployment"
+          ]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh review of every rewritten workflow, not an automatic Intermediate-label acceptance. A is unique because the changed schema must be an input at plan calculation, not merely present before script execution. B and C are genuine pre/post mechanisms with wrong timing for this requirement; D is a genuine saved-script process but has already captured the old planning input. The prior final-context concerns are addressed: the stem no longer announces a false assumption or stale-plan diagnosis, all four options include review, and their lengths are 103/101/102/110 characters. The learner must distinguish calculation from execution rather than choose the only cautious workflow. Intermediate now matches this single sequencing decision; architecture-design is a broad workflow category, not an Advanced claim. Permissions and the isolated target are explicit. No rename/refactor implementation, automatic replan, rollback, atomicity or universal migration-safety guarantee is inferred. GA is bounded to the documented SQL-project hooks and SqlPackage script-generation contract, without a preview graphical-tool claim. There is no executable candidate code and no live build, comparison or deployment was run; codeReviewed records static stage semantics. The pronoun warning resolves to the changed target schema and saved script. This is distinct from direct-017's action/output selection and direct-018's reference-row convergence; no scoped duplicate was found. All original and earlier repair review records are preserved.",
+      "confidenceReason": "High confidence in A from the explicit plan-before-PreDeploy contract and target-dependent script generation. Fresh construction checks support the balanced Intermediate repair; actual migration correctness and the new final-context decision remain unclaimed."
+    }
+  ]
+}

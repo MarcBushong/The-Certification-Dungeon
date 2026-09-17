@@ -1,0 +1,60 @@
+[
+  {
+    "id": "dp800-20260916-d2-037",
+    "question": "A DAB GraphQL entity maps a SQL Server 2022 table's UnitCost DECIMAL(10,2) NOT NULL to cost and AvailableUnits INT NOT NULL to available. Its published filter schema accepts unquoted integer literals for both fields' gt inputs. A client needs cost > 100 and available > 0, in pages of 25. A response contains hasNextPage = true and an opaque endCursor. Permissions and entity configuration are valid. Select two client behaviors that filter and continue the query.",
+    "questionType": "multi-select",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "Filter using UnitCost and AvailableUnits because those are the physical database column names."
+      },
+      {
+        "id": "b",
+        "text": "Use filter: { cost: { gt: 100 }, available: { gt: 0 } }."
+      },
+      {
+        "id": "c",
+        "text": "Request first: 25 again without after, treating the row limit as an advance instruction."
+      },
+      {
+        "id": "d",
+        "text": "Use the returned endCursor as after, retaining the same filter and first: 25."
+      }
+    ],
+    "correctAnswer": ["b", "d"],
+    "explanation": "Apply the numeric gt filters to the exposed field names, then continue using the returned cursor.",
+    "deepExplanation": "The numeric SQL columns and explicit GraphQL input contract support the unquoted integer literals in the offered filter; aliases or column names alone would not establish that compatibility. Treat the cursor as opaque and retain the filter and page-size criteria when continuing. This does not promise a transactionally frozen result across requests or that every remaining page contains 25 rows.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Physical names would be appropriate if exposed unchanged. The training says clients use mapped/exposed names, so these internal names do not match the stated GraphQL contract.",
+      "c": "first controls page size. Omitting after is appropriate for the initial page or restarting the result set, not advancing after the page already received."
+    },
+    "objectiveDomain": "secure-optimize-and-deploy-database-solutions",
+    "skill": "integrate-sql-solutions-with-azure-services",
+    "subskill": "Configure entities for REST and GraphQL, including data caching, pagination, searching, and filtering",
+    "difficulty": "intermediate",
+    "complexity": "technical-implementation",
+    "sourceIds": [
+      "dp800-d2x-dab-entities-unit",
+      "dp800-d2x-dab-production-catalog"
+    ],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/training/modules/integrate-sql-solutions-azure-services/3-define-entities-rest-graphql",
+      "https://learn.microsoft.com/en-us/azure/data-api-builder/"
+    ],
+    "documentationTitles": [
+      "Define entities for REST and GraphQL",
+      "Data API builder documentation"
+    ],
+    "generatedAt": "2026-09-17T01:20:13.609Z",
+    "lastValidatedAt": "2026-09-17T01:20:13.609Z",
+    "featureStatus": "GA",
+    "tags": ["data-api-builder", "graphql", "filtering", "pagination"],
+    "conceptId": "dab-graphql-use-exposed-filter-fields-and-service-endcursor-for-pagination",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Fresh pass-1 graphql-types-r1 repair. Explicit numeric SQL and GraphQL input-contract premises address the final hold. All earlier snapshots and reviews remain frozen; this hash needs new independent technical and adversarial passes.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-17T00:25:07.927Z",
+    "confidenceReason": "The type premise is grounded in the frozen DECIMAL/INT and typed-filter example and explicitly bounded by the stated published input contract. No generated type names, runtime test or new approval are claimed."
+  }
+]

@@ -1,0 +1,1640 @@
+{
+  "schemaVersion": 1,
+  "encounters": {
+    "dp800-direct-036": {
+      "generation": {
+        "questionFingerprint": "a11a7ac8d996d058f5c921b4c610b33c41efd81dd93d961e1d037ae3a717ce9b",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:16:50.204Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "summary": "The two-element queue/validate document follows an indexed change to the original input, but omits the first call's assigned verify element. It could be correct if the append result were discarded; SET explicitly preserves that result here."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "summary": "Append first returns and assigns a three-element stages array, then zero-based $.stages[0] changes receive to queue. The array retains validate and verify because the final path addresses one existing element, not the entire property."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "summary": "Four elements with queue last would be the result of another append to the array after adding verify. The final expression has no append modifier and instead identifies element zero, so it replaces rather than extends at that step."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "summary": "A scalar stages value would result from ordinary replacement at $.stages. The shown final call targets $.stages[0], retaining the surrounding array and its other two values."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-036",
+          "authorId": "dp800-expansion-author-design-20260916",
+          "reviewerId": "dp800-technical-tsql-20260916",
+          "questionFingerprint": "a11a7ac8d996d058f5c921b4c610b33c41efd81dd93d961e1d037ae3a717ce9b",
+          "reviewedAt": "2026-09-16T23:02:58.716Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d1-json-modify",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-modify-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-modify.json",
+              "retrievedAt": "2026-09-16T19:34:49.979Z",
+              "lastReviewedAt": "2026-09-16T20:07:33.618Z",
+              "supportingSummary": "I inspected the grammar, existing/missing-path table and examples. SQL NULL deletes an existing key in lax mode but sets JSON null in strict mode. A text-typed replacement remains a JSON string; append extends the addressed array; the function returns changed JSON rather than mutating an unassigned variable. The JSON columns unit actually calls JSON_MODIFY. Its separate preview-labelled native-json method is not evidence about this 2022 text function."
+            },
+            {
+              "sourceId": "dp800-d1x-json-overview",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-json-overview.json",
+              "retrievedAt": "2026-09-16T19:47:28.696Z",
+              "lastReviewedAt": "2026-09-16T21:16:50.204Z",
+              "supportingSummary": "The current overview shows JSON_MODIFY updating address[1].town while preserving the other array members, supporting indexed mutation in repaired direct-036. It separately marks native json and listed SQL Server 2025 enhancements GA. Those new features, and the broad compatibility introduction, are not substituted for the 2022 text-function contract. The JSON columns unit directly links this exact overview; no doc-to-doc approval is used."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "This replaces index zero in the original two-element array and loses verify. It could occur if the append result were discarded, but SET explicitly preserves the three-element result for the final call.",
+              "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "The assigned append gives receive,validate,verify. The second path selects index zero, replacing receive with queue and preserving the other members. The final SELECT exposes exactly this returned document.",
+              "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Four elements ending in queue require a second append. The final path has no append modifier and addresses existing element zero, so it replaces rather than extends at that step.",
+              "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "A scalar stages value would require replacing $.stages. The actual $.stages[0] path targets one member while retaining the array structure.",
+              "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Fresh independent review of the repaired fingerprint, with no inherited approval. I traced original two-member JSON -> assigned three-member append -> index-zero replacement and obtained b. The overview's indexed-array example supports member preservation; the function contract supports append and returned-value assignment. Complete adjacent code supplies valid input, 2022 scope and whitespace assumptions despite the short-stem warning. Intermediate honestly reflects two state transitions. All four full-document alternatives now test lost assignment, second append or whole-array replacement, not irrelevant NULL branches or an append-word-only clue. Distinct from other mutation semantics. PASS 2 only; neither live SQL nor adversarial/rubric approval.",
+          "confidenceReason": "High for this exact repaired content: two current directly rooted articles support the separate operations, and their composition is a fully bounded static trace."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "a11a7ac8d996d058f5c921b4c610b33c41efd81dd93d961e1d037ae3a717ce9b",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "The final document has only queue and validate, with the appended verify absent.",
+            "whyIncorrectInContext": "The first SET has already saved a third member. Replacing the element at index zero cannot discard the unaffected final member; this two-member document therefore cannot be the final returned value.",
+            "couldBeCorrectWhen": "This document would be correct if the final call read the original two-member payload instead of the assigned append result.",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "evidenceSummary": "The append argument adds at the array end; the overview's address[1] update preserves all other members. Sequential assignment makes verify part of the second call's input."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "The returned array is queue, validate, verify, in that order.",
+            "whyIncorrectInContext": "Supported, not incorrect: append changes the saved sequence from receive/validate to receive/validate/verify; the next ordinary path replaces its first member only. All three surviving values match this answer.",
+            "couldBeCorrectWhen": "It is correct for the displayed nonnull text values, existing stages array and assigned first result. Using a second append or a whole-property path would change the result.",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "evidenceSummary": "Arguments and return-value clauses establish append plus returned text; the indexed array example establishes zero-based single-member replacement without deleting siblings."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "The returned document has four members and adds queue after verify.",
+            "whyIncorrectInContext": "The last path is $.stages[0], not append $.stages. It selects the existing first element and supplies no operation that could produce a fourth member.",
+            "couldBeCorrectWhen": "After the first SET, changing the second path to append $.stages would produce receive/validate/verify/queue.",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "evidenceSummary": "The function's append modifier and the overview's indexed-property update are distinct operations; a path index is not an append request."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "The stages property becomes the scalar string queue rather than an array.",
+            "whyIncorrectInContext": "The actual indexed path addresses one array entry, leaving the enclosing stages array intact. Nothing in the second call targets the stages property as a whole.",
+            "couldBeCorrectWhen": "Ordinary JSON_MODIFY on $.stages with the same text replacement would replace the whole property and yield this scalar shape.",
+            "sourceIds": ["dp800-d1-json-modify", "dp800-d1x-json-overview"],
+            "evidenceSummary": "The existing nonnull property update contract supports scalar replacement at the property path; the indexed update example shows why an element path preserves the outer array."
+          }
+        ],
+        "challenges": {
+          "scope": "SQL Server 2022 ad hoc nvarchar(max) JSON mutation; not native-json modify(), JSON_QUERY wildcard behavior or a Fabric endpoint.",
+          "plan": "No subscription tier or physical-plan property controls these scalar literal operations. The question requires value semantics, not a performance or persistence guarantee for a table.",
+          "role": "Only local variables and SELECT are used; no table access, DDL ownership or privileged deployment is required by the shown script.",
+          "preconditions": "The exact valid JSON, existing correctly cased stages path, nonnull nvarchar replacements, SET assignment and insignificant-whitespace rule close missing-path, NULL and output-format alternatives.",
+          "featureStatus": "GA is appropriate for the documented SQL Server 2016+ JSON_MODIFY text function on SQL Server 2022. The overview's newer native-json features and the ancestor's Preview modify method are different claims; Not applicable would be false.",
+          "sourceChanges": "Both frozen source snapshots and the repaired generation hash were checked. The JSON overview was reviewed at 21:16:50.204Z, later than JSON_MODIFY; that latest frozen review is retained, not refreshed.",
+          "stemSufficiency": "The short-stem warning is resolved by the adjacent complete code: starting array, order of statements and selection of the returned rather than unassigned value are all observable.",
+          "explanationBounds": "The explanation is limited to these two successful operations. It does not claim every append succeeds, mutate an unassigned variable or preserve SQL NULL elements through unspecified path modes.",
+          "reasoningDepth": "Requires composing an assigned append with indexed replacement. Two transitions justify intermediate, but the bounded three-value trace merits 3 rather than 4 for difficulty authenticity.",
+          "answerClues": "All alternatives are complete documents. Correct b is neither uniquely longest nor uniquely JSON-shaped; the lost-SET, second-append and scalar-path errors remain viable misconceptions."
+        },
+        "qualityNotes": "PASS 3 independently derived b and actively tested discarded assignment, append-versus-index and array-versus-scalar alternatives. The two referenced bodies provide the necessary distinct operations; no live SQL was run. Kept separate from direct-034 and direct-035 after comparing their actual options. The short-scenario warning is not a missing-input defect because the code fixes the entire state. No authored field or source date changed."
+      }
+    },
+    "dp800-direct-037": {
+      "generation": {
+        "questionFingerprint": "3cc87710522a856ebb0e734239382021c5bd3dfa29170b4f4f2858429551e367",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:16:16.290Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-json-object"],
+            "summary": "NULL ON NULL preserves comment as an explicit JSON null. That suits a protocol requiring present-but-empty members, but this API requires the optional key to be absent."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-json-object"],
+            "summary": "Omitting the null clause selects JSON_OBJECT's default NULL ON NULL behavior. It works for explicit null inclusion, not omission of the SQL-NULL-valued comment."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-json-object"],
+            "summary": "ABSENT ON NULL omits the comment because its SQL value is NULL, while retaining the nonnull code and numeric zero. The policy does not treat zero as missing."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-json-object"],
+            "summary": "Substituting N'' produces a nonnull empty string, which ABSENT ON NULL retains. That is a valid representation of a blank comment but not an omitted optional member."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-037",
+          "authorId": "dp800-expansion-author-design-20260916",
+          "reviewerId": "dp800-technical-tsql-20260916",
+          "questionFingerprint": "3cc87710522a856ebb0e734239382021c5bd3dfa29170b4f4f2858429551e367",
+          "reviewedAt": "2026-09-16T23:02:58.716Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d1-json-object",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-object-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-object.json",
+              "retrievedAt": "2026-09-16T19:34:50.273Z",
+              "lastReviewedAt": "2026-09-16T20:07:33.618Z",
+              "supportingSummary": "The actual reference supplies key:value constructor grammar and explicitly makes NULL ON NULL the default. ABSENT ON NULL omits a SQL-NULL-valued key; numeric/non-null string values remain. Examples demonstrate numeric serialization and omission. Azure SQL Database is in scope; no RETURNING json or earlier-engine assumption is needed. The JSON teaching unit expressly names this constructor."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "NULL ON NULL retains comment as JSON null. It fits an explicit-null API contract, but this API requires omission.",
+              "sourceIds": ["dp800-d1-json-object"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Omitting the null clause selects the default NULL ON NULL and still includes comment. This separately tests the default, not another valid omission choice.",
+              "sourceIds": ["dp800-d1-json-object"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "supported",
+              "rationale": "ABSENT ON NULL removes comment because its SQL value is NULL. Nonnull R9 and integer zero remain as the required string/numeric members.",
+              "sourceIds": ["dp800-d1-json-object"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "The substituted empty string is not NULL, so ABSENT ON NULL retains comment as blank text. That is a valid alternate representation but not an omitted key.",
+              "sourceIds": ["dp800-d1-json-object"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independently constructed each outcome from declared nonnull code, zero and SQL NULL, leaving c unique. Azure SQL Database is supported; no native-json RETURNING or earlier-version assumption is needed. Intermediate fits the concrete API representation contract. Options a/b share a wrong outcome but test explicit versus default inclusion; d tests empty text. This is not a duplicate of direct-034's mutation/deletion table or direct-038's array positions. Pronoun refers to the API contract. Current source and ancestry inspected. PASS 2 only, no execution.",
+          "confidenceReason": "High: the exact source states the default and both null clauses, demonstrating typed numeric construction and absent-key output."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "3cc87710522a856ebb0e734239382021c5bd3dfa29170b4f4f2858429551e367",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Explicit NULL ON NULL retains the SQL-NULL comment as JSON null.",
+            "whyIncorrectInContext": "This expression produces code R9, numeric retry zero and a comment key with JSON null. The API demands that the key be absent, which is a different document contract.",
+            "couldBeCorrectWhen": "It is correct for an API that requires comment to be present with explicit JSON null when the SQL value is missing.",
+            "sourceIds": ["dp800-d1-json-object"],
+            "evidenceSummary": "The json_null_clause argument expressly converts SQL NULL to JSON null for NULL ON NULL, while the numeric example preserves a numeric SQL expression."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Omitting the policy is sufficient to omit the comment key.",
+            "whyIncorrectInContext": "The omitted policy defaults to NULL ON NULL in JSON_OBJECT, so it has the same retained-null output as a. Default behavior is not the desired omission.",
+            "couldBeCorrectWhen": "Leaving the clause out works when the receiving contract accepts the constructor's default explicit-null representation, or when comment is nonnull and should be included.",
+            "sourceIds": ["dp800-d1-json-object"],
+            "evidenceSummary": "The default is stated explicitly in Arguments. It is not the aggregate's ABSENT ON NULL default and not a FOR JSON option."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "ABSENT ON NULL omits only the SQL-NULL-valued comment while retaining code and numeric zero.",
+            "whyIncorrectInContext": "Supported, not incorrect: @comment is SQL NULL, but @code and @retry are nonnull. The explicit policy removes only comment, producing the two required keys and leaving retry as a number.",
+            "couldBeCorrectWhen": "It is correct under the displayed variables and an omission-based optional-field contract. An explicit-null contract instead calls for NULL ON NULL.",
+            "sourceIds": ["dp800-d1-json-object"],
+            "evidenceSummary": "Arguments and example 3 show omission of the entire null-valued key; example 2 shows numeric serialization and example 6 permits variable values."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Replacing the comment with an empty string causes ABSENT ON NULL to omit it.",
+            "whyIncorrectInContext": "N'' is a nonnull character expression. The policy tests SQL NULL, not emptiness, so the result contains comment with an empty JSON string and violates omission.",
+            "couldBeCorrectWhen": "This is useful if an API expressly wants a present but blank comment, rather than absence or JSON null.",
+            "sourceIds": ["dp800-d1-json-object"],
+            "evidenceSummary": "The null-clause condition is value_expression IS NULL; normal nonnull string expressions are emitted as string values."
+          }
+        ],
+        "challenges": {
+          "scope": "Azure SQL Database JSON_OBJECT without RETURNING json; SQL int zero and nvarchar values are explicitly typed.",
+          "plan": "No client API tier or SQL optimizer property is needed to choose a constructor null policy. The API contract is stipulated rather than claimed as a vendor service behavior.",
+          "role": "The snippet constructs a literal document using local variables. No storage access or privileged permission is implied.",
+          "preconditions": "The code fixes @comment to SQL NULL, @retry to numeric zero and @code to R9. Empty-string, JSON-null and missing-key alternatives are therefore not interchangeable.",
+          "featureStatus": "GA is supported by the current Azure SQL Database constructor contract and genuine training reference. These are actual SQL serialization semantics, not lifecycle-independent methodology.",
+          "sourceChanges": "The sole frozen source remains retrieved 19:34:50.273Z and reviewed 20:07:33.618Z. The original body, not the old technical approval, establishes its NULL ON NULL default.",
+          "stemSufficiency": "The pronoun It refers to the API payload contract. The declaration supplies all values required to distinguish omission from null, blank text and zero.",
+          "explanationBounds": "The brief headline is supplemented by the deep explanation's precise SQL-NULL scope. Neither text claims ABSENT ON NULL removes false, zero or all empty-looking values.",
+          "reasoningDepth": "This is an applied representation choice with a real zero-versus-NULL check, but mostly one policy lookup; intermediate is acceptable at 3/4 difficulty authenticity.",
+          "answerClues": "Options a and b deliberately share a wrong output while testing explicit and implicit defaults. This redundancy lowers distractor plausibility to 3; c is not identified by length or formatting."
+        },
+        "qualityNotes": "PASS 3 traced all four constructors from SQL types instead of treating zero or blank text as null. c alone yields an omitted comment. Inspected the actual constructor body and its immediate training reference. Explicit versus default NULL ON NULL alternatives are semantically redundant distractors, reflected in the score. The pronoun warning has a clear API antecedent. Compared direct-034 and d3-029 rather than relying on the absence of a duplicate flag."
+      }
+    },
+    "dp800-direct-038": {
+      "generation": {
+        "questionFingerprint": "0aaa2acbe87cecac4b0beecd8c4bcc20f3fc2278c23df9974c36b2ada94e9351",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T20:16:16.290Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "summary": "Internal ORDER BY Position processes the labels as z, NULL, a, and NULL ON NULL retains the middle slot. Both clauses are necessary to satisfy the positional export contract."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "summary": "Ascending order is correct, but ABSENT ON NULL drops the middle element and yields [\"z\",\"a\"]. That is suitable for compacting missing labels, not preserving their positions."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "summary": "NULL ON NULL retains the slot, but descending Position yields [\"a\",null,\"z\"]. It fits a reverse-order export rather than the stated ascending positional sequence."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "summary": "Descending Position and ABSENT ON NULL produce [\"a\",\"z\"], reversing values and removing the gap. That could be a reverse compacted list, but violates both requirements here."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-direct-038",
+          "authorId": "dp800-expansion-author-design-20260916",
+          "reviewerId": "dp800-technical-tsql-20260916",
+          "questionFingerprint": "0aaa2acbe87cecac4b0beecd8c4bcc20f3fc2278c23df9974c36b2ada94e9351",
+          "reviewedAt": "2026-09-16T23:02:58.716Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d1-json-arrayagg",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-arrayagg-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-json-arrayagg.json",
+              "retrievedAt": "2026-09-16T19:34:52.096Z",
+              "lastReviewedAt": "2026-09-16T20:07:33.618Z",
+              "supportingSummary": "The newly retrieved reference includes Azure SQL Database and SQL Server 2025, not SQL Server 2022. Its grammar places ORDER BY before the null clause. NULL ON NULL preserves an element, whereas default ABSENT ON NULL removes it. The current body lacks the former SQL Server 2025 Preview assertion. I independently checked the amended explanation rather than inheriting approval or the training unit's incorrect blanket 2022 availability sentence."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "Ascending Position orders z,NULL,a, and NULL ON NULL preserves the middle slot. The documented aggregate ORDER BY/null-clause grammar yields the required array.",
+              "sourceIds": ["dp800-d1-json-arrayagg"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "ABSENT ON NULL omits the middle value despite correct ordering, giving [\"z\",\"a\"]. That fits a compacted array, not positional preservation.",
+              "sourceIds": ["dp800-d1-json-arrayagg"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "The slot remains but descending Position gives [\"a\",null,\"z\"]. It fits reverse export order, not the requested sequence.",
+              "sourceIds": ["dp800-d1-json-arrayagg"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "Descending order plus omission gives [\"a\",\"z\"], changing both order and element count. That would be a reverse compacted export, not this contract.",
+              "sourceIds": ["dp800-d1-json-arrayagg"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Fresh review of the amended explanation and actual current JSON_ARRAYAGG body. The old separate SQL Server 2025 Preview assertion is absent from current evidence and was not reintroduced. This candidate is Azure SQL Database-specific and explicitly does not assume SQL Server 2022 aggregate support. All four order/null combinations were derived independently, yielding a uniquely. VALUES supplies unambiguous types and unique positions. Intermediate fits the two-clause contract; parallel options avoid length/grammar clues. Distinct from object-key omission. PASS 2 only: no inherited approval, invented release date or runtime claim.",
+          "confidenceReason": "High: current syntax, Azure scope and explicit default/retained-null rules determine all outcomes. This review binds the repaired explanation's exact fingerprint."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "0aaa2acbe87cecac4b0beecd8c4bcc20f3fc2278c23df9974c36b2ada94e9351",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Ascending Position and NULL ON NULL produce z, JSON null, a.",
+            "whyIncorrectInContext": "Supported, not incorrect: the distinct positions 10,20,30 determine the ascending order, and the explicit policy retains the SQL NULL middle row as one array slot. The resulting array is exactly the requested output.",
+            "couldBeCorrectWhen": "This expression is correct when position order and preserved missing slots are required, as here. It would differ from a compacted or descending export.",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "evidenceSummary": "The internal ORDER BY determines array-element order; json_null_clause maps SQL NULL to an element under NULL ON NULL."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Ascending positions are retained but the NULL-valued row is absent.",
+            "whyIncorrectInContext": "The strings remain in position order but the middle row contributes no array element, giving [\"z\",\"a\"] rather than a three-position array.",
+            "couldBeCorrectWhen": "ABSENT ON NULL is correct for a compact list that intentionally drops missing labels while retaining ascending position order.",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "evidenceSummary": "Arguments distinguish removal of the entire null element from retaining a JSON null value. ASC is implicit in the shown order expression."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "The null slot is preserved and positions are traversed descending.",
+            "whyIncorrectInContext": "Descending numeric Position visits 30,20,10, giving [\"a\",null,\"z\"]. Preserving the null does not repair the reversed endpoint order.",
+            "couldBeCorrectWhen": "It is appropriate for an export ordered by descending Position that still reserves a null slot for a missing label.",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "evidenceSummary": "Internal ORDER BY controls array ordering independently from the null policy; both choices remain meaningful."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Descending positions and null omission produce a compact reversed list.",
+            "whyIncorrectInContext": "This produces [\"a\",\"z\"]: it fails both the required ascending endpoint order and the middle-slot requirement.",
+            "couldBeCorrectWhen": "It is correct for a descending compact export that removes rows whose label is SQL NULL.",
+            "sourceIds": ["dp800-d1-json-arrayagg"],
+            "evidenceSummary": "The grammar admits the independent ordering and null-policy controls; their combination explains this two-string reversed output."
+          }
+        ],
+        "challenges": {
+          "scope": "Azure SQL Database aggregate over a single three-row VALUES relation. SQL Server 2022 support is expressly not assumed; no Fabric or Managed Instance update policy is borrowed.",
+          "plan": "The ordering is inside the aggregate, not a reliance on physical VALUES arrival order or an outer sort. No deployment tier affects the stated logical array contract.",
+          "role": "The expression uses no persisted table or protected metadata; the VALUES input is self-contained.",
+          "preconditions": "Positions are unique integers; the two nonnull nvarchar labels establish the Label column type for the middle SQL NULL. Null versus omission is explicitly required.",
+          "featureStatus": "The frozen current JSON_ARRAYAGG article lists Azure SQL Database and has no Preview qualification for this contract. The ancestor's erroneous SQL Server 2022 grouping is not used; this named feature cannot be Not applicable.",
+          "sourceChanges": "Kept the captured 19:34:52.096Z retrieval and 20:07:33.618Z review. No older Preview claim or new GA announcement is introduced from outside the frozen current body.",
+          "stemSufficiency": "The requested complete array and all three rows eliminate ambiguous tie order, empty input and absent-property interpretations.",
+          "explanationBounds": "The text correctly distinguishes aggregate omission default from object-constructor inclusion default and does not promise JSON_ARRAYAGG on SQL Server 2022.",
+          "reasoningDepth": "Requires coupling an internal sort with null-slot policy, suitable for intermediate. The small four-combination truth grid is not advanced planning.",
+          "answerClues": "All options differ only in two independently relevant clauses. Equal syntax and similar lengths prevent a unique-valid-syntax or longest-answer shortcut."
+        },
+        "qualityNotes": "PASS 3 derived a=[z,null,a], b=[z,a], c=[a,null,z], d=[a,z] from the actual aggregate grammar, without relying on row arrival order. The sole cited article is genuinely referenced by training and actually approved in DP-800's current catalog. I retained the Azure-only scope and noted the ancestor's overbroad SQL Server 2022 statement rather than promoting it into technical evidence. Distinct from constructor key omission and RAG FOR JSON row wrapping."
+      }
+    },
+    "dp800-20260916-d1-021": {
+      "generation": {
+        "questionFingerprint": "4ad49f5e4e7a7e9ee4268db7a4f4790d5d49e9c38c35c4a21288473762faf65e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1-cte"],
+            "summary": "Matching the path types resolves the creation-time column mismatch. An outer WHERE limits displayed rows, not what the recursive member keeps producing; with a cycle, this design can still hit MAXRECURSION instead of finishing the bounded walk."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+            "summary": "The member predicate is the correct depth stop, but a common nvarchar(20) type is too narrow for explicitly permitted paths. It would work only if every retained path genuinely fit that smaller bound."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-cte"],
+            "summary": "MAXRECURSION can cap a runaway statement while it is being diagnosed. It neither reconciles anchor/recursive types nor replaces a predicate that stops generating rows at the requested walk depth."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+            "summary": "Both path expressions become nvarchar(200), satisfying type equality without truncation under the stated bound. WHERE r.Depth < 3 allows depth-two rows to generate depth three and stops those rows from traversing a fourth edge, even when links cycle."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d1-021",
+          "authorId": "dp800-expansion-author-design-20260916",
+          "reviewerId": "dp800-technical-tsql-20260916",
+          "questionFingerprint": "4ad49f5e4e7a7e9ee4268db7a4f4790d5d49e9c38c35c4a21288473762faf65e",
+          "reviewedAt": "2026-09-16T23:02:58.716Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d1-cte",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/with-common-table-expression-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-cte.json",
+              "retrievedAt": "2026-09-16T19:34:39.453Z",
+              "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+              "supportingSummary": "Independently read the current definition, Usage guidelines and recursive-CTE rules. A CTE belongs to one following statement and is not materialized; the article recommends a temporary object for repeated references. Recursive columns must have matching types, each iteration consumes the previous result, and recursion stops when the member returns no rows. MAXRECURSION is a safeguard. These SQL Server rules are not extended to PDW/Fabric Warehouse recursion. The CTE teaching unit actually links this exact article."
+            },
+            {
+              "sourceId": "dp800-d1-cte-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/2-common-table-expressions",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-cte-unit.json",
+              "retrievedAt": "2026-09-16T19:34:39.489Z",
+              "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+              "supportingSummary": "The actual unit distinguishes anchor and recursive members, demonstrates equal-width path casts, warns about nontermination/default recursion limits and puts a termination predicate inside recursive generation. It links the current CTE product reference, which supplies the exact same-type rule. Its broader samples are not represented as runtime-tested or copied as questions."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "Matching path types fixes only one defect. A final SELECT filter does not stop the recursive member returning rows; a cycle can keep producing deeper walks until the safeguard intervenes. An independently terminating input would be a different prerequisite.",
+              "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "The depth guard and type agreement are correct, but nvarchar(20) cannot retain explicitly allowed longer paths. This would work only if all retained paths fit the smaller bound.",
+              "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "MAXRECURSION neither reconciles nvarchar(20) with nvarchar(200) nor replaces a recursive row-generation stop. Its safeguard role cannot repair the existing type mismatch.",
+              "sourceIds": ["dp800-d1-cte"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "Both path expressions become nvarchar(200), within the stated bound. r.Depth<3 allows depths zero through two to generate through depth three; depth-three inputs produce none, terminating even cyclic links.",
+              "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Static recursion gives d. I checked matching column counts, int NodeId/Depth, string-width agreement, UNION ALL, one recursive reference, legal INNER JOIN and the zero-to-three boundary. SQL Server 2022 supports this; no Fabric Warehouse/PDW recursion is inferred. Advanced is genuine coupled troubleshooting: type repair alone does not stop a cycle and termination alone may truncate valid paths. No successful-truncation meaning is assigned to MAXRECURSION. Distinct from direct-006's materialization/lifetime issue. PASS 2 only; no engine run.",
+          "confidenceReason": "High: product same-type/iteration-stop rules and the actual training's member-filter examples directly support the repair and alternatives."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "4ad49f5e4e7a7e9ee4268db7a4f4790d5d49e9c38c35c4a21288473762faf65e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Widening the anchor while filtering only final output is a complete recursion repair.",
+            "whyIncorrectInContext": "The path types would agree, but a cycle can keep producing recursive rows past depth three. The final WHERE determines displayed rows, not whether the recursive member becomes empty, so this is not a bounded-walk implementation.",
+            "couldBeCorrectWhen": "Widening alone suffices if the reachable data is guaranteed acyclic and naturally terminates within the permitted edge count; those guarantees are deliberately absent here.",
+            "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+            "evidenceSummary": "The product describes repeated member evaluation until no rows remain. The training's bounded-sequence example puts its stopping predicate in the recursive member."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Narrowing the recursive path to nvarchar(20) and limiting member depth meets all requirements.",
+            "whyIncorrectInContext": "Depth generation stops correctly and both expressions become nvarchar(20), but narrowing cannot retain the explicitly permitted longer paths. Satisfying recursive type equality by shortening the result violates the separate no-truncation requirement.",
+            "couldBeCorrectWhen": "This repair would be suitable if every required path were at most 20 characters, or if truncation were an allowed display policy.",
+            "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+            "evidenceSummary": "The exact-width equality rule and the unit's matching wide path casts support choosing a common sufficient type. Loss of paths beyond 20 is static type-width reasoning, not a quoted cast execution test."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "MAXRECURSION 3 fixes mismatched path types and returns a bounded traversal.",
+            "whyIncorrectInContext": "The incompatible nvarchar(20)/nvarchar(200) expressions are unchanged, so the type defect remains before recursion can be useful. A recursion safeguard does not rewrite the member or establish successful enumeration through depth three.",
+            "couldBeCorrectWhen": "An outer MAXRECURSION hint can guard a separately type-correct recursive query against excessive traversal; it is not a replacement for this two-part repair.",
+            "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+            "evidenceSummary": "Product guidelines require equal member types independently from the MAXRECURSION option; the cancel-a-statement example presents the hint as protection against a bad recursive definition."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Use nvarchar(200) for both path expressions and stop recursive input at Depth less than three.",
+            "whyIncorrectInContext": "Supported, not incorrect: the anchor depth is zero, so inputs at depths zero, one and two produce depths one, two and three. Depth-three inputs produce no further rows. Equal sufficient path widths retain all stipulated valid walks, including bounded cyclic walks.",
+            "couldBeCorrectWhen": "It is correct for the stated three-edge walk requirement and nvarchar(200) bound. A simple-path requirement would additionally need cycle exclusion, which this task does not request.",
+            "sourceIds": ["dp800-d1-cte", "dp800-d1-cte-unit"],
+            "evidenceSummary": "The product's anchor/member iteration sequence and same-type requirement combine with the training's member-local stopping predicate. No DISTINCT or unsupported recursive outer join is introduced."
+          }
+        ],
+        "challenges": {
+          "scope": "SQL Server 2022 recursive CTE over ordinary int link endpoints. The question requests walks, not simple paths or SQL graph MATCH reachability; no Synapse/PDW recursion support is assumed.",
+          "plan": "The solution is semantic termination, not a promise about spools or optimizer pushdown. MAXRECURSION remains a separate error safeguard; no physical output order is required.",
+          "role": "The query requires access to dbo.Link but no new DDL or administrative permission. Permissions do not select among type-width and member-bound repairs.",
+          "preconditions": "Depth starts at zero, the edge cap is three, both endpoints are int and retained strings fit 200 but not necessarily 20. The single recursive reference and INNER JOIN meet the documented member restrictions.",
+          "featureStatus": "Recursive CTEs and these casts are established SQL Server behavior covered by current product and training evidence. This implementation question is GA, not a Not applicable methodology exercise.",
+          "sourceChanges": "Both frozen CTE snapshots reviewed at 19:59:14.110Z were checked against their actual bodies and March 12 map. No current-date replacement or new source approval is used.",
+          "stemSufficiency": "Cycles plus the explicit longer-than-20 possibility defeat the two superficially plausible partial repairs. Enumerating walks permits repeated nodes within the fixed depth; deduplication is not silently required.",
+          "explanationBounds": "The explanation does not claim MAXRECURSION returns a successful truncated result or that a final filter always controls member generation. Width sufficiency is stipulated, not guessed from current sample data.",
+          "reasoningDepth": "Genuine advanced troubleshooting combines compile-time recursive type equality, data-loss avoidance and run-time termination; fixing one defect alone fails another requirement.",
+          "answerClues": "The stem reveals the two symptoms but does not supply the correct input-depth predicate or sufficient common type. b and d both look like two-part repairs; choices have no unique-valid-SQL tell."
+        },
+        "qualityNotes": "PASS 3 independently tested natural termination, narrow common types and MAXRECURSION as alternate repairs. d alone both compiles with adequate width and ceases generation after three edges. A repeated-node walk is allowed; no unasked simple-path or deduplication rule was imported. The familiar MAXRECURSION guard is not a request for a successful partial query. Compared actual direct-006 alternatives and source hierarchy examples. Static code review only."
+      }
+    },
+    "dp800-20260916-d1-022": {
+      "generation": {
+        "questionFingerprint": "21a5fe445135d6c5a590edebb85ee434a2691757d6ec669798c3a99d1053892f",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-lag"],
+            "summary": "LAG's default supplies a value when its requested offset is outside the current partition. Zero is useful only when zero is the intended baseline; it does not retrieve the actual pre-cutoff reading required here."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-lag", "dp800-d1x-select"],
+            "summary": "The logical SELECT binding order excludes WHERE-filtered rows before computing the window expression. Moving the display filter outside an inner LAG calculation keeps the true prior reading available while showing only the requested dates."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1-window-unit"],
+            "summary": "LEAD is appropriate for comparing with a following row. It changes the direction of the metric and still cannot recover the preceding historical row removed by the WHERE clause."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-lag"],
+            "summary": "Offset two requests the second earlier row in the surviving partition. That could implement a two-reading comparison, but the requirement is the immediately preceding reading and the filtered history remains unavailable."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d1-022",
+          "authorId": "dp800-expansion-author-design-20260916",
+          "reviewerId": "dp800-technical-tsql-20260916",
+          "questionFingerprint": "21a5fe445135d6c5a590edebb85ee434a2691757d6ec669798c3a99d1053892f",
+          "reviewedAt": "2026-09-16T23:02:58.716Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d1x-lag",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/lag-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-lag.json",
+              "retrievedAt": "2026-09-16T20:16:20.375Z",
+              "lastReviewedAt": "2026-09-16T20:43:33.655Z",
+              "supportingSummary": "The LAG reference reads an earlier row from the same result set, defaults offset to one and supplies NULL when the omitted default is needed beyond the partition. Its partition/order rule and SQL Server 2012 introduction support the 2022 query. No IGNORE NULLS or CU-dependent behavior is used. The window unit explicitly describes this exact function."
+            },
+            {
+              "sourceId": "dp800-d1x-select",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-select.json",
+              "retrievedAt": "2026-09-16T20:16:21.821Z",
+              "lastReviewedAt": "2026-09-16T20:43:33.655Z",
+              "supportingSummary": "The SELECT article lists WHERE at logical step four and SELECT at step eight, expressly distinguishing logical binding from physical execution. It also documents SELECT permissions and derived-query grammar. This explains the loss of pre-cutoff history without promising a fixed physical plan. The recorded explicit-reference parent is the window unit's actual SELECT/WHERE/window code, not general topical or hostname approval."
+            },
+            {
+              "sourceId": "dp800-d1-window-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/3-window-functions",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1-window-unit.json",
+              "retrievedAt": "2026-09-16T19:34:42.929Z",
+              "lastReviewedAt": "2026-09-16T19:59:14.110Z",
+              "supportingSummary": "I read the ranking examples: ROW_NUMBER separates ties, RANK leaves subsequent gaps, DENSE_RANK does not, and NTILE allocates approximate equal-sized groups. Its analytic section distinguishes LAG's previous row from LEAD's following row and describes offset/default arguments. Its actual SELECT/WHERE examples and direct OVER link establish the recorded references. Simplified frame descriptions are not treated as universal for every function."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "Zero fills an out-of-partition offset but does not retrieve history. For historical 90 followed by displayed 85 it fabricates 85 rather than -5. It fits an intentional zero baseline, not the true predecessor requirement.",
+              "sourceIds": ["dp800-d1x-lag"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "supported",
+              "rationale": "LAG needs the predecessor in its input result set. An inner calculation over relevant meter history followed by an outer display filter preserves the actual predecessor while still hiding older readings.",
+              "sourceIds": ["dp800-d1x-lag", "dp800-d1x-select"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "LEAD accesses a following row, reversing the required direction. It cannot restore removed history either. This would be a next-reading comparison.",
+              "sourceIds": ["dp800-d1-window-unit", "dp800-d1x-lag"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "Offset two selects the second earlier surviving row, not the immediate historical predecessor. Increasing an offset cannot recover excluded rows and changes the metric even when enough displayed rows exist.",
+              "sourceIds": ["dp800-d1x-lag", "dp800-d1x-select"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independently combined LAG's rowset rule with SELECT's logical WHERE-before-SELECT order, establishing b. SQL Server 2022 syntax, nonnull readings and a unique per-meter order are sufficient. Advanced troubleshooting involves moving a display filter across a window-evaluation boundary, not controlling physical execution. No IGNORE NULLS/CU behavior is used. The pronoun means the prior reading; a falling-value counterexample refutes a fabricated zero baseline. Different fact from cumulative framing and ranking. PASS 2 only; static derivation.",
+          "confidenceReason": "High: the two product contracts determine the logical LAG input; the actual training independently establishes the LEAD direction and reference ancestry."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "21a5fe445135d6c5a590edebb85ee434a2691757d6ec669798c3a99d1053892f",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "A zero default repairs the missing historical predecessor while keeping the cutoff filter.",
+            "whyIncorrectInContext": "The older row is still outside the window input. For an older reading of 100 and first displayed reading of 80, the required delta is -20, whereas a zero default gives 80. A coincidental older value of zero is not a rowset repair.",
+            "couldBeCorrectWhen": "A zero default is appropriate when the reporting contract deliberately defines zero as the baseline for the first row in the retained partition.",
+            "sourceIds": ["dp800-d1x-lag", "dp800-d1x-select"],
+            "evidenceSummary": "LAG default applies only to an offset outside the partition; WHERE is logically before SELECT. The numerical counterexample is a static substitution into those rules."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Compute LAG over relevant complete history before applying the display-only cutoff.",
+            "whyIncorrectInContext": "Supported, not incorrect: the inner result assigns each reading its actual predecessor using the complete meter partition. Removing older display rows in the outer query does not remove that predecessor from the already defined inner calculation.",
+            "couldBeCorrectWhen": "This is correct when the earlier history must influence displayed deltas but remain hidden. If history itself is intentionally excluded from the comparison domain, the original filtered window may be desired.",
+            "sourceIds": [
+              "dp800-d1x-lag",
+              "dp800-d1x-select",
+              "dp800-d1-window-unit"
+            ],
+            "evidenceSummary": "The SELECT logical binding order explains the original loss; LAG's preceding-row contract applied at the inner query level restores the intended comparison domain."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Changing LAG to LEAD restores the prior reading across the cutoff.",
+            "whyIncorrectInContext": "LEAD under the unchanged ascending time/id order refers to a subsequent retained row, not the predecessor. For values 100 before cutoff, then 80 and 95, it gives 80-95 rather than 80-100.",
+            "couldBeCorrectWhen": "LEAD is correct for a forward-change comparison with the following reading, not a backward change under this ordering.",
+            "sourceIds": ["dp800-d1-window-unit", "dp800-d1x-select"],
+            "evidenceSummary": "The unit explicitly distinguishes previous LAG from following LEAD, and the unchanged WHERE still excludes the earlier history."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Offset two recovers the removed immediately previous reading.",
+            "whyIncorrectInContext": "A larger offset still searches only the filtered partition and asks for two rows back, not one. The first displayed row has neither predecessor in that partition, so increasing the offset cannot recover the removed row.",
+            "couldBeCorrectWhen": "Offset two is useful when the requested metric is a two-reading-back comparison over an appropriately complete rowset.",
+            "sourceIds": ["dp800-d1x-lag", "dp800-d1x-select"],
+            "evidenceSummary": "The offset argument counts preceding rows in the same result set; it cannot reach across the WHERE-defined rowset boundary."
+          }
+        ],
+        "challenges": {
+          "scope": "SQL Server 2022 LAG over meter partitions ordered by ReadingTime and ReadingId. No SQL graph, aggregate frame default or native compilation feature is involved.",
+          "plan": "The fix changes logical query levels, not forced execution order or guaranteed materialization. The SELECT article's physical-plan/CONVERT caveat does not permit changing the specified LAG result.",
+          "role": "Reading permission over the relevant history is an ordinary report prerequisite; the question is not granting access to otherwise protected historical rows.",
+          "preconditions": "Nonnull readings, a unique per-meter ordering and an existing older row are explicit. Falling values disprove a fabricated zero baseline; IGNORE NULLS and CU-specific bugs are irrelevant.",
+          "featureStatus": "LAG is documented from SQL Server 2012 onward. GA fits its basic 2022 semantics; no Preview option or Not applicable relabeling is needed.",
+          "sourceChanges": "Read the frozen LAG and SELECT bodies reviewed 20:43:33.655Z plus the earlier training snapshot. Their dates are retained and both latter-review bindings must be the question's latest source review.",
+          "stemSufficiency": "The cutoff is expressly display-only and older history must affect the delta. The word preceding refers to the supplied ascending time/id order, not whichever physical row arrives first.",
+          "explanationBounds": "The explanation correctly speaks of logical evaluation and does not require CTE materialization, a particular physical plan, IGNORE NULLS or monotonic readings.",
+          "reasoningDepth": "Diagnosing a filter/window boundary is applied advanced troubleshooting, though only one query-boundary repair is required; difficulty authenticity is 3 rather than a perfect 4.",
+          "answerClues": "b is longer and alone moves a boundary, but a/c/d are credible familiar window adjustments. The answer still requires identifying lost input rather than merely recognizing the word history."
+        },
+        "qualityNotes": "PASS 3 constructed a falling-value counterexample to the zero default and traced direction and offset alternatives. b fixes the logical rowset; this is not an instruction to force materialization or override optimizer execution order. The word preceding is bound to the supplied unique ascending order. Actual SELECT and LAG bodies were combined with the genuine teaching references; older approval was not used as proof. Distinct from nearby running-total and ranking items."
+      }
+    },
+    "dp800-20260916-d1-023": {
+      "generation": {
+        "questionFingerprint": "7fd0a29f5972005865420df019325883021d6878aac07a45d230fd1a22c8a139",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d1x-regexp-replace",
+              "dp800-d1x-regex-overview"
+            ],
+            "summary": "The documented backslash-2/backslash-1 replacement reorders digits before letters, and occurrence zero applies it to both matched tokens. Text outside the matches, including the pipe, remains untouched."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-regexp-replace"],
+            "summary": "Backslash-1 then backslash-2 preserves capture order and changes only the separator, which would fit a letters-first normalization. The requested output instead puts digits first."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-regexp-replace"],
+            "summary": "The replacement is correct but occurrence one intentionally targets only the first match. That is useful for a first-token edit, not the required transformation of both tokens."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-regexp-replace"],
+            "summary": "Occurrence two changes the second token only. It would be correct for repairing just cd:34, while the actual request requires the first token to change as well."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d1-023",
+          "authorId": "dp800-expansion-author-design-20260916",
+          "reviewerId": "dp800-technical-tsql-20260916",
+          "questionFingerprint": "7fd0a29f5972005865420df019325883021d6878aac07a45d230fd1a22c8a139",
+          "reviewedAt": "2026-09-16T23:02:58.716Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d1x-regexp-replace",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-replace-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-regexp-replace.json",
+              "retrievedAt": "2026-09-16T19:53:15.363Z",
+              "lastReviewedAt": "2026-09-16T20:43:33.507Z",
+              "supportingSummary": "The current 2025 function reference explicitly uses backslash-number replacement groups and occurrence zero for all matches; positive occurrences change only the numbered match. The argument order is replacement, one-based start, occurrence, flags. Inputs here are within the documented limits. The regex unit names this function, but its incompatible dollar-number examples are not technical proof."
+            },
+            {
+              "sourceId": "dp800-d1x-regex-overview",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/regular-expressions/overview",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-regex-overview.json",
+              "retrievedAt": "2026-09-16T19:53:13.059Z",
+              "lastReviewedAt": "2026-09-16T20:43:33.507Z",
+              "supportingSummary": "The current overview documents RE2-based classes, repetition and capture groups and explicitly says regex matching does not honor SQL collations for linguistic comparisons. SQL Server 2025 is in scope; the natively-compiled-procedure limitation is irrelevant to these standalone SELECTs. The regex training unit directly links this page. No external RE2 pages or training ECMAScript simplifications are used."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "supported",
+              "rationale": "Groups capture ab/12 and cd/34. Backslash-2 then backslash-1 places digits first, and occurrence zero changes both tokens. The unmatched pipe remains, yielding 12-ab|34-cd.",
+              "sourceIds": [
+                "dp800-d1x-regexp-replace",
+                "dp800-d1x-regex-overview"
+              ]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "Backslash-1 then backslash-2 preserves letter-before-digit order and yields ab-12|cd-34. That changes separators but does not swap the fields as required.",
+              "sourceIds": ["dp800-d1x-regexp-replace"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Occurrence one changes only the first token, giving 12-ab|cd:34. It fits a first-token-only edit, not the required transformation of both.",
+              "sourceIds": ["dp800-d1x-regexp-replace"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "Occurrence two changes only the second token, giving ab:12|34-cd. It would fit repairing just that token, not both tokens.",
+              "sourceIds": ["dp800-d1x-regexp-replace"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "The product contract, not the training's dollar-number/ECMAScript wording, determines a. Checked SQL literal backslashes, capture order, start=1, occurrence=0 and c flag for bounded nvarchar. SQL Server 2025 is explicit; no natively compiled procedure or earlier engine is implied. Intermediate fits capture rearrangement plus occurrence selection. All choices are valid parallel parameters with independently derived outputs. Distinct from d1-024's collation/flags/extraction interaction. PASS 2 only; no regex run in another engine is misrepresented as SQL execution.",
+          "confidenceReason": "High: the exact reference gives backslash-group replacement and zero-versus-positive occurrence rules; the current overview supports the elementary pattern constructs."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "7fd0a29f5972005865420df019325883021d6878aac07a45d230fd1a22c8a139",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Use backslash group two then group one and replace occurrence zero.",
+            "whyIncorrectInContext": "Supported, not incorrect: the matches are ab:12 and cd:34. In each, group two is numeric and group one is alphabetic. Occurrence zero applies the replacement to both, leaving the unmatched pipe and producing 12-ab|34-cd.",
+            "couldBeCorrectWhen": "It is correct for the given two matches and the requirement to swap both. A one-token requirement would instead need a positive occurrence.",
+            "sourceIds": [
+              "dp800-d1x-regexp-replace",
+              "dp800-d1x-regex-overview"
+            ],
+            "evidenceSummary": "The product explicitly documents backslash-number replacement references and zero for all occurrences; the overview validates the groups and repeated ASCII ranges."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Keep group one before group two while replacing all matches.",
+            "whyIncorrectInContext": "This replaces both colons with hyphens but retains the original letter-before-digit order, yielding ab-12|cd-34. Replacing all tokens does not fix the wrong captured-group order.",
+            "couldBeCorrectWhen": "It is correct for normalizing separators while preserving the original letter/digit ordering in both tokens.",
+            "sourceIds": [
+              "dp800-d1x-regexp-replace",
+              "dp800-d1x-regex-overview"
+            ],
+            "evidenceSummary": "Groups are numbered by their parentheses; replacement order, not match count, determines the swapped versus unswapped token."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Swap captured groups only in the first pattern occurrence.",
+            "whyIncorrectInContext": "Occurrence one changes ab:12 but leaves cd:34 untouched, so the resulting text is 12-ab|cd:34 rather than the complete requested transformation.",
+            "couldBeCorrectWhen": "It is correct when only the first matching token should be reformatted and later matches must remain unchanged.",
+            "sourceIds": ["dp800-d1x-regexp-replace"],
+            "evidenceSummary": "The occurrence argument selects the numbered match for a positive integer and uses zero for all matches."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Swap captured groups only in the second pattern occurrence.",
+            "whyIncorrectInContext": "The first token remains ab:12 and only cd:34 becomes 34-cd, giving ab:12|34-cd. The task requires changing both tokens.",
+            "couldBeCorrectWhen": "It is correct when the second token alone is the target of a repair or transformation.",
+            "sourceIds": ["dp800-d1x-regexp-replace"],
+            "evidenceSummary": "Positive occurrence two selects the second nonoverlapping match after the first; it is not a request to replace the first two matches."
+          }
+        ],
+        "challenges": {
+          "scope": "SQL Server 2025 ad hoc REGEXP_REPLACE; the SQL literal's backslash characters are not JavaScript replacement syntax.",
+          "plan": "No service tier or optimizer plan decides capture substitution. The replacement is a short bounded scalar expression, not a performance claim.",
+          "role": "The shown local variable and SELECT require no table permission, external model or regex deployment extension.",
+          "preconditions": "The start is one, flags are c, pattern and replacement types are supported, two capture groups exist and both tokens match. The pipe lies outside either match; size and missing-group limits are not approached.",
+          "featureStatus": "Current 2025 product references support this regular-expression feature without a Preview label. It is not the separate Preview fuzzy-string API and is not methodology Not applicable.",
+          "sourceChanges": "Read both cited current bodies and their actual regex-unit ancestry. The ancestor's ECMAScript and dollar-group examples conflict with the product's explicit backslash contract; that ancestry text is not used as implementation evidence.",
+          "stemSufficiency": "Both the required complete output and the actual pattern are displayed. There is no omitted collation, occurrence or starting-position choice needed to determine the result.",
+          "explanationBounds": "The explanation is correctly confined to SQL's documented replacement syntax and these matches, not a universal convention across regex engines.",
+          "reasoningDepth": "Combines capture ordering with occurrence selection, appropriate intermediate implementation. It does not merit an advanced label merely because regex is new.",
+          "answerClues": "All choices specify valid replacement/occurrence pairs in the same form. The target string reveals the desired semantics but not SQL's zero-means-all convention."
+        },
+        "qualityNotes": "PASS 3 did not execute a different regex engine as a proxy. Static SQL-contract substitution gives 12-ab|34-cd only for a; other outputs were derived explicitly. The current product's backslash-number convention prevails over incompatible examples in the ancestry-only training unit, and that discrepancy is recorded rather than hidden. Compared d1-024: replacement ordering/count is different from case-flag/extraction ordering."
+      }
+    },
+    "dp800-20260916-d1-024": {
+      "generation": {
+        "questionFingerprint": "f8cde51ac264729c40f9407e9640ae68abcfb993ce42dcd0b7afd3b3a88331a5",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": [
+              "dp800-d1x-regexp-substr",
+              "dp800-d1x-regex-overview"
+            ],
+            "summary": "17 belongs to the lowercase first token. It could be extracted with case-insensitive matching and occurrence one; the displayed call resolves its final flag to case-sensitive and asks for occurrence two."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-regexp-substr"],
+            "summary": "28 is the digits of the first uppercase match. It would also be the second match if the effective flag were i, but the last conflicting flag is c, so this call advances to the next uppercase token."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d1x-regexp-substr",
+              "dp800-d1x-regex-overview"
+            ],
+            "summary": "The final c flag excludes a=17 despite the SQL collation. Among the remaining A=28 and A=39 matches, occurrence two selects A=39 and the second capture group returns just 39."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-regexp-substr"],
+            "summary": "A=39 is the whole second case-sensitive match and would be returned with capture group zero. The explicit group two returns only its digit subexpression."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d1-024",
+          "authorId": "dp800-expansion-author-design-20260916",
+          "reviewerId": "dp800-technical-tsql-20260916",
+          "questionFingerprint": "f8cde51ac264729c40f9407e9640ae68abcfb993ce42dcd0b7afd3b3a88331a5",
+          "reviewedAt": "2026-09-16T23:02:58.716Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d1x-regexp-substr",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-substr-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-regexp-substr.json",
+              "retrievedAt": "2026-09-16T19:53:17.656Z",
+              "lastReviewedAt": "2026-09-16T20:43:33.507Z",
+              "supportingSummary": "The current function contract defines one-based start, positive occurrence, left-parenthesis-numbered capture groups and group zero for a whole match. It explicitly resolves contradictory flags using the last flag and gives ic as case-sensitive. Combined with the overview's collation caveat, this determines the selected token/digits. The regex unit expressly references the function; only 2025 scope is claimed."
+            },
+            {
+              "sourceId": "dp800-d1x-regex-overview",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/regular-expressions/overview",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-regex-overview.json",
+              "retrievedAt": "2026-09-16T19:53:13.059Z",
+              "lastReviewedAt": "2026-09-16T20:43:33.507Z",
+              "supportingSummary": "The current overview documents RE2-based classes, repetition and capture groups and explicitly says regex matching does not honor SQL collations for linguistic comparisons. SQL Server 2025 is in scope; the natively-compiled-procedure limitation is irrelevant to these standalone SELECTs. The regex training unit directly links this page. No external RE2 pages or training ECMAScript simplifications are used."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "17 belongs to lowercase a. It would require effective case-insensitive matching and the first occurrence, whereas final c and occurrence two exclude that route.",
+              "sourceIds": [
+                "dp800-d1x-regexp-substr",
+                "dp800-d1x-regex-overview"
+              ]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "28 is the first case-sensitive match's digits, or the second case-insensitive match's digits. Neither is the specified last-flag c plus occurrence two combination.",
+              "sourceIds": [
+                "dp800-d1x-regexp-substr",
+                "dp800-d1x-regex-overview"
+              ]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "supported",
+              "rationale": "The source explicitly resolves ic to case-sensitive independently of SQL collation. Matches are A=28 then A=39; occurrence two chooses the latter and group two returns only 39.",
+              "sourceIds": [
+                "dp800-d1x-regexp-substr",
+                "dp800-d1x-regex-overview"
+              ]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "A=39 is the whole selected match, corresponding to group zero. Group two extracts just the digit subexpression, so the whole token is not returned.",
+              "sourceIds": ["dp800-d1x-regexp-substr"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Re-derived c through dependent final-flag resolution, ordinal among surviving matches and capture-group selection. SQL collation is a meaningful competing mechanism expressly excluded by the product overview. SQL Server 2025, short literals, start one, valid flags and two groups satisfy the signature. Advanced is defensible for this coupled collation/flag/occurrence/group trace, not expert-level design. Alternatives diagnose different evaluation steps with comparable numeric/whole-token forms. Distinct from d1-023's replacement occurrence semantics. PASS 2 only; no live function call.",
+          "confidenceReason": "High: the exact function reference expressly names ic as case-sensitive and the overview excludes SQL collation control; digits follow without an assumed external regex-engine contract."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "f8cde51ac264729c40f9407e9640ae68abcfb993ce42dcd0b7afd3b3a88331a5",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "The call returns the digits from the initial lowercase a=17 token.",
+            "whyIncorrectInContext": "The final c in ic selects case-sensitive matching, so [A-Z] does not match the initial lowercase a. Even case-insensitive matching would need occurrence one, not the displayed two, to select 17.",
+            "couldBeCorrectWhen": "Use case-insensitive matching and occurrence one with group two if the first lowercase-or-uppercase token should supply the digits.",
+            "sourceIds": [
+              "dp800-d1x-regexp-substr",
+              "dp800-d1x-regex-overview"
+            ],
+            "evidenceSummary": "The explicit last-conflicting-flag rule and ASCII uppercase range exclude the first token; occurrence is evaluated over actual matches."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "The returned digits are 28 from the first uppercase token.",
+            "whyIncorrectInContext": "Under the final c flag, A=28 is match one, but the function requests match two. The input's raw token position is not the same as the ordinal among case-sensitive matches.",
+            "couldBeCorrectWhen": "28 would be correct with occurrence one under case-sensitive matching, or occurrence two under case-insensitive matching, while retaining group two.",
+            "sourceIds": [
+              "dp800-d1x-regexp-substr",
+              "dp800-d1x-regex-overview"
+            ],
+            "evidenceSummary": "The function counts nonoverlapping matches according to the active flags; the overview states matching does not inherit linguistic SQL collation."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "The second case-sensitive match contributes its second capture group, 39.",
+            "whyIncorrectInContext": "Supported, not incorrect: resolving ic leaves c; the matches are A=28 and A=39; occurrence two selects A=39 and group two selects only its digits. The case-insensitive database collation does not override those stages.",
+            "couldBeCorrectWhen": "It is correct for the displayed flags, start, occurrence and group. Reversing flags to ci or changing group zero would produce a different answer.",
+            "sourceIds": [
+              "dp800-d1x-regexp-substr",
+              "dp800-d1x-regex-overview"
+            ],
+            "evidenceSummary": "The function explicitly illustrates ic as case-sensitive, numbers groups by left parentheses and defaults group zero to the whole match. The overview independently rejects collation-driven linguistic matching."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "The call returns the entire selected match A=39.",
+            "whyIncorrectInContext": "The correct match is selected, but the explicit final group argument is two. It extracts the digit subexpression rather than the whole match, so retaining A= is incorrect.",
+            "couldBeCorrectWhen": "With group zero and the same start, occurrence and flags, returning the entire A=39 match would be appropriate.",
+            "sourceIds": ["dp800-d1x-regexp-substr"],
+            "evidenceSummary": "The product's group argument distinguishes group zero (entire match) from numbered captured subexpressions; its example extracts a selected capture as text."
+          }
+        ],
+        "challenges": {
+          "scope": "SQL Server 2025 REGEXP_SUBSTR over a bounded nvarchar literal. It returns text, not REGEXP_INSTR positions or a match table.",
+          "plan": "Database linguistic collation is an intentional competing mechanism, not a plan/tier choice. The product expressly defines regex matching independently of that collation.",
+          "role": "The ad hoc literal SELECT has no table, deployment or protected-resource access dependency.",
+          "preconditions": "Start one, occurrence two, valid ic flags and group two are all explicit. There are exactly two case-sensitive matches and two capture groups, so missing-match, invalid-group and size-error cases do not apply.",
+          "featureStatus": "This is the documented SQL Server 2025 regular-expression feature, GA in the captured product references. It is neither the Preview fuzzy feature nor non-feature methodology.",
+          "sourceChanges": "The frozen product bodies reviewed 20:43:33.507Z were re-read. The SUBSTR group paragraph's loose position wording is bounded by its text-return definition and extraction example; no newer source was silently substituted.",
+          "stemSufficiency": "The supplied case-insensitive collation, mixed-case tokens and explicit flags make the conflict test concrete. There is no dependence on locale-specific characters because the fixture is ASCII.",
+          "explanationBounds": "The explanation uses the final flag only to settle contradictory case flags, not to erase independent flags such as multiline. It separately tracks match ordinal and captured substring.",
+          "reasoningDepth": "The dependent chain collation/flags -> surviving matches -> occurrence -> capture makes advanced defensible. It remains a finite expression trace, reflected by difficulty authenticity 3.",
+          "answerClues": "Three digit strings and one complete token test distinct stopping points. Whole-match d is a plausible capture mistake, not a grammatical mismatch that exposes c."
+        },
+        "qualityNotes": "PASS 3 tried collation-based matching, first-flag precedence, raw-token ordinal and whole-match extraction. All are refuted by current function/overview passages; c is supported. The product paragraph that loosely says position was checked against the function's text-return contract and capture example, not copied into an incorrect claim. The ancestry unit is a real reference, not a grant to import its incompatible ECMAScript examples. Independent static review, no SQL execution."
+      }
+    },
+    "dp800-20260916-d1-025": {
+      "generation": {
+        "questionFingerprint": "e3e6962ae9957b5ebb801cce4f4461ab925c237fedf18e269f3b2e48a3bb506e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-edit-distance"],
+            "summary": "A stable ID can provide deterministic order among genuine equal distances. Here capped values collapse different actual distances into maximum+1, so an ID tie-breaker cannot satisfy exact edit-count ordering."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-edit-similarity"],
+            "summary": "Normalized similarity is useful when proportional closeness across different string lengths is the desired metric. Its documented length denominator makes it different from raw edit-count ordering, which this workflow explicitly requires."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-edit-distance"],
+            "summary": "With cap zero, exact matches remain zero and positive distances become one under the current maximum+1 contract. That can distinguish equality from nonequality, but loses rather than restores the requested distance information."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-edit-distance"],
+            "summary": "Omitting the maximum returns the actual distance under the documented Preview contract. Sorting that value ascending implements the requested exact edit-count ordering; any tie-breaker then applies only to equal actual values."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d1-025",
+          "authorId": "dp800-expansion-author-design-20260916",
+          "reviewerId": "dp800-technical-tsql-20260916",
+          "questionFingerprint": "e3e6962ae9957b5ebb801cce4f4461ab925c237fedf18e269f3b2e48a3bb506e",
+          "reviewedAt": "2026-09-16T23:02:58.716Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d1x-edit-distance",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/edit-distance-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-edit-distance.json",
+              "retrievedAt": "2026-09-16T19:53:20.043Z",
+              "lastReviewedAt": "2026-09-16T20:43:33.507Z",
+              "supportingSummary": "This exact reference labels EDIT_DISTANCE Preview and excludes max string types. Omitted/negative maximum_distance returns actual distance. Arguments, Remarks and the Chocolate/Sweets example agree that an exceeded nonnegative cap returns maximum+1. The generic Return value sentence instead says 'or maximum_distance value if that is smaller'; that internal wording defect is recorded, not concealed. The repeated detailed rule and worked 8-to-3 example resolve the reviewed ranking distinction. No transposition-specific trace is asserted."
+            },
+            {
+              "sourceId": "dp800-d1x-edit-similarity",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/functions/edit-distance-similarity-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-edit-similarity.json",
+              "retrievedAt": "2026-09-16T19:53:22.487Z",
+              "lastReviewedAt": "2026-09-16T20:43:33.507Z",
+              "supportingSummary": "The actual Preview reference excludes max string types and normalizes edit distance by the greater input length into an integer score. Descending similarity therefore need not preserve ascending raw edit-count order for different lengths. Its Colour/Color example confirms a normalized metric. The exact function is taught in the fuzzy unit; that unit's conflicting algorithm/sample-score simplifications are not reused."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "With cap two, true distances four and seven both yield three under the detailed contract. An unrelated ID can reverse their required order. An ID is a legitimate tie-breaker only after preserving the distinctions the requested metric needs.",
+              "sourceIds": ["dp800-d1x-edit-distance"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "The formula normalizes by longer string length: distance two at length four gives 50, but distance three at length ten gives 70. Descending similarity can put a larger raw count first. That fits proportional similarity, not raw edit-count ordering.",
+              "sourceIds": ["dp800-d1x-edit-similarity"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "Zero cap gives zero for equal strings and one for positive distances under the repeated maximum+1 rule. It separates equality but collapses still more distance information instead of recovering exact ranking.",
+              "sourceIds": ["dp800-d1x-edit-distance"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "The Arguments section explicitly states that omitting maximum_distance returns actual distance. Ascending order on that value gives the required raw edit-count order, leaving only genuinely equal distances tied.",
+              "sourceIds": ["dp800-d1x-edit-distance"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independently selected d by separating cap information loss from length-normalized similarity. Preview is explicit and mandatory; no GA relabelling or max-string support is inferred. The actual EDIT_DISTANCE page has an imprecise generic Return value sentence, but Arguments, Remarks and its worked cap-two example agree on maximum+1; omitted-cap exact distance is explicit. This discrepancy is recorded for the third reviewer, not hidden or settled by an invented live test. Advanced fits an interacting metric/ranking failure with source-derived arithmetic counterexamples. Pronoun refers to the workflow; no same-fact duplicate found. PASS 2 only.",
+          "confidenceReason": "High for the unique uncapped-ranking remedy, qualified by the isolated conflicting generic sentence. Repeated detailed rules and the example are stronger; no transposition-specific result is asserted."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "e3e6962ae9957b5ebb801cce4f4461ab925c237fedf18e269f3b2e48a3bb506e",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "verdict": "manual-review-required",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Pair-ID ordering can recover exact distances hidden by the capped result.",
+            "whyIncorrectInContext": "IDs contain no stipulated distance information. Two pairs whose uncapped distances differ can share an over-cap result under either documented capped interpretation, so arbitrary ID ordering cannot guarantee raw-count order.",
+            "couldBeCorrectWhen": "It is valid if the intended metric deliberately groups all beyond-threshold pairs together and asks only for a stable ID order inside that bucket.",
+            "sourceIds": ["dp800-d1x-edit-distance"],
+            "evidenceSummary": "The cap clauses describe a bounded computation rather than guaranteed exact over-cap values. Their contradictory sentinel numbers do not make IDs a reconstruction of lost distances."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Descending normalized similarity is interchangeable with ascending exact edit count.",
+            "whyIncorrectInContext": "The normalization denominator varies with string length. A distance of one with maximum length two has similarity 50, while distance two with maximum length ten has similarity 80; descending similarity reverses their raw-count ranking.",
+            "couldBeCorrectWhen": "It is correct when the requirement is relative, length-normalized similarity. Equal maximum lengths may also preserve order subject to integer-score ties, but the stem permits varied lengths.",
+            "sourceIds": ["dp800-d1x-edit-similarity"],
+            "evidenceSummary": "The source prints the normalized formula and integer 0-100 range. The counterexample uses that formula, not an external fuzzy library."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "A zero cap restores exact positive distances for final ranking.",
+            "whyIncorrectInContext": "Reducing the bound cannot recover an exact positive count. The detailed contract collapses positive distances to one, while the contradictory Return value sentence would cap them at zero; either interpretation still loses the required distinction.",
+            "couldBeCorrectWhen": "A zero-cap computation can serve a threshold decision under a clarified contract when only exact equality matters, not ranking all nonidentical pairs by distance.",
+            "sourceIds": ["dp800-d1x-edit-distance"],
+            "evidenceSummary": "The source consistently bounds computation for nonnegative caps but conflicts on the returned sentinel. I reject this as exact ranking without falsely attesting which collapsed number is universal."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Omit maximum_distance and sort the actual edit distance ascending.",
+            "whyIncorrectInContext": "Supported, not incorrect: the Arguments section expressly says omission returns the actual distance. Sorting that count ascending directly meets the ranking requirement without relying on a disputed capped return value or length-normalized score.",
+            "couldBeCorrectWhen": "This is correct for exact-count ranking over the stated supported nonnull inputs. A threshold-only workflow may intentionally prefer a capped value after clarifying its contract.",
+            "sourceIds": [
+              "dp800-d1x-edit-distance",
+              "dp800-d1x-edit-similarity"
+            ],
+            "evidenceSummary": "The uncapped actual-distance clause is explicit and is not contradicted by Return value when no maximum is supplied. Similarity's normalization is separately documented, so the key remains defensible despite the explanation hold."
+          }
+        ],
+        "challenges": {
+          "scope": "SQL Server 2025 Preview EDIT_DISTANCE and EDIT_DISTANCE_SIMILARITY, not a generic fuzzy algorithm or GA string function. The bounded, nonnull inputs are interpreted as the supported finite character types, not max LOB types.",
+          "plan": "The issue is metric information loss, not the physical order of a SQL WHERE filter or a promise about early-exit performance. Pair ID is not a surrogate distance.",
+          "role": "No special database permission or external model is identified by these scalar function contracts. Availability is a platform/Preview issue rather than an authorization grant.",
+          "preconditions": "All candidate pairs are retained and name lengths may differ. Those facts refute recovering distance by tie breaking or swapping to normalized similarity. No source or live test is available to resolve the cap-return inconsistency.",
+          "featureStatus": "Both exact articles explicitly label the functions Preview and exclude max character types. The question honestly carries Preview; Not applicable would conceal actual version-specific function behavior.",
+          "sourceChanges": "Blocking contradiction in the same frozen EDIT_DISTANCE body: Arguments, Remarks and example B use maximum+1, while Return value says maximum_distance if smaller. Repetition does not resolve contradictory authoritative numeric claims. No new retrieval or date refresh is permitted here.",
+          "stemSufficiency": "The observed ties at three are a stipulated symptom, not proof that every distance above two must return three. The stem supports choosing an uncapped metric, but the authored explanation asserts the disputed general rule as settled fact.",
+          "explanationBounds": "HOLD: the universal maximum+1 statement and examples of all over-cap values collapsing to three overstate internally inconsistent evidence. d is supported, but a correct key alone cannot approve every authored claim.",
+          "reasoningDepth": "Information loss plus length normalization is a legitimate applied problem. Still, the advanced metric lesson should not force learners to accept an unresolved numerical contract.",
+          "answerClues": "The word exact strongly points toward the uncapped choice, but similarity is a credible wrong metric. Pair-ID and zero-cap distractors are weaker; their limitations are scored, not disguised."
+        },
+        "qualityNotes": "PASS 3 HOLD despite agreeing that d is the defensible key. I read the entire frozen EDIT_DISTANCE body: maximum+1 in Arguments/Remarks/example B conflicts with maximum_distance if smaller in Return value. I do not dismiss that contradiction because three passages outnumber one. The key's omitted-cap exact value and similarity counterexample remain supported, but all authored explanation claims cannot receive strict accuracy/documentation-strength 4. No upstream repairs, new grants, date refresh or simulated SQL approval were made."
+      }
+    },
+    "dp800-20260916-d1-027": {
+      "generation": {
+        "questionFingerprint": "530d8cbc0cbee7b551cffeedb0d157390bf8dea47f4e864f4a2a4c1e1491f317",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-correlated-unit", "dp800-d1x-subqueries"],
+            "summary": "The predicate requires nonempty tests and excludes explicit non-pass values, but a comparison with NULL is not TRUE. It would meet the rule if Result were guaranteed NOT NULL; this schema explicitly permits NULL."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-exists", "dp800-d1x-correlated-unit"],
+            "summary": "One pass row satisfies the first EXISTS even if a different row says fail. The second subquery excludes only NULL. This fits an at-least-one-pass/no-unknown rule, not the requirement that every result pass."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": [
+              "dp800-d1x-exists",
+              "dp800-d1x-correlated-unit",
+              "dp800-d1x-subqueries"
+            ],
+            "summary": "The first correlated EXISTS enforces nonempty membership; the second excludes all non-pass or NULL counterexamples for that same batch. It is therefore true exactly for nonempty all-pass batches."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-exists"],
+            "summary": "A no-counterexample condition is vacuously true for empty input. It is correct for a policy allowing empty batches, but this policy explicitly requires at least one test."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d1-027",
+          "authorId": "dp800-expansion-author-design-20260916",
+          "reviewerId": "dp800-technical-tsql-20260916",
+          "questionFingerprint": "530d8cbc0cbee7b551cffeedb0d157390bf8dea47f4e864f4a2a4c1e1491f317",
+          "reviewedAt": "2026-09-16T23:02:58.716Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d1x-exists",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/exists-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-exists.json",
+              "retrievedAt": "2026-09-16T20:16:18.625Z",
+              "lastReviewedAt": "2026-09-16T20:43:33.507Z",
+              "supportingSummary": "The actual reference makes EXISTS true for any returned row, even a projected NULL, and NOT EXISTS true for no returned rows. Its correlated examples bind each existence test to the outer row. This proves membership and empty-batch behavior without confusing a selected NULL with a NULL-valued WHERE predicate. The correlated unit directly links this exact article."
+            },
+            {
+              "sourceId": "dp800-d1x-correlated-unit",
+              "url": "https://learn.microsoft.com/en-us/training/modules/write-advanced-sql-code/8-correlated-queries",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-correlated-unit.json",
+              "retrievedAt": "2026-09-16T19:38:04.544Z",
+              "lastReviewedAt": "2026-09-16T20:16:15.902Z",
+              "supportingSummary": "The unit supplies outer-alias correlation, SELECT 1 existence checks and the no-counterexample pattern for universal conditions, while acknowledging different physical execution. Its all-products example does not add a nonempty guard; that limitation explains the candidate's separate EXISTS. Its direct references are the exact EXISTS and Subqueries articles."
+            },
+            {
+              "sourceId": "dp800-d1x-subqueries",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/performance/subqueries",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-subqueries.json",
+              "retrievedAt": "2026-09-16T20:16:17.162Z",
+              "lastReviewedAt": "2026-09-16T20:43:33.507Z",
+              "supportingSummary": "I read the inner/outer binding discussion, EXISTS/NOT EXISTS sections and the inequality example excluding NULL TerritoryID values under <> ANY. These support correlation and NULL comparisons not yielding a true counterexample; the latter is derived from shown behavior, not a claim that the article prints the candidate's Result truth table. No performance or physical per-row execution promise is imported. The correlated unit directly links this source."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "A single NULL test makes the batch nonempty, but NULL does not make Result<>'pass' true, so no bad row is found and the batch is wrongly admitted. This could work if Result were NOT NULL.",
+              "sourceIds": ["dp800-d1x-exists", "dp800-d1x-subqueries"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "A pass/fail pair with no NULL satisfies both subqueries. It implements any-pass/no-unknown, not every-test-pass, and admits an explicitly ineligible mixed batch.",
+              "sourceIds": ["dp800-d1x-exists", "dp800-d1x-correlated-unit"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "supported",
+              "rationale": "The first correlated EXISTS rejects empty batches; the second excludes any non-pass or NULL for the same BatchId. Only a nonempty all-pass set has membership without a counterexample.",
+              "sourceIds": [
+                "dp800-d1x-exists",
+                "dp800-d1x-correlated-unit",
+                "dp800-d1x-subqueries"
+              ]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "contradicted",
+              "rationale": "An empty batch has no bad test, so NOT EXISTS is true. This fits universal qualification allowing empty input, not the stated at-least-one-test requirement.",
+              "sourceIds": ["dp800-d1x-exists"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independently traced empty, pass-only, fail-only, NULL-only, pass/fail and pass/NULL sets. Only c implements nonempty universal qualification with NULL failure. All alternatives are legal SQL Server 2022 and remain correlated. Subqueries illustrates NULL exclusion in an inequality example rather than printing this exact truth table; application here is static SQL logic, not a source quotation or execution claim. Advanced is justified by universal quantification, vacuous truth and nullable counterexamples together. Negative wording states business semantics, not a trick; long alternatives differ in real safeguards. Distinct from graph and window concepts. PASS 2 only.",
+          "confidenceReason": "High for the specified set/null logic from current evidence. No physical nested-loop plan, performance superiority or case-sensitive string comparison is assumed."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "530d8cbc0cbee7b551cffeedb0d157390bf8dea47f4e864f4a2a4c1e1491f317",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Nonempty plus no Result unequal to pass also rejects NULL results.",
+            "whyIncorrectInContext": "For a batch containing a single NULL result, the first EXISTS is true but the <> predicate does not select the NULL as a counterexample. NOT EXISTS therefore succeeds and admits a batch the stem forbids.",
+            "couldBeCorrectWhen": "It works if Result is guaranteed nonnull, or if the business explicitly treats NULL as acceptable alongside pass while still excluding empty batches.",
+            "sourceIds": ["dp800-d1x-exists", "dp800-d1x-subqueries"],
+            "evidenceSummary": "EXISTS depends on returned rows; the Subqueries inequality example excludes NULL compared values. The displayed one-row counterexample applies those rules without treating SELECT NULL as zero rows."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "At least one passing row and no NULL rows ensures every test passed.",
+            "whyIncorrectInContext": "A pass/fail batch contains a pass and no NULL, so both predicates succeed even though a failed test exists. Excluding NULLs does not establish universal success across nonnull results.",
+            "couldBeCorrectWhen": "It is correct for a different contract requiring at least one pass and no unknown result while permitting known failures.",
+            "sourceIds": ["dp800-d1x-exists", "dp800-d1x-correlated-unit"],
+            "evidenceSummary": "The teaching unit distinguishes existence of a qualifying row from NOT EXISTS over counterexamples. A positive witness is not universal quantification."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "Require a related test and exclude every non-pass or NULL related result.",
+            "whyIncorrectInContext": "Supported, not incorrect: the first EXISTS rejects the empty set; the second detects both non-pass values and NULL. Pass-only nonempty batches remain, while NULL-only, fail-only, pass/fail and pass/NULL batches each fail.",
+            "couldBeCorrectWhen": "This is correct when every related test must satisfy the SQL predicate Result='pass' and empty batches are ineligible, exactly as stipulated.",
+            "sourceIds": [
+              "dp800-d1x-exists",
+              "dp800-d1x-correlated-unit",
+              "dp800-d1x-subqueries"
+            ],
+            "evidenceSummary": "The correlated existence/anti-existence contracts combine with the documented NULL exclusion from an inequality example. Explicit IS NULL turns unknown results into counterexamples."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "Absence of failing or NULL tests alone guarantees a nonempty all-pass batch.",
+            "whyIncorrectInContext": "An empty batch returns no counterexamples, so NOT EXISTS is true. Nothing in this predicate requires a positive related row, making empty batches wrongly eligible.",
+            "couldBeCorrectWhen": "It is correct if empty batches are intentionally accepted by vacuous all-pass logic, or if an independent invariant already guarantees at least one test.",
+            "sourceIds": ["dp800-d1x-exists", "dp800-d1x-correlated-unit"],
+            "evidenceSummary": "The product states NOT EXISTS succeeds when no rows return; the unit's all-products threshold pattern has the same vacuous-true property unless an existence condition is added."
+          }
+        ],
+        "challenges": {
+          "scope": "SQL Server 2022 correlated subqueries over Batch and Test. Result='pass' is the stated SQL predicate, not an unstated case-sensitive byte comparison or a graph reachability condition.",
+          "plan": "No guaranteed physical per-row execution, short-circuit order or performance advantage is claimed. Equivalent optimizer transformations must preserve the existence semantics.",
+          "role": "The normal SELECT access to both tables is assumed for this predicate-design task; no ownership or cross-tenant authorization decision is encoded by the choice.",
+          "preconditions": "Result is nullable, empty batches exist in the task domain and any non-pass result disqualifies. Both inner aliases explicitly correlate BatchId to the outer b, avoiding accidental unqualified outer binding.",
+          "featureStatus": "EXISTS, NOT EXISTS and nullable SQL predicates are established GA SQL Server behavior. Although quantifier logic is general, the actual named SQL operations mean Not applicable is not the appropriate feature label.",
+          "sourceChanges": "All three current snapshots and genuine correlated-unit links were inspected. The unit has no NULL truth table; NULL comparison support comes from the precise Subqueries inequality example, with static derivation identified honestly.",
+          "stemSufficiency": "The business rule explicitly closes both ambiguous empty-batch and NULL treatments. Uppercase spelling or trailing blanks are interpreted by the stated SQL equality, not an extra textual-normalization requirement.",
+          "explanationBounds": "The explanation is logical, not a performance promise. It correctly distinguishes no counterexample from at least one witness and does not equate SELECT NULL with an absent row.",
+          "reasoningDepth": "Advanced is justified by combining universal quantification, nonemptiness and three-valued predicates; individual EXISTS familiarity is not sufficient.",
+          "answerClues": "c is the longest predicate because it includes both needed safeguards; b and a also contain two subqueries, so length alone is not a reliable solution. Long lines lower clarity to 3."
+        },
+        "qualityNotes": "PASS 3 used concrete empty, NULL-only, pass-only, fail-only, pass/fail and pass/NULL cases. c alone matches all requirements. EXISTS(SELECT NULL) was deliberately separated from a nullable WHERE comparison; the latter support comes from Subqueries' inequality example and is recorded as static derivation. Negative wording is essential to the stated business rule, not answer hiding. The repeated BatchId correlations prevent a separate scope error. No forced physical-plan claim or live SQL execution."
+      }
+    },
+    "dp800-20260916-d1-029": {
+      "generation": {
+        "questionFingerprint": "c307ec4d8c54f8000e1db4ebdb6fb39288a8077a3f6b55224165138402689dd3",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "authorId": "dp800-expansion-author-design-20260916",
+        "generatedAt": "2026-09-16T21:01:26.355Z",
+        "claims": [
+          {
+            "choiceId": "a",
+            "sourceIds": ["dp800-d1x-try-catch"],
+            "summary": "Both could be caught if both errors arose in called lower-level routines. Variant A instead resolves the missing object at the same level as its TRY, which the documented CATCH exclusions cover."
+          },
+          {
+            "choiceId": "b",
+            "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+            "summary": "Same-level name resolution can bypass CATCH, but that rule is not universal across execution levels. Variant B compiles its statement in sp_executesql at a lower level and is catchable by the outer handler."
+          },
+          {
+            "choiceId": "c",
+            "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+            "summary": "Dynamic compilation does not by itself disable outer error handling. In this case the separate dynamic batch is precisely what places the error below the outer TRY/CATCH boundary, so this answer reverses both results."
+          },
+          {
+            "choiceId": "d",
+            "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+            "summary": "The product explicitly contrasts direct same-level missing-object access with the same operation in a called routine or sp_executesql. The first bypasses its local CATCH; the second reaches the surrounding higher-level CATCH."
+          }
+        ]
+      },
+      "technical": {
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "review": {
+          "questionId": "dp800-20260916-d1-029",
+          "authorId": "dp800-expansion-author-design-20260916",
+          "reviewerId": "dp800-technical-tsql-20260916",
+          "questionFingerprint": "c307ec4d8c54f8000e1db4ebdb6fb39288a8077a3f6b55224165138402689dd3",
+          "reviewedAt": "2026-09-16T23:02:58.716Z",
+          "verdict": "verified",
+          "sourceReviews": [
+            {
+              "sourceId": "dp800-d1x-try-catch",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/try-catch-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-try-catch.json",
+              "retrievedAt": "2026-09-16T19:53:15.425Z",
+              "lastReviewedAt": "2026-09-16T20:36:26.420Z",
+              "supportingSummary": "The actual product reference prohibits writes/COMMIT at XACT_STATE=-1 but permits reads/full rollback. It excludes same-level compile/name-resolution errors while allowing an outer CATCH to handle those from sp_executesql or another lower level. The error unit directly links it. It does not establish that sole transaction ownership proves post-rollback autocommit mode; product cautions override broader training claims."
+            },
+            {
+              "sourceId": "dp800-d1x-executesql",
+              "url": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-executesql-transact-sql",
+              "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\raw\\dp800-d1x-executesql.json",
+              "retrievedAt": "2026-09-16T19:53:20.064Z",
+              "lastReviewedAt": "2026-09-16T20:36:26.420Z",
+              "supportingSummary": "The reference accepts a Unicode statement literal without a parameter list when none is needed, compiling/executing it as a separate batch/plan only when invoked. That establishes variant B's lower compilation level, not immunity from dynamic SQL errors. The exact procedure is named in the current AI-security teaching unit. The separate 2025 OPTIMIZED_SP_EXECUTESQL extension is outside this 2022 question."
+            }
+          ],
+          "choiceReviews": [
+            {
+              "choiceId": "a",
+              "assessment": "contradicted",
+              "rationale": "The documented same-level exclusions cover A's direct object-name resolution. Both could be caught if both statements were at lower execution levels, but that is not the displayed pair.",
+              "sourceIds": ["dp800-d1x-try-catch"]
+            },
+            {
+              "choiceId": "b",
+              "assessment": "contradicted",
+              "rationale": "The product expressly allows an outer CATCH to handle lower-level compilation errors, including sp_executesql. A bypassing its own handler does not make B uncatchable.",
+              "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"]
+            },
+            {
+              "choiceId": "c",
+              "assessment": "contradicted",
+              "rationale": "This reverses the rule. Dynamic SQL is not inherently ignored; here separate compilation is precisely the boundary enabling the outer CATCH to handle the failure.",
+              "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"]
+            },
+            {
+              "choiceId": "d",
+              "assessment": "supported",
+              "rationale": "A resolves the absent object at the same level and bypasses that CATCH. B compiles its Unicode statement inside sp_executesql at a lower level, so the outer CATCH handles the error as explicitly documented.",
+              "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"]
+            }
+          ],
+          "checks": {
+            "answerDefensible": true,
+            "correctOptionsSupported": true,
+            "distractorsIncorrect": true,
+            "explanationsSupported": true,
+            "directSources": true,
+            "featureStatus": true,
+            "currentTerminology": true,
+            "prerequisitesComplete": true,
+            "codeReviewed": true,
+            "originalContent": true,
+            "duplicatesReviewed": true,
+            "qualityReviewed": true
+          },
+          "verificationNotes": "Independently derived d from compilation level, not an absolute dynamic-SQL catch rule. Variants execute separately in SSMS: GO is a client delimiter and no TRY...CATCH spans it. sys.sp_executesql receives a valid Unicode literal with no missing parameter definitions. Absent table, open connection and no-other-error assumptions isolate the source's rule. Advanced troubleshooting fits diagnosing handler scope rather than error severity alone. Absolute distractors are explicitly refuted, the negative missing-object condition is essential and pronouns have code antecedents. Distinct from d1-028's transaction state. PASS 2 only; no SQL execution.",
+          "confidenceReason": "High: TRY...CATCH explicitly names sp_executesql as a lower-level example, while its own reference independently establishes separate compilation."
+        }
+      },
+      "adversarial": {
+        "questionFingerprint": "c307ec4d8c54f8000e1db4ebdb6fb39288a8077a3f6b55224165138402689dd3",
+        "objectiveVersion": "March 12, 2026",
+        "objectiveFingerprint": "8d3bf9feb9d1fc5d0ad345e11957d92f5e7e7ac2ca89c4ab7a513ecc81958191",
+        "reviewerId": "dp800-adversarial-tsql-b-20260916",
+        "reviewedAt": "2026-09-17T00:07:47.814Z",
+        "verdict": "verified",
+        "optionChallenges": [
+          {
+            "choiceId": "a",
+            "claimRepresented": "Both handlers catch the missing-object failure because every name-resolution error is caught.",
+            "whyIncorrectInContext": "Variant A's missing-table SELECT is compiled or resolved at the same execution level as its TRY...CATCH, which the product explicitly excludes from that handler. B being catchable does not make A catchable.",
+            "couldBeCorrectWhen": "Both outer handlers could catch comparable errors if both failing SELECTs executed at a lower level, such as in a dynamic batch or called procedure; the universal every-error rationale would still need removal.",
+            "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+            "evidenceSummary": "Errors unaffected by TRY...CATCH explicitly distinguishes same-level name resolution from lower-level compilation; sp_executesql creates the latter boundary for B only."
+          },
+          {
+            "choiceId": "b",
+            "claimRepresented": "Name-resolution errors can never be caught, so neither handler runs.",
+            "whyIncorrectInContext": "The product explicitly names sp_executesql as an example of lower-level compilation that the surrounding CATCH can handle. The stipulated continuing connection and no-other-error condition leave B in that catchable case.",
+            "couldBeCorrectWhen": "Neither associated handler would catch these missing-object errors if both references were compiled at their own handler's same execution level. That does not make name-resolution errors universally uncatchable.",
+            "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+            "evidenceSummary": "The same source section both lists same-level exclusions and admits lower-level errors; a session-wide prohibition is contradicted by the specific rule."
+          },
+          {
+            "choiceId": "c",
+            "claimRepresented": "The direct reference is caught while dynamic SQL escapes solely because it is dynamic.",
+            "whyIncorrectInContext": "This reverses both outcomes. Dynamic text is compiled at a lower level during sp_executesql execution, inside the outer TRY; same-level direct resolution does not acquire that boundary.",
+            "couldBeCorrectWhen": "The A-catches/B-bypasses outcome could occur with a catchable execution error in A and a connection-ending or attention failure in B, but not from the given same missing-table failure or merely from dynamic text.",
+            "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+            "evidenceSummary": "The separate-batch contract and the TRY...CATCH lower-level exception jointly reject the reversal. The stated alternate requires different error conditions expressly excluded by the stem."
+          },
+          {
+            "choiceId": "d",
+            "claimRepresented": "The same-level direct error bypasses A's handler, while B's lower-level error reaches its outer handler.",
+            "whyIncorrectInContext": "Supported, not incorrect: the direct missing-object statement is at A's handler level; B executes its Unicode statement in sp_executesql's separate compiled batch while the caller's TRY surrounds EXEC. The current product rule therefore yields exactly the two outcomes.",
+            "couldBeCorrectWhen": "It is correct for independently executed variants with the missing object, continuing connection and absence of other failures. It is not a guarantee for connection termination or errors raised inside CATCH.",
+            "sourceIds": ["dp800-d1x-try-catch", "dp800-d1x-executesql"],
+            "evidenceSummary": "The TRY...CATCH article explicitly includes sp_executesql in its lower-execution-level rule, while the procedure article establishes separate deferred compilation of @stmt."
+          }
+        ],
+        "challenges": {
+          "scope": "Two independent SQL Server 2022 ad hoc batches in SSMS. No user procedure wrapping the whole variant or remote error boundary is silently added.",
+          "plan": "Separate dynamic-batch compilation is an execution-level fact, not an optimizer reuse guarantee. SQL Server 2025 OPTIMIZED_SP_EXECUTESQL behavior is outside this target.",
+          "role": "The procedure contract permits public-role execution. Actual object access is not magically elevated; the stem isolates a missing object and no other error, so permission denial is not a competing result.",
+          "preconditions": "SSMS recognizes GO and no TRY...CATCH spans that separator. The Unicode @stmt is valid and contains no parameters. Missing table, separate execution and a continuing connection exclude the important alternate error conditions.",
+          "featureStatus": "TRY...CATCH and sp_executesql are established GA SQL Server capabilities. This is actual software compilation scope, not Not applicable methodology or a Preview API.",
+          "sourceChanges": "The exact frozen product references reviewed 20:36:26.420Z were re-read. The error-handling training unit's same-session generalization is too broad; precise same-level versus lower-level product wording controls this candidate.",
+          "stemSufficiency": "Run separately and no other error are consequential constraints, not decorative prose. They prevent an outer wrapper or connection failure from supplying a different defensible answer.",
+          "explanationBounds": "The explanation excludes universal dynamic-SQL catchability and connection-ending events. It does not imply transaction rollback, durable logging or suppression/rethrow behavior absent from these variants.",
+          "reasoningDepth": "Diagnosing compilation boundaries rather than only severity is a genuine advanced troubleshooting concept. The stem supplies the boundary distinction, so difficulty authenticity is 3.",
+          "answerClues": "Universal every/never claims make a and b easier to reject, and d is relatively detailed. Those are real editorial weaknesses scored at distractor plausibility 3, not a reason to invent stronger rigor."
+        },
+        "qualityNotes": "PASS 3 independently evaluated same-level name resolution, lower-level dynamic compilation and the excluded connection/error alternatives. d survives those challenges. The real training reference has an overbroad same-session claim; the two cited product bodies instead establish the precise boundary. Reviewed GO as an SSMS separator and confirmed no handler crosses it. Warnings for absolute and negative wording are acknowledged with rubric deductions. This is not a review of d1-028's transaction logging repair."
+      }
+    }
+  }
+}

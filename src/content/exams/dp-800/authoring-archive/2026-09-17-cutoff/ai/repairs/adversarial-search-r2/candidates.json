@@ -1,0 +1,62 @@
+[
+  {
+    "id": "dp800-20260916-d3-022",
+    "question": "Four hypothetical trials use current Preview vector search in an enabled Azure SQL Database environment. Each uses TOP (8), ascending distance ordering and otherwise valid inputs and syntax; any present index matches the column and metric. The matrix varies the approximate clause and correctly placed FORCE_ANN_ONLY hint. Which classification follows the documented contract? 'Optimizer choice' permits ANN or kNN; these are predictions, not measured plans.",
+    "questionType": "scenario",
+    "answerChoices": [
+      {
+        "id": "a",
+        "text": "P: forced ANN; Q: exact kNN; R: error; S: optimizer choice."
+      },
+      {
+        "id": "b",
+        "text": "P: forced ANN; Q: error; R: exact kNN; S: optimizer choice."
+      },
+      {
+        "id": "c",
+        "text": "P: forced ANN; Q: error; R: error; S: optimizer choice."
+      },
+      {
+        "id": "d",
+        "text": "P: forced ANN; Q: error; R: error; S: forced ANN."
+      }
+    ],
+    "correctAnswer": ["c"],
+    "explanation": "P has both forcing prerequisites. Q lacks WITH APPROXIMATE and R lacks an index, so the forcing hint causes the documented prerequisite errors. S has no forcing hint, leaving strategy selection to the optimizer.",
+    "deepExplanation": "FORCE_ANN_ONLY is a control with requirements, not a general request to fall back gracefully. Both a target vector index and TOP WITH APPROXIMATE must be present when that hint is used. Ordinary unforced search can choose or fall back to kNN, but that does not describe Q or R. S can select ANN without being forced to do so. No trial establishes that ANN improves latency or recall.",
+    "whyOtherAnswersAreWrong": {
+      "a": "Q still has the forcing hint. Missing WITH APPROXIMATE is an error under that hint, not the ordinary unforced exact-kNN form.",
+      "b": "R still has the forcing hint. Without an index it cannot meet the required ANN strategy; the unforced no-index fallback does not apply.",
+      "d": "S has no FORCE_ANN_ONLY hint. A compatible index and approximate request permit ANN but do not force the optimizer to select it."
+    },
+    "objectiveDomain": "implement-ai-capabilities-in-database-solutions",
+    "skill": "design-and-implement-intelligent-search",
+    "subskill": "Choose between using ANN and ENN for vector search",
+    "difficulty": "intermediate",
+    "complexity": "scenario-based",
+    "sourceIds": ["dp800-d3-vector-search"],
+    "sourceUrls": [
+      "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql"
+    ],
+    "documentationTitles": ["VECTOR_SEARCH (Transact-SQL) (Preview)"],
+    "generatedAt": "2026-09-17T01:13:22.364Z",
+    "lastValidatedAt": "2026-09-17T01:13:22.364Z",
+    "featureStatus": "Preview",
+    "tags": [
+      "ann-versus-knn",
+      "force-ann-only",
+      "benchmark",
+      "preview",
+      "latest-index"
+    ],
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"P\": {\"compatible_index\":true, \"with_approximate\":true, \"force_ann_only\":true},\n  \"Q\": {\"compatible_index\":true, \"with_approximate\":false, \"force_ann_only\":true},\n  \"R\": {\"compatible_index\":false, \"with_approximate\":true, \"force_ann_only\":true},\n  \"S\": {\"compatible_index\":true, \"with_approximate\":true, \"force_ann_only\":false}\n}",
+    "conceptId": "sql-latest-vector-search-force-ann-only-is-a-benchmark-control-not-a-performance-promise",
+    "verificationStatus": "candidate",
+    "verifiedAgainstSourceIds": [],
+    "verificationNotes": "Pass 1 source-grounded repair only: fresh authored snapshot and per-option analysis; independent technical and adversarial review remain required.",
+    "requiresManualReview": true,
+    "sourceLastReviewedAt": "2026-09-16T20:12:23.450Z",
+    "confidenceReason": ""
+  }
+]

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "requestId": "dp800-technical-objects-temporal-r1-20260916",
+  "reviews": [
+    {
+      "questionId": "dp800-20260916-d1-003",
+      "authorId": "dp800-expansion-author-design-20260916",
+      "reviewerId": "dp800-technical-objects-20260916",
+      "questionFingerprint": "e662ec1a579cd9e81a05d9050c44656421f4e8a2fc8cb6eaa6d86e69e88d9f03",
+      "reviewedAt": "2026-09-16T23:48:10.474Z",
+      "verdict": "verified",
+      "sourceReviews": [
+        {
+          "sourceId": "dp800-d1x-create-temporal",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/tables/temporal/create",
+          "evidencePath": ".grounding\\dp800-expansion-20260916\\design\\repairs\\temporal-r1\\raw\\create-temporal-canonical.json",
+          "retrievedAt": "2026-09-16T22:14:32.752Z",
+          "lastReviewedAt": "2026-09-16T22:30:15.466Z",
+          "supportingSummary": "I read the newly fetched /tables/temporal/create MCP article, not the old review or the repair's conclusions, to derive the result. Anonymous-history Remarks require a current primary key, nonnullable datetime2 period endpoints and matching history/current column count, names, ordering and types. User-defined-history Remarks independently forbid history primary keys and unique indexes. Add versioning to non-temporal tables confines DATA_CONSISTENCY_CHECK = OFF to existing temporal-data checks and explicitly calls for matching datetime2 precision. The header covers SQL Server 2016 and later, including the candidate's SQL Server 2022; no preview, edition-specific metadata-only operation or Fabric behavior is needed."
+        }
+      ],
+      "choiceReviews": [
+        {
+          "choiceId": "a",
+          "assessment": "supported",
+          "rationale": "The canonical article assigns different key rules to the two roles: the current table needs its primary key, but an attached user-defined history table cannot have one. The proposed history key is therefore a schema blocker that must be removed. Retaining the current table's primary key is the appropriate positive use of that constraint; removing the current key instead would not solve this problem.",
+          "sourceIds": ["dp800-d1x-create-temporal"]
+        },
+        {
+          "choiceId": "b",
+          "assessment": "contradicted",
+          "rationale": "The new canonical user-defined-history section bans unique indexes separately from primary keys, so changing only the enforcement object's label does not yield an eligible history table. Its worked history example instead uses nonunique indexes for lookup/analysis. An ordinary independently managed table could need uniqueness, but this system-versioned history role expressly cannot use the proposed UNIQUE substitute.",
+          "sourceIds": ["dp800-d1x-create-temporal"]
+        },
+        {
+          "choiceId": "c",
+          "assessment": "supported",
+          "rationale": "Even with all original names and types matching, an extra ArchiveBatchId increases the history column count beyond the current table. The canonical alignment rule makes removing that history-only field necessary. Keeping archival batch metadata separately is compatible with the supplied premise; adding such a field to a separate metadata design is different from attaching an unmatched temporal history schema.",
+          "sourceIds": ["dp800-d1x-create-temporal"]
+        },
+        {
+          "choiceId": "d",
+          "assessment": "contradicted",
+          "rationale": "The current article allows this switch to skip checking existing current/history period data when versioning is enabled. It does not disable the independent schema-alignment and forbidden-history-key checks. It could be a separate migration choice for an otherwise eligible pair with deliberately handled data validation; here the data is already stipulated valid, while both schema defects remain.",
+          "sourceIds": ["dp800-d1x-create-temporal"]
+        },
+        {
+          "choiceId": "e",
+          "assessment": "contradicted",
+          "rationale": "Replacing only the history datetime2(7) endpoints with date makes the two table roles disagree on their period-column type. The canonical article requires aligned types and specifically calls out datetime2 precision alignment. Date-only information may be represented elsewhere for a calendar-oriented use, but cannot replace these matching temporal endpoints while the current table remains unchanged.",
+          "sourceIds": ["dp800-d1x-create-temporal"]
+        }
+      ],
+      "checks": {
+        "answerDefensible": true,
+        "correctOptionsSupported": true,
+        "distractorsIncorrect": true,
+        "explanationsSupported": true,
+        "directSources": true,
+        "featureStatus": true,
+        "currentTerminology": true,
+        "prerequisitesComplete": true,
+        "codeReviewed": true,
+        "originalContent": true,
+        "duplicatesReviewed": true,
+        "qualityReviewed": true
+      },
+      "verificationNotes": "Fresh r1 technical review derives exactly a and c from the current canonical article's separate role/key, schema-alignment and existing-data rules. I reconsidered all five choices: b preserves prohibited uniqueness, d addresses a different validation layer, and e introduces a type mismatch. The stated valid current primary key/period and nonoverlapping data close those separate preconditions; the question asks for required schema changes, not an executed deployment. All inline SQL identifiers, types and option syntax were checked statically, with no SQL Server execution. SQL Server 2022 is covered by the article's 2016+ applicability without adopting its separate Fabric or edition-specific operational notes. Advanced remains defensible at the lower boundary for a two-defect current/history migration diagnosis plus distinguishing schema from temporal-data checking; no Expert depth or rubric score is asserted. The current/history antecedents and Choose two instruction remain clear. This is the same original fact-level item under a new citation/generation snapshot, not another question to count as additional coverage. Actual canonical MCP content and both observed redirect chains were inspected, including the frozen training reference; the old endpoint remains transport evidence only. The initial review is preserved as history and was not rehashed or used as this pass's approval.",
+      "confidenceReason": "High confidence from the newly retrieved canonical text: explicit, independent clauses support both required changes and defeat every remaining option. Canonical identity is established by the actual training reference, redirect receipts, current MCP receipt and exact installed approval, not by topic similarity or an old attestation."
+    }
+  ]
+}

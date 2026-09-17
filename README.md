@@ -75,7 +75,7 @@ package remain sealed even when their identity and current outline are verified.
 | Dungeon                         | Playable verified encounters | Modes                        |
 | ------------------------------- | ---------------------------: | ---------------------------- |
 | DP-700: The Fabric Depths       |                          162 | Study and Boss Gauntlet      |
-| DP-800: The Database Deeps      |                           39 | Study                        |
+| DP-800: The Database Deeps      |                          109 | Study                        |
 | AZ-104: The Infrastructure Keep |                           30 | Study                        |
 | SC-200: The Sentinel Watch      |                          150 | Study and Boss Gauntlet      |
 | SC-500: The Security Citadel    |                          150 | Study and Boss Gauntlet      |
@@ -84,7 +84,7 @@ package remain sealed even when their identity and current outline are verified.
 | GH-300: The Copilot Spire       |                          149 | Study and Boss Gauntlet      |
 | GH-600: The Agentic Workshop    |                          136 | Beta Study and Boss Gauntlet |
 
-**1,082 playable verified encounters**. GH-300 retains three rejected duplicates
+**1,152 playable verified encounters**. GH-300 retains three rejected duplicates
 and three manual-review records outside gameplay. GH-600 has **136 fully
 three-pass-reviewed questions** available for beta study and 13 rejected
 candidates outside gameplay. Its card, setup, and question metadata retain the
@@ -138,25 +138,36 @@ source/review dates, distributions and retained editorial warnings.
 
 ### DP-800 limited Study release
 
-**DP-800 Study is open with 39 independently verified original encounters.**
-All 39 completed separate generation, technical verification and adversarial
-review, meet the unchanged 44/48 rubric gate, and cover all three major objective
-areas. The effective map is **March 12, 2026**; the source manifest's latest
-retrieval is **September 15, 2026, 06:42:29 UTC**, and the latest independent
-question review is **September 15, 2026, 15:38:13 UTC**. This is a limited,
-build-time-grounded bank, not an always-current assessment.
+**DP-800 Study is open with 109 independently verified original encounters**,
+up from 39. The selected bank contains 73 new verified question IDs and 36
+freshly re-grounded existing IDs. Each playable snapshot completed separate
+generation, technical verification and adversarial review under the unchanged
+44/48 minimum and critical-score requirements.
 
-The **150-question target is not met: 111 verified questions remain**. At the
-requested DP-800-first delivery cutoff, 102 unique original questions were
-saved: 39 verified, two current manual-review records excluded from play, and
-61 outside the gameplay package without completed final approval.
-Their immutable authoring snapshots and actual partial reviews are retained in
-[`authoring-archive`](src/content/exams/dp-800/authoring-archive/).
-The cutoff is a delivery-priority decision, not a claim that official sources
-cannot support more content. Boss stays locked below the unchanged 75-question
-minimum; filtered runs are visibly capped to their real eligible pool.
-Earlier rejected and manual-review versions remain archived; their authored
-repairs restarted all three passes rather than inheriting approval.
+The current credential is **SQL AI Developer Associate**, with exam DP-800:
+**Developing AI-Enabled Database Solutions**, not SQL Server administration.
+The unchanged objective map is effective **March 12, 2026**. Its latest guide
+retrieval was September 16; the selected source manifest's latest retrieval is
+**September 17, 2026, 00:14:36 UTC**, and its latest independent question review
+is **September 17, 2026, 01:10:38 UTC**. This is a versioned, build-time-grounded
+bank, not an always-current assessment.
+
+The user chose delivery of the currently verified content. **The original
+150-question target remains unmet by 41 questions.** All three domains and all
+11 skills are represented, but only **59 of 73 subskills** have playable
+coverage. **Boss remains locked** because AI-assisted SQL development has only
+one verified encounter, below the unchanged two-per-skill breadth requirement;
+exceeding the 75-question count alone does not open it.
+
+The package retains 20 final-review holds and one rejected duplicate, all
+excluded from play. Another 25 expansion candidates and 61 previously deferred
+IDs remain outside gameplay. The original 41-record package and its reviews
+are preserved in [`review-history`](src/content/exams/dp-800/review-history/2026-09-16-before-refresh/).
+The [cutoff archive](src/content/exams/dp-800/authoring-archive/2026-09-17-cutoff/)
+preserves actual generation, source and independent-review history without
+converting pending work into approvals. Later or technical-only results cannot
+silently update this release. See the [coverage report](src/content/exams/dp-800/content-coverage.md)
+for the exact gaps and retained editorial warnings.
 
 **DP-420 has an accessible, unscored upcoming-outline preview.** Choose
 **Preview upcoming outline** on its card, or visit `#/dungeons/dp-420/preview`,
